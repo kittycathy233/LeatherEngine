@@ -5,7 +5,7 @@ function start(song)
     setObjectCamera('yourMom', 'hud')
     add('yourMom')
 
-    tween("yourMom", { x = 640, y = 360 }, 2, "linear", function()
+    tween("yourMom", { x = 640, y = 360 }, 2, "linear", 0, function()
         tween("yourMom", { x = 0, y = FlxG.height - 18 }, 2, "linear")
     end)
 

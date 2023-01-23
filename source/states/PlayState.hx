@@ -1,5 +1,6 @@
 package states;
 
+import flixel.group.FlxSpriteGroup;
 #if sys
 import sys.FileSystem;
 #end
@@ -566,7 +567,9 @@ class PlayState extends MusicBeatState {
 	public var splash_group:FlxTypedSpriteGroup<NoteSplash> = new FlxTypedSpriteGroup<NoteSplash>();
 
 	// unused for now ;)
-	public var scripts:Array<HScript> = [];
+	// public var scripts:Array<HScript> = [];
+
+	public var ratingsGroup:FlxSpriteGroup = new FlxSpriteGroup();
 
 	override public function create() {
 		// set instance because duh
@@ -953,6 +956,8 @@ class PlayState extends MusicBeatState {
 		executeALuaState("create", [stage.stage], STAGE);
 		#end
 
+		ratingsGroup.cameras = [camHUD];
+		add(ratingsGroup);
 		add(strumLineNotes);
 
 		var cache_splash = new NoteSplash();
@@ -2949,8 +2954,6 @@ class PlayState extends MusicBeatState {
 			accuracyText.setPosition(rating.x, rating.y + 100);
 			accuracyText.text = noteMath + " ms" + (Options.getData("botplay") ? " (BOT)" : "");
 
-			accuracyText.cameras = [camHUD];
-
 			if (Math.abs(noteMath) == noteMath)
 				accuracyText.color = FlxColor.CYAN;
 			else
@@ -2960,27 +2963,13 @@ class PlayState extends MusicBeatState {
 			accuracyText.borderSize = 1;
 			accuracyText.font = Paths.font("vcr.ttf");
 
-			add(accuracyText);
+			ratingsGroup.add(accuracyText);
 		}
 
-		rating.cameras = [camHUD];
-
-		var comboSpr:FlxSprite = new FlxSprite() /*.loadGraphic(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/combo", 'shared'))*/;
-		comboSpr.screenCenter();
-		comboSpr.acceleration.y = 600;
-		comboSpr.velocity.y -= 150;
-
-		comboSpr.velocity.x += FlxG.random.int(1, 10);
-		comboSpr.cameras = [camHUD];
-		add(rating);
+		ratingsGroup.add(rating);
 
 		rating.setGraphicSize(Std.int(rating.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[4])));
-		comboSpr.setGraphicSize(Std.int(comboSpr.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[4])));
-
 		rating.antialiasing = ui_settings[3] == "true";
-		comboSpr.antialiasing = ui_settings[3] == "true";
-
-		comboSpr.updateHitbox();
 		rating.updateHitbox();
 
 		var seperatedScore:Array<Int> = [];
@@ -2996,7 +2985,6 @@ class PlayState extends MusicBeatState {
 				numbers.push(new FlxSprite());
 
 			var numScore = numbers[daLoop];
-
 			numScore.alpha = 1;
 
 			numScore.loadGraphic(uiMap.get(Std.string(i)), false, 0, 0, true, Std.string(i));
@@ -3015,8 +3003,7 @@ class PlayState extends MusicBeatState {
 			numScore.velocity.y = FlxG.random.int(30, 60);
 			numScore.velocity.x = FlxG.random.float(-5, 5);
 
-			numScore.cameras = [camHUD];
-			add(numScore);
+			ratingsGroup.add(numScore);
 
 			if (number_Tweens[daLoop] == null) {
 				number_Tweens[daLoop] = FlxTween.tween(numScore, {alpha: 0}, 0.2, {
@@ -3064,11 +3051,6 @@ class PlayState extends MusicBeatState {
 				});
 			}
 		}
-
-		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
-			onComplete: function(tween:FlxTween) comboSpr.destroy(),
-			startDelay: Conductor.crochet * 0.001
-		});
 
 		calculateAccuracy();
 	}
@@ -4173,10 +4155,6 @@ class PlayState extends MusicBeatState {
 			}
 		}
 		#end
-
-		for (script in scripts) {
-			script.call(name, arguments);
-		}
 	}
 
 	function setLuaVar(name:String, data:Dynamic, ?execute_on:Execute_On = BOTH, ?stage_data:Dynamic) {
