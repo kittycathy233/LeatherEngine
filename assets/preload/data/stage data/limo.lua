@@ -49,7 +49,7 @@ function beatHit(beat)
 			playAnimation("dancer4", "danceLeft", true)
 		end
 
-		if randomInt(1,10) == 3 and carCanGoVroom then
+		if randomBool(10) and carCanGoVroom then
 			playSound("pass" .. tostring(randomInt(1,2)), true)
 
 			set("car.velocity.x", (randomFloat(170, 220) / FlxG.elapsed) * 3)

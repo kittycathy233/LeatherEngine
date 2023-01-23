@@ -23,7 +23,7 @@ end
 -- everytime a beat hit is called on the song this happens
 function beatHit(beat)
 	if animatedBackgrounds then
-		if randomInt(1, 10) == 3 and beat > lastBeat + beatOffset then
+		if randomBool(10) and beat > lastBeat + beatOffset then
 			lastBeat = beat
 
 			set("boyfriend.shouldDance", false)
@@ -42,6 +42,7 @@ function beatHit(beat)
 			set("boyfriend.shouldDance", true)
 			dance("boyfriend")
 			set("girlfriend.shouldDance", true)
+			dance("girlfriend")
 
 			justScared = false
 		end

@@ -45,7 +45,7 @@ function beatHit(curBeat)
 		set("light" .. tostring(lightSelected) .. ".visible", true)
 	end
 
-	if curBeat % 8 == 4 and randomInt(1,10) <= 3 and not trainMoving and trainCooldown > 8 then
+	if curBeat % 8 == 4 and randomBool(30) and not trainMoving and trainCooldown > 8 then
 		trainCooldown = randomInt(-4, 0)
 		startDaTrain()
 	end
