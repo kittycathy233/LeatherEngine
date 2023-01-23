@@ -1988,6 +1988,8 @@ class PlayState extends MusicBeatState {
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
 
+		FlxG.camera.followLerp = elapsed * 2.4;
+
 		var icon_Zoom_Lerp = elapsed * 9;
 		var camera_Zoom_Lerp = elapsed * 3;
 

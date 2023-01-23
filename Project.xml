@@ -89,7 +89,9 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<!--Packages-->
-	<haxelib name="flixel-leather" />
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
+	<haxelib name="flixel-ui" />
 
 	<haxelib name="hscript" />
 	<!--Fix some polymod 1.5.3+ errors lol (needs hscript 2.5.0 i think???)-->

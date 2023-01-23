@@ -30,8 +30,7 @@ import game.Highscore;
 import openfl.utils.Assets as OpenFLAssets;
 import debuggers.ChartingStateDev;
 
-class OptionsMenu extends MusicBeatState
-{
+class OptionsMenu extends MusicBeatState {
 	var curSelected:Int = 0;
 
 	public static var inMenu = false;
@@ -95,7 +94,7 @@ class OptionsMenu extends MusicBeatState
 			#if discord_rpc
 			new BoolOption("Discord RPC", "discordRPC", 5),
 			#end
-			new StringSaveOption("Cutscenes Play On", ["story","freeplay","both"], 6, "cutscenePlaysOn"),
+			new StringSaveOption("Cutscenes Play On", ["story", "freeplay", "both"], 6, "cutscenePlaysOn"),
 			new StringSaveOption("Play As", ["bf", "opponent"], 7, "playAs"),
 			new BoolOption("Disable Debug Menus", "disableDebugMenus", 10),
 			new BoolOption("Invisible Notes", "invisibleNotes", 11),
@@ -116,7 +115,12 @@ class OptionsMenu extends MusicBeatState
 		[
 			"Info Display",
 			new PageOption("Back", 0, "Graphics"),
-			new DisplayFontOption("Display Font", ["_sans", OpenFLAssets.getFont(Paths.font("vcr.ttf")).fontName, OpenFLAssets.getFont(Paths.font("pixel.otf")).fontName], 6, "infoDisplayFont"),
+			new DisplayFontOption("Display Font", [
+				"_sans",
+				OpenFLAssets.getFont(Paths.font("vcr.ttf")).fontName,
+				OpenFLAssets.getFont(Paths.font("pixel.otf")).fontName
+			],
+				6, "infoDisplayFont"),
 			new BoolOption("FPS Counter", "fpsCounter", 3),
 			new BoolOption("Memory Counter", "memoryCounter", 4),
 			new BoolOption("Version Display", "versionDisplay", 4)
@@ -165,23 +169,21 @@ class OptionsMenu extends MusicBeatState
 
 	public static var instance:OptionsMenu;
 
-	override function create()
-	{
-		if(PlayState.instance == null)
+	override function create():Void {
+		if (PlayState.instance == null) {
 			pages[3][2] = null;
-
-		#if debug
-		if(PlayState.instance == null)
+			#if debug
 			pages[3][3] = null;
-		#end
-		
+			#end
+		}
+
 		MusicBeatState.windowNameSuffix = "";
-		
+
 		instance = this;
 
 		var menuBG:FlxSprite;
 
-		if(utilities.Options.getData("menuBGs"))
+		if (utilities.Options.getData("menuBGs"))
 			menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		else
 			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.fromString("#E1E1E1"), false, "optimizedMenuDesat");
@@ -199,79 +201,65 @@ class OptionsMenu extends MusicBeatState
 
 		LoadPage("Categories");
 
-		if(FlxG.sound.music == null)
+		if (FlxG.sound.music == null)
 			FlxG.sound.playMusic(MusicUtilities.GetOptionsMenuMusic(), 0.7, true);
 	}
 
-	public static function LoadPage(Page_Name:String)
-	{
+	public static function LoadPage(Page_Name:String):Void {
 		inMenu = true;
 		instance.curSelected = 0;
 
-		var curPage = instance.page;
-
+		var curPage:FlxTypedGroup<Option> = instance.page;
 		curPage.clear();
 
 		var selectedPage:Array<Dynamic> = [];
 
-		for(i in 0...instance.pages.length)
-		{
-			if(instance.pages[i][0] == Page_Name)
-			{
-				for(x in 0...instance.pages[i].length)
-				{
-					if(instance.pages[i][x] != Page_Name)
+		for (i in 0...instance.pages.length) {
+			if (instance.pages[i][0] == Page_Name) {
+				for (x in 0...instance.pages[i].length) {
+					if (instance.pages[i][x] != Page_Name)
 						selectedPage.push(instance.pages[i][x]);
 				}
 			}
 		}
 
-		for(x in selectedPage)
-		{
+		for (x in selectedPage) {
 			curPage.add(x);
 		}
 
 		inMenu = false;
 
-		var bruh = 0;
+		var bruh:Int = 0;
 
-		for (x in instance.page.members)
-		{
+		for (x in instance.page.members) {
 			x.Alphabet_Text.targetY = bruh - instance.curSelected;
 			bruh++;
 		}
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (!inMenu)
-		{
-			if(-1 * Math.floor(FlxG.mouse.wheel) != 0)
-			{
+		if (!inMenu) {
+			if (-1 * Math.floor(FlxG.mouse.wheel) != 0) {
 				curSelected -= 1 * Math.floor(FlxG.mouse.wheel);
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
 
-			if (controls.UP_P)
-			{
+			if (controls.UP_P) {
 				curSelected -= 1;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
 
-			if (controls.DOWN_P)
-			{
+			if (controls.DOWN_P) {
 				curSelected += 1;
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 			}
 
 			if (controls.BACK)
 				FlxG.switchState(new MainMenuState());
-		}
-		else
-		{
-			if(controls.BACK)
+		} else {
+			if (controls.BACK)
 				inMenu = false;
 		}
 
@@ -283,25 +271,18 @@ class OptionsMenu extends MusicBeatState
 
 		var bruh = 0;
 
-		for (x in page.members)
-		{
+		for (x in page.members) {
 			x.Alphabet_Text.targetY = bruh - curSelected;
 			bruh++;
 		}
 
-		for (x in page.members)
-		{
-			if(x.Alphabet_Text.targetY != 0)
-			{
-				for(item in x.members)
-				{
+		for (x in page.members) {
+			if (x.Alphabet_Text.targetY != 0) {
+				for (item in x.members) {
 					item.alpha = 0.6;
 				}
-			}
-			else
-			{
-				for(item in x.members)
-				{
+			} else {
+				for (item in x.members) {
 					item.alpha = 1;
 				}
 			}

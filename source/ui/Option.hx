@@ -3,7 +3,6 @@ package ui;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
-
 import modding.ModList;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -14,8 +13,7 @@ import flixel.group.FlxGroup;
 /**
  * The base option class that all options inherit from.
  */
-class Option extends FlxTypedGroup<FlxSprite>
-{
+class Option extends FlxTypedGroup<FlxSprite> {
 	// variables //
 	public var Alphabet_Text:Alphabet;
 
@@ -25,8 +23,7 @@ class Option extends FlxTypedGroup<FlxSprite>
 	public var Option_Name:String = "";
 	public var Option_Value:String = "downscroll";
 
-	public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0)
-	{
+	public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0) {
 		super();
 
 		// SETTING VALUES //
@@ -45,16 +42,14 @@ class Option extends FlxTypedGroup<FlxSprite>
 /**
  * Simple Option with a checkbox that changes a bool value.
  */
-class BoolOption extends Option
-{
+class BoolOption extends Option {
 	// variables //
 	var Checkbox_Object:Checkbox;
 
 	// options //
 	public var Option_Checked:Bool = false;
 
-	override public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0)
-	{
+	override public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0) {
 		super(_Option_Name, _Option_Value, _Option_Row);
 
 		// SETTING VALUES //
@@ -66,21 +61,18 @@ class BoolOption extends Option
 		add(Checkbox_Object);
 	}
 
-	public function GetObjectValue():Bool
-	{
+	public function GetObjectValue():Bool {
 		return utilities.Options.getData(Option_Value);
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
 			ChangeValue();
 	}
 
-	public function ChangeValue()
-	{
+	public function ChangeValue() {
 		utilities.Options.setData(!Option_Checked, Option_Value);
 
 		Option_Checked = !Option_Checked;
@@ -108,21 +100,18 @@ class BoolOption extends Option
 /**
  * Very simple option that transfers you to a different page when selecting it.
  */
-class PageOption extends Option
-{
+class PageOption extends Option {
 	// OPTIONS //
 	public var Page_Name:String = "Categories";
 
-	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories")
-	{
+	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories") {
 		super(_Option_Name, _Page_Name, _Option_Row);
 
 		// SETTING VALUES //
 		this.Page_Name = _Page_Name;
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !OptionsMenu.inMenu)
@@ -130,20 +119,17 @@ class PageOption extends Option
 	}
 }
 
-class GameSubstateOption extends Option
-{
+class GameSubstateOption extends Option {
 	public var game_substate:Dynamic;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _game_substate:Dynamic)
-	{
+	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _game_substate:Dynamic) {
 		super(_Option_Name, null, _Option_Row);
 
 		// SETTING VALUES //
 		this.game_substate = _game_substate;
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
@@ -154,21 +140,18 @@ class GameSubstateOption extends Option
 /**
  * Very simple option that transfers you to a different game-state when selecting it.
  */
-class GameStateOption extends Option
-{
+class GameStateOption extends Option {
 	// OPTIONS //
 	public var Game_State:FlxState;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic)
-	{
+	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
 		super(_Option_Name, null, _Option_Row);
 
 		// SETTING VALUES //
 		this.Game_State = _Game_State;
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
@@ -180,8 +163,7 @@ class GameStateOption extends Option
 /**
  * Option for enabling and disabling mods.
  */
-class ModOption extends FlxTypedGroup<FlxSprite>
-{
+class ModOption extends FlxTypedGroup<FlxSprite> {
 	// variables //
 	public var Alphabet_Text:Alphabet;
 	public var Mod_Icon:ModIcon;
@@ -194,8 +176,7 @@ class ModOption extends FlxTypedGroup<FlxSprite>
 	public var Option_Name:String = "";
 	public var Option_Value:String = "Template Mod";
 
-	public function new(_Option_Name:String = "", _Option_Value:String = "Template Mod", _Option_Row:Int = 0)
-	{
+	public function new(_Option_Name:String = "", _Option_Value:String = "Template Mod", _Option_Row:Int = 0) {
 		super();
 
 		// SETTING VALUES //
@@ -216,23 +197,18 @@ class ModOption extends FlxTypedGroup<FlxSprite>
 		Mod_Enabled = ModList.modList.get(Option_Value);
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-		{
+		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
 			Mod_Enabled = !Mod_Enabled;
 			ModList.setModEnabled(Option_Value, Mod_Enabled);
 		}
 
-		if (Mod_Enabled)
-		{
+		if (Mod_Enabled) {
 			Alphabet_Text.alpha = 1;
 			Mod_Icon.alpha = 1;
-		}
-		else
-		{
+		} else {
 			Alphabet_Text.alpha = 0.6;
 			Mod_Icon.alpha = 0.6;
 		}
@@ -243,16 +219,14 @@ class ModOption extends FlxTypedGroup<FlxSprite>
 /**
  * A Option for save data that is saved a string with multiple pre-defined states (aka like accuracy option or cutscene option)
  */
-class StringSaveOption extends Option
-{
+class StringSaveOption extends Option {
 	// VARIABLES //
 	var Current_Mode:String = "option 2";
 	var Modes:Array<String> = ["option 1", "option 2", "option 3"];
 	var Cool_Name:String;
 	var Save_Data_Name:String;
 
-	override public function new(_Option_Name:String = "String Switcher", _Modes:Array<String>, _Option_Row:Int = 0, _Save_Data_Name:String = "hitsound")
-	{
+	override public function new(_Option_Name:String = "String Switcher", _Modes:Array<String>, _Option_Row:Int = 0, _Save_Data_Name:String = "hitsound") {
 		super(_Option_Name, null, _Option_Row);
 
 		// SETTING VALUES //
@@ -273,22 +247,18 @@ class StringSaveOption extends Option
 		add(Alphabet_Text);
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !OptionsMenu.inMenu)
-		{
+		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !OptionsMenu.inMenu) {
 			var prevIndex = Modes.indexOf(Current_Mode);
 
-			if (prevIndex != -1)
-			{
+			if (prevIndex != -1) {
 				if (prevIndex + 1 > Modes.length - 1)
 					prevIndex = 0;
 				else
 					prevIndex++;
-			}
-			else
+			} else
 				prevIndex = 0;
 
 			Current_Mode = Modes[prevIndex];
@@ -308,16 +278,13 @@ class StringSaveOption extends Option
 		}
 	}
 
-	function SetDataIGuess()
-	{
+	function SetDataIGuess() {
 		utilities.Options.setData(Current_Mode, Save_Data_Name);
 	}
 }
 
-class DisplayFontOption extends StringSaveOption
-{
-	override function SetDataIGuess()
-	{
+class DisplayFontOption extends StringSaveOption {
+	override function SetDataIGuess() {
 		super.SetDataIGuess();
 		Main.changeFont(utilities.Options.getData("infoDisplayFont"));
 	}

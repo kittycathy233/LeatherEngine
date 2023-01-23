@@ -70,8 +70,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		FlxG.camera.followLerp = 0.01;
-
 		if (controls.ACCEPT) {
 			endBullshit();
 		}
@@ -121,6 +119,8 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (FlxG.sound.music.playing) {
 			Conductor.songPosition = FlxG.sound.music.time;
 		}
+
+		FlxG.camera.followLerp = elapsed * 0.6;
 	}
 
 	var isEnding:Bool = false;

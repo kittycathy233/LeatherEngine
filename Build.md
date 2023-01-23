@@ -8,7 +8,9 @@ Step 3. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxefl
 
 Step 4. Run these commands to install the libraries required:
 ```
-haxelib git flixel-leather https://github.com/Leather128/flixel.git
+haxelib install flixel
+haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
+haxelib install flixel-ui
 haxelib install hscript
 haxelib git hscript-improved https://github.com/YoshiCrafter29/hscript-improved
 haxelib install polymod
