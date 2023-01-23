@@ -23,39 +23,27 @@ end
 -- everytime a beat hit is called on the song this happens
 function beatHit(beat)
 	if animatedBackgrounds then
-		randomizeStuff(beat)
-
-		if math.random(1, 10) == 3 and beat > lastBeat + beatOffset then
+		if randomInt(1, 10) == 3 and beat > lastBeat + beatOffset then
 			lastBeat = beat
 
-			setCharacterShouldDance("boyfriend", false)
-			setCharacterShouldDance("girlfriend", false)
+			set("boyfriend.shouldDance", false)
+			set("girlfriend.shouldDance", false)
 
-			playCharacterAnimation("boyfriend", "scared", true)
-			playCharacterAnimation("girlfriend", "scared", true)
+			playCharAnim("boyfriend", "scared", true)
+			playCharAnim("girlfriend", "scared", true)
 
-			playActorAnimation("bg", "lightning", true)
+			playAnimation("bg", "lightning", true)
+			playSound("thunder" .. tostring(randomInt(1,2)))
 
-			playSound("thunder" .. tostring(math.random(1,2)))
-
-			beatOffset = math.random(8, 24)
+			beatOffset = randomInt(8, 24)
 
 			justScared = true
 		elseif justScared then
-			setCharacterShouldDance("boyfriend", true)
-			setCharacterShouldDance("girlfriend", true)
+			set("boyfriend.shouldDance", true)
+			dance("boyfriend")
+			set("girlfriend.shouldDance", true)
 
 			justScared = false
 		end
 	end
-end
-
-function randomizeStuff(beat)
-	local ticks = getPropertyFromClass("flixel.FlxG", "game.ticks") / 1000
-
-	local offsetRand = songBpm + bpm + beat + curBeat + scrollspeed + keyCount + curStep + crochet + safeZoneOffset + screenWidth + screenHeight + fpsCap
-	offsetRand = offsetRand + getWindowX() + getWindowY()
-	offsetRand = offsetRand + ticks
-	
-	math.randomseed(time + offsetRand)
 end

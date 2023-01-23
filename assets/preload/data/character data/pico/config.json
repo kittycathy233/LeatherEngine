@@ -5,7 +5,7 @@
     "barColor": [205, 229, 112],
     "offsetsFlipWhenEnemy": false,
     "offsetsFlipWhenPlayer": true,
-    "cameraOffset": [50, 0],
+    "cameraOffset": [-50, 0],
     "animations": [
         {
             "name": "idle",

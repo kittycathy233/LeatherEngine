@@ -400,6 +400,18 @@ class ModchartUtilities {
 
 		// regular
 
+		setLuaFunction("randomBool", function(chance:Float):Bool {
+			return FlxG.random.bool(chance);
+		});
+
+		setLuaFunction("randomFloat", function(min:Float, max:Float):Float {
+			return FlxG.random.float(min, max);
+		});
+
+		setLuaFunction("randomInt", function(min:Int, max:Int):Int {
+			return FlxG.random.int(min, max);
+		});
+
 		setLuaFunction("loadScript", function(script:String) {
 			var modchart:ModchartUtilities = null;
 
@@ -420,7 +432,7 @@ class ModchartUtilities {
 			extra_scripts.push(modchart);
 		});
 
-		setLuaFunction("tween", function(obj:String, properties:Dynamic, duration:Float, ease:String, ?onComplete:Dynamic) {
+		setLuaFunction("tween", function(obj:String, properties:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
 			var spr:Dynamic = getActorByName(obj);
 
 			if (spr != null) {
@@ -429,7 +441,8 @@ class ModchartUtilities {
 					onComplete: function(twn) {
 						if (onComplete != null)
 							onComplete();
-					}
+					},
+					startDelay: startDelay,
 				});
 			} else {
 				trace('Object named $obj doesn\'t exist!', ERROR);

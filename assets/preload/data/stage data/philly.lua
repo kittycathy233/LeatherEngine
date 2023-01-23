@@ -16,8 +16,7 @@ function create(stage)
 	print(stage .. " is our stage!")
 
 	hideLights()
-
-	createSound("train", "train_passes", "shared")
+	createSound("trainSound", "train_passes", "shared")
 end
 
 -- called each frame with elapsed being the seconds between the last frame
@@ -35,8 +34,6 @@ function update(elapsed)
 end
 
 function beatHit(curBeat)
-	randomizeStuff()
-
 	if not trainMoving then
 		trainCooldown = trainCooldown + 1
 	end
@@ -44,40 +41,38 @@ function beatHit(curBeat)
 	if curBeat % 4 == 0 then
 		hideLights()
 
-		local lightSelected = math.random(1, 5)
-
-		setActorVisible(true, "light" .. tostring(lightSelected))
+		local lightSelected = randomInt(1, 5)
+		set("light" .. tostring(lightSelected) .. ".visible", true)
 	end
 
-	if curBeat % 8 == 4 and math.random(1,10) <= 3 and not trainMoving and trainCooldown > 8 then
-		trainCooldown = math.random(-4, 0)
+	if curBeat % 8 == 4 and randomInt(1,10) <= 3 and not trainMoving and trainCooldown > 8 then
+		trainCooldown = randomInt(-4, 0)
 		startDaTrain()
 	end
 end
 
 function hideLights()
 	for i = 1, 5, 1 do -- loop 5 times
-		setActorVisible(false, "light" .. tostring(i)) -- set light[insert loop num here] to not be visible
+		set("light" .. tostring(i) .. ".visible", false) -- set light[insert loop num here] to not be visible
 	end
 end
 
 function startDaTrain()
 	trainMoving = true
-
-	playSound("train", true)
+	playSound("trainSound", true)
 end
 
 function updateTrainPos()
-	if getSoundTime("train") >= 4700 then
+	if get("trainSound.time") >= 4700 then
 		startedMoving = true
-		playCharacterAnimation("girlfriend", "hairBlow", false)
+		playCharAnim("girlfriend", "hairBlow", false)
 	end
 
 	if startedMoving then
-		setActorX(getActorX("train") - 400, "train")
+		set("train.x", get("train.x") - 400)
 
-		if getActorX("train") < -2000 and not trainFinishing then
-			setActorX(-1150, "train")
+		if get("train.x") < -2000 and not trainFinishing then
+			set("train.x", -1150)
 			trainCars = trainCars - 1
 
 			if trainCars <= 0 then
@@ -85,28 +80,18 @@ function updateTrainPos()
 			end
 		end
 
-		if getActorX("train") < -4000 and trainFinishing then
+		if get("train.x") < -4000 and trainFinishing then
 			trainReset()
 		end
 	end
 end
 
 function trainReset()
-	playCharacterAnimation("girlfriend", "hairFall", true)
+	playCharAnim("girlfriend", "hairFall", true)
     
-	setActorX(windowWidth + 200, "train")
+	set("train.x", windowWidth + 200)
 	trainMoving = false
 	trainCars = 8
 	trainFinishing = false
 	startedMoving = false
-end
-
-function randomizeStuff()
-	local ticks = getPropertyFromClass("flixel.FlxG", "game.ticks") / 1000
-
-	local offsetRand = songBpm + bpm + curBeat + scrollspeed + keyCount + curStep + crochet + safeZoneOffset + screenWidth + screenHeight + fpsCap
-	offsetRand = offsetRand + getWindowX() + getWindowY()
-	offsetRand = offsetRand + ticks
-	
-	math.randomseed(time + offsetRand)
 end

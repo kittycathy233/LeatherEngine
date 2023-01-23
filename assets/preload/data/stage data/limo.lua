@@ -2,9 +2,9 @@
 function create(stage)
 	print(stage .. " is our stage!")
 
-	setActorX(-12600, "car")
-	setActorY(math.random(140, 250), "car")
-	setActorVelocityX(0, "car")
+	set("car.x", -12600)
+	set("car.y", randomFloat(140, 250))
+	set("car.velocity.x", 0)
 
 	if animatedBackgrounds then
 		createSound("pass1", "carPass0")
@@ -23,11 +23,9 @@ function update(elapsed)
 		funnyTimer = funnyTimer + elapsed
 
 		if not carCanGoVroom and funnyTimer >= 2 then
-			randomizeStuff(curBeat)
-
-			setActorX(-12600, "car")
-			setActorY(math.random(140, 250), "car")
-			setActorVelocityX(0, "car")
+			set("car.x", -12600)
+			set("car.y", randomFloat(140, 250))
+			set("car.velocity.x", 0)
 
 			carCanGoVroom = true
 		end
@@ -40,36 +38,24 @@ function beatHit(beat)
 		danceValue = not danceValue
 
 		if danceValue then
-			playActorAnimation("dancer1", "danceRight", true)
-			playActorAnimation("dancer2", "danceRight", true)
-			playActorAnimation("dancer3", "danceRight", true)
-			playActorAnimation("dancer4", "danceRight", true)
+			playAnimation("dancer1", "danceRight", true)
+			playAnimation("dancer2", "danceRight", true)
+			playAnimation("dancer3", "danceRight", true)
+			playAnimation("dancer4", "danceRight", true)
 		else
-			playActorAnimation("dancer1", "danceLeft", true)
-			playActorAnimation("dancer2", "danceLeft", true)
-			playActorAnimation("dancer3", "danceLeft", true)
-			playActorAnimation("dancer4", "danceLeft", true)
+			playAnimation("dancer1", "danceLeft", true)
+			playAnimation("dancer2", "danceLeft", true)
+			playAnimation("dancer3", "danceLeft", true)
+			playAnimation("dancer4", "danceLeft", true)
 		end
 
-		randomizeStuff(beat)
+		if randomInt(1,10) == 3 and carCanGoVroom then
+			playSound("pass" .. tostring(randomInt(1,2)), true)
 
-		if math.random(1,10) == 3 and carCanGoVroom then
-			playSound("pass" .. tostring(math.random(1,2)), true)
-
-			setActorVelocityX((math.random(170, 220) / getPropertyFromClass("flixel.FlxG", "elapsed")) * 3, "car")
+			set("car.velocity.x", (randomFloat(170, 220) / FlxG.elapsed) * 3)
 
 			carCanGoVroom = false
 			funnyTimer = 0
 		end
 	end
-end
-
-function randomizeStuff(beat)
-	local ticks = getPropertyFromClass("flixel.FlxG", "game.ticks") / 1000
-
-	local offsetRand = songBpm + bpm + beat + curBeat + scrollspeed + keyCount + curStep + crochet + safeZoneOffset + screenWidth + screenHeight + fpsCap
-	offsetRand = offsetRand + getWindowX() + getWindowY()
-	offsetRand = offsetRand + ticks
-	
-	math.randomseed(time + offsetRand)
 end
