@@ -8,15 +8,14 @@ Step 3. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxefl
 
 Step 4. Run these commands to install the libraries required:
 ```
-haxelib install flixel
-haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
-haxelib install flixel-ui
+haxelib git flixel-leather https://github.com/Leather128/flixel.git
 haxelib install hscript
 haxelib git hscript-improved https://github.com/YoshiCrafter29/hscript-improved
 haxelib install polymod
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
 haxelib git openfl https://github.com/openfl/openfl
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
 ```
 
 ## IMPORTANT: use the latest stable polymod not git please
@@ -37,10 +36,12 @@ Dependencies for compiling:
     sudo apt-get install libvlc-dev
     sudo apt-get install libvlccore-dev
     sudo apt-get install vlc-bin
+    sudo apt-get install luajit
     ``` (APT Example)
 
     ```
     sudo pacman -S vlc
+    sudo pacman -S luajit
     ``` (Pacman Example)
 
 Step 5. Run `lime test [platform]` in the project directory while replacing '[platform]' with your build target (usually `html5`, `windows`, `linux`, `mac`, or whatever platform you are building for).

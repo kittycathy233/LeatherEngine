@@ -12,18 +12,17 @@ import haxe.Json;
 import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import states.PlayState;
-import backgrounds.DancingSprite;
 import flixel.util.FlxTimer;
 import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import modding.CharacterConfig;
+import game.DancingSprite.BackgroundGirls;
 
 using StringTools;
 
-class StageGroup extends FlxGroup
-{
+class StageGroup extends FlxGroup {
 	public var stage:String = "stage";
 	public var camZoom:Float = 1.05;
 
@@ -74,19 +73,15 @@ class StageGroup extends FlxGroup
 	public var stageScript:ModchartUtilities = null;
 	#end
 
-	public function updateStage(?newStage:String)
-	{
+	public function updateStage(?newStage:String) {
 		if (newStage != null)
 			stage = newStage;
 
-		var bruhStages = ['school', 'school-mad', 'evil-school'];
+		var bruhStages:Array<String> = ['school', 'school-mad', 'evil-school'];
+		var stagesNormally:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
 
-		var stagesNormally = CoolUtil.coolTextFile(Paths.txt('stageList'));
-
-		if (stage != "")
-		{
-			if (!bruhStages.contains(stage) && stagesNormally.contains(stage))
-			{
+		if (stage != "") {
+			if (!bruhStages.contains(stage) && stagesNormally.contains(stage)) {
 				var JSON_Data:String = "";
 
 				JSON_Data = Assets.getText(Paths.json("stage data/" + stage)).trim();
@@ -96,10 +91,8 @@ class StageGroup extends FlxGroup
 
 		clear();
 
-		if (stage != "")
-		{
-			switch (stage)
-			{
+		if (stage != "") {
+			switch (stage) {
 				case "school":
 					{
 						player_2_Point.x = 379;
@@ -256,12 +249,10 @@ class StageGroup extends FlxGroup
 				// CUSTOM SHIT
 				default:
 					{
-						if (stage_Data != null)
-						{
+						if (stage_Data != null) {
 							camZoom = stage_Data.camera_Zoom;
 
-							if (stage_Data.camera_Offsets != null)
-							{
+							if (stage_Data.camera_Offsets != null) {
 								p1_Cam_Offset.set(stage_Data.camera_Offsets[0][0], stage_Data.camera_Offsets[0][1]);
 								p2_Cam_Offset.set(stage_Data.camera_Offsets[1][0], stage_Data.camera_Offsets[1][1]);
 							}
@@ -270,8 +261,7 @@ class StageGroup extends FlxGroup
 							player_2_Point.set(stage_Data.character_Positions[1][0], stage_Data.character_Positions[1][1]);
 							gf_Point.set(stage_Data.character_Positions[2][0], stage_Data.character_Positions[2][1]);
 
-							if (stage_Data.character_Scrolls != null)
-							{
+							if (stage_Data.character_Scrolls != null) {
 								p1_Scroll = stage_Data.character_Scrolls[0];
 								p2_Scroll = stage_Data.character_Scrolls[1];
 								gf_Scroll = stage_Data.character_Scrolls[2];
@@ -279,8 +269,7 @@ class StageGroup extends FlxGroup
 
 							var null_Object_Name_Loop:Int = 0;
 
-							for (Object in stage_Data.objects)
-							{
+							for (Object in stage_Data.objects) {
 								var Sprite = new FlxSprite(Object.position[0], Object.position[1]);
 
 								if (Object.color != null && Object.color != [])
@@ -291,33 +280,25 @@ class StageGroup extends FlxGroup
 
 								if (Object.object_Name != null && Object.object_Name != "")
 									stage_Objects.push([Object.object_Name, Sprite, Object]);
-								else
-								{
+								else {
 									stage_Objects.push(["undefinedSprite" + null_Object_Name_Loop, Sprite, Object]);
 									null_Object_Name_Loop++;
 								}
 
-								if (Object.is_Animated)
-								{
+								if (Object.is_Animated) {
 									Sprite.frames = Paths.getSparrowAtlas(stage + "/" + Object.file_Name, "stages");
 
-									for (Animation in Object.animations)
-									{
+									for (Animation in Object.animations) {
 										var Anim_Name = Animation.name;
 
 										if (Animation.name == "beatHit")
 											onBeatHit_Group.add(Sprite);
 
-										if (Animation.indices == null)
-										{
+										if (Animation.indices == null) {
 											Sprite.animation.addByPrefix(Anim_Name, Animation.animation_name, Animation.fps, Animation.looped);
-										}
-										else if (Animation.indices.length == 0)
-										{
+										} else if (Animation.indices.length == 0) {
 											Sprite.animation.addByPrefix(Anim_Name, Animation.animation_name, Animation.fps, Animation.looped);
-										}
-										else
-										{
+										} else {
 											Sprite.animation.addByIndices(Anim_Name, Animation.animation_name, Animation.indices, "", Animation.fps,
 												Animation.looped);
 										}
@@ -325,8 +306,7 @@ class StageGroup extends FlxGroup
 
 									if (Object.start_Animation != "" && Object.start_Animation != null && Object.start_Animation != "null")
 										Sprite.animation.play(Object.start_Animation);
-								}
-								else
+								} else
 									Sprite.loadGraphic(Paths.image(stage + "/" + Object.file_Name, "stages"));
 
 								if (Object.uses_Frame_Width)
@@ -340,10 +320,8 @@ class StageGroup extends FlxGroup
 								if (Object.alpha != null)
 									Sprite.alpha = Object.alpha;
 
-								if (Object.layer != null)
-								{
-									switch (Object.layer.toLowerCase())
-									{
+								if (Object.layer != null) {
+									switch (Object.layer.toLowerCase()) {
 										case "foreground":
 											foregroundSprites.add(Sprite);
 										case "gf":
@@ -351,8 +329,7 @@ class StageGroup extends FlxGroup
 										default:
 											add(Sprite);
 									}
-								}
-								else
+								} else
 									add(Sprite);
 							}
 						}
@@ -361,12 +338,10 @@ class StageGroup extends FlxGroup
 		}
 	}
 
-	public function createLuaStuff()
-	{
+	public function createLuaStuff() {
 		#if linc_luajit
 		#if polymod // change this in future whenever custom backend
-		if (stage_Data != null)
-		{
+		if (stage_Data != null) {
 			if (stage_Data.scriptName != null && Assets.exists(Paths.lua("stage data/" + stage_Data.scriptName)))
 				stageScript = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("stage data/" + stage_Data.scriptName)));
 		}
@@ -374,8 +349,7 @@ class StageGroup extends FlxGroup
 		#end
 	}
 
-	public function setCharOffsets(?p1:Character, ?gf:Character, ?p2:Character):Void
-	{
+	public function setCharOffsets(?p1:Character, ?gf:Character, ?p2:Character):Void {
 		if (p1 == null)
 			p1 = PlayState.boyfriend;
 
@@ -393,8 +367,7 @@ class StageGroup extends FlxGroup
 		p2.scrollFactor.set(p2_Scroll, p2_Scroll);
 		gf.scrollFactor.set(gf_Scroll, gf_Scroll);
 
-		if (p2.curCharacter.startsWith("gf") && gf.curCharacter.startsWith("gf"))
-		{
+		if (p2.curCharacter.startsWith("gf") && gf.curCharacter.startsWith("gf")) {
 			p2.setPosition(gf.x, gf.y);
 			p2.scrollFactor.set(gf_Scroll, gf_Scroll);
 
@@ -402,30 +375,24 @@ class StageGroup extends FlxGroup
 				gf.visible = false;
 		}
 
-		if (p1.otherCharacters != null)
-		{
-			for (character in p1.otherCharacters)
-			{
+		if (p1.otherCharacters != null) {
+			for (character in p1.otherCharacters) {
 				character.setPosition((player_1_Point.x - (character.width / 2)) + character.positioningOffset[0],
 					(player_1_Point.y - character.height) + character.positioningOffset[1]);
 				character.scrollFactor.set(p1_Scroll, p1_Scroll);
 			}
 		}
 
-		if (gf.otherCharacters != null)
-		{
-			for (character in gf.otherCharacters)
-			{
+		if (gf.otherCharacters != null) {
+			for (character in gf.otherCharacters) {
 				character.setPosition((gf_Point.x - (character.width / 2)) + character.positioningOffset[0],
 					(gf_Point.y - character.height) + character.positioningOffset[1]);
 				character.scrollFactor.set(gf_Scroll, gf_Scroll);
 			}
 		}
 
-		if (p2.otherCharacters != null)
-		{
-			for (character in p2.otherCharacters)
-			{
+		if (p2.otherCharacters != null) {
+			for (character in p2.otherCharacters) {
 				character.setPosition((player_2_Point.x - (character.width / 2)) + character.positioningOffset[0],
 					(player_2_Point.y - character.height) + character.positioningOffset[1]);
 				character.scrollFactor.set(p2_Scroll, p2_Scroll);
@@ -433,10 +400,8 @@ class StageGroup extends FlxGroup
 		}
 	}
 
-	public function getCharacterPos(character:Int, char:Character = null):Dynamic
-	{
-		switch (character)
-		{
+	public function getCharacterPos(character:Int, char:Character = null):Dynamic {
+		switch (character) {
 			case 0: // bf
 				if (char == null)
 					char = PlayState.boyfriend;
@@ -466,35 +431,25 @@ class StageGroup extends FlxGroup
 		return [0, 0];
 	}
 
-	override public function new(?stageName:String)
-	{
+	override public function new(?stageName:String) {
 		super();
 
 		stage = stageName;
 		updateStage();
 	}
 
-	public function beatHit()
-	{
-		if (utilities.Options.getData("animatedBGs"))
-		{
-			for (sprite in onBeatHit_Group)
-			{
+	public function beatHit() {
+		if (utilities.Options.getData("animatedBGs")) {
+			for (sprite in onBeatHit_Group) {
 				sprite.animation.play("beatHit", true);
 			}
 
-			switch (stage)
-			{
-				case 'school' | 'school-mad':
-					{
-						bgGirls.dance();
-					}
-			}
+			if (stage.startsWith('school'))
+				bgGirls.dance();
 		}
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		goodElapse = elapsed;
@@ -502,20 +457,16 @@ class StageGroup extends FlxGroup
 
 	// philly
 
-	function updateTrainPos()
-	{
-		if (trainSound.time >= 4700)
-		{
+	function updateTrainPos() {
+		if (trainSound.time >= 4700) {
 			startedMoving = true;
 			PlayState.gf.playAnim('hairBlow');
 		}
 
-		if (startedMoving)
-		{
+		if (startedMoving) {
 			phillyTrain.x -= 400;
 
-			if (phillyTrain.x < -2000 && !trainFinishing)
-			{
+			if (phillyTrain.x < -2000 && !trainFinishing) {
 				phillyTrain.x = -1150;
 				trainCars -= 1;
 
@@ -528,8 +479,7 @@ class StageGroup extends FlxGroup
 		}
 	}
 
-	function trainReset()
-	{
+	function trainReset() {
 		PlayState.gf.playAnim('hairFall');
 
 		phillyTrain.x = FlxG.width + 200;
@@ -539,8 +489,7 @@ class StageGroup extends FlxGroup
 		startedMoving = false;
 	}
 
-	function trainStart():Void
-	{
+	function trainStart():Void {
 		trainMoving = true;
 		if (!trainSound.playing)
 			trainSound.play(true);
@@ -548,11 +497,9 @@ class StageGroup extends FlxGroup
 
 	// LUA SHIT LOL
 
-	override public function destroy()
-	{
+	override public function destroy() {
 		#if linc_luajit
-		if (stageScript != null)
-		{
+		if (stageScript != null) {
 			stageScript.die();
 			stageScript = null;
 		}
@@ -562,8 +509,7 @@ class StageGroup extends FlxGroup
 	}
 }
 
-typedef StageData =
-{
+typedef StageData = {
 	var character_Positions:Array<Array<Float>>;
 	var character_Scrolls:Array<Float>;
 
@@ -573,8 +519,7 @@ typedef StageData =
 	var scriptName:Null<String>;
 }
 
-typedef StageObject =
-{
+typedef StageObject = {
 	// General Sprite Object Data //
 	var position:Array<Float>;
 	var scale:Float;

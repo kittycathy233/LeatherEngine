@@ -1,10 +1,9 @@
 package states;
 
-import substates.ResetScoreSubstate;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
-
+import substates.ResetScoreSubstate;
 import lime.app.Application;
 import utilities.CoolUtil;
 import lime.utils.Assets;
@@ -24,10 +23,10 @@ import game.Highscore;
 
 using StringTools;
 
-class StoryMenuState extends MusicBeatState
-{
+class StoryMenuState extends MusicBeatState {
 	/* WEEK GROUPS */
 	static var groupIndex:Int = 0;
+
 	var groups:Array<StoryGroup> = [];
 
 	var currentGroup:StoryGroup;
@@ -36,8 +35,8 @@ class StoryMenuState extends MusicBeatState
 	static var curWeek:Int = 0;
 	static var curDifficulty:Int = 1;
 
-	var curDifficulties:Array<Array<String>> = [["easy","default/easy"],["normal","default/normal"],["hard","default/hard"]];
-	var defaultDifficulties:Array<Array<String>> = [["easy","default/easy"],["normal","default/normal"],["hard","default/hard"]];
+	var curDifficulties:Array<Array<String>> = [["easy", "default/easy"], ["normal", "default/normal"], ["hard", "default/hard"]];
+	var defaultDifficulties:Array<Array<String>> = [["easy", "default/easy"], ["normal", "default/normal"], ["hard", "default/hard"]];
 
 	/* TEXTS */
 	var weekScoreText:FlxText;
@@ -48,19 +47,18 @@ class StoryMenuState extends MusicBeatState
 
 	/* UI */
 	var yellowBG:FlxSprite;
-	
+
 	var weekGraphics:FlxTypedGroup<MenuItem>;
 	var menuCharacters:FlxTypedGroup<MenuCharacter>;
 
 	/* DIFFICULTY UI */
 	var difficultySelectorGroup:FlxGroup;
-	
+
 	var difficultySprite:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
-	override function create()
-	{
+	override function create() {
 		// UPDATE TITLE WINDOW JUST IN CASE LOL //
 		MusicBeatState.windowNameSuffix = " Story Menu";
 
@@ -73,19 +71,16 @@ class StoryMenuState extends MusicBeatState
 		super.create();
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 
 		weekScoreText.text = "WEEK SCORE:" + lerpScore;
 
 		weekTitleText.x = FlxG.width - (weekTitleText.width + 10);
 
-		if (!movedBack)
-		{
-			if (!selectedWeek)
-			{
-				if(-1 * Math.floor(FlxG.mouse.wheel) != 0)
+		if (!movedBack) {
+			if (!selectedWeek) {
+				if (-1 * Math.floor(FlxG.mouse.wheel) != 0)
 					changeWeek(-1 * Math.floor(FlxG.mouse.wheel));
 
 				if (controls.UP_P)
@@ -108,26 +103,24 @@ class StoryMenuState extends MusicBeatState
 				if (controls.LEFT_P)
 					changeDifficulty(-1);
 
-				if(FlxG.keys.justPressed.E)
+				if (FlxG.keys.justPressed.E)
 					changeGroup(1);
-				if(FlxG.keys.justPressed.Q)
+				if (FlxG.keys.justPressed.Q)
 					changeGroup(-1);
 
-				if(controls.RESET)
-				{
-					openSubState(new ResetScoreSubstate("nonelolthisisweekslmao", curDifficulties[curDifficulty][0], curWeek, currentGroup.pathName + "Week", true));
+				if (controls.RESET) {
+					openSubState(new ResetScoreSubstate("nonelolthisisweekslmao", curDifficulties[curDifficulty][0], curWeek, currentGroup.pathName + "Week",
+						true));
 					changeWeek();
 				}
 			}
 
-			if (controls.ACCEPT)
-			{
+			if (controls.ACCEPT) {
 				selectWeek();
 			}
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
-		{
+		if (controls.BACK && !movedBack && !selectedWeek) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
 			FlxG.switchState(new MainMenuState());
@@ -136,17 +129,15 @@ class StoryMenuState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	override function closeSubState()
-	{
+	override function closeSubState() {
 		changeWeek();
-		
+
 		FlxG.mouse.visible = false;
 
 		super.closeSubState();
 	}
 
-	function createStoryUI()
-	{
+	function createStoryUI() {
 		weekScoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
 		weekScoreText.setFormat("VCR OSD Mono", 32);
 
@@ -157,7 +148,7 @@ class StoryMenuState extends MusicBeatState
 		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE);
 
 		menuCharacters = new FlxTypedGroup<MenuCharacter>();
-		
+
 		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Menus", null);
@@ -224,7 +215,8 @@ class StoryMenuState extends MusicBeatState
 		groupSwitchText.borderSize = 1;
 		add(groupSwitchText);
 
-		var groupInfoText = new FlxText(leftArrow.x, difficultySprite.y + difficultySprite.height + 96, 0, "Q + E to change groups\nRESET to reset week score\n", 24);
+		var groupInfoText = new FlxText(leftArrow.x, difficultySprite.y + difficultySprite.height + 96, 0,
+			"Q + E to change groups\nRESET to reset week score\n", 24);
 		groupInfoText.alignment = LEFT;
 		groupInfoText.font = weekSongListText.font;
 		groupInfoText.color = FlxColor.WHITE;
@@ -237,10 +229,8 @@ class StoryMenuState extends MusicBeatState
 		changeGroup();
 	}
 
-	function addWeekCharacters()
-	{
-		for (char in 0...3)
-		{
+	function addWeekCharacters() {
+		for (char in 0...3) {
 			var weekCharacterThing:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, currentGroup.weeks[curWeek].characters[char]);
 			weekCharacterThing.y += 70;
 			weekCharacterThing.antialiasing = true;
@@ -248,17 +238,15 @@ class StoryMenuState extends MusicBeatState
 		}
 	}
 
-	function createWeekGraphics()
-	{
-		weekGraphics.forEachAlive(function(item:MenuItem){
+	function createWeekGraphics() {
+		weekGraphics.forEachAlive(function(item:MenuItem) {
 			item.kill();
 			item.destroy();
 		});
 
 		weekGraphics.clear();
 
-		for (i in 0...groups[groupIndex].weeks.length)
-		{
+		for (i in 0...groups[groupIndex].weeks.length) {
 			var selectedGroup = groups[groupIndex];
 
 			var weekGraphic:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, selectedGroup.weeks[i].imagePath, selectedGroup.pathName);
@@ -271,8 +259,7 @@ class StoryMenuState extends MusicBeatState
 			weekGraphic.antialiasing = true;
 		}
 
-		if(leftArrow != null)
-		{
+		if (leftArrow != null) {
 			leftArrow.x = weekGraphics.members[0].x + weekGraphics.members[0].width + 10;
 			difficultySprite.x = leftArrow.x + leftArrow.width + 4;
 			rightArrow.x = difficultySprite.x + difficultySprite.width + 4;
@@ -283,13 +270,11 @@ class StoryMenuState extends MusicBeatState
 	var selectedWeek:Bool = false;
 	var stopspamming:Bool = false;
 
-	function selectWeek()
-	{
-		if (!stopspamming)
-		{
+	function selectWeek() {
+		if (!stopspamming) {
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 
-			if(utilities.Options.getData("flashingLights"))
+			if (utilities.Options.getData("flashingLights"))
 				weekGraphics.members[curWeek].startFlashing();
 
 			menuCharacters.members[1].character = menuCharacters.members[1].character + 'Confirm';
@@ -300,26 +285,25 @@ class StoryMenuState extends MusicBeatState
 			PlayState.storyPlaylist = currentGroup.weeks[curWeek].songs;
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
-	
+
 			var dif = curDifficulties[curDifficulty][0].toLowerCase();
-	
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + (dif == "normal" ? "" : "-" + dif), PlayState.storyPlaylist[0].toLowerCase());
+
+			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + (dif == "normal" ? "" : "-" + dif),
+				PlayState.storyPlaylist[0].toLowerCase());
 			PlayState.storyWeek = curWeek;
 			PlayState.storyDifficultyStr = dif.toUpperCase();
 			PlayState.campaignScore = 0;
 			PlayState.groupWeek = currentGroup.pathName;
 			PlayState.songMultiplier = 1;
-	
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
+
+			new FlxTimer().start(1, function(tmr:FlxTimer) {
 				PlayState.loadChartEvents = true;
 				LoadingState.loadAndSwitchState(new PlayState());
 			});
 		}
 	}
 
-	function changeDifficulty(change:Int = 0):Void
-	{
+	function changeDifficulty(change:Int = 0):Void {
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
@@ -336,21 +320,17 @@ class StoryMenuState extends MusicBeatState
 		difficultySprite.x = leftArrow.x + leftArrow.width + 4;
 		difficultySprite.y = leftArrow.y - (difficultySprite.height - leftArrow.height) - 40;
 
-		if(rightArrow != null)
+		if (rightArrow != null)
 			rightArrow.x = difficultySprite.x + difficultySprite.width + 4;
 
-		if(currentGroup != null)
-		{
-			if(currentGroup.weeks.length - 1 >= curWeek)
-			{
+		if (currentGroup != null) {
+			if (currentGroup.weeks.length - 1 >= curWeek) {
 				var offsets = currentGroup.weeks[curWeek].difficultyOffsets;
 
-				if(offsets != null)
-				{
+				if (offsets != null) {
 					var difficulty = curDifficulties[curDifficulty][0];
-		
-					if(offsets.exists(difficulty))
-					{
+
+					if (offsets.exists(difficulty)) {
 						difficultySprite.x += offsets.get(difficulty)[0];
 						difficultySprite.y += offsets.get(difficulty)[1];
 					}
@@ -366,8 +346,7 @@ class StoryMenuState extends MusicBeatState
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 
-	function changeWeek(change:Int = 0):Void
-	{
+	function changeWeek(change:Int = 0):Void {
 		curWeek += change;
 
 		if (curWeek > currentGroup.weeks.length - 1)
@@ -378,8 +357,7 @@ class StoryMenuState extends MusicBeatState
 
 		var bullShit:Int = 0;
 
-		for (item in weekGraphics.members)
-		{
+		for (item in weekGraphics.members) {
 			item.targetY = bullShit - curWeek;
 
 			if (item.targetY == 0)
@@ -390,7 +368,7 @@ class StoryMenuState extends MusicBeatState
 			bullShit++;
 		}
 
-		if(currentGroup.weeks[curWeek].difficulties == null)
+		if (currentGroup.weeks[curWeek].difficulties == null)
 			curDifficulties = defaultDifficulties;
 		else
 			curDifficulties = currentGroup.weeks[curWeek].difficulties;
@@ -403,16 +381,15 @@ class StoryMenuState extends MusicBeatState
 		updateText();
 	}
 
-	function changeGroup(change:Int = 0)
-	{
+	function changeGroup(change:Int = 0) {
 		groupIndex += change;
 
-		if(groupIndex >= groups.length)
+		if (groupIndex >= groups.length)
 			groupIndex = 0;
-		if(groupIndex < 0)
+		if (groupIndex < 0)
 			groupIndex = groups.length - 1;
 
-		if(change != 0)
+		if (change != 0)
 			curWeek = 0;
 
 		currentGroup = groups[groupIndex];
@@ -421,20 +398,17 @@ class StoryMenuState extends MusicBeatState
 		changeWeek();
 	}
 
-	function updateText()
-	{
+	function updateText() {
 		groupSwitchText.text = "<  " + currentGroup.groupName + "  >";
 
 		var curGroupWeek = currentGroup.weeks[curWeek];
 
 		// Reloads menu characters
-		for(characterIndex in 0...menuCharacters.members.length)
-		{
+		for (characterIndex in 0...menuCharacters.members.length) {
 			var character = menuCharacters.members[characterIndex];
 
 			// performance or something i guess
-			if(character.character != curGroupWeek.characters[characterIndex])
-			{
+			if (character.character != curGroupWeek.characters[characterIndex]) {
 				character.character = curGroupWeek.characters[characterIndex];
 				character.loadCharacter();
 			}
@@ -443,8 +417,7 @@ class StoryMenuState extends MusicBeatState
 		weekSongListText.text = "Tracks\n\n";
 		weekTitleText.text = curGroupWeek.weekTitle;
 
-		for (i in curGroupWeek.songs)
-		{
+		for (i in curGroupWeek.songs) {
 			weekSongListText.text += i + "\n";
 		}
 
@@ -454,32 +427,26 @@ class StoryMenuState extends MusicBeatState
 
 		var bgColor = FlxColor.WHITE;
 
-		if(curGroupWeek.backgroundColor != null)
-		{
+		if (curGroupWeek.backgroundColor != null) {
 			var arrayColor = curGroupWeek.backgroundColor;
 
 			bgColor = FlxColor.fromRGB(arrayColor[0], arrayColor[1], arrayColor[2]);
-		}
-		else
+		} else
 			bgColor = FlxColor.fromRGB(249, 207, 81);
 
 		yellowBG.color = bgColor;
 	}
 
-	function loadJSON(name:String)
-	{
+	function loadJSON(name:String) {
 		var group:StoryGroup = cast Json.parse(Assets.getText(Paths.json("week data/" + name)));
 
-		for(week in group.weeks)
-		{
+		for (week in group.weeks) {
 			var offsets:Map<String, Array<Float>> = [];
 
-			if(week.difficultyOffsets != null)
-			{
+			if (week.difficultyOffsets != null) {
 				var week_offsets:Array<Array<Dynamic>> = week.difficultyOffsets;
 
-				for(offset in week_offsets)
-				{
+				for (offset in week_offsets) {
 					offsets.set(offset[0], offset[1]);
 				}
 			}
@@ -490,12 +457,10 @@ class StoryMenuState extends MusicBeatState
 		groups.push(group);
 	}
 
-	function loadGroups()
-	{
+	function loadGroups() {
 		var weeks = CoolUtil.coolTextFile(Paths.txt("storyWeekList"));
 
-		for(WeekName in weeks)
-		{
+		for (WeekName in weeks) {
 			loadJSON(WeekName);
 		}
 
@@ -503,23 +468,19 @@ class StoryMenuState extends MusicBeatState
 	}
 }
 
-typedef StoryGroup =
-{
+typedef StoryGroup = {
 	var groupName:String;
 	var pathName:String;
 	var weeks:Array<StoryWeek>;
 }
 
-typedef StoryWeek =
-{
+typedef StoryWeek = {
 	var imagePath:String;
 	var songs:Array<String>;
 	var characters:Array<String>;
 	var weekTitle:String;
 
 	var backgroundColor:Array<Int>;
-
 	var difficulties:Null<Array<Array<String>>>;
-
 	var difficultyOffsets:Null<Dynamic>;
 }

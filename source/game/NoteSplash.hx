@@ -7,22 +7,19 @@ import flixel.FlxG;
 import states.PlayState;
 import flixel.FlxSprite;
 
-class NoteSplash extends FlxSprite
-{
+class NoteSplash extends FlxSprite {
 	public var target:FlxSprite;
 
 	public var colorSwap:ColorSwap;
 
-	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false)
-	{
+	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false) {
 		this.target = target;
 
 		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		alpha = 0.8;
 
-		if (frames == null)
-		{
+		if (frames == null) {
 			if (Std.parseInt(PlayState.instance.ui_settings[6]) == 1)
 				frames = Paths.getSparrowAtlas('ui skins/' + PlayState.SONG.ui_Skin + "/arrows/Note_Splashes");
 			else
@@ -52,10 +49,8 @@ class NoteSplash extends FlxSprite
 		update(0);
 	}
 
-	override function update(elapsed:Float)
-	{
-		if (target != null)
-		{
+	override function update(elapsed:Float) {
+		if (target != null) {
 			x = target.x - (target.width / 1.5);
 			y = target.y - (target.height / 1.5);
 

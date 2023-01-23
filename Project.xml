@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Leather Engine" file="Leather Engine" packageName="com.leather128.funkin" package="com.leather128.funkin" main="Main" version="0.4.2" company="leather128"/>
+	<app title="Leather Engine" file="Leather Engine" packageName="com.leather128.funkin" package="com.leather128.funkin" main="Main" version="0.5.0" company="leather128"/>
 
 	<!-- totally not stolen from psych engine -->
 	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/> <!-- i think this is important -->
@@ -37,7 +37,7 @@
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 
 	<!-- LEATHER ENGINE CUSTOMIZATION -->
-	<define name="VIDEOS_ALLOWED" if="desktop || android" />
+	<define name="VIDEOS_ALLOWED" if="windows || android" />
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web"/>
 	<assets path="mods" embed="false" exclude="*.mp3" unless="web"/>
@@ -88,15 +88,10 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxedev set='webgl' if="web" />
-
 	<!--Packages-->
-	<haxelib name="flixel" />
-	<haxelib name="flixel-addons" />
-	<haxelib name="flixel-ui" />
+	<haxelib name="flixel-leather" />
 
-	<!--<haxelib name="hscript" /> legacy hscript-->
-	<haxelib name="hscript-improved" /> <!-- fork created by yoshicrafter that is way better (thx yoshi btw)-->
+	<haxelib name="hscript" />
 	<!--Fix some polymod 1.5.3+ errors lol (needs hscript 2.5.0 i think???)-->
 	<haxedef name="hscriptPos" />
 

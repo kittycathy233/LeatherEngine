@@ -1,5 +1,6 @@
 package utilities;
 
+import flixel.math.FlxMath;
 import openfl.utils.Function;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -11,10 +12,8 @@ import lime.utils.Assets;
 
 using StringTools;
 
-class CoolUtil
-{
-	public static function boundTo(value:Float, min:Float, max:Float):Float
-	{
+class CoolUtil {
+	public static function boundTo(value:Float, min:Float, max:Float):Float {
 		var newValue:Float = value;
 
 		if (newValue < min)
@@ -25,34 +24,29 @@ class CoolUtil
 		return newValue;
 	}
 
-	public static function coolTextFile(path:String):Array<String>
-	{
+	public static function coolTextFile(path:String):Array<String> {
 		var daList:Array<String> = Assets.getText(path).trim().split('\n');
 
-		for (i in 0...daList.length)
-		{
+		for (i in 0...daList.length) {
 			daList[i] = daList[i].trim();
 		}
 
 		return daList;
 	}
 
-	public static function coolTextFileOfArrays(path:String, ?delimeter:String = " "):Array<Array<String>>
-	{
+	public static function coolTextFileOfArrays(path:String, ?delimeter:String = " "):Array<Array<String>> {
 		var daListOg = coolTextFile(path);
 
 		var daList:Array<Array<String>> = [];
 
-		for (line in daListOg)
-		{
+		for (line in daListOg) {
 			daList.push(line.split(delimeter));
 		}
 
 		return daList;
 	}
 
-	public static function numberArray(max:Int, ?min = 0):Array<Int>
-	{
+	public static function numberArray(max:Int, ?min = 0):Array<Int> {
 		var dumbArray:Array<Int> = [];
 
 		for (i in min...max)
@@ -61,8 +55,7 @@ class CoolUtil
 		return dumbArray;
 	}
 
-	public static function openURL(url:String)
-	{
+	public static function openURL(url:String) {
 		#if linux
 		Sys.command('/usr/bin/xdg-open', [url, "&"]);
 		#else
@@ -70,18 +63,15 @@ class CoolUtil
 		#end
 	}
 
-	public static function coolTextCase(text:String):String
-	{
+	public static function coolTextCase(text:String):String {
 		var returnText:String = "";
 
 		var textArray:Array<String> = text.split(" ");
 
-		for (text in textArray)
-		{
+		for (text in textArray) {
 			var textStuffs = text.split("");
 
-			for (i in 0...textStuffs.length)
-			{
+			for (i in 0...textStuffs.length) {
 				if (i != 0)
 					returnText += textStuffs[i].toLowerCase();
 				else
@@ -95,18 +85,14 @@ class CoolUtil
 	}
 
 	// stolen from psych lmao cuz i'm lazy
-	public static function dominantColor(sprite:flixel.FlxSprite):Int
-	{
+	public static function dominantColor(sprite:flixel.FlxSprite):Int {
 		var countByColor:Map<Int, Int> = [];
 
-		for (col in 0...sprite.frameWidth)
-		{
-			for (row in 0...sprite.frameHeight)
-			{
+		for (col in 0...sprite.frameWidth) {
+			for (row in 0...sprite.frameHeight) {
 				var colorOfThisPixel:Int = sprite.pixels.getPixel32(col, row);
 
-				if (colorOfThisPixel != 0)
-				{
+				if (colorOfThisPixel != 0) {
 					if (countByColor.exists(colorOfThisPixel))
 						countByColor[colorOfThisPixel] = countByColor[colorOfThisPixel] + 1;
 					else if (countByColor[colorOfThisPixel] != 13520687 - (2 * 13520687))
@@ -120,10 +106,8 @@ class CoolUtil
 
 		countByColor[flixel.util.FlxColor.BLACK] = 0;
 
-		for (key in countByColor.keys())
-		{
-			if (countByColor[key] >= maxCount)
-			{
+		for (key in countByColor.keys()) {
+			if (countByColor[key] >= maxCount) {
 				maxCount = countByColor[key];
 				maxKey = key;
 			}
@@ -140,8 +124,7 @@ class CoolUtil
 
 		@author Leather128
 	**/
-	public static function coolError(message:Null<String> = null, title:Null<String> = null):Void
-	{
+	public static function coolError(message:Null<String> = null, title:Null<String> = null):Void {
 		#if !linux
 		Application.current.window.alert(message, title);
 		#else
@@ -158,8 +141,7 @@ class CoolUtil
 		FlxG.state.add(text);
 
 		FlxTween.tween(text, {alpha: 0, y: 8}, 5, {
-			onComplete: function(_)
-			{
+			onComplete: function(_) {
 				FlxG.state.remove(text);
 				text.destroy();
 			}
@@ -194,12 +176,10 @@ class CoolUtil
 
 		@author Leather128
 	**/
-	public static function haxe_print(value:Dynamic, ?pos_infos:haxe.PosInfos):Void
-	{
+	public static function haxe_print(value:Dynamic, ?pos_infos:haxe.PosInfos):Void {
 		if (pos_infos.customParams == null)
 			print(value, null, pos_infos);
-		else
-		{
+		else {
 			var type:PrintType = pos_infos.customParams.copy()[0];
 			pos_infos.customParams = null; // so no stupid shit in the end of prints :D
 			print(Std.string(value), type, pos_infos);
@@ -215,10 +195,8 @@ class CoolUtil
 
 		@author Leather128
 	**/
-	public static function print(message:String, ?type:PrintType = DEBUG, ?pos_infos:haxe.PosInfos):Void
-	{
-		switch (type)
-		{
+	public static function print(message:String, ?type:PrintType = DEBUG, ?pos_infos:haxe.PosInfos):Void {
+		switch (type) {
 			case LOG:
 				haxe_trace('${ascii_colors["default"]}[LOG] $message', pos_infos);
 			case DEBUG:
@@ -239,10 +217,61 @@ class CoolUtil
 		@author Leather128
 	**/
 	public static var haxe_trace:Function;
+
+	/**
+	 * List of formatting for different byte amounts
+	 * in an array formatted like this:
+	 * 
+	 * [`Format`, `Divisor`]
+	 */
+	 public static var byte_formats:Array<Array<Dynamic>> = [
+		["$bytes b", 1.0],
+		["$bytes kb", 1024.0],
+		["$bytes mb", 1048576.0],
+		["$bytes gb", 1073741824.0],
+		["$bytes tb", 1099511627776.0]
+	];
+
+	/**
+	 * Formats `bytes` into a `String`.
+	 * 
+	 * Examples (Input = Output)
+	 * 
+	 * ```
+	 * 1024 = '1 kb'
+	 * 1536 = '1.5 kb'
+	 * 1048576 = '2 mb'
+	 * ```
+	 * 
+	 * @param bytes Amount of bytes to format and return.
+	 * @param onlyValue (Optional, Default = `false`) Whether or not to only format the value of bytes (ex: `'1.5 mb' -> '1.5'`).
+	 * @param precision (Optional, Default = `2`) The precision of the decimal value of bytes. (ex: `1 -> 1.5, 2 -> 1.53, etc`).
+	 * @return Formatted byte string.
+	 */
+	public static function formatBytes(bytes:Float, onlyValue:Bool = false, precision:Int = 2):String {
+		var formatted_bytes:String = "?";
+
+		for (i in 0...byte_formats.length) {
+			// If the next byte format has a divisor smaller than the current amount of bytes,
+			// and thus not the right format skip it.
+			if (byte_formats.length > i + 1 && byte_formats[i + 1][1] < bytes)
+				continue;
+
+			var format:Array<Dynamic> = byte_formats[i];
+
+			if (!onlyValue)
+				formatted_bytes = StringTools.replace(format[0], "$bytes", Std.string(FlxMath.roundDecimal(bytes / format[1], precision)));
+			else
+				formatted_bytes = Std.string(FlxMath.roundDecimal(bytes / format[1], precision));
+
+			break;
+		}
+
+		return formatted_bytes;
+	}
 }
 
-enum PrintType
-{
+enum PrintType {
 	LOG;
 	DEBUG;
 	WARNING;

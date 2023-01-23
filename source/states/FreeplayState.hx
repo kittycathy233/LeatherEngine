@@ -3,11 +3,9 @@ package states;
 #if sys
 import sys.thread.Thread;
 #end
-
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
-
 import utilities.Options;
 import flixel.util.FlxTimer;
 import substates.ResetScoreSubstate;

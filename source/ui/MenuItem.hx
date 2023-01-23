@@ -1,36 +1,26 @@
 package ui;
 
-#if sys
-import polymod.backends.PolymodAssets;
-#end
-import openfl.display.BitmapData;
-import lime.utils.Assets;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 
-class MenuItem extends FlxSpriteGroup
-{
+class MenuItem extends FlxSpriteGroup {
 	public var targetY:Float = 0;
 	public var week:FlxSprite;
 	public var flashingInt:Int = 0;
 
-	public function new(x:Float, y:Float, weekName:String = "tutorial", weekFolder:String = "default")
-	{
+	public function new(x:Float, y:Float, weekName:String = "tutorial", weekFolder:String = "default") {
 		super(x, y);
 
 		week = new FlxSprite().loadGraphic(Paths.image('campaign menu/weeks/' + weekFolder + "/" + weekName));
-
 		add(week);
 	}
 
 	private var isFlashing:Bool = false;
 
-	public function startFlashing():Void
-	{
+	public function startFlashing():Void {
 		isFlashing = true;
 	}
 
@@ -40,16 +30,15 @@ class MenuItem extends FlxSpriteGroup
 	// I'm still learning how math works thanks whoever is reading this lol
 	var fakeFramerate:Int = Math.round((1 / FlxG.elapsed) / 10);
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		fakeFramerate = Math.round((1 / FlxG.elapsed) / 10);
 
-		if(fakeFramerate <= 1)
+		if (fakeFramerate <= 1)
 			fakeFramerate = 1;
 
-		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 / Main.display.currentFPS));
+		y = FlxMath.lerp(y, (targetY * 120) + 480, elapsed * 10.2);
 
 		if (isFlashing)
 			flashingInt += 1;
