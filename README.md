@@ -48,7 +48,7 @@ You can load, share, and play replays of songs you've played! They can even be i
 
 * larsiusprime - Scrollable Drop Down Menu
 
-* PolybiusProxy - .mp4 Video Loader Extension
+* PolybiusProxy - hxCodec
 
 * datee - Developing HaxeVLC (all the contents in the 'vlc' folder belongs to datee).
 
@@ -59,5 +59,3 @@ You can load, share, and play replays of songs you've played! They can even be i
 * ShadowMario - Color Swap Shader (for notes and stuffs) + some really weird modchart stuff that im too stupid to know lol
 
 * Smokey555 - Adobe Animate Spritemap -> FlxFramesCollection Support
-
-* YoshiCrafter29 - [hscript-improved fork](https://github.com/YoshiCrafter29/hscript-improved) of hscript that is used in the engine.
