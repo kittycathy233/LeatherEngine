@@ -1,5 +1,6 @@
 package states;
 
+import utilities.Options;
 import utilities.CoolUtil;
 import substates.UISkinSelect;
 import substates.ControlMenuSubstate;
@@ -32,6 +33,7 @@ import debuggers.ChartingStateDev;
 
 class OptionsMenu extends MusicBeatState {
 	var curSelected:Int = 0;
+	var ui_Skin:Null<String>;
 
 	public static var inMenu = false;
 
@@ -170,6 +172,11 @@ class OptionsMenu extends MusicBeatState {
 	public static var instance:OptionsMenu;
 
 	override function create():Void {
+		if (ui_Skin == null)
+			ui_Skin = "default";
+
+		if (ui_Skin == "default")
+			ui_Skin = Options.getData("uiSkin");
 		if (PlayState.instance == null) {
 			pages[3][2] = null;
 			#if debug
@@ -183,8 +190,12 @@ class OptionsMenu extends MusicBeatState {
 
 		var menuBG:FlxSprite;
 
-		if (utilities.Options.getData("menuBGs"))
-			menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+
+		if(utilities.Options.getData("menuBGs"))
+			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat')))
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + "default" + '/backgrounds' + '/menuDesat'));
+			else
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat'));
 		else
 			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.fromString("#E1E1E1"), false, "optimizedMenuDesat");
 
