@@ -575,18 +575,21 @@ class PlayState extends MusicBeatState {
 		// set instance because duh
 		instance = this;
 
+		// preload pause music
+		new FlxSound().loadEmbedded(Paths.music('breakfast'));
+
 		if (SONG == null) // this should never happen, but just in case
 			SONG = Song.loadFromJson('tutorial');
 
 		// gaming time
 		curSong = SONG.song;
 
-		/*#if linc_luajit
-			// clear dumb lua stuffs
-			ModchartUtilities.lua_Characters.clear();
-			ModchartUtilities.lua_Sounds.clear();
-			ModchartUtilities.lua_Sprites.clear();
-			#end */
+		#if linc_luajit
+		// clear dumb lua stuffs
+		ModchartUtilities.lua_Characters.clear();
+		ModchartUtilities.lua_Sounds.clear();
+		ModchartUtilities.lua_Sprites.clear();
+		#end
 
 		// if we have a hitsound, preload it nerd
 		if (hitSoundString != "none")
