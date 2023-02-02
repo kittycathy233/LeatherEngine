@@ -3,7 +3,6 @@ package states;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
-
 import utilities.Options;
 import utilities.NoteVariables;
 import substates.OutdatedSubState;
@@ -32,8 +31,7 @@ import openfl.Assets;
 
 using StringTools;
 
-class TitleState extends MusicBeatState
-{
+class TitleState extends MusicBeatState {
 	static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
@@ -47,12 +45,10 @@ class TitleState extends MusicBeatState
 
 	static var firstTimeStarting:Bool = false;
 
-	override public function create():Void
-	{
+	override public function create():Void {
 		MusicBeatState.windowNameSuffix = "";
 
-		if (!firstTimeStarting)
-		{
+		if (!firstTimeStarting) {
 			persistentUpdate = true;
 			persistentDraw = true;
 
@@ -60,7 +56,7 @@ class TitleState extends MusicBeatState
 
 			SaveData.init();
 
-			#if desktop
+			#if polymod
 			PolymodHandler.loadMods();
 			#end
 
@@ -81,16 +77,13 @@ class TitleState extends MusicBeatState
 			if (!DiscordClient.started && utilities.Options.getData("discordRPC"))
 				DiscordClient.initialize();
 
-			Application.current.onExit.add(function(exitCode)
-			{
+			Application.current.onExit.add(function(exitCode) {
 				DiscordClient.shutdown();
 			}, false, 100);
 			#end
 
-			Application.current.onExit.add(function(exitCode)
-			{
-				for (key in Options.saves.keys())
-				{
+			Application.current.onExit.add(function(exitCode) {
+				for (key in Options.saves.keys()) {
 					if (key != null)
 						Options.saves.get(key).close();
 				}
@@ -114,15 +107,12 @@ class TitleState extends MusicBeatState
 
 	public static var version_New:String = "v0.3";
 
-	public static function playTitleMusic()
-	{
+	public static function playTitleMusic() {
 		FlxG.sound.playMusic(MusicUtilities.GetTitleMusicPath(), 0);
 	}
 
-	function startIntro()
-	{
-		if (!initialized)
-		{
+	function startIntro() {
+		if (!initialized) {
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
@@ -141,15 +131,11 @@ class TitleState extends MusicBeatState
 
 			if (utilities.Options.getData("oldTitle"))
 				playTitleMusic();
-			else
-			{
-				if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || utilities.Options.getData("nightMusic"))
-				{
+			else {
+				if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || utilities.Options.getData("nightMusic")) {
 					playTitleMusic();
 					Conductor.changeBPM(117);
-				}
-				else
-				{
+				} else {
 					playTitleMusic();
 					Conductor.changeBPM(102);
 				}
@@ -170,21 +156,18 @@ class TitleState extends MusicBeatState
 
 		var bg:FlxSprite = new FlxSprite();
 
-		if (utilities.Options.getData("oldTitle"))
-		{
+		if (utilities.Options.getData("oldTitle")) {
 			bg.loadGraphic(Paths.image("title/stageback"));
 			bg.antialiasing = true;
 			bg.setGraphicSize(Std.int(FlxG.width * 1.1));
 			bg.updateHitbox();
 			bg.screenCenter();
-		}
-		else
+		} else
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 
 		add(bg);
 
-		if (utilities.Options.getData("oldTitle"))
-		{
+		if (utilities.Options.getData("oldTitle")) {
 			old_logo = new FlxSprite().loadGraphic(Paths.image('title/logo'));
 			old_logo.screenCenter();
 			old_logo.antialiasing = true;
@@ -192,9 +175,7 @@ class TitleState extends MusicBeatState
 			old_logo_black = new FlxSprite().loadGraphicFromSprite(old_logo);
 			old_logo_black.screenCenter();
 			old_logo_black.color = FlxColor.BLACK;
-		}
-		else
-		{
+		} else {
 			logoBl = new FlxSprite(0, 0);
 
 			if (utilities.Options.getData("watermarks"))
@@ -222,14 +203,11 @@ class TitleState extends MusicBeatState
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 
-		if (!utilities.Options.getData("oldTitle"))
-		{
+		if (!utilities.Options.getData("oldTitle")) {
 			add(logoBl);
 			add(gfDance);
 			add(titleText);
-		}
-		else
-		{
+		} else {
 			add(old_logo_black);
 			add(old_logo);
 
@@ -265,15 +243,13 @@ class TitleState extends MusicBeatState
 			initialized = true;
 	}
 
-	function getIntroTextShit():Array<Array<String>>
-	{
+	function getIntroTextShit():Array<Array<String>> {
 		var fullText:String = Assets.getText(Paths.txt('introText'));
 
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];
 
-		for (i in firstArray)
-		{
+		for (i in firstArray) {
 			swagGoodArray.push(i.split('--'));
 		}
 
@@ -282,8 +258,7 @@ class TitleState extends MusicBeatState
 
 	var transitioning:Bool = false;
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
@@ -293,10 +268,8 @@ class TitleState extends MusicBeatState
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
 		#if mobile
-		for (touch in FlxG.touches.list)
-		{
-			if (touch.justPressed)
-			{
+		for (touch in FlxG.touches.list) {
+			if (touch.justPressed) {
 				pressedEnter = true;
 			}
 		}
@@ -304,8 +277,7 @@ class TitleState extends MusicBeatState
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		if (gamepad != null)
-		{
+		if (gamepad != null) {
 			if (gamepad.justPressed.START)
 				pressedEnter = true;
 
@@ -315,8 +287,7 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
-		if (pressedEnter && !transitioning && skippedIntro)
-		{
+		if (pressedEnter && !transitioning && skippedIntro) {
 			if (titleText != null)
 				titleText.animation.play('press');
 
@@ -330,32 +301,22 @@ class TitleState extends MusicBeatState
 
 			transitioning = true;
 
-			new FlxTimer().start(2, function(tmr:FlxTimer)
-			{
+			new FlxTimer().start(2, function(tmr:FlxTimer) {
 				var http = new haxe.Http("https://raw.githubusercontent.com/Leather128/LeatherEngine/main/version.txt");
 
-				http.onData = function(data:String)
-				{
+				http.onData = function(data:String) {
 					trace(data, DEBUG);
 
-					var older:Bool = false;
-
-					if (Assets.getText("version.txt") != data)
-						older = true;
-
-					if (older)
-					{
+					if (Assets.getText("version.txt") != data) {
 						trace('Outdated Version Detected! ' + data + ' != ' + Assets.getText("version.txt"), WARNING);
 
 						version_New = "v" + data;
 						FlxG.switchState(new OutdatedSubState());
-					}
-					else
+					} else
 						FlxG.switchState(new MainMenuState());
 				}
 
-				http.onError = function(error)
-				{
+				http.onError = function(error) {
 					trace('$error', ERROR);
 					FlxG.switchState(new MainMenuState()); // fail so we go anyway
 				}
@@ -370,16 +331,13 @@ class TitleState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function createCoolText(textArray:Array<String>)
-	{
-		for (i in 0...textArray.length)
-		{
+	function createCoolText(textArray:Array<String>) {
+		for (i in 0...textArray.length) {
 			addMoreText(textArray[i]);
 		}
 	}
 
-	function addMoreText(text:String)
-	{
+	function addMoreText(text:String) {
 		var coolText:Alphabet = new Alphabet(0, 0, text.toUpperCase(), true, false);
 		coolText.screenCenter(X);
 		coolText.y += (textGroup.length * 60) + 200;
@@ -387,39 +345,31 @@ class TitleState extends MusicBeatState
 		textGroup.add(coolText);
 	}
 
-	function deleteCoolText()
-	{
-		while (textGroup.members.length > 0)
-		{
+	function deleteCoolText() {
+		while (textGroup.members.length > 0) {
 			credGroup.remove(textGroup.members[0], true);
 			textGroup.remove(textGroup.members[0], true);
 		}
 	}
 
-	function textDataText(line:Int)
-	{
+	function textDataText(line:Int) {
 		var lineText:Null<String> = titleTextData[line];
 
-		if (lineText != null)
-		{
-			if (lineText.contains("~"))
-			{
+		if (lineText != null) {
+			if (lineText.contains("~")) {
 				var coolText = lineText.split("~");
 				createCoolText(coolText);
-			}
-			else
+			} else
 				addMoreText(lineText);
 		}
 	}
 
 	public var titleTextData:Array<String>;
 
-	override function beatHit()
-	{
+	override function beatHit() {
 		super.beatHit();
 
-		if (!utilities.Options.getData("oldTitle"))
-		{
+		if (!utilities.Options.getData("oldTitle")) {
 			logoBl.animation.play('bump');
 			danceLeft = !danceLeft;
 
@@ -428,8 +378,7 @@ class TitleState extends MusicBeatState
 			else
 				gfDance.animation.play('danceLeft');
 
-			switch (curBeat)
-			{
+			switch (curBeat) {
 				case 1:
 					textDataText(0);
 				case 3:
@@ -458,9 +407,7 @@ class TitleState extends MusicBeatState
 			}
 
 			MusicBeatState.windowNameSuffix = skippedIntro ? "" : " " + Std.string(Math.min(15 - (curBeat - 1), 15));
-		}
-		else
-		{
+		} else {
 			remove(ngSpr);
 			remove(credGroup);
 			skippedIntro = true;
@@ -470,10 +417,8 @@ class TitleState extends MusicBeatState
 
 	var skippedIntro:Bool = false;
 
-	function skipIntro():Void
-	{
-		if (!skippedIntro)
-		{
+	function skipIntro():Void {
+		if (!skippedIntro) {
 			MusicBeatState.windowNameSuffix = "";
 
 			if (utilities.Options.getData("flashingLights"))

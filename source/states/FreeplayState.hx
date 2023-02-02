@@ -81,6 +81,7 @@ class FreeplayState extends MusicBeatState {
 	public var loading_songs:Thread;
 	public var stop_loading_songs:Bool = false;
 	#end
+
 	var ui_Skin:Null<String>;
 
 	override function create() {
@@ -531,7 +532,10 @@ class FreeplayState extends MusicBeatState {
 		curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
 		#end
 
-		diffText.text = "< " + curDiffString + " - " + curRank + " >";
+		if (curDiffArray.length > 1)
+			diffText.text = "< " + curDiffString + " - " + curRank + " >";
+		else
+			diffText.text = curDiffString + " - " + curRank;
 	}
 
 	function changeSelection(change:Int = 0) {

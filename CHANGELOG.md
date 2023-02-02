@@ -14,18 +14,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Bugs with charting state (specifically `specialAudioName` not working in it).
+- Bug with charting state (specifically `specialAudioName` not working in it).
 - Bug where you can go to negative song position in the charter.
 - Bug where the ui skin menu opens when opening the `Note Options` section in the options menu.
 - Bug where the game would crash in the pause menu when `Prototype Title Screen` is on.
 - Bug where the game would crash when opening the ui skin menu with an invalid ui skin in your save data.
 - Bug with anything that would normally open the 'application error' window that crashed on Linux.
+- Bug where pause menu music wouldn't disappear after closing the menu.
+- Bug where the game crashes when trying to load a song or week set that does not exist in story mode.
 
 ### Changed
 
 - The option `Import Old Scores` is now in `Misc`.
 - Optimized Note Splash spawning.
 - Optimized Score text and Info text in PlayState.
+- Pause menu music is now cached at the start of each song to prevent lag when opening the menu.
+- Freeplay no longer has < > when the selected song has one difficulty.
+- Info text now goes onto the time bar in the leather engine time bar style.
 
 ## [0.4.2] - 6/14/2022
 

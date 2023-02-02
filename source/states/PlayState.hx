@@ -641,7 +641,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		// load our binds
-		binds = utilities.Options.getData("binds", "binds")[SONG.playerKeyCount - 1];
+		binds = Options.getData("binds", "binds")[SONG.playerKeyCount - 1];
 
 		// remove old insts and destroy them
 		if (FlxG.sound.music != null) {

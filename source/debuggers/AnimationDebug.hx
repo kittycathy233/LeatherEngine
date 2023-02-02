@@ -28,8 +28,7 @@ using StringTools;
 /**
 	*DEBUG MODE
  */
-class AnimationDebug extends MusicBeatState
-{
+class AnimationDebug extends MusicBeatState {
 	var char:Character;
 	var animText:FlxText;
 	var animList:Array<String> = [];
@@ -38,8 +37,7 @@ class AnimationDebug extends MusicBeatState
 	var camFollow:FlxObject;
 	var _file:FileReference;
 
-	public function new(daAnim:String = 'spooky')
-	{
+	public function new(daAnim:String = 'spooky') {
 		super();
 		this.daAnim = daAnim;
 	}
@@ -58,8 +56,7 @@ class AnimationDebug extends MusicBeatState
 	var charCam:FlxCamera;
 	var camHUD:FlxCamera;
 
-	override function create()
-	{
+	override function create() {
 		FlxG.mouse.visible = true;
 
 		gridCam = new FlxCamera();
@@ -117,8 +114,7 @@ class AnimationDebug extends MusicBeatState
 
 		char.screenCenter();
 
-		for (item in characterData)
-		{
+		for (item in characterData) {
 			var characterDataVal:Array<String> = item.split(":");
 
 			var charName:String = characterDataVal[0];
@@ -137,8 +133,7 @@ class AnimationDebug extends MusicBeatState
 
 		curCharList = characters.get("default");
 
-		charDropDown = new FlxUIDropDownMenuCustom(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String)
-		{
+		charDropDown = new FlxUIDropDownMenuCustom(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
 			remove(char);
 			char.kill();
 			char.destroy();
@@ -158,28 +153,26 @@ class AnimationDebug extends MusicBeatState
 		add(charDropDown);
 
 		modDropDown = new FlxUIDropDownMenuCustom(charDropDown.x + charDropDown.width + 1, charDropDown.y,
-			FlxUIDropDownMenu.makeStrIdLabelArray(modListLmao, true), function(modID:String)
-		{
-			var mod:String = modListLmao[Std.parseInt(modID)];
+			FlxUIDropDownMenu.makeStrIdLabelArray(modListLmao, true), function(modID:String) {
+				var mod:String = modListLmao[Std.parseInt(modID)];
 
-			if (characters.exists(mod))
-			{
-				curCharList = characters.get(mod);
-				charDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true));
-				charDropDown.selectedLabel = curCharList[0];
+				if (characters.exists(mod)) {
+					curCharList = characters.get(mod);
+					charDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true));
+					charDropDown.selectedLabel = curCharList[0];
 
-				remove(char);
-				char.kill();
-				char.destroy();
+					remove(char);
+					char.kill();
+					char.destroy();
 
-				daAnim = curCharList[0];
-				char = new Character(0, 0, daAnim);
-				char.debugMode = true;
-				add(char);
-				char.screenCenter();
-				animList = [];
-				genBoyOffsets(true);
-			}
+					daAnim = curCharList[0];
+					char = new Character(0, 0, daAnim);
+					char.debugMode = true;
+					add(char);
+					char.screenCenter();
+					animList = [];
+					genBoyOffsets(true);
+				}
 		});
 
 		modDropDown.selectedLabel = "default";
@@ -187,8 +180,7 @@ class AnimationDebug extends MusicBeatState
 		modDropDown.cameras = [camHUD];
 		add(modDropDown);
 
-		offset_Button = new FlxButton(charDropDown.x, charDropDown.y - 30, "Save Offsets", function()
-		{
+		offset_Button = new FlxButton(charDropDown.x, charDropDown.y - 30, "Save Offsets", function() {
 			saveOffsets();
 		});
 		offset_Button.scrollFactor.set();
@@ -198,12 +190,10 @@ class AnimationDebug extends MusicBeatState
 		super.create();
 	}
 
-	function genBoyOffsets(pushList:Bool = true):Void
-	{
+	function genBoyOffsets(pushList:Bool = true):Void {
 		animText.text = "";
 
-		for (anim => offsets in char.animOffsets)
-		{
+		for (anim => offsets in char.animOffsets) {
 			if (pushList)
 				animList.push(anim);
 
@@ -211,8 +201,7 @@ class AnimationDebug extends MusicBeatState
 		}
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		if (FlxG.keys.justPressed.E)
 			charCam.zoom += 0.25;
 		if (FlxG.keys.justPressed.Q)
@@ -220,8 +209,7 @@ class AnimationDebug extends MusicBeatState
 
 		var shiftThing:Int = FlxG.keys.pressed.SHIFT ? 5 : 1;
 
-		if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L)
-		{
+		if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L) {
 			if (FlxG.keys.pressed.I)
 				camFollow.velocity.y = -90 * shiftThing;
 			else if (FlxG.keys.pressed.K)
@@ -235,22 +223,18 @@ class AnimationDebug extends MusicBeatState
 				camFollow.velocity.x = 90 * shiftThing;
 			else
 				camFollow.velocity.x = 0;
-		}
-		else
-		{
+		} else {
 			camFollow.velocity.set();
 		}
 
-		if (FlxG.keys.justPressed.W)
-		{
+		if (FlxG.keys.justPressed.W) {
 			curAnim -= 1;
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
 			FlxG.switchState(new MainMenuState());
 
-		if (FlxG.keys.justPressed.S)
-		{
+		if (FlxG.keys.justPressed.S) {
 			curAnim += 1;
 		}
 
@@ -260,8 +244,7 @@ class AnimationDebug extends MusicBeatState
 		if (curAnim >= animList.length)
 			curAnim = 0;
 
-		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE)
-		{
+		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
 			char.playAnim(animList[curAnim], true);
 			char.screenCenter();
 
@@ -278,8 +261,7 @@ class AnimationDebug extends MusicBeatState
 		if (holdShift)
 			multiplier = 10;
 
-		if (upP || rightP || downP || leftP)
-		{
+		if (upP || rightP || downP || leftP) {
 			if (upP)
 				char.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
 			if (downP)
@@ -296,17 +278,14 @@ class AnimationDebug extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function saveOffsets()
-	{
+	function saveOffsets() {
 		var offsetsText:String = "";
 
-		for (anim => offsets in char.animOffsets)
-		{
+		for (anim => offsets in char.animOffsets) {
 			offsetsText += anim + " " + offsets[0] + " " + offsets[1] + "\n";
 		}
 
-		if ((offsetsText != "") && (offsetsText.length > 0))
-		{
+		if ((offsetsText != "") && (offsetsText.length > 0)) {
 			if (offsetsText.endsWith("\n"))
 				offsetsText = offsetsText.substr(0, offsetsText.length - 1);
 
@@ -319,8 +298,7 @@ class AnimationDebug extends MusicBeatState
 		}
 	}
 
-	function onSaveComplete(_):Void
-	{
+	function onSaveComplete(_):Void {
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
@@ -331,8 +309,7 @@ class AnimationDebug extends MusicBeatState
 	/**
 	 * Called when the save file dialog is cancelled.
 	 */
-	function onSaveCancel(_):Void
-	{
+	function onSaveCancel(_):Void {
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
@@ -342,8 +319,7 @@ class AnimationDebug extends MusicBeatState
 	/**
 	 * Called if there is an error while saving the gameplay recording.
 	 */
-	function onSaveError(_):Void
-	{
+	function onSaveError(_):Void {
 		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
