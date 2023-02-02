@@ -945,10 +945,13 @@ class PlayState extends MusicBeatState {
 		executeModchart = !(PlayState.SONG.modchartPath == '' || PlayState.SONG.modchartPath == null);
 
 		if (executeModchart) {
-			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath)))
+			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
 				luaModchart = ModchartUtilities.createModchartUtilities();
-			else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath)))
+				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
+			} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
 				luaModchart = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
+				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
+			}
 		}
 
 		stage.createLuaStuff();

@@ -47,6 +47,8 @@ class ModchartUtilities {
 	public static var lua_Sounds:Map<String, FlxSound> = [];
 	public static var lua_Shaders:Map<String, shaders.Shaders.ShaderEffect> = [];
 
+	public var functions_called:Array<String> = [];
+
 	function getActorByName(id:String):Dynamic {
 		// lua objects or what ever
 		if (lua_Sprites.exists(id))
@@ -95,6 +97,7 @@ class ModchartUtilities {
 	}
 
 	function callLua(func_name:String, args:Array<Dynamic>, ?type:String):Dynamic {
+		functions_called.push(func_name);
 		var result:Any = null;
 
 		Lua.getglobal(lua, func_name);
@@ -433,9 +436,14 @@ class ModchartUtilities {
 			}
 
 			modchart.setupTheShitCuzPullRequestsSuck();
-			modchart.executeState("create", [PlayState.SONG.song.toLowerCase()]);
-			modchart.executeState("createPost", [PlayState.SONG.song.toLowerCase()]);
-			modchart.executeState("start", [PlayState.SONG.song.toLowerCase()]);
+
+			if (functions_called.contains("create"))
+				modchart.executeState("create", [PlayState.SONG.song.toLowerCase()]);
+			if (functions_called.contains("createPost"))
+				modchart.executeState("createPost", [PlayState.SONG.song.toLowerCase()]);
+			if (functions_called.contains("start"))
+				modchart.executeState("start", [PlayState.SONG.song.toLowerCase()]);
+			
 			extra_scripts.push(modchart);
 		});
 
