@@ -400,6 +400,13 @@ class ModchartUtilities {
 
 		// regular
 
+		setLuaFunction("exists", function(id:String):Bool {
+			if (getActorByName(id) != null)
+				return Reflect.getProperty(getActorByName(id), 'exists') != true ? false : true;
+
+			return false;
+		});
+
 		setLuaFunction("randomBool", function(chance:Float):Bool {
 			return FlxG.random.bool(chance);
 		});
