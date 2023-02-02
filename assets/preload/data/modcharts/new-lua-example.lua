@@ -10,4 +10,6 @@ function start(song)
     end)
 
     loadScript("test-script")
+
+    print(exists('yourMom'))
 end
