@@ -441,7 +441,7 @@ class StageGroup extends FlxGroup {
 	public function beatHit() {
 		if (utilities.Options.getData("animatedBGs")) {
 			for (sprite in onBeatHit_Group) {
-				sprite.animation.play("beatHit", true);
+				sprite.animation.play("beatHit");
 			}
 
 			if (stage.startsWith('school'))

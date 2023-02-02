@@ -443,7 +443,7 @@ class ModchartUtilities {
 				modchart.executeState("createPost", [PlayState.SONG.song.toLowerCase()]);
 			if (functions_called.contains("start"))
 				modchart.executeState("start", [PlayState.SONG.song.toLowerCase()]);
-			
+
 			extra_scripts.push(modchart);
 		});
 
@@ -2004,6 +2004,19 @@ class ModchartUtilities {
 			}
 
 			return eventId;
+		});
+
+		setLuaFunction("charFromEvent", function(id:String) {
+			switch (id.toLowerCase()) {
+				case "girlfriend" | "gf" | "player3" | "2":
+					return "girlfriend";
+				case "dad" | "opponent" | "player2" | "1":
+					return "dad";
+				case "bf" | "boyfriend" | "player" | "player1" | "0":
+					return "boyfriend";
+			}
+
+			return id;
 		});
 
 		// shader bullshit

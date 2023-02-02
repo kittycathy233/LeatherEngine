@@ -535,7 +535,7 @@ class FreeplayState extends MusicBeatState {
 		if (curDiffArray.length > 1)
 			diffText.text = "< " + curDiffString + " - " + curRank + " >";
 		else
-			diffText.text = curDiffString + " - " + curRank;
+			diffText.text = curDiffString + " - " + curRank + "  ";
 	}
 
 	function changeSelection(change:Int = 0) {

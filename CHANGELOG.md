@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bug with anything that would normally open the 'application error' window that crashed on Linux.
 - Bug where pause menu music wouldn't disappear after closing the menu.
 - Bug where the game crashes when trying to load a song or week set that does not exist in story mode.
+- Animations now play when character will idle is true like how they would in psych (aka animation fully plays then once it stops the character idles).
 
 ### Changed
 
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pause menu music is now cached at the start of each song to prevent lag when opening the menu.
 - Freeplay no longer has < > when the selected song has one difficulty.
 - Info text now goes onto the time bar in the leather engine time bar style.
+- Stage sprites that use the `beatHit` animation no longer are forced to play it every beat (if it's already playing it won't play until it's not).
 
 ## [0.4.2] - 6/14/2022
 
