@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Zoom in the chart edtior.
 - Lots of new functions and variables in the Lua API. See the wiki!
+- `singDuration` property to character jsons to control their sing duration.
 
 ### Fixed
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bug where pause menu music wouldn't disappear after closing the menu.
 - Bug where the game crashes when trying to load a song or week set that does not exist in story mode.
 - Animations now play when character will idle is true like how they would in psych (aka animation fully plays then once it stops the character idles).
+- That one bug where characters that dance left and right would be slower than needed at high bpms.
 
 ### Changed
 
