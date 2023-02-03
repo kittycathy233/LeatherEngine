@@ -279,7 +279,7 @@ class StoryMenuState extends MusicBeatState {
 		var song_name:String = PlayState.storyPlaylist[0].toLowerCase();
 		var song_file:String = song_name + (dif == "normal" ? "" : "-" + dif);
 
-		if (!stopspamming && Assets.exists('song data/${song_name}/${song_file}')) {
+		if (!stopspamming && Assets.exists(Paths.json('song data/${song_name}/${song_file}'))) {
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 
 			if (utilities.Options.getData("flashingLights"))
@@ -304,7 +304,8 @@ class StoryMenuState extends MusicBeatState {
 				PlayState.loadChartEvents = true;
 				LoadingState.loadAndSwitchState(new PlayState());
 			});
-		}
+		} else if (!Assets.exists(Paths.json('song data/${song_name}/${song_file}')))
+			CoolUtil.coolError('Error: ${Paths.json('song data/${song_name}/${song_file}')} not found!', "Leather Engine Crash Prevention");
 	}
 
 	function changeDifficulty(change:Int = 0):Void {
