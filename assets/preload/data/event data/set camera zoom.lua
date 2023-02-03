@@ -4,14 +4,14 @@ function onEvent(name, position, argument1, argument2)
         local hudZoom = tonumber(argument2)
 
         if camZoom == nil then
-            camZoom = getProperty("", "defaultCamZoom")
+            camZoom = get("defaultCamZoom")
         end
 
         if hudZoom == nil then
-            hudZoom = getProperty("", "defaultHudCamZoom")
+            hudZoom = get("defaultHudCamZoom")
         end
 
-        setProperty("", "defaultCamZoom", camZoom)
-        setProperty("", "defaultHudCamZoom", hudZoom)
+        set("defaultCamZoom", camZoom)
+        set("defaultHudCamZoom", hudZoom)
     end
 end
