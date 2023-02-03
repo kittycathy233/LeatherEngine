@@ -426,8 +426,8 @@ class FreeplayState extends MusicBeatState {
 			if (FlxG.keys.justPressed.SPACE) {
 				destroyFreeplayVocals();
 
-				if (Assets.exists(Paths.voices(songs[curSelected].songName.toLowerCase(), curDiffString)))
-					vocals = new FlxSound().loadEmbedded(Paths.voices(songs[curSelected].songName.toLowerCase(), curDiffString));
+				if (Assets.exists(Paths.voices(songs[curSelected].songName.toLowerCase(), curDiffString.toLowerCase())))
+					vocals = new FlxSound().loadEmbedded(Paths.voices(songs[curSelected].songName.toLowerCase(), curDiffString.toLowerCase()));
 				else
 					vocals = new FlxSound();
 
@@ -437,7 +437,7 @@ class FreeplayState extends MusicBeatState {
 
 				FlxG.sound.list.add(vocals);
 
-				FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(songs[curSelected].songName.toLowerCase(), curDiffString));
+				FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(songs[curSelected].songName.toLowerCase(), curDiffString.toLowerCase()));
 				FlxG.sound.music.persist = true;
 				FlxG.sound.music.looped = true;
 				FlxG.sound.music.volume = 0.7;
