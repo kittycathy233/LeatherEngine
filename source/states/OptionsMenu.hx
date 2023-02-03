@@ -112,7 +112,8 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Menu Backgrounds", "menuBGs", 4),
 			new BoolOption("Optimized Characters", "optimizedChars", 5),
 			new BoolOption("Animated Backgrounds", "animatedBGs", 6),
-			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7)
+			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7),
+			new BoolOption("Memory Leaks", "memoryLeaks", 8),
 		],
 		[
 			"Info Display",

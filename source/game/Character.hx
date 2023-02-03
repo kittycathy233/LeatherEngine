@@ -404,33 +404,34 @@ class Character extends FlxSprite {
 	 * FOR GF DANCING SHIT
 	 */
 	public function dance(?altAnim:String = '') {
-		if (!shouldDance || debugMode)
-			return;
+		if (shouldDance) {
+			if (!debugMode && curCharacter != '' && animation.curAnim != null) {
+				var alt = "";
 
-		if (curCharacter != '' && animation.curAnim != null) {
-			var alt = "";
+				if ((!dancesLeftAndRight && animation.getByName("idle" + altAnim) != null)
+					|| (dancesLeftAndRight
+						&& animation.getByName("danceLeft" + altAnim) != null
+						&& animation.getByName("danceRight" + altAnim) != null))
+					alt = altAnim;
 
-			if ((!dancesLeftAndRight && animation.getByName("idle" + altAnim) != null)
-				|| (dancesLeftAndRight
-					&& animation.getByName("danceLeft" + altAnim) != null
-					&& animation.getByName("danceRight" + altAnim) != null))
-				alt = altAnim;
+				mostRecentAlt = alt;
 
-			mostRecentAlt = alt;
+				var special_animation = !(animation.curAnim.name.startsWith('idle')
+					|| animation.curAnim.name.startsWith('danceLeft')
+					|| animation.curAnim.name.startsWith('danceRight')
+					|| animation.curAnim.name.startsWith('sing'));
 
-			if (!animation.curAnim.name.startsWith('hair')
-				&& (((!dancesLeftAndRight && !animation.curAnim.name.startsWith('idle'))
-					|| (dancesLeftAndRight && animation.curAnim.name.startsWith('dance'))
-					|| animation.curAnim.finished))) {
-				if (!dancesLeftAndRight)
-					playAnim('idle' + alt);
-				else {
-					danced = !danced;
+				if (!special_animation || animation.curAnim.finished) {
+					if (!dancesLeftAndRight)
+						playAnim('idle' + alt);
+					else {
+						danced = !danced;
 
-					if (danced)
-						playAnim('danceRight' + alt);
-					else
-						playAnim('danceLeft' + alt);
+						if (danced)
+							playAnim('danceRight' + alt);
+						else
+							playAnim('danceLeft' + alt);
+					}
 				}
 			}
 		}
