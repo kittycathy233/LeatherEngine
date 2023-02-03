@@ -568,7 +568,6 @@ class PlayState extends MusicBeatState {
 
 	// unused for now ;)
 	// public var scripts:Array<HScript> = [];
-
 	public var ratingsGroup:FlxSpriteGroup = new FlxSpriteGroup();
 
 	override public function create() {
@@ -3675,31 +3674,25 @@ class PlayState extends MusicBeatState {
 			// Dad doesnt interupt his own notes
 			if (characterPlayingAs == 0) {
 				if (dad.otherCharacters == null) {
-					if (dad.animation.curAnim != null)
-						if (dad.animation.curAnim.finished && !dad.curCharacter.startsWith('gf'))
+					if (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing'))
+						if (!dad.curCharacter.startsWith('gf'))
 							dad.dance(altAnim);
 				} else {
 					for (character in dad.otherCharacters) {
-						if (character.animation.curAnim != null)
-							if (character.animation.curAnim.finished && !character.curCharacter.startsWith('gf'))
+						if (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
+							if (!character.curCharacter.startsWith('gf'))
 								character.dance(altAnim);
 					}
 				}
 			} else {
 				if (boyfriend.otherCharacters == null) {
-					if (boyfriend.animation.curAnim != null)
-						if (boyfriend.curCharacter.startsWith('gf'))
-							if (boyfriend.animation.curAnim.name.startsWith("sing")
-								&& boyfriend.animation.curAnim.finished
-								|| !boyfriend.animation.curAnim.name.startsWith("sing"))
-								boyfriend.dance();
+					if (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
+						if (!boyfriend.curCharacter.startsWith('gf'))
+							boyfriend.dance();
 				} else {
 					for (character in boyfriend.otherCharacters) {
-						if (character.animation.curAnim != null)
-							if ((character.animation.curAnim.name.startsWith("sing")
-								&& character.animation.curAnim.finished
-								|| !character.animation.curAnim.name.startsWith("sing"))
-								&& !character.curCharacter.startsWith('gf'))
+						if (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
+							if (!character.curCharacter.startsWith('gf'))
 								character.dance();
 					}
 				}
@@ -3737,34 +3730,30 @@ class PlayState extends MusicBeatState {
 			gf.dance();
 
 		if (dad.animation.curAnim != null)
-			if (curBeat % gfSpeed == 0
-				&& dad.curCharacter.startsWith('gf')
-				&& (dad.animation.curAnim.name.startsWith("sing")
-					&& dad.animation.curAnim.finished
-					|| !dad.animation.curAnim.name.startsWith("sing")))
+			if (curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf'))
 				dad.dance();
 
 		if (characterPlayingAs == 0) {
 			if (boyfriend.otherCharacters == null) {
 				if (boyfriend.animation.curAnim != null)
-					if (!boyfriend.animation.curAnim.name.startsWith("sing") && boyfriend.animation.curAnim.finished)
+					if (!boyfriend.animation.curAnim.name.startsWith("sing"))
 						boyfriend.dance();
 			} else {
 				for (character in boyfriend.otherCharacters) {
 					if (character.animation.curAnim != null)
-						if (!character.animation.curAnim.name.startsWith("sing") && character.animation.curAnim.finished)
+						if (!character.animation.curAnim.name.startsWith("sing"))
 							character.dance();
 				}
 			}
 		} else {
 			if (dad.otherCharacters == null) {
 				if (dad.animation.curAnim != null)
-					if (!dad.animation.curAnim.name.startsWith("sing") && dad.animation.curAnim.finished)
+					if (!dad.animation.curAnim.name.startsWith("sing"))
 						dad.dance(altAnim);
 			} else {
 				for (character in dad.otherCharacters) {
 					if (character.animation.curAnim != null)
-						if (!character.animation.curAnim.name.startsWith("sing") && boyfriend.animation.curAnim.finished)
+						if (!character.animation.curAnim.name.startsWith("sing"))
 							character.dance(altAnim);
 				}
 			}

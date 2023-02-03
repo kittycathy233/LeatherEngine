@@ -48,6 +48,8 @@ class Character extends FlxSprite {
 
 	public var config:CharacterConfig;
 
+	public var singDuration:Float = 4.0;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDeathCharacter:Bool = false) {
 		super(x, y);
 
@@ -307,6 +309,9 @@ class Character extends FlxSprite {
 				swapLeftAndRightSingPlayer = config.swapDirectionSingWhenPlayer;
 			else if (curCharacter.startsWith("bf"))
 				swapLeftAndRightSingPlayer = false;
+
+			if (config.singDuration != null)
+				singDuration = config.singDuration;
 		} else {
 			otherCharacters = [];
 
@@ -375,12 +380,7 @@ class Character extends FlxSprite {
 				if (animation.curAnim.name.startsWith('sing'))
 					holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
 
-				var dadVar:Float = 4;
-
-				if (curCharacter == 'dad')
-					dadVar = 6.1;
-
-				if (holdTimer >= Conductor.stepCrochet * dadVar * 0.001) {
+				if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001) {
 					dance(mostRecentAlt);
 					holdTimer = 0;
 				}
