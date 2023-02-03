@@ -1731,7 +1731,7 @@ class PlayState extends MusicBeatState {
 
 		unspawnNotes.sort(sortByShit);
 		generatedMusic = true;
-		SONG.validScore = songMultiplier >= 1;
+		SONG.validScore = SONG.validScore == true ? songMultiplier >= 1 : false;
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int {
