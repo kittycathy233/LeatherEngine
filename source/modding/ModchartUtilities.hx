@@ -198,7 +198,8 @@ class ModchartUtilities {
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
-		setVar("crochet", Conductor.stepCrochet);
+		setVar("stepCrochet", Conductor.stepCrochet);
+		setVar("crochet", Conductor.crochet);
 		setVar("safeZoneOffset", Conductor.safeZoneOffset);
 
 		setVar("hudZoom", PlayState.instance.camHUD.zoom);
