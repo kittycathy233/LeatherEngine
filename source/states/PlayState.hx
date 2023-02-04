@@ -2613,6 +2613,8 @@ class PlayState extends MusicBeatState {
 			setLuaVar("cameraZoom", FlxG.camera.zoom);
 			setLuaVar("bpm", Conductor.bpm);
 			setLuaVar("songBpm", Conductor.bpm);
+			setLuaVar("crochet", Conductor.crochet);
+			setLuaVar("stepCrochet", Conductor.stepCrochet);
 			setLuaVar("Conductor", {
 				bpm: Conductor.bpm,
 				crochet: Conductor.crochet,
