@@ -2054,6 +2054,7 @@ class ModchartUtilities {
 
 		executeState("onCreate", []);
 		executeState("createLua", []);
+		executeState("new", []);
 	}
 
 	public function setupTheShitCuzPullRequestsSuck() {
