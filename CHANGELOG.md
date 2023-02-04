@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Info text now goes onto the time bar in the leather engine time bar style.
 - Stage sprites that use the `beatHit` animation no longer are forced to play it every beat (if it's already playing it won't play until it's not).
 - Newgrounds Logo in Title Screen has been replaced by the Polymod Logo.
+- Tutorial's camera zoom now acts like it does in base game* (not exactly the same, but close enough, and a less janky way as well).
 
 ## [0.4.2] - 6/14/2022
 
