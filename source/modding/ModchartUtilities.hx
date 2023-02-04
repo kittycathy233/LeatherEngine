@@ -278,6 +278,10 @@ class ModchartUtilities {
 
 		setVar("SONG", PlayState.SONG);
 
+		setVar("leatherEngine", {
+			version: lime.app.Application.current.meta.get('version'),
+		});
+
 		// callbacks
 
 		setLuaFunction("flashCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, force:Bool = false) {
