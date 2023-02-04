@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `crochet` now links to `Conductor.crochet` instead of `Conductor.stepCrochet` in lua (WARNING: This fix may accidentally break some obsecure scripts, to fix them use the new `stepCrochet` variable instead).
 - Some alphabet font characters having the wrong name internally, causing them to not appear correctly in-game.
 - Not being able to set note or strum angles in lua.
+- Pause Menu now uses it's own camera so that it isn't affected by the game's ui zoom.
 
 ### Changed
 
