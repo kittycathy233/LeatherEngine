@@ -1,5 +1,6 @@
 package substates;
 
+import flixel.FlxCamera;
 import game.Conductor;
 import game.Replay;
 import states.ReplaySelectorState;
@@ -34,8 +35,13 @@ class PauseSubState extends MusicBeatSubstate {
 	var scoreWarning:FlxText = new FlxText(20, 15 + 64, 0, "Remember, changing options invalidates your score!", 32);
 	var warningAmountLols:Int = 0;
 
+	var pauseCamera:FlxCamera = new FlxCamera();
+
 	public function new() {
 		super();
+
+		pauseCamera.bgColor.alpha = 0;
+		FlxG.cameras.add(pauseCamera, false);
 
 		var optionsArray = menus.get("options");
 
@@ -98,7 +104,7 @@ class PauseSubState extends MusicBeatSubstate {
 
 		updateAlphabets();
 
-		cameras = [PlayState.instance.camHUD];
+		cameras = [pauseCamera];
 	}
 
 	var justPressedAcceptLol:Bool = true;
@@ -172,7 +178,7 @@ class PauseSubState extends MusicBeatSubstate {
 					pauseMusic.stop();
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
-
+					FlxG.cameras.remove(pauseCamera);
 					close();
 				case "restart song":
 					menu = "restart";
@@ -194,6 +200,7 @@ class PauseSubState extends MusicBeatSubstate {
 					pauseMusic.stop();
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
+					FlxG.cameras.remove(pauseCamera);
 
 					FlxG.resetState();
 				case "with cutscenes":
@@ -212,6 +219,7 @@ class PauseSubState extends MusicBeatSubstate {
 					pauseMusic.stop();
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
+					FlxG.cameras.remove(pauseCamera);
 
 					FlxG.resetState();
 				case "bot":
@@ -265,6 +273,7 @@ class PauseSubState extends MusicBeatSubstate {
 					pauseMusic.stop();
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
+					FlxG.cameras.remove(pauseCamera);
 
 					if (PlayState.playingReplay && Replay.getReplayList().length > 0) {
 						Conductor.offset = utilities.Options.getData("songOffset");

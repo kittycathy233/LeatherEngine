@@ -2561,7 +2561,6 @@ class PlayState extends MusicBeatState {
 				if (event[1] + Conductor.offset <= Conductor.songPosition) // activate funni lol
 				{
 					processEvent(event);
-
 					events.remove(event);
 				}
 			}
