@@ -1,5 +1,6 @@
 package states;
 
+import game.Conductor;
 #if sys
 import sys.thread.Thread;
 #end
@@ -77,12 +78,13 @@ class FreeplayState extends MusicBeatState {
 	// thx psych engine devs
 	var colorTween:FlxTween;
 
-	#if sys
+	#if (cpp && sys)
 	public var loading_songs:Thread;
 	public var stop_loading_songs:Bool = false;
 	#end
 
 	var ui_Skin:Null<String>;
+	var lastSelectedSong:Int = -1;
 
 	override function create() {
 		if (ui_Skin == null)
@@ -281,6 +283,20 @@ class FreeplayState extends MusicBeatState {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
+		if (FlxG.sound.music.playing)
+			Conductor.songPosition = FlxG.sound.music.time;
+
+		for (i in 0...iconArray.length) {
+			if (i == lastSelectedSong)
+				continue;
+
+			iconArray[i].scale.set(1, 1);
+		}
+
+		if (lastSelectedSong != -1 && iconArray[lastSelectedSong] != null)
+			iconArray[lastSelectedSong].scale.set(FlxMath.lerp(iconArray[lastSelectedSong].scale.x, 1, elapsed * 9),
+				FlxMath.lerp(iconArray[lastSelectedSong].scale.y, 1, elapsed * 9));
+
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
 
 		if (Math.abs(lerpScore - intendedScore) <= 10)
@@ -331,20 +347,8 @@ class FreeplayState extends MusicBeatState {
 		if (songsReady) {
 			if (-1 * Math.floor(FlxG.mouse.wheel) != 0 && !shift)
 				changeSelection(-1 * Math.floor(FlxG.mouse.wheel));
-			else if (-1 * (Math.floor(FlxG.mouse.wheel) / 10) != 0 && shift) {
+			else if (-1 * (Math.floor(FlxG.mouse.wheel) / 10) != 0 && shift)
 				curSpeed += -1 * (Math.floor(FlxG.mouse.wheel) / 10);
-
-				#if cpp
-				@:privateAccess
-				{
-					if (FlxG.sound.music.active && FlxG.sound.music.playing)
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-
-					if (vocals.active && vocals.playing)
-						lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-				}
-				#end
-			}
 
 			if (upP)
 				changeSelection(-1);
@@ -353,69 +357,27 @@ class FreeplayState extends MusicBeatState {
 
 			if (leftP && !shift)
 				changeDiff(-1);
-			else if (leftP && shift) {
+			else if (leftP && shift)
 				curSpeed -= 0.05;
-
-				#if cpp
-				@:privateAccess
-				{
-					if (FlxG.sound.music.active && FlxG.sound.music.playing)
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-
-					if (vocals.active && vocals.playing)
-						lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-				}
-				#end
-			}
 
 			if (rightP && !shift)
 				changeDiff(1);
-			else if (rightP && shift) {
+			else if (rightP && shift)
 				curSpeed += 0.05;
 
-				#if cpp
-				@:privateAccess
-				{
-					if (FlxG.sound.music.active && FlxG.sound.music.playing)
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-
-					if (vocals.active && vocals.playing)
-						lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-				}
-				#end
-			}
-
-			if (FlxG.keys.justPressed.R && shift) {
+			if (FlxG.keys.justPressed.R && shift)
 				curSpeed = 1;
-
-				#if cpp
-				@:privateAccess
-				{
-					if (FlxG.sound.music.active && FlxG.sound.music.playing)
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-
-					if (vocals.active && vocals.playing)
-						lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-				}
-				#end
-			}
 
 			if (controls.BACK) {
 				if (colorTween != null)
 					colorTween.cancel();
 
-				#if cpp
-				@:privateAccess
-				{
-					if (FlxG.sound.music.active && FlxG.sound.music.playing)
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, 1);
+				if (vocals.active && vocals.playing)
+					destroyFreeplayVocals(false);
+				if (FlxG.sound.music.active && FlxG.sound.music.playing)
+					FlxG.sound.music.pitch = 1;
 
-					if (vocals.active && vocals.playing)
-						vocals.stop();
-				}
-				#end
-
-				#if sys
+				#if (cpp && sys)
 				stop_loading_songs = true;
 				#end
 
@@ -431,7 +393,7 @@ class FreeplayState extends MusicBeatState {
 				else
 					vocals = new FlxSound();
 
-				vocals.persist = true;
+				vocals.persist = false;
 				vocals.looped = true;
 				vocals.volume = 0.7;
 
@@ -446,19 +408,22 @@ class FreeplayState extends MusicBeatState {
 
 				FlxG.sound.music.play();
 				vocals.play();
-			}
 
-			#if cpp
-			@:privateAccess
-			{
-				if (FlxG.sound.music.active && FlxG.sound.music.playing && !FlxG.keys.justPressed.ENTER)
-					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+				lastSelectedSong = curSelected;
 
-				if (vocals.active && vocals.playing && !FlxG.keys.justPressed.ENTER)
-					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
+				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
+
+				if (Assets.exists(Paths.json("song data/" + songs[curSelected].songName.toLowerCase() + "/" + poop))) {
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+					Conductor.changeBPM(PlayState.SONG.bpm, curSpeed);
+				}
 			}
 			#end
-			#end
+
+			if (FlxG.sound.music.active && FlxG.sound.music.playing && !FlxG.keys.justPressed.ENTER)
+				FlxG.sound.music.pitch = curSpeed;
+			if (vocals != null && vocals.active && vocals.playing && !FlxG.keys.justPressed.ENTER)
+				vocals.pitch = curSpeed;
 
 			if (controls.RESET && !shift) {
 				openSubState(new ResetScoreSubstate(songs[curSelected].songName, curDiffString));
@@ -510,21 +475,12 @@ class FreeplayState extends MusicBeatState {
 
 	override function closeSubState() {
 		changeSelection();
-
 		FlxG.mouse.visible = false;
-
 		super.closeSubState();
 	}
 
 	function changeDiff(change:Int = 0) {
-		curDifficulty += change;
-
-		if (curDifficulty < 0)
-			curDifficulty = curDiffArray.length - 1;
-
-		if (curDifficulty > curDiffArray.length - 1)
-			curDifficulty = 0;
-
+		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, curDiffArray.length - 1);
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
 		#if !switch
@@ -533,25 +489,13 @@ class FreeplayState extends MusicBeatState {
 		#end
 
 		if (curDiffArray.length > 1)
-			diffText.text = "< " + curDiffString + " - " + curRank + " >";
+			diffText.text = "< " + curDiffString + " ~ " + curRank + " >";
 		else
-			diffText.text = curDiffString + " - " + curRank + "  ";
+			diffText.text = curDiffString + " ~ " + curRank + "  ";
 	}
 
 	function changeSelection(change:Int = 0) {
-		curSelected += change;
-
-		if (iconArray.length == 0) {
-			if (curSelected < 0)
-				curSelected = grpSongs.length - 1;
-			if (curSelected >= grpSongs.length)
-				curSelected = 0;
-		} else {
-			if (curSelected < 0)
-				curSelected = iconArray.length - 1;
-			if (curSelected >= iconArray.length)
-				curSelected = 0;
-		}
+		curSelected = FlxMath.wrap(curSelected + change, 0, grpSongs.length - 1);
 
 		// Sounds
 
@@ -563,18 +507,7 @@ class FreeplayState extends MusicBeatState {
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName, curDiffString.toLowerCase()), 0.7);
 
 			if (vocals.active && vocals.playing)
-				vocals.stop();
-
-			#if cpp
-			@:privateAccess
-			{
-				if (FlxG.sound.music.active && FlxG.sound.music.playing)
-					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-
-				if (vocals.active && vocals.playing)
-					lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, curSpeed);
-			}
-			#end
+				destroyFreeplayVocals(false);
 		}
 
 		#if !switch
@@ -637,7 +570,7 @@ class FreeplayState extends MusicBeatState {
 			bg.color = songs[curSelected].color;
 	}
 
-	public function destroyFreeplayVocals() {
+	public function destroyFreeplayVocals(?destroyInst:Bool = true) {
 		if (vocals != null) {
 			vocals.stop();
 			vocals.destroy();
@@ -645,12 +578,22 @@ class FreeplayState extends MusicBeatState {
 
 		vocals = null;
 
+		if (!destroyInst)
+			return;
+
 		if (FlxG.sound.music != null) {
 			FlxG.sound.music.stop();
 			FlxG.sound.music.destroy();
 		}
 
 		FlxG.sound.music = null;
+	}
+
+	override function beatHit() {
+		super.beatHit();
+
+		if (lastSelectedSong != -1 && iconArray[lastSelectedSong] != null)
+			iconArray[lastSelectedSong].scale.add(0.2, 0.2);
 	}
 }
 

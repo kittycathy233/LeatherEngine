@@ -1107,7 +1107,7 @@ class PlayState extends MusicBeatState {
 		// etc
 
 		if (Options.getData("sideRatings")) {
-			ratingText = new FlxText(0, 0, 0, "bruh");
+			ratingText = new FlxText(4, 0, 0, "bruh");
 			ratingText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			ratingText.screenCenter(Y);
 
@@ -1918,9 +1918,14 @@ class PlayState extends MusicBeatState {
 	}
 
 	function resyncVocals():Void {
+		FlxG.sound.music.pitch = songMultiplier;
+
+		if (vocals.active && vocals.playing)
+			vocals.pitch = songMultiplier;
+
 		if (!switchedStates) {
 			if (!(Conductor.songPosition > 20 && FlxG.sound.music.time < 20)) {
-				trace("SONG POS: " + Conductor.songPosition + " | Musice: " + FlxG.sound.music.time + " / " + FlxG.sound.music.length);
+				trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
 
 				vocals.pause();
 				FlxG.sound.music.pause();
@@ -1934,35 +1939,15 @@ class PlayState extends MusicBeatState {
 
 				FlxG.sound.music.play();
 				vocals.play();
-
-				#if cpp
-				@:privateAccess
-				{
-					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-
-					if (vocals.playing)
-						lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-				}
-				#end
 			} else {
 				while (Conductor.songPosition > 20 && FlxG.sound.music.time < 20) {
-					trace("SONG POS: " + Conductor.songPosition + " | Musice: " + FlxG.sound.music.time + " / " + FlxG.sound.music.length);
+					trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
 
 					FlxG.sound.music.time = Conductor.songPosition;
 					vocals.time = Conductor.songPosition;
 
 					FlxG.sound.music.play();
 					vocals.play();
-
-					#if cpp
-					@:privateAccess
-					{
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-
-						if (vocals.playing)
-							lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-					}
-					#end
 				}
 			}
 		}
@@ -2165,6 +2150,7 @@ class PlayState extends MusicBeatState {
 					}
 
 					executeALuaState("playerTwoTurn", []);
+					executeALuaState("turnChange", ['dad']);
 				}
 			}
 
@@ -2199,6 +2185,7 @@ class PlayState extends MusicBeatState {
 					}
 
 					executeALuaState("playerOneTurn", []);
+					executeALuaState("turnChange", ['bf']);
 				}
 			}
 		}
@@ -2299,8 +2286,7 @@ class PlayState extends MusicBeatState {
 				daNote.calculateCanBeHit();
 
 				if (!daNote.mustPress && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
-					if (SONG.song.toLowerCase() != 'tutorial')
-						camZooming = true;
+					camZooming = true;
 
 					if (characterPlayingAs == 0) {
 						if (dad.otherCharacters == null || dad.otherCharacters.length - 1 < daNote.character)
@@ -4117,7 +4103,7 @@ class PlayState extends MusicBeatState {
 
 		switch (funnyTimeBarStyle.toLowerCase()) {
 			default: // includes 'leather engine'
-				infoTxt.text = SONG.song + " - " + storyDifficultyStr + ' (${FlxStringUtil.formatTime(seconds, false)})'
+				infoTxt.text = SONG.song + " ~ " + storyDifficultyStr + ' (${FlxStringUtil.formatTime(seconds, false)})'
 					+ (Options.getData("botplay") ? " (BOT)" : "") + (Options.getData("noDeath") ? " (NO DEATH)" : "") + (playingReplay ? " (REPLAY)" : "");
 				infoTxt.screenCenter(X);
 			case "psych engine":
