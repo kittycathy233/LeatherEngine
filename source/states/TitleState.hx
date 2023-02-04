@@ -54,7 +54,7 @@ class TitleState extends MusicBeatState {
 
 			FlxG.fixedTimestep = false;
 
-			SaveData.init();
+			utilities.SaveData.init();
 
 			#if polymod
 			PolymodHandler.loadMods();
@@ -62,9 +62,12 @@ class TitleState extends MusicBeatState {
 
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
-			NoteVariables.init();
-
-			Options.fixBinds();
+			#if FLX_NO_DEBUG
+			if (utilities.Options.getData("flixelStartupScreen")) {
+				flixel.system.FlxSplash.nextState = states.TitleState;
+				FlxG.switchState(new flixel.system.FlxSplash());
+			}
+			#end
 
 			if (utilities.Options.getData("flashingLights") == null)
 				FlxG.switchState(new FlashingLightsMenu());
@@ -222,10 +225,10 @@ class TitleState extends MusicBeatState {
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('title/newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('title/polymod_logo'));
 		add(ngSpr);
 		ngSpr.visible = false;
-		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
+		ngSpr.setGraphicSize(290); // aprox what newgrounds_logo.width * 0.8 was (289.6), only used cuz polymod_logo is different size than it lol!!!
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;

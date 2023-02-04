@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Zoom in the chart edtior.
 - Lots of new functions and variables in the Lua API. See the wiki!
 - `singDuration` property to character jsons to control their sing duration.
+- Flixel Splash Screen option to toggle the HaxeFlixel splash screen that shows up when the game starts.
 
 ### Fixed
 
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - That one bug where characters that dance left and right would be slower than needed at high bpms.
 - Difficulty specific audio not playing in freeplay (Linux).
 - `crochet` now links to `Conductor.crochet` instead of `Conductor.stepCrochet` in lua (WARNING: This fix may accidentally break some obsecure scripts, to fix them use the new `stepCrochet` variable instead).
+- Some alphabet font characters having the wrong name internally, causing them to not appear correctly in-game.
 
 ### Changed
 
@@ -37,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Freeplay no longer has < > when the selected song has one difficulty.
 - Info text now goes onto the time bar in the leather engine time bar style.
 - Stage sprites that use the `beatHit` animation no longer are forced to play it every beat (if it's already playing it won't play until it's not).
+- Newgrounds Logo in Title Screen has been replaced by the Polymod Logo.
 
 ## [0.4.2] - 6/14/2022
 

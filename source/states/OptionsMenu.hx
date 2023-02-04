@@ -101,7 +101,8 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Disable Debug Menus", "disableDebugMenus", 10),
 			new BoolOption("Invisible Notes", "invisibleNotes", 11),
 			new BoolOption("Auto Pause", "autoPause", 12),
-			new BoolOption("Freeplay Corruption", "loadAsynchronously", 13)
+			new BoolOption("Freeplay Corruption", "loadAsynchronously", 13),
+			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", 14),
 		],
 		[
 			"Optimizations",
