@@ -13,7 +13,10 @@ function onEvent(name, position, argument1, argument2)
 
         set("defaultCamZoom", camZoom)
         set("defaultHudCamZoom", hudZoom)
-        set("camGame.zoom", camZoom)
-        set("camHUD.zoom", hudZoom)
+
+        if not get("camZooming") then
+            set("camGame.zoom", camZoom)
+            set("camHUD.zoom", hudZoom)
+        end
     end
 end
