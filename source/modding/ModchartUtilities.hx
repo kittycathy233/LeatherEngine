@@ -890,25 +890,21 @@ class ModchartUtilities {
 			if (PlayState.instance.notes.members[id] == null)
 				throw('error! you cannot set a rendered notes position when it doesnt exist! ID: ' + id);
 			else {
-				PlayState.instance.notes.members[id].modifiedByLua = true;
 				PlayState.instance.notes.members[id].x = x;
 				PlayState.instance.notes.members[id].y = y;
 			}
 		});
 
 		setLuaFunction("setRenderedNoteAlpha", function(alpha:Float, id:Int) {
-			PlayState.instance.notes.members[id].modifiedByLua = true;
 			PlayState.instance.notes.members[id].alpha = alpha;
 		});
 
 		setLuaFunction("setRenderedNoteScale", function(scale:Float, id:Int) {
-			PlayState.instance.notes.members[id].modifiedByLua = true;
-			PlayState.instance.notes.members[id].setGraphicSize(Std.int(PlayState.instance.notes.members[id].width * scale));
+			PlayState.instance.notes.members[id].scale.set(scale, scale);
 		});
 
 		setLuaFunction("setRenderedNoteScaleXY", function(scaleX:Int, scaleY:Int, id:Int) {
-			PlayState.instance.notes.members[id].modifiedByLua = true;
-			PlayState.instance.notes.members[id].setGraphicSize(scaleX, scaleY);
+			PlayState.instance.notes.members[id].scale.set(scaleX, scaleY);
 		});
 
 		setLuaFunction("getRenderedNoteWidth", function(id:Int) {
@@ -920,7 +916,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
-			PlayState.instance.notes.members[id].modifiedByLua = true;
 			PlayState.instance.notes.members[id].angle = angle;
 		});
 

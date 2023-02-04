@@ -2285,6 +2285,9 @@ class PlayState extends MusicBeatState {
 
 				daNote.calculateCanBeHit();
 
+				if (!daNote.isSustainNote)
+					daNote.angle = coolStrum.angle;
+
 				if (!daNote.mustPress && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
 					camZooming = true;
 
@@ -2404,7 +2407,7 @@ class PlayState extends MusicBeatState {
 				}
 
 				if (daNote != null) {
-					if (daNote.mustPress && !daNote.modifiedByLua) {
+					if (daNote.mustPress) {
 						var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
 						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
@@ -2427,14 +2430,13 @@ class PlayState extends MusicBeatState {
 						if (coolStrum.alpha != 1)
 							daNote.alpha = coolStrum.alpha;
 
-						daNote.modAngle = coolStrum.angle;
 						daNote.flipX = coolStrum.flipX;
 
 						if (!daNote.isSustainNote)
 							daNote.flipY = coolStrum.flipY;
 
 						daNote.color = coolStrum.color;
-					} else if (!daNote.wasGoodHit && !daNote.modifiedByLua) {
+					} else if (!daNote.wasGoodHit) {
 						var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
 						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
@@ -2454,13 +2456,9 @@ class PlayState extends MusicBeatState {
 						} else
 							daNote.x = coolStrum.x + prevEnemyXVals.get(arrayVal);
 
-						if (!daNote.isSustainNote)
-							daNote.modAngle = coolStrum.angle;
-
 						if (coolStrum.alpha != 1)
 							daNote.alpha = coolStrum.alpha;
 
-						daNote.modAngle = coolStrum.angle;
 						daNote.flipX = coolStrum.flipX;
 
 						if (!daNote.isSustainNote)

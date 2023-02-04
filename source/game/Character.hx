@@ -421,7 +421,7 @@ class Character extends FlxSprite {
 					|| animation.curAnim.name.startsWith('danceRight')
 					|| animation.curAnim.name.startsWith('sing'));
 
-				if (!special_animation || animation.curAnim.finished) {
+				if (!special_animation || animation.curAnim.finished || animation.curAnim.looped) {
 					if (!dancesLeftAndRight)
 						playAnim('idle' + alt);
 					else {
