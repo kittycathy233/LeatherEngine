@@ -1,5 +1,6 @@
 package modding;
 
+import flixel.util.FlxAxes;
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;
 import flixel.text.FlxText;
@@ -494,6 +495,16 @@ class ModchartUtilities {
 		});
 
 		// sprite functions
+
+		setLuaFunction("screenCenter", function(id:String, ?direction:String = "xy") {
+			if (getActorByName(id) != null)
+				getActorByName(id).screenCenter((direction.toLowerCase().contains('x') ? 0x01 : 0x00) + (direction.toLowerCase().contains('y') ? 0x10 : 0x00));
+		});
+
+		setLuaFunction("center", function(id:String, ?direction:String = "xy") {
+			if (getActorByName(id) != null)
+				getActorByName(id).screenCenter((direction.toLowerCase().contains('x') ? 0x01 : 0x00) + (direction.toLowerCase().contains('y') ? 0x10 : 0x00));
+		});
 
 		setLuaFunction("add", function(id:String) {
 			FlxG.state.add(getActorByName(id));
