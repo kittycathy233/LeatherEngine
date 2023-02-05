@@ -1,5 +1,6 @@
 package debuggers;
 
+import game.StageGroup;
 import flixel.ui.FlxButton;
 import openfl.events.IOErrorEvent;
 import openfl.events.Event;
@@ -51,6 +52,9 @@ class AnimationDebug extends MusicBeatState {
 	var charDropDown:FlxUIDropDownMenuCustom;
 	var modDropDown:FlxUIDropDownMenuCustom;
 
+	var stage:StageGroup;
+	var stagePosition:FlxSprite;
+
 	/* CAMERA */
 	var gridCam:FlxCamera;
 	var charCam:FlxCamera;
@@ -82,20 +86,32 @@ class AnimationDebug extends MusicBeatState {
 		gridBG.cameras = [gridCam];
 		add(gridBG);
 
+		stage = new StageGroup("stage");
+		add(stage);
+
+		stagePosition = new FlxSprite().makeGraphic(32, 32, 0xFFFF0000);
+		add(stagePosition);
+
 		char = new Character(0, 0, daAnim);
 		char.debugMode = true;
 		add(char);
 
 		animText = new FlxText(2, 2, 0, "BRUH BRUH BRUH: [0,0]", 20);
 		animText.scrollFactor.set();
-		animText.color = FlxColor.BLUE;
+		animText.color = FlxColor.WHITE;
+		animText.borderColor = FlxColor.BLACK;
+		animText.borderStyle = OUTLINE;
+		animText.borderSize = 2;
 		animText.cameras = [camHUD];
 		add(animText);
 
-		var moveText = new FlxText(2, 2, 0, "Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\n", 20);
-		moveText.x = FlxG.width - moveText.width;
+		var moveText = new FlxText(4, 4, 0, "Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side", 20);
+		moveText.x = FlxG.width - moveText.width - 4;
 		moveText.scrollFactor.set();
-		moveText.color = FlxColor.BLUE;
+		moveText.color = FlxColor.WHITE;
+		moveText.borderColor = FlxColor.BLACK;
+		moveText.borderStyle = OUTLINE;
+		moveText.borderSize = 2;
 		moveText.alignment = RIGHT;
 		moveText.cameras = [camHUD];
 		add(moveText);
@@ -111,8 +127,13 @@ class AnimationDebug extends MusicBeatState {
 		charCam.follow(camFollow);
 
 		var characterData:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
+		var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+		char.setPosition(position[0], position[1]);
 
-		char.screenCenter();
+		if (char.isPlayer)
+			stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+		else
+			stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
 
 		for (item in characterData) {
 			var characterDataVal:Array<String> = item.split(":");
@@ -142,7 +163,15 @@ class AnimationDebug extends MusicBeatState {
 			char = new Character(0, 0, daAnim);
 			char.debugMode = true;
 			add(char);
-			char.screenCenter();
+
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
+
+			if (char.isPlayer)
+				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+			else
+				stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
 			animList = [];
 			genBoyOffsets(true);
 		});
@@ -169,7 +198,15 @@ class AnimationDebug extends MusicBeatState {
 					char = new Character(0, 0, daAnim);
 					char.debugMode = true;
 					add(char);
-					char.screenCenter();
+					
+					var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+					char.setPosition(position[0], position[1]);
+			
+					if (char.isPlayer)
+						stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+					else
+						stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
 					animList = [];
 					genBoyOffsets(true);
 				}
@@ -199,6 +236,9 @@ class AnimationDebug extends MusicBeatState {
 
 			animText.text += anim + (anim == animList[curAnim] ? " (current) " : "") + ": " + offsets + "\n";
 		}
+
+		if ((char.offsetsFlipWhenPlayer && char.isPlayer) || (char.offsetsFlipWhenEnemy && !char.isPlayer))
+			animText.text += "(offsets flipped)";
 	}
 
 	override function update(elapsed:Float) {
@@ -206,6 +246,25 @@ class AnimationDebug extends MusicBeatState {
 			charCam.zoom += 0.25;
 		if (FlxG.keys.justPressed.Q)
 			charCam.zoom -= 0.25;
+		if (FlxG.keys.justPressed.Z)
+			stage.visible = !stage.visible;
+		if (FlxG.keys.justPressed.X) {
+			char.isPlayer = !char.isPlayer;
+			char.flipX = !char.flipX;
+
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
+	
+			if (char.isPlayer)
+				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+			else
+				stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
+			char.loadOffsetFile(char.curCharacter);
+			char.playAnim(animList[curAnim], true);
+			animList = [];
+			genBoyOffsets(true);
+		}
 
 		var shiftThing:Int = FlxG.keys.pressed.SHIFT ? 5 : 1;
 
@@ -246,7 +305,14 @@ class AnimationDebug extends MusicBeatState {
 
 		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE) {
 			char.playAnim(animList[curAnim], true);
-			char.screenCenter();
+			
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
+	
+			if (char.isPlayer)
+				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+			else
+				stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
 
 			genBoyOffsets(false);
 		}
@@ -280,9 +346,10 @@ class AnimationDebug extends MusicBeatState {
 
 	function saveOffsets() {
 		var offsetsText:String = "";
+		var flipped = (char.offsetsFlipWhenPlayer && char.isPlayer) || (char.offsetsFlipWhenEnemy && !char.isPlayer);
 
 		for (anim => offsets in char.animOffsets) {
-			offsetsText += anim + " " + offsets[0] + " " + offsets[1] + "\n";
+			offsetsText += anim + " " + (flipped ? -offsets[0] : offsets[0]) + " " + offsets[1] + "\n";
 		}
 
 		if ((offsetsText != "") && (offsetsText.length > 0)) {

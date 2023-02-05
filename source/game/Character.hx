@@ -23,9 +23,9 @@ class Character extends FlxSprite {
 
 	public var holdTimer:Float = 0;
 
-	var animationNotes:Array<Dynamic> = [];
+	public var animationNotes:Array<Dynamic> = [];
 
-	var dancesLeftAndRight:Bool = false;
+	public var dancesLeftAndRight:Bool = false;
 
 	public var barColor:FlxColor = FlxColor.WHITE;
 	public var positioningOffset:Array<Float> = [0, 0];
@@ -33,8 +33,8 @@ class Character extends FlxSprite {
 
 	public var otherCharacters:Array<Character>;
 
-	var offsetsFlipWhenPlayer:Bool = true;
-	var offsetsFlipWhenEnemy:Bool = false;
+	public var offsetsFlipWhenPlayer:Bool = true;
+	public var offsetsFlipWhenEnemy:Bool = false;
 
 	public var coolTrail:FlxTrail;
 
@@ -44,7 +44,7 @@ class Character extends FlxSprite {
 
 	public var icon:String;
 
-	var isDeathCharacter:Bool = false;
+	public var isDeathCharacter:Bool = false;
 
 	public var config:CharacterConfig;
 
@@ -449,9 +449,6 @@ class Character extends FlxSprite {
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
-		if ((isPlayer && offsetsFlipWhenPlayer) || (!isPlayer && offsetsFlipWhenEnemy))
-			x = 0 - x;
-
-		animOffsets.set(name, [x, y]);
+		animOffsets.set(name, [(isPlayer && offsetsFlipWhenPlayer) || (!isPlayer && offsetsFlipWhenEnemy) ? -x : x, y]);
 	}
 }
