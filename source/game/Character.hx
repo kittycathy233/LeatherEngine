@@ -259,7 +259,7 @@ class Character extends FlxSprite {
 			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT, "shared")))
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
 			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT, "shared")))
-				frames = AtlasFrameMaker.construct("characters/" + config.imagePath);
+				frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
 			else
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
 
