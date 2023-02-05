@@ -87,11 +87,9 @@ class FreeplayState extends MusicBeatState {
 	var lastSelectedSong:Int = -1;
 
 	override function create() {
-		if (ui_Skin == null)
-			ui_Skin = "default";
-
-		if (ui_Skin == "default")
+		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
+		
 		MusicBeatState.windowNameSuffix = " Freeplay";
 
 		var black = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);

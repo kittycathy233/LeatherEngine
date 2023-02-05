@@ -174,11 +174,9 @@ class OptionsMenu extends MusicBeatState {
 	public static var instance:OptionsMenu;
 
 	override function create():Void {
-		if (ui_Skin == null)
-			ui_Skin = "default";
-
-		if (ui_Skin == "default")
+		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
+
 		if (PlayState.instance == null) {
 			pages[3][2] = null;
 			#if debug
@@ -187,11 +185,9 @@ class OptionsMenu extends MusicBeatState {
 		}
 
 		MusicBeatState.windowNameSuffix = "";
-
 		instance = this;
 
 		var menuBG:FlxSprite;
-
 
 		if(utilities.Options.getData("menuBGs"))
 			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat')))
