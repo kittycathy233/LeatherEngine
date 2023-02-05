@@ -917,6 +917,7 @@ class PlayState extends MusicBeatState {
 		enemyStrums = new FlxTypedGroup<StrumNote>();
 
 		generateSong(SONG.song);
+		generateEvents();
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 
@@ -952,6 +953,9 @@ class PlayState extends MusicBeatState {
 				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
 			}
 		}
+
+		if (luaModchart == null && generatedSomeDumbEventLuas)
+			executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
 
 		stage.createLuaStuff();
 
@@ -1134,89 +1138,6 @@ class PlayState extends MusicBeatState {
 		MusicBeatState.windowNameSuffix = " - " + SONG.song + " " + (isStoryMode ? "(Story Mode)" : "(Freeplay)");
 
 		playCutscenes = false;
-
-		baseEvents = [];
-		events = [];
-
-		if (SONG.events.length > 0) {
-			for (event in SONG.events) {
-				baseEvents.push(event);
-				events.push(event);
-			}
-		}
-
-		if (Assets.exists(Paths.songEvents(SONG.song.toLowerCase(), storyDifficultyStr.toLowerCase())) && loadChartEvents) {
-			var eventFunnies:Array<Array<Dynamic>> = Song.parseJSONshit(Assets.getText(Paths.songEvents(SONG.song.toLowerCase(),
-				storyDifficultyStr.toLowerCase())))
-				.events;
-
-			for (event in eventFunnies) {
-				baseEvents.push(event);
-				events.push(event);
-			}
-		}
-
-		for (event in events) {
-			var map:Map<String, Dynamic>;
-
-			switch (event[2].toLowerCase()) {
-				case "dad" | "opponent" | "player2" | "1":
-					map = dadMap;
-				case "gf" | "girlfriend" | "player3" | "2":
-					map = gfMap;
-				default:
-					map = bfMap;
-			}
-
-			// cache shit
-			if (Options.getData("charsAndBGs")) {
-				if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
-					var funnyCharacter:Character;
-
-					if (map == bfMap)
-						funnyCharacter = new Boyfriend(100, 100, event[3]);
-					else
-						funnyCharacter = new Character(100, 100, event[3]);
-
-					funnyCharacter.alpha = 0.00001;
-					add(funnyCharacter);
-
-					map.set(event[3], funnyCharacter);
-
-					if (funnyCharacter.otherCharacters != null) {
-						for (character in funnyCharacter.otherCharacters) {
-							character.alpha = 0.00001;
-							add(character);
-						}
-					}
-
-					trace(funnyCharacter.curCharacter);
-					trace(event[3]);
-				}
-
-				if (event[0].toLowerCase() == "change stage"
-					&& event[1] <= FlxG.sound.music.length
-					&& !stageMap.exists(event[2])
-					&& Options.getData("preloadChangeBGs")) {
-					var funnyStage = new StageGroup(event[2]);
-					funnyStage.visible = false;
-
-					stageMap.set(event[2], funnyStage);
-
-					trace(funnyStage.stage);
-				}
-			}
-
-			#if linc_luajit
-			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
-				event_luas.set(event[0].toLowerCase(),
-					ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
-				generatedSomeDumbEventLuas = true;
-			}
-			#end
-		}
-
-		events.sort((a, b) -> Std.int(a[1] - b[1]));
 
 		var cutscenePlays = Options.getData("cutscenePlaysOn");
 
@@ -4408,6 +4329,91 @@ class PlayState extends MusicBeatState {
 
 	public function updateRating()
 		ratingStr = Ratings.getRank(accuracy, misses);
+
+	function generateEvents():Void {
+		baseEvents = [];
+		events = [];
+
+		if (SONG.events.length > 0) {
+			for (event in SONG.events) {
+				baseEvents.push(event);
+				events.push(event);
+			}
+		}
+
+		if (Assets.exists(Paths.songEvents(SONG.song.toLowerCase(), storyDifficultyStr.toLowerCase())) && loadChartEvents) {
+			var eventFunnies:Array<Array<Dynamic>> = Song.parseJSONshit(Assets.getText(Paths.songEvents(SONG.song.toLowerCase(),
+				storyDifficultyStr.toLowerCase())))
+				.events;
+
+			for (event in eventFunnies) {
+				baseEvents.push(event);
+				events.push(event);
+			}
+		}
+
+		for (event in events) {
+			var map:Map<String, Dynamic>;
+
+			switch (event[2].toLowerCase()) {
+				case "dad" | "opponent" | "player2" | "1":
+					map = dadMap;
+				case "gf" | "girlfriend" | "player3" | "2":
+					map = gfMap;
+				default:
+					map = bfMap;
+			}
+
+			// cache shit
+			if (Options.getData("charsAndBGs")) {
+				if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
+					var funnyCharacter:Character;
+
+					if (map == bfMap)
+						funnyCharacter = new Boyfriend(100, 100, event[3]);
+					else
+						funnyCharacter = new Character(100, 100, event[3]);
+
+					funnyCharacter.alpha = 0.00001;
+					add(funnyCharacter);
+
+					map.set(event[3], funnyCharacter);
+
+					if (funnyCharacter.otherCharacters != null) {
+						for (character in funnyCharacter.otherCharacters) {
+							character.alpha = 0.00001;
+							add(character);
+						}
+					}
+
+					trace(funnyCharacter.curCharacter);
+					trace(event[3]);
+				}
+
+				if (event[0].toLowerCase() == "change stage"
+					&& event[1] <= FlxG.sound.music.length
+					&& !stageMap.exists(event[2])
+					&& Options.getData("preloadChangeBGs")) {
+					var funnyStage = new StageGroup(event[2]);
+					funnyStage.visible = false;
+
+					stageMap.set(event[2], funnyStage);
+
+					trace(funnyStage.stage);
+				}
+			}
+
+			#if linc_luajit
+			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
+				event_luas.set(event[0].toLowerCase(),
+					ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+				generatedSomeDumbEventLuas = true;
+			}
+			#end
+		}
+
+		events.sort((a, b) -> Std.int(a[1] - b[1]));
+	}
 }
 
 enum Execute_On {

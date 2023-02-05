@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some alphabet font characters having the wrong name internally, causing them to not appear correctly in-game.
 - Not being able to set note or strum angles in lua.
 - Pause Menu now uses it's own camera so that it isn't affected by the game's ui zoom.
+- Event Luas now have the `create()` function called on them just like the rest of the game's lua.
 
 ### Changed
 
