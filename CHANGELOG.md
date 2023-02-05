@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Icons now bump to the song playing when you play it with the space bar in freeplay.
 - When using the default time bar style the time bar color changes depending on what character is currently in focus.
 - Score text changed to use the format `<  Score:$score ~ Misses:$misses ~ Accuracy:$accuracy% ~ $comboRating ~ $rating  >
+- Animation Debug now has a toggleable stage and a character position dot to help with offsets.
+- You can now switch what side you are using to edit offsets on in Animation Debug.
 
 ### Fixed
 
