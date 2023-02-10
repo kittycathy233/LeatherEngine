@@ -592,7 +592,7 @@ class PlayState extends MusicBeatState {
 
 		// if we have a hitsound, preload it nerd
 		if (hitSoundString != "none")
-			hitsound = FlxG.sound.load(Paths.sound("hitsounds/" + Std.string(hitSoundString).toLowerCase(), "shared"));
+			hitsound = FlxG.sound.load(Paths.sound("hitsounds/" + Std.string(hitSoundString).toLowerCase()));
 
 		// set the character we playing as
 		switch (Options.getData("playAs")) {
@@ -979,7 +979,7 @@ class PlayState extends MusicBeatState {
 		add(notes);
 
 		// health bar
-		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar', 'shared'));
+		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 		healthBarBG.pixelPerfectPosition = true;
@@ -1036,7 +1036,7 @@ class PlayState extends MusicBeatState {
 		// time bars cuz fuck you
 		switch (funnyTimeBarStyle.toLowerCase()) {
 			default: // includes 'leather engine'
-				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar', 'shared'));
+				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
 				timeBarBG.pixelPerfectPosition = true;
@@ -1056,7 +1056,7 @@ class PlayState extends MusicBeatState {
 				infoTxt.y = timeBarBG.y;
 			case "psych engine":
 				// repeat other shit but make it look like psych basically
-				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('psychTimeBar', 'shared'));
+				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('psychTimeBar'));
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
 				timeBarBG.pixelPerfectPosition = true;
@@ -1082,7 +1082,7 @@ class PlayState extends MusicBeatState {
 				infoTxt.y = timeBarBG.y - (infoTxt.height / 4);
 			case "old kade engine":
 				// yeah
-				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar', 'shared'));
+				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
 				timeBarBG.pixelPerfectPosition = true;
@@ -1453,7 +1453,7 @@ class PlayState extends MusicBeatState {
 				case 0:
 					FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[0], 'shared'));
+					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[0]));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
@@ -1470,7 +1470,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[1], 'shared'));
+					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[1]));
 					set.scrollFactor.set();
 					set.updateHitbox();
 
@@ -1487,7 +1487,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[2], 'shared'));
+					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[2]));
 					go.scrollFactor.set();
 					go.updateHitbox();
 
@@ -1676,7 +1676,7 @@ class PlayState extends MusicBeatState {
 		for (i in 0...usedKeyCount) {
 			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount);
 
-			babyArrow.frames = Paths.getSparrowAtlas('ui skins/' + SONG.ui_Skin + "/arrows/default", 'shared');
+			babyArrow.frames = Paths.getSparrowAtlas('ui skins/' + SONG.ui_Skin + "/arrows/default");
 
 			babyArrow.antialiasing = ui_settings[3] == "true";
 
