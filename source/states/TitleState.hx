@@ -66,6 +66,7 @@ class TitleState extends MusicBeatState {
 			if (utilities.Options.getData("flixelStartupScreen")) {
 				flixel.system.FlxSplash.nextState = states.TitleState;
 				FlxG.switchState(new flixel.system.FlxSplash());
+				return;
 			}
 			#end
 
@@ -82,15 +83,13 @@ class TitleState extends MusicBeatState {
 
 			Application.current.onExit.add(function(exitCode) {
 				DiscordClient.shutdown();
-			}, false, 100);
-			#end
 
-			Application.current.onExit.add(function(exitCode) {
 				for (key in Options.saves.keys()) {
 					if (key != null)
 						Options.saves.get(key).close();
 				}
-			}, false, 101);
+			}, false, 100);
+			#end
 
 			firstTimeStarting = true;
 		}
