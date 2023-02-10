@@ -995,10 +995,16 @@ class PlayState extends MusicBeatState {
 		// icons
 		iconP1 = new HealthIcon(boyfriend.icon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2) - iconP1.offsetY;
+		iconP1.visible = Options.getData("healthIcons");
+		if (!iconP1.visible)
+			iconP1.graphic.destroy();
 		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.icon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2) - iconP2.offsetY;
+		iconP2.visible = iconP1.visible;
+		if (!iconP2.visible)
+			iconP2.graphic.destroy();
 		add(iconP2);
 
 		// settings moment
