@@ -131,6 +131,10 @@ class ChartingState extends MusicBeatState {
 			Assets.loadLibrary("shared").onComplete(function(_) {});
 		#end
 
+		// preload hitsounds
+		FlxG.sound.load(Paths.sound('CLAP'));
+		FlxG.sound.load(Paths.sound('SNAP'));
+
 		var characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
 
 		for (Text in characterList) {
@@ -323,21 +327,23 @@ class ChartingState extends MusicBeatState {
 		blockPressWhileTypingOnStepper.push(stepperKeyCount);
 		blockPressWhileTypingOnStepper.push(stepperPlayerKeyCount);
 
-		var check_mute_inst = new FlxUICheckBox(10, stepperKeyCount.y + stepperKeyCount.height + 10, null, null, "Mute Instrumental (in editor)", 100);
+		var check_mute_inst = new FlxUICheckBox(10, stepperKeyCount.y + stepperKeyCount.height + 10, null, null, "Mute Inst", 100);
 		check_mute_inst.checked = muteInstShit;
 		check_mute_inst.callback = function() {
-			var vol:Float = 1;
-
-			if (check_mute_inst.checked)
-				vol = 0;
-
-			FlxG.sound.music.volume = vol;
-
+			FlxG.sound.music.volume = check_mute_inst.checked ? 0 : 1;
 			muteInstShit = check_mute_inst.checked;
 		};
 		check_mute_inst.callback();
 
-		var check_char_ids = new FlxUICheckBox(check_mute_inst.x + check_mute_inst.width, check_mute_inst.y - 2, null, null, "Character Ids On Notes", 100);
+		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + check_mute_inst.width - 25, check_mute_inst.y - 2, null, null, "Mute Vocals", 100);
+		check_mute_vocals.checked = muteVocalShit;
+		check_mute_vocals.callback = function() {
+			vocals.volume = check_mute_vocals.checked ? 0 : 1;
+			muteVocalShit = check_mute_vocals.checked;
+		};
+		check_mute_vocals.callback();
+
+		var check_char_ids = new FlxUICheckBox(check_mute_vocals.x + check_mute_vocals.width - 25, check_mute_vocals.y - 2, null, null, "Character Ids On Notes", 100);
 		check_char_ids.checked = doFunnyNumbers;
 		check_char_ids.callback = function() {
 			doFunnyNumbers = check_char_ids.checked;
@@ -433,6 +439,7 @@ class ChartingState extends MusicBeatState {
 		tab_group_song.add(check_voices);
 		tab_group_song.add(hitsoundsBox);
 		tab_group_song.add(check_mute_inst);
+		tab_group_song.add(check_mute_vocals);
 		tab_group_song.add(check_char_ids);
 		tab_group_song.add(modchart_Input);
 		tab_group_song.add(cutscene_Input);
@@ -460,7 +467,8 @@ class ChartingState extends MusicBeatState {
 		FlxG.camera.follow(cameraShitThing);
 	}
 
-	static var muteInstShit:Bool = false;
+	public static var muteInstShit:Bool = false;
+	public static var muteVocalShit:Bool = false;
 
 	var cameraShitThing:FlxObject = new FlxObject(0, 0, Std.int(FlxG.width / 2), 4);
 
@@ -1147,9 +1155,9 @@ class ChartingState extends MusicBeatState {
 							if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
 								&& _song.notes[curSection].mustHitSection
 								|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection)
-								FlxG.sound.play(Paths.sound('CLAP', 'preload'));
+								FlxG.sound.play(Paths.sound('CLAP'));
 							else
-								FlxG.sound.play(Paths.sound('SNAP', 'preload'));
+								FlxG.sound.play(Paths.sound('SNAP'));
 						}
 					});
 				}
