@@ -19,6 +19,11 @@ class ResultsScreenSubstate extends MusicBeatSubstate {
 	public function new() {
 		super();
 
+        if (utilities.Options.getData("skipResultsScreen")) {
+            PlayState.instance.finishSongStuffs();
+            return;
+        }
+
 		uiCamera.bgColor.alpha = 0;
 		FlxG.cameras.add(uiCamera, false);
 

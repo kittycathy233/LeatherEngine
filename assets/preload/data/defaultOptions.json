@@ -233,6 +233,10 @@
             "value": false
         },
         {
+            "option": "skipResultsScreen",
+            "value": false
+        },
+        {
             "option": "fullscreenBind",
             "value": "F11",
             "save": "binds"
