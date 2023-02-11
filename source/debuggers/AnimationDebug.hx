@@ -32,6 +32,7 @@ using StringTools;
 class AnimationDebug extends MusicBeatState {
 	var char:Character;
 	var animText:FlxText;
+	var moveText:FlxText;
 	var animList:Array<String> = [];
 	var curAnim:Int = 0;
 	var daAnim:String = 'spooky';
@@ -96,17 +97,18 @@ class AnimationDebug extends MusicBeatState {
 		char.debugMode = true;
 		add(char);
 
-		animText = new FlxText(2, 2, 0, "BRUH BRUH BRUH: [0,0]", 20);
+		animText = new FlxText(4, 4, 0, "BRUH BRUH BRUH: [0,0]", 20);
+		animText.font = Paths.font("vcr.ttf");
 		animText.scrollFactor.set();
 		animText.color = FlxColor.WHITE;
 		animText.borderColor = FlxColor.BLACK;
 		animText.borderStyle = OUTLINE;
 		animText.borderSize = 2;
 		animText.cameras = [camHUD];
-		animText.font = Paths.font("vcr.ttf");
 		add(animText);
 
-		var moveText = new FlxText(4, 4, 0, "Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side", 20);
+		moveText = new FlxText(4, 4, 0, "", 20);
+		moveText.font = Paths.font("vcr.ttf");
 		moveText.x = FlxG.width - moveText.width - 4;
 		moveText.scrollFactor.set();
 		moveText.color = FlxColor.WHITE;
@@ -115,7 +117,6 @@ class AnimationDebug extends MusicBeatState {
 		moveText.borderSize = 2;
 		moveText.alignment = RIGHT;
 		moveText.cameras = [camHUD];
-		moveText.font = Paths.font("vcr.ttf");
 		add(moveText);
 
 		genBoyOffsets();
@@ -245,9 +246,11 @@ class AnimationDebug extends MusicBeatState {
 
 	override function update(elapsed:Float) {
 		if (FlxG.keys.justPressed.E)
-			charCam.zoom += 0.25;
+			charCam.zoom += FlxG.keys.pressed.SHIFT ? 0.01 : 0.1;
 		if (FlxG.keys.justPressed.Q)
-			charCam.zoom -= 0.25;
+			charCam.zoom -= FlxG.keys.pressed.SHIFT ? 0.01 : 0.1;
+		if (FlxG.mouse.wheel != 0)
+			charCam.zoom += FlxG.keys.pressed.SHIFT ? FlxG.mouse.wheel / 100.0 : FlxG.mouse.wheel / 10.0;
 		if (FlxG.keys.justPressed.Z)
 			stage.visible = !stage.visible;
 		if (FlxG.keys.justPressed.X) {
@@ -342,6 +345,10 @@ class AnimationDebug extends MusicBeatState {
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim], true);
 		}
+
+		charCam.zoom = flixel.math.FlxMath.roundDecimal(charCam.zoom, 2) <= 0 ? 1 : charCam.zoom;
+		moveText.text = 'Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side\nCamera Zoom: ${flixel.math.FlxMath.roundDecimal(charCam.zoom, 2)}\n';
+		moveText.x = FlxG.width - moveText.width - 4;
 
 		super.update(elapsed);
 	}
