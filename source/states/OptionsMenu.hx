@@ -37,16 +37,14 @@ class OptionsMenu extends MusicBeatState {
 
 	public static var inMenu = false;
 
-	public var pages:Array<Dynamic> = [
-		[
-			"Categories",
+	public var pages:Map<String, Array<Dynamic>> = [
+		"Categories" => [
 			new PageOption("Gameplay", 0, "Gameplay"),
 			new PageOption("Graphics", 1, "Graphics"),
 			new PageOption("Tools (Very WIP)", 2, "Tools"),
 			new PageOption("Misc", 3, "Misc")
 		],
-		[
-			"Gameplay",
+		"Gameplay" => [
 			new PageOption("Back", 0, "Categories"),
 			new GameSubstateOption("Binds", 1, substates.ControlMenuSubstate),
 			new BoolOption("Key Bind Reminders", "extraKeyReminders", 2),
@@ -62,8 +60,7 @@ class OptionsMenu extends MusicBeatState {
 			new GameSubstateOption("Custom Scroll Speed", 12, substates.ScrollSpeedMenu),
 			new StringSaveOption("Hitsound", CoolUtil.coolTextFile(Paths.txt("hitsoundList")), 13, "hitsound")
 		],
-		[
-			"Graphics",
+		"Graphics" => [
 			new PageOption("Back", 0, "Categories"),
 			new PageOption("Note Options", 1, "Note Options"),
 			new PageOption("Info Display", 2, "Info Display"),
@@ -74,8 +71,7 @@ class OptionsMenu extends MusicBeatState {
 			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], 7, "timeBarStyle"),
 			new PageOption("Screen Effects", 8, "Screen Effects")
 		],
-		[
-			"Tools",
+		"Tools" => [
 			new PageOption("Back", 0, "Categories"),
 			new GameStateOption("Charter", 1, new ChartingState()),
 			#if debug
@@ -86,8 +82,7 @@ class OptionsMenu extends MusicBeatState {
 			// new GameStateOption("Character Creator", 4, new CharacterCreationState("bf")),
 			new GameSubstateOption("Import Old Scores", 5, substates.ImportHighscoresSubstate)
 		],
-		[
-			"Misc",
+		"Misc" => [
 			new PageOption("Back", 0, "Categories"),
 			new BoolOption("Prototype Title Screen", "oldTitle", 1),
 			new BoolOption("Friday Night Title Music", "nightMusic", 2),
@@ -105,8 +100,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", 14),
 			new BoolOption("Skip Results", "skipResultsScreen", 15),
 		],
-		[
-			"Optimizations",
+		"Optimizations" => [
 			new PageOption("Back", 0, "Graphics"),
 			new BoolOption("Antialiasing", "antialiasing", 1),
 			new BoolOption("Health Icons", "healthIcons", 2),
@@ -117,8 +111,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7),
 			new BoolOption("Memory Leaks", "memoryLeaks", 8),
 		],
-		[
-			"Info Display",
+		"Info Display" => [
 			new PageOption("Back", 0, "Graphics"),
 			new DisplayFontOption("Display Font", [
 				"_sans",
@@ -130,16 +123,14 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Memory Counter", "memoryCounter", 4),
 			new BoolOption("Version Display", "versionDisplay", 4)
 		],
-		[
-			"Judgements",
+		"Judgements" => [
 			new PageOption("Back", 0, "Gameplay"),
 			new GameSubstateOption("Timings", 1, substates.JudgementMenu),
 			new StringSaveOption("Rating Mode", ["psych", "simple", "complex"], 2, "ratingType"),
 			new BoolOption("Marvelous Ratings", "marvelousRatings", 3),
 			new BoolOption("Show Rating Count", "sideRatings", 4)
 		],
-		[
-			"Input Options",
+		"Input Options" => [
 			new PageOption("Back", 0, "Gameplay"),
 			new StringSaveOption("Input Mode", ["standard", "rhythm"], 3, "inputSystem"),
 			new BoolOption("Anti Mash", "antiMash", 4),
@@ -149,8 +140,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("No Miss", "noHit", 6),
 			new BoolOption("Reset Button", "resetButton", 7)
 		],
-		[
-			"Note Options",
+		"Note Options" => [
 			new PageOption("Back", 0, "Graphics"),
 			new GameSubstateOption("Note BG Alpha", 1, substates.NoteBGAlphaMenu),
 			new BoolOption("Enemy Note Glow", "enemyStrumsGlow", 2),
@@ -160,8 +150,7 @@ class OptionsMenu extends MusicBeatState {
 			new GameSubstateOption("Note Colors", 5, substates.NoteColorSubstate),
 			new GameSubstateOption("UI Skin", 6, substates.UISkinSelect)
 		],
-		[
-			"Screen Effects",
+		"Screen Effects" => [
 			new PageOption("Back", 0, "Graphics"),
 			new BoolOption("Camera Tracks Direction", "cameraTracksDirections", 1),
 			new BoolOption("Camera Bounce", "cameraZooms", 2),
@@ -171,7 +160,6 @@ class OptionsMenu extends MusicBeatState {
 	];
 
 	public var page:FlxTypedGroup<Option> = new FlxTypedGroup<Option>();
-
 	public static var instance:OptionsMenu;
 
 	override function create():Void {
@@ -179,9 +167,9 @@ class OptionsMenu extends MusicBeatState {
 			ui_Skin = Options.getData("uiSkin");
 
 		if (PlayState.instance == null) {
-			pages[3][2] = null;
+			pages["Tools"][1] = null;
 			#if debug
-			pages[3][3] = null;
+			pages["Tools"][2] = null;
 			#end
 		}
 
@@ -222,23 +210,11 @@ class OptionsMenu extends MusicBeatState {
 		var curPage:FlxTypedGroup<Option> = instance.page;
 		curPage.clear();
 
-		var selectedPage:Array<Dynamic> = [];
-
-		for (i in 0...instance.pages.length) {
-			if (instance.pages[i][0] == Page_Name) {
-				for (x in 0...instance.pages[i].length) {
-					if (instance.pages[i][x] != Page_Name)
-						selectedPage.push(instance.pages[i][x]);
-				}
-			}
-		}
-
-		for (x in selectedPage) {
+		for (x in instance.pages.get(Page_Name).copy()) {
 			curPage.add(x);
 		}
 
 		inMenu = false;
-
 		var bruh:Int = 0;
 
 		for (x in instance.page.members) {

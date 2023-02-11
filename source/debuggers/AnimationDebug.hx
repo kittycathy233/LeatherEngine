@@ -103,6 +103,7 @@ class AnimationDebug extends MusicBeatState {
 		animText.borderStyle = OUTLINE;
 		animText.borderSize = 2;
 		animText.cameras = [camHUD];
+		animText.font = Paths.font("vcr.ttf");
 		add(animText);
 
 		var moveText = new FlxText(4, 4, 0, "Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side", 20);
@@ -114,6 +115,7 @@ class AnimationDebug extends MusicBeatState {
 		moveText.borderSize = 2;
 		moveText.alignment = RIGHT;
 		moveText.cameras = [camHUD];
+		moveText.font = Paths.font("vcr.ttf");
 		add(moveText);
 
 		genBoyOffsets();
