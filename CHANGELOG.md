@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Score text changed to use the format `<  Score:$score ~ Misses:$misses ~ Accuracy:$accuracy% ~ $comboRating ~ $rating  >
 - Animation Debug now has a toggleable stage and a character position dot to help with offsets.
 - You can now switch what side you are using to edit offsets on in Animation Debug.
+- `Mute Vocals` option in chart editor.
+- Memory Leaks option (stops clearing asset caches).
+- Skip Results Screen Options.
 
 ### Fixed
 
@@ -37,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Not being able to set note or strum angles in lua.
 - Pause Menu now uses it's own camera so that it isn't affected by the game's ui zoom.
 - Event Luas now have the `create()` function called on them just like the rest of the game's lua.
+- Crashes with sounds not having a `_transform` value while trying to use it.
+- Memory Counter reports correct values.
 
 ### Changed
 
@@ -50,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Newgrounds Logo in Title Screen has been replaced by the Polymod Logo.
 - Tutorial's camera zoom now acts like it does in base game* (not exactly the same, but close enough, and a less janky way as well).
 - Some miscellaneous ui changes in-game.
+- Revamped Animation Debug Menu.
+- Results screen note graph now uses one texture for much better performance.
 
 ## [0.4.2] - 6/14/2022
 
