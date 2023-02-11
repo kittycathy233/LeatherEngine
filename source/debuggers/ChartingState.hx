@@ -327,7 +327,7 @@ class ChartingState extends MusicBeatState {
 		blockPressWhileTypingOnStepper.push(stepperKeyCount);
 		blockPressWhileTypingOnStepper.push(stepperPlayerKeyCount);
 
-		var check_mute_inst = new FlxUICheckBox(10, stepperKeyCount.y + stepperKeyCount.height + 10, null, null, "Mute Inst", 75);
+		var check_mute_inst = new FlxUICheckBox(10, stepperKeyCount.y + stepperKeyCount.height + 10, null, null, "Mute Inst", 55);
 		check_mute_inst.checked = muteInstShit;
 		check_mute_inst.callback = function() {
 			FlxG.sound.music.volume = check_mute_inst.checked ? 0 : 1;
@@ -335,7 +335,7 @@ class ChartingState extends MusicBeatState {
 		};
 		check_mute_inst.callback();
 
-		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + check_mute_inst.width + 4, check_mute_inst.y - 2, null, null, "Mute Vocals", 75);
+		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + check_mute_inst.width + 4, check_mute_inst.y, null, null, "Mute Vocals", 65);
 		check_mute_vocals.checked = muteVocalShit;
 		check_mute_vocals.callback = function() {
 			vocals.volume = check_mute_vocals.checked ? 0 : 1;
@@ -343,7 +343,7 @@ class ChartingState extends MusicBeatState {
 		};
 		check_mute_vocals.callback();
 
-		var check_char_ids = new FlxUICheckBox(check_mute_vocals.x + check_mute_vocals.width + 4, check_mute_vocals.y - 2, null, null, "Character Ids On Notes", 100);
+		var check_char_ids = new FlxUICheckBox(check_mute_vocals.x + check_mute_vocals.width + 4, check_mute_vocals.y, null, null, "Character Ids On Notes", 100);
 		check_char_ids.checked = doFunnyNumbers;
 		check_char_ids.callback = function() {
 			doFunnyNumbers = check_char_ids.checked;
