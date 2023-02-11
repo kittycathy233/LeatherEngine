@@ -946,10 +946,10 @@ class PlayState extends MusicBeatState {
 
 		if (executeModchart) {
 			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
-				luaModchart = ModchartUtilities.createModchartUtilities();
+				luaModchart = new ModchartUtilities();
 				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
 			} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
-				luaModchart = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
+				luaModchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
 				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
 			}
 		}
@@ -2703,7 +2703,11 @@ class PlayState extends MusicBeatState {
 				transOut = FlxTransitionableState.defaultTransOut;
 
 				switchedStates = true;
-				vocals.stop();
+
+				if (vocals != null && vocals.active)
+					vocals.stop();
+				if (FlxG.sound.music != null && FlxG.sound.music.active)
+					FlxG.sound.music.stop();
 
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
@@ -2737,7 +2741,11 @@ class PlayState extends MusicBeatState {
 				prevCamFollow = camFollow;
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-				FlxG.sound.music.stop();
+				
+				if (vocals != null && vocals.active)
+					vocals.stop();
+				if (FlxG.sound.music != null && FlxG.sound.music.active)
+					FlxG.sound.music.stop();
 
 				switchedStates = true;
 				PlayState.loadChartEvents = true;
@@ -2747,8 +2755,10 @@ class PlayState extends MusicBeatState {
 			trace('WENT BACK TO FREEPLAY??');
 			switchedStates = true;
 
-			if (vocals.active)
+			if (vocals != null && vocals.active)
 				vocals.stop();
+			if (FlxG.sound.music != null && FlxG.sound.music.active)
+				FlxG.sound.music.stop();
 
 			SONG.keyCount = ogKeyCount;
 			SONG.playerKeyCount = ogPlayerKeyCount;
@@ -2758,8 +2768,10 @@ class PlayState extends MusicBeatState {
 			trace('WENT BACK TO REPLAY SELECTOR??');
 			switchedStates = true;
 
-			if (vocals.active)
+			if (vocals != null && vocals.active)
 				vocals.stop();
+			if (FlxG.sound.music != null && FlxG.sound.music.active)
+				FlxG.sound.music.stop();
 
 			SONG.keyCount = ogKeyCount;
 			SONG.playerKeyCount = ogPlayerKeyCount;
@@ -4121,7 +4133,7 @@ class PlayState extends MusicBeatState {
 		#if linc_luajit
 		if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
 			event_luas.set(event[0].toLowerCase(),
-				ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+				new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 			generatedSomeDumbEventLuas = true;
 
 			for (i in 0...strumLineNotes.length) {
@@ -4412,7 +4424,7 @@ class PlayState extends MusicBeatState {
 			#if linc_luajit
 			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
 				event_luas.set(event[0].toLowerCase(),
-					ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+					new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 				generatedSomeDumbEventLuas = true;
 			}
 			#end

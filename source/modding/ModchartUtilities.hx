@@ -139,7 +139,7 @@ class ModchartUtilities {
 		Lua_helper.add_callback(lua, name, func);
 	}
 
-	function new(?path:Null<String>) {
+	public function new(?path:Null<String>) {
 		oldMultiplier = PlayState.songMultiplier;
 
 		lua_Sprites.set("boyfriend", PlayState.boyfriend);
@@ -298,7 +298,7 @@ class ModchartUtilities {
 			if (!PlayState.instance.event_luas.exists(event_name.toLowerCase())
 				&& Assets.exists(Paths.lua("event data/" + event_name.toLowerCase()))) {
 				PlayState.instance.event_luas.set(event_name.toLowerCase(),
-					ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event_name.toLowerCase()))));
+					new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event_name.toLowerCase()))));
 				PlayState.instance.generatedSomeDumbEventLuas = true;
 			}
 
@@ -432,9 +432,9 @@ class ModchartUtilities {
 			var modchart:ModchartUtilities = null;
 
 			if (Assets.exists(Paths.lua("modcharts/" + script)))
-				modchart = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + script)));
+				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + script)));
 			else if (Assets.exists(Paths.lua("scripts/" + script)))
-				modchart = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + script)));
+				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + script)));
 
 			if (modchart == null) {
 				trace('Couldn\'t find script at either ${Paths.lua("modcharts/" + script)} OR ${Paths.lua("scripts/" + script)}!', WARNING);
@@ -2188,10 +2188,6 @@ class ModchartUtilities {
 		return Lua.tostring(lua, callLua(name, args));
 	}
 
-	public static function createModchartUtilities(?path:Null<String>):ModchartUtilities {
-		return new ModchartUtilities(path);
-	}
-
 	function cameraFromString(cam:String):FlxCamera {
 		switch (cam.toLowerCase()) {
 			case 'camhud' | 'hud':
@@ -2201,42 +2197,12 @@ class ModchartUtilities {
 		return PlayState.instance.camGame;
 	}
 
+	@:access(openfl.display.BlendMode)
 	function blendModeFromString(blend:String):BlendMode {
-		switch (blend.toLowerCase().trim()) {
-			case 'add':
-				return ADD;
-			case 'alpha':
-				return ALPHA;
-			case 'darken':
-				return DARKEN;
-			case 'difference':
-				return DIFFERENCE;
-			case 'erase':
-				return ERASE;
-			case 'hardlight':
-				return HARDLIGHT;
-			case 'invert':
-				return INVERT;
-			case 'layer':
-				return LAYER;
-			case 'lighten':
-				return LIGHTEN;
-			case 'multiply':
-				return MULTIPLY;
-			case 'overlay':
-				return OVERLAY;
-			case 'screen':
-				return SCREEN;
-			case 'shader':
-				return SHADER;
-			case 'subtract':
-				return SUBTRACT;
-		}
-
-		return NORMAL;
+		return BlendMode.fromString(blend.toLowerCase());
 	}
 
-	public static function easeFromString(?ease:String = '') {
+	public static function easeFromString(?ease:String = ''):Float->Float {
 		switch (ease.toLowerCase().trim()) {
 			case 'backin':
 				return FlxEase.backIn;

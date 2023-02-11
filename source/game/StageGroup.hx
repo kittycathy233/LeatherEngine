@@ -341,7 +341,7 @@ class StageGroup extends FlxGroup {
 	public function createLuaStuff() {
 		#if (linc_luajit && polymod)
 		if (stage_Data != null && stage_Data.scriptName != null && Assets.exists(Paths.lua("stage data/" + stage_Data.scriptName)))
-				stageScript = ModchartUtilities.createModchartUtilities(PolymodAssets.getPath(Paths.lua("stage data/" + stage_Data.scriptName)));
+				stageScript = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("stage data/" + stage_Data.scriptName)));
 		#end
 	}
 
