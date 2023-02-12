@@ -44,6 +44,7 @@ class TitleState extends MusicBeatState {
 	var wackyImage:FlxSprite;
 
 	static var firstTimeStarting:Bool = false;
+	static var doneFlixelSplash:Bool = false;
 
 	override public function create():Void {
 		MusicBeatState.windowNameSuffix = "";
@@ -63,7 +64,8 @@ class TitleState extends MusicBeatState {
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
 			#if FLX_NO_DEBUG
-			if (utilities.Options.getData("flixelStartupScreen")) {
+			if (utilities.Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
+				doneFlixelSplash = true;
 				flixel.system.FlxSplash.nextState = states.TitleState;
 				FlxG.switchState(new flixel.system.FlxSplash());
 				return;
