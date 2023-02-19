@@ -992,17 +992,19 @@ class PlayState extends MusicBeatState {
 		healthBar.pixelPerfectPosition = true;
 		add(healthBar);
 
+		// haha ez
+		healthBar.visible = healthBarBG.visible = Options.getData('healthBar');
+
 		// icons
 		iconP1 = new HealthIcon(boyfriend.icon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2) - iconP1.offsetY;
-		iconP1.visible = Options.getData("healthIcons");
 		if (!iconP1.visible)
 			iconP1.graphic.destroy();
 		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.icon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2) - iconP2.offsetY;
-		iconP2.visible = iconP1.visible;
+		iconP2.visible = iconP1.visible = Options.getData("healthIcons");
 		if (!iconP2.visible)
 			iconP2.graphic.destroy();
 		add(iconP2);
@@ -2863,9 +2865,13 @@ class PlayState extends MusicBeatState {
 		}
 
 		songScore += score;
+		calculateAccuracy();
+
+		// ez
+		if (!Options.getData('ratingsAndCombo'))
+			return;
 
 		rating.alpha = 1;
-
 		rating.loadGraphic(uiMap.get(daRating), false, 0, 0, true, daRating);
 
 		rating.screenCenter();
@@ -2977,8 +2983,6 @@ class PlayState extends MusicBeatState {
 				});
 			}
 		}
-
-		calculateAccuracy();
 	}
 
 	public function updateScoreText() {

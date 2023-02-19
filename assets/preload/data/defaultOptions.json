@@ -237,6 +237,14 @@
             "value": false
         },
         {
+            "option": "healthBar",
+            "value": true
+        },
+        {
+            "option": "ratingsAndCombo",
+            "value": true
+        },
+        {
             "option": "fullscreenBind",
             "value": "F11",
             "save": "binds"

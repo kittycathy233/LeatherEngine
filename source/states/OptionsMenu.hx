@@ -104,6 +104,8 @@ class OptionsMenu extends MusicBeatState {
 			new PageOption("Back", 0, "Graphics"),
 			new BoolOption("Antialiasing", "antialiasing", 1),
 			new BoolOption("Health Icons", "healthIcons", 2),
+			new BoolOption("Health Bar", "healthBar", 3),
+			new BoolOption("Ratings and Combo", "ratingsAndCombo", 3),
 			new BoolOption("Chars And BGs", "charsAndBGs", 3),
 			new BoolOption("Menu Backgrounds", "menuBGs", 4),
 			new BoolOption("Optimized Characters", "optimizedChars", 5),
