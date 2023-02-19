@@ -245,6 +245,10 @@
             "value": true
         },
         {
+            "option": "showScore",
+            "value": true
+        },
+        {
             "option": "fullscreenBind",
             "value": "F11",
             "save": "binds"

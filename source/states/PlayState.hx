@@ -2986,7 +2986,7 @@ class PlayState extends MusicBeatState {
 	}
 
 	public function updateScoreText() {
-		scoreTxt.text = '<  Score:${songScore} ~ Misses:${misses} ~ Accuracy:${accuracy}% ~ ${ratingStr}  >';
+		scoreTxt.text = '<  ${Options.getData('showScore') ? 'Score:${songScore} ~ ' : ''}Misses:${misses} ~ Accuracy:${accuracy}% ~ ${ratingStr}  >';
 		// scoreTxt.text = "Score: " + songScore + " | " + "Misses: " + misses + " | " + "Accuracy: " + accuracy + "% | " + ratingStr;
 
 		scoreTxt.screenCenter(X);
