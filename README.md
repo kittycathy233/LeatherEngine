@@ -52,8 +52,6 @@ You can load, share, and play replays of songs you've played! They can even be i
 
 - PolybiusProxy - hxCodec
 
-- datee - Developing HaxeVLC (all the contents in the 'vlc' folder belongs to datee).
-
 - Video LAN Team - People who made VLC Media Player (the thing the game uses to play videos)
 
 - Ronezkj15 - Some Ideas + New Leather Engine Logo
