@@ -47,6 +47,7 @@ class StoryMenuState extends MusicBeatState {
 
 	/* UI */
 	var yellowBG:FlxSprite;
+	var bgSprite:FlxSprite;
 
 	var weekGraphics:FlxTypedGroup<MenuItem>;
 	var menuCharacters:FlxTypedGroup<MenuCharacter>;
@@ -133,9 +134,7 @@ class StoryMenuState extends MusicBeatState {
 
 	override function closeSubState() {
 		changeWeek();
-
 		FlxG.mouse.visible = false;
-
 		super.closeSubState();
 	}
 
@@ -148,6 +147,8 @@ class StoryMenuState extends MusicBeatState {
 		weekTitleText.alpha = 0.7;
 
 		yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, FlxColor.WHITE);
+		bgSprite = new FlxSprite(0, 56);
+		bgSprite.visible = false;
 
 		menuCharacters = new FlxTypedGroup<MenuCharacter>();
 
@@ -159,11 +160,11 @@ class StoryMenuState extends MusicBeatState {
 		addWeekCharacters();
 
 		var coverUp:FlxSprite = new FlxSprite(0, 456).makeGraphic(400, 1280, FlxColor.BLACK);
-
 		weekGraphics = new FlxTypedGroup<MenuItem>();
 
 		add(weekGraphics);
 		add(yellowBG);
+		add(bgSprite);
 
 		add(menuCharacters);
 		add(coverUp);
@@ -352,12 +353,7 @@ class StoryMenuState extends MusicBeatState {
 
 		for (item in weekGraphics.members) {
 			item.targetY = bullShit - curWeek;
-
-			if (item.targetY == 0)
-				item.alpha = 1;
-			else
-				item.alpha = 0.6;
-
+			item.alpha = item.targetY == 0 ? 1.0 : 0.6;
 			bullShit++;
 		}
 
@@ -370,6 +366,13 @@ class StoryMenuState extends MusicBeatState {
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulties[curDifficulty][0], currentGroup.pathName + "Week");
+
+		if (currentGroup.weeks[curWeek].backgroundImage != null) {
+			bgSprite.loadGraphic(Paths.image('campaign menu/backgrounds/${currentGroup.weeks[curWeek].backgroundImage}'));
+			bgSprite.setGraphicSize(0, 400);
+			bgSprite.visible = true;
+		} else
+			bgSprite.visible = false;
 
 		updateText();
 	}
@@ -393,8 +396,7 @@ class StoryMenuState extends MusicBeatState {
 
 	function updateText():Void {
 		groupSwitchText.text = "<  " + currentGroup.groupName + "  >";
-
-		var curGroupWeek = currentGroup.weeks[curWeek];
+		var curGroupWeek:StoryWeek = currentGroup.weeks[curWeek];
 
 		// Reloads menu characters
 		for (characterIndex in 0...menuCharacters.members.length) {
@@ -418,11 +420,10 @@ class StoryMenuState extends MusicBeatState {
 		weekSongListText.x -= FlxG.width * 0.35;
 		weekSongListText.text = weekSongListText.text.toUpperCase();
 
-		var bgColor = FlxColor.WHITE;
+		var bgColor:FlxColor = FlxColor.WHITE;
 
 		if (curGroupWeek.backgroundColor != null) {
 			var arrayColor = curGroupWeek.backgroundColor;
-
 			bgColor = FlxColor.fromRGB(arrayColor[0], arrayColor[1], arrayColor[2]);
 		} else
 			bgColor = FlxColor.fromRGB(249, 207, 81);
@@ -474,6 +475,7 @@ typedef StoryWeek = {
 	var weekTitle:String;
 
 	var backgroundColor:Array<Int>;
+	var ?backgroundImage:Null<String>;
 	var difficulties:Null<Array<Array<String>>>;
 	var difficultyOffsets:Null<Dynamic>;
 }

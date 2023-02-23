@@ -13,11 +13,24 @@
                 "gf"
             ],
             "weekTitle": "",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -33,11 +46,24 @@
                 "gf"
             ],
             "weekTitle": "Daddy Dearest",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -53,11 +79,24 @@
                 "gf"
             ],
             "weekTitle": "Spooky Month",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -73,11 +112,24 @@
                 "gf"
             ],
             "weekTitle": "Pico",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -93,11 +145,24 @@
                 "gf"
             ],
             "weekTitle": "Mommy Must Murder",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -113,11 +178,24 @@
                 "gf"
             ],
             "weekTitle": "Red Snow",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -133,11 +211,24 @@
                 "gf"
             ],
             "weekTitle": "Hating Simulator Ft. Moawling",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         },
         {
@@ -153,11 +244,24 @@
                 "gf"
             ],
             "weekTitle": "Tankman",
-            "backgroundColor":[249, 207, 81],
+            "backgroundColor": [
+                249,
+                207,
+                81
+            ],
             "difficulties": [
-                ["easy", "default/easy"],
-                ["normal", "default/normal"],
-                ["hard", "default/hard"]
+                [
+                    "easy",
+                    "default/easy"
+                ],
+                [
+                    "normal",
+                    "default/normal"
+                ],
+                [
+                    "hard",
+                    "default/hard"
+                ]
             ]
         }
     ]
