@@ -1291,7 +1291,7 @@ class PlayState extends MusicBeatState {
 						case "dialogue":
 							var box:DialogueBox = new DialogueBox(cutscene);
 							box.scrollFactor.set();
-							box.finish_Function = function() {
+							box.finish_Function = () -> {
 								bruhDialogue(endSongVar);
 							};
 							box.cameras = [camHUD];
@@ -1322,12 +1322,11 @@ class PlayState extends MusicBeatState {
 		#if VIDEOS_ALLOWED
 		var video_handler:VideoHandler = new VideoHandler();
 
-		video_handler.finishCallback = function() {
+		video_handler.finishCallback = () -> {
 			bruhDialogue(endSongVar);
 		};
 
-		var polymod_path:String = PolymodAssets.getPath(Paths.video(name, ext));
-		video_handler.playVideo(polymod_path.startsWith("mods") ? polymod_path : Paths.video(name, ext));
+		video_handler.playVideo(PolymodAssets.getPath(Paths.video(name, ext)));
 		#else
 		bruhDialogue(endSongVar);
 		#end
@@ -2743,7 +2742,7 @@ class PlayState extends MusicBeatState {
 				prevCamFollow = camFollow;
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
-				
+
 				if (vocals != null && vocals.active)
 					vocals.stop();
 				if (FlxG.sound.music != null && FlxG.sound.music.active)
@@ -4136,8 +4135,7 @@ class PlayState extends MusicBeatState {
 	public function processEvent(event:Array<Dynamic>) {
 		#if linc_luajit
 		if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
-			event_luas.set(event[0].toLowerCase(),
-				new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+			event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 			generatedSomeDumbEventLuas = true;
 
 			for (i in 0...strumLineNotes.length) {
@@ -4427,8 +4425,7 @@ class PlayState extends MusicBeatState {
 
 			#if linc_luajit
 			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
-				event_luas.set(event[0].toLowerCase(),
-					new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+				event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 				generatedSomeDumbEventLuas = true;
 			}
 			#end
