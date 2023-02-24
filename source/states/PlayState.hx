@@ -2533,13 +2533,12 @@ class PlayState extends MusicBeatState {
 				#end
 			}
 			#end
-			// #end
 		}
 
 		if (!switchedStates) {
 			for (event in events) {
-				if (event[1] + Conductor.offset <= Conductor.songPosition) // activate funni lol
-				{
+				// activate funni lol
+				if (event[1] + Conductor.offset <= Conductor.songPosition) {
 					processEvent(event);
 					events.remove(event);
 				}

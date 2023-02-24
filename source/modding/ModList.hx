@@ -15,7 +15,7 @@ class ModList {
 
 	public static function getModEnabled(mod:String):Bool {
 		if (!modList.exists(mod))
-			setModEnabled(mod, true);
+			setModEnabled(mod, modMetadatas.get(mod).metadata.get('auto_enable').toLowerCase() != 'false');
 
 		return modList.get(mod);
 	}
