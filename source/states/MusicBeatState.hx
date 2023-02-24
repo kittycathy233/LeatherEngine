@@ -3,22 +3,20 @@ package states;
 import flixel.input.FlxInput.FlxInputState;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
-import openfl.Lib;
 import lime.app.Application;
 import game.Conductor;
 import utilities.PlayerSettings;
 import game.Conductor.BPMChangeEvent;
 import utilities.Controls;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUIState;
 
-class MusicBeatState extends FlxUIState
-{
+class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeatState #else flixel.addons.ui.FlxUIState #end {
 	public var lastBeat:Float = 0;
 	public var lastStep:Float = 0;
 
 	public var curStep:Int = 0;
 	public var curBeat:Int = 0;
+
 	private var controls(get, never):Controls;
 
 	public static var windowNameSuffix:String = "";
@@ -29,23 +27,25 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	override public function new()
-	{
+	override public function new() {
 		if (!utilities.Options.getData('memoryLeaks')) {
 			#if polymod
 			polymod.Polymod.clearCache();
 			#end
-				
+
+			#if cpp
+			cpp.vm.Gc.enable(true);
+			#end
+
 			#if sys
-			openfl.system.System.gc();	
+			openfl.system.System.gc();
 			#end
 		}
 
 		super();
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -56,22 +56,21 @@ class MusicBeatState extends FlxUIState
 
 		super.update(elapsed);
 
-		if(FlxG.stage != null)
+		if (FlxG.stage != null)
 			FlxG.stage.frameRate = flixel.math.FlxMath.bound(utilities.Options.getData("maxFPS"), 0.1, 1000);
 
-		if(!utilities.Options.getData("antialiasing"))
-		{
+		if (!utilities.Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {
-				if(Std.isOfType(basic, FlxSprite))
+				if (Std.isOfType(basic, FlxSprite))
 					Reflect.setProperty(basic, "antialiasing", false);
 			}, true);
 		}
 
-		if(FlxG.keys.checkStatus(FlxKey.fromString(utilities.Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
+		if (FlxG.keys.checkStatus(FlxKey.fromString(utilities.Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;
-		
+
 		#if debug
-		if (FlxG.keys.justPressed.F5) 
+		if (FlxG.keys.justPressed.F5)
 			FlxG.resetState();
 		#end
 
@@ -80,21 +79,18 @@ class MusicBeatState extends FlxUIState
 		Application.current.window.title = windowNamePrefix + windowNameSuffix;
 	}
 
-	private function updateBeat():Void
-	{
+	private function updateBeat():Void {
 		curBeat = Math.floor(curStep / Conductor.timeScale[1]);
 	}
 
-	private function updateCurStep():Void
-	{
+	private function updateCurStep():Void {
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
 			bpm: 0
 		}
-		
-		for(i in 0...Conductor.bpmChangeMap.length)
-		{
+
+		for (i in 0...Conductor.bpmChangeMap.length) {
 			if (Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime)
 				lastChange = Conductor.bpmChangeMap[i];
 		}
@@ -102,23 +98,22 @@ class MusicBeatState extends FlxUIState
 		var dumb:TimeScaleChangeEvent = {
 			stepTime: 0,
 			songTime: 0,
-			timeScale: [4,4]
+			timeScale: [4, 4]
 		};
 
 		var lastTimeChange:TimeScaleChangeEvent = dumb;
 
-		for(i in 0...Conductor.timeScaleChangeMap.length)
-		{
+		for (i in 0...Conductor.timeScaleChangeMap.length) {
 			if (Conductor.songPosition >= Conductor.timeScaleChangeMap[i].songTime)
 				lastTimeChange = Conductor.timeScaleChangeMap[i];
 		}
 
-		if(lastTimeChange != dumb)
+		if (lastTimeChange != dumb)
 			Conductor.timeScale = lastTimeChange.timeScale;
 
 		var multi:Float = 1;
 
-		if(FlxG.state == PlayState.instance)
+		if (FlxG.state == PlayState.instance)
 			multi = PlayState.songMultiplier;
 
 		Conductor.recalculateStuff(multi);
@@ -128,11 +123,10 @@ class MusicBeatState extends FlxUIState
 		updateBeat();
 	}
 
-	public function stepHit():Void
-	{
+	public function stepHit():Void {
 		if (curStep % Conductor.timeScale[0] == 0)
 			beatHit();
 	}
 
-	public function beatHit():Void { /* do literally nothing dumbass */ }
+	public function beatHit():Void {/* do literally nothing dumbass */}
 }

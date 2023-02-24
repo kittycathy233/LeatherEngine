@@ -49,6 +49,11 @@ class Note extends FlxSprite {
 
 	public var inEditor:Bool = false;
 
+	#if MODCHARTING_TOOLS
+	public var mesh:flixel.FlxStrip = null;
+	public var z:Float = 0;
+	#end
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 			?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
 		super();

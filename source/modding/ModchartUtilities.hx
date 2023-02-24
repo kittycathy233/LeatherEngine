@@ -1,6 +1,5 @@
 package modding;
 
-import flixel.util.FlxAxes;
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;
 import flixel.text.FlxText;
@@ -27,6 +26,9 @@ import llua.Lua.Lua_helper;
 import flixel.FlxG;
 import game.Conductor;
 import lime.app.Application;
+#if MODCHARTING_TOOLS
+import modcharting.ModchartFuncs;
+#end
 
 using StringTools;
 
@@ -2057,6 +2059,57 @@ class ModchartUtilities {
 		setLuaFunction("updateRating", function() {
 			PlayState.instance.updateRating();
 		});
+
+		#if MODCHARTING_TOOLS
+		setLuaFunction('startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1) {
+			ModchartFuncs.startMod(name, modClass, type, pf);
+		});
+
+		setLuaFunction('setMod', function(name:String, value:Float) {
+			ModchartFuncs.setMod(name, value);
+		});
+
+		setLuaFunction('setSubMod', function(name:String, subValName:String, value:Float) {
+			ModchartFuncs.setSubMod(name, subValName, value);
+		});
+
+		setLuaFunction('setModTargetLane', function(name:String, value:Int) {
+			ModchartFuncs.setModTargetLane(name, value);
+		});
+
+		setLuaFunction('setModPlayfield', function(name:String, value:Int) {
+			ModchartFuncs.setModPlayfield(name, value);
+		});
+
+		setLuaFunction('addPlayfield', function(?x:Float = 0, ?y:Float = 0, ?z:Float = 0) {
+			ModchartFuncs.addPlayfield(x, y, z);
+		});
+
+		setLuaFunction('removePlayfield', function(idx:Int) {
+			ModchartFuncs.removePlayfield(idx);
+		});
+
+		setLuaFunction('tweenModifier', function(modifier:String, val:Float, time:Float, ease:String) {
+			ModchartFuncs.tweenModifier(modifier, val, time, ease);
+		});
+
+		setLuaFunction('tweenModifierSubValue', function(modifier:String, subValue:String, val:Float, time:Float, ease:String) {
+			ModchartFuncs.tweenModifierSubValue(modifier, subValue, val, time, ease);
+		});
+
+		setLuaFunction('setModEaseFunc', function(name:String, ease:String) {
+			ModchartFuncs.setModEaseFunc(name, ease);
+		});
+
+		// had to change this cuz i already have a `set()` function, sorry mates ;-;
+		setLuaFunction('setBeat', function(beat:Float, argsAsString:String) {
+			ModchartFuncs.set(beat, argsAsString);
+		});
+
+		setLuaFunction('ease', function(beat:Float, time:Float, easeStr:String, argsAsString:String) {
+			ModchartFuncs.ease(beat, time, easeStr, argsAsString);
+		});
+		#end
 
 		executeState("onCreate", []);
 		executeState("createLua", []);

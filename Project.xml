@@ -41,6 +41,7 @@
 
 	<!-- LEATHER ENGINE CUSTOMIZATION -->
 	<define name="VIDEOS_ALLOWED" if="windows || mac || android" />
+	<define name="LUA_ALLOWED" if="desktop" />
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
 	<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
@@ -108,11 +109,16 @@
 	<haxelib name="flixelTextureAtlas" />
 
 	<haxelib name="discord_rpc" if="desktop" />
-	<haxelib name="linc_luajit" if="desktop" />
+	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
 
 	<!-- Show debug traces for hxCodec -->
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" />
 	<define name="HXC_DEBUG_TRACE" if="debug" />
+
+	<!-- haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools -->
+	<haxelib name="fnf-modcharting-tools" />
+	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />
+	<define name="LEATHER" if="MODCHARTING_TOOLS" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

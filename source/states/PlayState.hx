@@ -13,6 +13,11 @@ import polymod.backends.PolymodAssets;
 #if VIDEOS_ALLOWED
 import hxcodec.VideoHandler;
 #end
+#if MODCHARTING_TOOLS
+import modcharting.ModchartFuncs;
+import modcharting.NoteMovement;
+import modcharting.PlayfieldRenderer;
+#end
 import modding.HScript;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import utilities.Options;
@@ -402,6 +407,16 @@ class PlayState extends MusicBeatState {
 	public var mania_offset:Array<String>;
 	public var mania_gap:Array<String>;
 	public var types:Array<String>;
+
+	#if MODCHARTING_TOOLS
+	public var ui_Settings(get, set):Array<String>;
+
+	private function get_ui_Settings():Array<String>
+		return ui_settings;
+
+	private function set_ui_Settings(value:Array<String>):Array<String>
+		return ui_settings = value;
+	#end
 
 	// this sucks too, sorry i'm not documentating this bullshit that ima replace at some point with nice clean yummy jsons
 	// - leather128
@@ -971,6 +986,16 @@ class PlayState extends MusicBeatState {
 
 		splash_group.add(cache_splash);
 
+		#if MODCHARTING_TOOLS
+		playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
+		playfieldRenderer.cameras = [camHUD];
+		add(playfieldRenderer);
+
+		if (executeModchart || generatedSomeDumbEventLuas || stage.stageScript != null) {
+			ModchartFuncs.loadLuaFunctions();
+		}
+		#end
+
 		add(splash_group);
 		splash_group.cameras = [camHUD];
 
@@ -1385,6 +1410,10 @@ class PlayState extends MusicBeatState {
 				generateStaticArrows(0, true);
 			}
 		}
+
+		#if MODCHARTING_TOOLS
+		NoteMovement.getDefaultStrumPos(this);
+		#end
 
 		startedCountdown = true;
 		Conductor.songPosition = 0;
