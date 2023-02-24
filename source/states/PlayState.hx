@@ -987,12 +987,10 @@ class PlayState extends MusicBeatState {
 		splash_group.add(cache_splash);
 
 		#if MODCHARTING_TOOLS
-		playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
-		playfieldRenderer.cameras = [camHUD];
-		add(playfieldRenderer);
-
 		if (executeModchart || generatedSomeDumbEventLuas || stage.stageScript != null) {
-			ModchartFuncs.loadLuaFunctions();
+			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
+			playfieldRenderer.cameras = [camHUD];
+			add(playfieldRenderer);
 		}
 		#end
 
