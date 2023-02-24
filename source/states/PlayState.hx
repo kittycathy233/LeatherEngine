@@ -987,7 +987,7 @@ class PlayState extends MusicBeatState {
 
 		splash_group.add(cache_splash);
 
-		#if MODCHARTING_TOOLS
+		#if (MODCHARTING_TOOLS && linc_luajit)
 		if (executeModchart || generatedSomeDumbEventLuas || stage.stageScript != null) {
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
 			playfieldRenderer.cameras = [camHUD];
@@ -2509,6 +2509,7 @@ class PlayState extends MusicBeatState {
 				DiscordClient.changePresence("Chart Editor Development", null, null, true);
 				#end
 			}
+
 			#if MODCHARTING_TOOLS
 			if (FlxG.keys.justPressed.NINE && !switchedStates && !inCutscene) {
 				#if linc_luajit
