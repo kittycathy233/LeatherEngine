@@ -409,16 +409,6 @@ class PlayState extends MusicBeatState {
 	public var mania_gap:Array<String>;
 	public var types:Array<String>;
 
-	#if MODCHARTING_TOOLS
-	public var ui_Settings(get, set):Array<String>;
-
-	private function get_ui_Settings():Array<String>
-		return ui_settings;
-
-	private function set_ui_Settings(value:Array<String>):Array<String>
-		return ui_settings = value;
-	#end
-
 	// this sucks too, sorry i'm not documentating this bullshit that ima replace at some point with nice clean yummy jsons
 	// - leather128
 	public var arrow_Configs:Map<String, Array<String>> = new Map<String, Array<String>>();
