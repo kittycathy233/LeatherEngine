@@ -1,6 +1,5 @@
 package states;
 
-import modcharting.ModchartEditorState;
 import flixel.group.FlxSpriteGroup;
 #if sys
 import sys.FileSystem;
@@ -18,6 +17,7 @@ import hxcodec.VideoHandler;
 import modcharting.ModchartFuncs;
 import modcharting.NoteMovement;
 import modcharting.PlayfieldRenderer;
+import modcharting.ModchartEditorState;
 #end
 import modding.HScript;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;

@@ -116,7 +116,6 @@
 	<define name="HXC_DEBUG_TRACE" if="debug" />
 
 	<!-- haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools -->
-	<haxelib name="fnf-modcharting-tools" />
 	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />
 	<define name="LEATHER" if="MODCHARTING_TOOLS" />
 
