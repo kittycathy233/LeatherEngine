@@ -1,13 +1,10 @@
 package tools;
 
 import flixel.FlxObject;
-import states.TitleState;
 import game.EventSprite;
 import utilities.NoteVariables;
-import game.Character;
 import modding.CharacterConfig;
 import ui.FlxUIDropDownMenuCustom;
-import lime.tools.AssetType;
 import game.Song;
 import states.LoadingState;
 import utilities.CoolUtil;
@@ -22,22 +19,16 @@ import game.Song.SwagSong;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.ui.FlxInputText;
-import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
-import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import haxe.Json;
 import lime.utils.Assets;
@@ -123,6 +114,7 @@ class ChartingState extends MusicBeatState {
 
 	var min_zoom:Float = 0.5;
 	var max_zoom:Float = 16;
+
 
 	override function create() {
 		#if NO_PRELOAD_ALL
@@ -352,6 +344,15 @@ class ChartingState extends MusicBeatState {
 
 		modchart_Input = new FlxUIInputText(10, check_mute_inst.y + check_mute_inst.height + 2, 70, _song.modchartPath, 8);
 
+		var check_modchart_tools = new FlxUICheckBox(modchart_Input.x + (modchart_Input.width * 2) + 20, modchart_Input.y, null, null, "Use Modcharting Tools", 100);
+		check_modchart_tools.checked = _song.modchartingTools;
+
+		check_modchart_tools.callback = function() {
+			_song.modchartingTools = check_modchart_tools.checked;
+			trace('CHECKED!');
+		};
+
+
 		cutscene_Input = new FlxUIInputText(modchart_Input.x, modchart_Input.y + modchart_Input.height + 2, 70, _song.cutscene, 8);
 		endCutscene_Input = new FlxUIInputText(cutscene_Input.x, cutscene_Input.y + cutscene_Input.height + 2, 70, _song.endCutscene, 8);
 
@@ -442,6 +443,7 @@ class ChartingState extends MusicBeatState {
 		tab_group_song.add(check_mute_vocals);
 		tab_group_song.add(check_char_ids);
 		tab_group_song.add(modchart_Input);
+		tab_group_song.add(check_modchart_tools);
 		tab_group_song.add(cutscene_Input);
 		tab_group_song.add(endCutscene_Input);
 		tab_group_song.add(saveButton);
@@ -1676,7 +1678,7 @@ class ChartingState extends MusicBeatState {
 
 				var idIcon:FlxSprite = new FlxSprite(Math.floor((daNoteInfo + 1) * GRID_SIZE) - 16,
 					Math.floor(getYfromStrum((daStrumTime - sectionStartTime()))) - 12);
-				idIcon.loadGraphic(Paths.image("idSprite", "shared"));
+				idIcon.loadGraphic(Paths.image("charter/idSprite", "shared"));
 				idIcon.setGraphicSize(20, 20);
 				idIcon.updateHitbox();
 				idIcon.antialiasing = false;
@@ -1703,7 +1705,7 @@ class ChartingState extends MusicBeatState {
 				if (Std.int(event[1]) >= Std.int(sectionStartTime()) && Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
 					var eventSprite:EventSprite = new EventSprite(event[1]);
 
-					eventSprite.loadGraphic(Paths.image("eventSprite", "shared"));
+					eventSprite.loadGraphic(Paths.image("charter/eventSprite", "shared"));
 
 					eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
 					eventSprite.updateHitbox();

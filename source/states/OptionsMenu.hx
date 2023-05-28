@@ -11,7 +11,7 @@ import ui.Checkbox;
 import flixel.group.FlxGroup;
 import tools.ChartingState;
 import tools.StageMakingState;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import tools.AnimationDebug;
 import utilities.Controls.Control;
 import flash.text.TextField;

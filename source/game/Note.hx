@@ -50,7 +50,7 @@ class Note extends FlxSprite {
 	public var inEditor:Bool = false;
 
 	#if MODCHARTING_TOOLS
-	public var mesh:flixel.FlxStrip = null;
+	public var mesh:modcharting.SustainStrip = null;
 	public var z:Float = 0;
 	#end
 

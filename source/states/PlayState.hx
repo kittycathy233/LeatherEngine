@@ -11,7 +11,7 @@ import utilities.Discord.DiscordClient;
 import polymod.backends.PolymodAssets;
 #end
 #if VIDEOS_ALLOWED
-import hxcodec.VideoHandler;
+import hxcodec.flixel.VideoHandler;
 #end
 #if MODCHARTING_TOOLS
 import modcharting.ModchartFuncs;
@@ -55,7 +55,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -978,7 +978,8 @@ class PlayState extends MusicBeatState {
 		splash_group.add(cache_splash);
 
 		#if (MODCHARTING_TOOLS && linc_luajit)
-		if (executeModchart || generatedSomeDumbEventLuas || stage.stageScript != null) {
+		if (SONG.modchartingTools)
+		{
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
 			playfieldRenderer.cameras = [camHUD];
 			add(playfieldRenderer);
