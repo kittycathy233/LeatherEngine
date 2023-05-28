@@ -9,10 +9,10 @@ import utilities.MusicUtilities;
 import ui.Option;
 import ui.Checkbox;
 import flixel.group.FlxGroup;
-import debuggers.ChartingState;
-import debuggers.StageMakingState;
+import tools.ChartingState;
+import tools.StageMakingState;
 import flixel.system.FlxSound;
-import debuggers.AnimationDebug;
+import tools.AnimationDebug;
 import utilities.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -26,10 +26,10 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 import ui.Alphabet;
 import game.Song;
-import debuggers.StageMakingState;
+import tools.StageMakingState;
 import game.Highscore;
 import openfl.utils.Assets as OpenFLAssets;
-import debuggers.ChartingStateDev;
+import tools.ChartingStateDev;
 
 class OptionsMenu extends MusicBeatState {
 	var curSelected:Int = 0;
@@ -77,7 +77,7 @@ class OptionsMenu extends MusicBeatState {
 			#if debug
 			new GameStateOption("Charter Dev", 1, new ChartingStateDev()),
 			#end
-			new GameStateOption("Animation Debug", 2, new AnimationDebug("dad")),
+			new GameStateOption("Animation Debug", 2, new AnimationDebug("dad", "stage")),
 			new GameStateOption("Stage Editor", 3, new StageMakingState("stage")),
 			#if MODCHARTING_TOOLS
 			new GameStateOption("Modchart Editor", 4, new modcharting.ModchartEditorState()),

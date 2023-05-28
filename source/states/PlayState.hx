@@ -42,7 +42,7 @@ import utilities.NoteVariables;
 import flixel.input.FlxInput.FlxInputState;
 import flixel.group.FlxGroup;
 import utilities.Ratings;
-import debuggers.ChartingState;
+import tools.ChartingState;
 import game.Section.SwagSection;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -2493,7 +2493,7 @@ class PlayState extends MusicBeatState {
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
 
-				FlxG.switchState(new debuggers.ChartingStateDev());
+				FlxG.switchState(new tools.ChartingStateDev());
 
 				#if discord_rpc
 				DiscordClient.changePresence("Chart Editor Development", null, null, true);
