@@ -93,6 +93,8 @@ class TitleState extends MusicBeatState {
 			}, false, 100);
 			#end
 
+
+
 			firstTimeStarting = true;
 		}
 
@@ -117,6 +119,7 @@ class TitleState extends MusicBeatState {
 
 	function startIntro() {
 		if (!initialized) {
+
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
