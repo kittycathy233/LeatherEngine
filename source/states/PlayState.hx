@@ -566,6 +566,13 @@ class PlayState extends MusicBeatState {
 	public var event_luas:Map<String, ModchartUtilities> = [];
 	#end
 
+	#if linc_luajit
+	/**
+		Array of Lua scripts in the "global" folder
+	**/
+	public var globalScriptArray:Array<ModchartUtilities> = [];
+	#end
+
 	/**
 		`FlxTypedGroup` of `NoteSplash`s used to contain all note splashes
 		and make performance better as a result by using `.recycle`.
@@ -969,6 +976,25 @@ class PlayState extends MusicBeatState {
 
 		if (luaModchart == null && generatedSomeDumbEventLuas)
 			executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
+
+		var filesPushed:Array<String> = [];
+		var foldersToCheck:Array<String> = [Paths.getPreloadPath('scripts/global/')];
+
+		
+		for (folder in foldersToCheck)
+			{
+				if(FileSystem.exists(folder))
+				{
+					for (file in FileSystem.readDirectory(folder))
+					{
+						if(file.endsWith('.lua') && !filesPushed.contains(file))
+						{
+							globalScriptArray.push(new ModchartUtilities(folder + file));
+							filesPushed.push(file);
+						}
+					}
+				}
+			}
 
 		stage.createLuaStuff();
 
@@ -1747,6 +1773,7 @@ class PlayState extends MusicBeatState {
 		unspawnNotes.sort(sortByShit);
 		generatedMusic = true;
 		SONG.validScore = SONG.validScore == true ? songMultiplier >= 1 : false;
+
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int {

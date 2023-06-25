@@ -28,6 +28,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+import shaders.TitleEffect;
 
 using StringTools;
 
@@ -46,8 +47,12 @@ class TitleState extends MusicBeatState {
 	static var firstTimeStarting:Bool = false;
 	static var doneFlixelSplash:Bool = false;
 
+	var swagShader:TitleEffect;
+
 	override public function create():Void {
 		MusicBeatState.windowNameSuffix = "";
+
+		swagShader = new TitleEffect();
 
 		if (!firstTimeStarting) {
 			persistentUpdate = true;
@@ -194,13 +199,19 @@ class TitleState extends MusicBeatState {
 			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 			logoBl.animation.play('bump');
 			logoBl.updateHitbox();
+			logoBl.shader = swagShader.shader;
 		}
+		
+		
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('title/gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
+		gfDance.shader = swagShader.shader;
+
+
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('title/titleEnter');
@@ -266,6 +277,13 @@ class TitleState extends MusicBeatState {
 	var transitioning:Bool = false;
 
 	override function update(elapsed:Float) {
+
+		if (controls.LEFT)
+			swagShader.update(-elapsed * 0.1);
+
+		if (controls.RIGHT)
+			swagShader.update(elapsed * 0.1);
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 

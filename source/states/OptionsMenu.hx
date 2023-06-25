@@ -42,7 +42,8 @@ class OptionsMenu extends MusicBeatState {
 			new PageOption("Gameplay", 0, "Gameplay"),
 			new PageOption("Graphics", 1, "Graphics"),
 			new PageOption("Tools (Very WIP)", 2, "Tools"),
-			new PageOption("Misc", 3, "Misc")
+			//new PageOption("Accessibility", 3, "Accessibility"),
+			new PageOption("Misc", 4, "Misc")
 		],
 		"Gameplay" => [
 			new PageOption("Back", 0, "Categories"),
@@ -84,6 +85,9 @@ class OptionsMenu extends MusicBeatState {
 			#end
 			// new GameStateOption("Character Creator", 4, new CharacterCreationState("bf")),
 			new GameSubstateOption("Import Old Scores", 5, substates.ImportHighscoresSubstate)
+		],
+		"Accessibility" => [
+			new PageOption("Back", 0, "Categories")
 		],
 		"Misc" => [
 			new PageOption("Back", 0, "Categories"),
