@@ -1,5 +1,6 @@
 package game;
 
+import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
 import utilities.Options;
 import flixel.FlxG;
@@ -49,6 +50,8 @@ class Character extends FlxSprite {
 	public var config:CharacterConfig;
 
 	public var singDuration:Float = 4.0;
+
+	public var script:HScript;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDeathCharacter:Bool = false) {
 		super(x, y);
@@ -171,6 +174,15 @@ class Character extends FlxSprite {
 
 		if (icon == null)
 			icon = curCharacter;
+
+		if(Assets.exists(Paths.hx("data/" + curCharacter)))
+			{
+				script = new HScript(Paths.hx("data/" + curCharacter));
+	
+				script.interp.variables.set("character", this);
+	
+				script.call("createCharacter", [curCharacter]);
+			}
 
 		// YOOOOOOOOOO POG MODDING STUFF
 		if (character != "")
@@ -392,7 +404,8 @@ class Character extends FlxSprite {
 					playAnim('danceRight');
 			}
 		}
-
+		if(script != null)
+			script.update(elapsed);
 		super.update(elapsed);
 	}
 

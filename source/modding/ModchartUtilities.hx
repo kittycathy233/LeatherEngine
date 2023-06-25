@@ -67,7 +67,7 @@ class ModchartUtilities {
 			return Reflect.getProperty(PlayState, id);
 
 		if (PlayState.strumLineNotes.length - 1 >= Std.parseInt(id)) @:privateAccess
-			return PlayState.strumLineNotes.members[Std.parseInt(id)];
+			return PlayState.strumLineNotes.members[Std.parseInt(id)%PlayState.strumLineNotes.members.length];
 
 		return null;
 	}
@@ -2061,58 +2061,53 @@ class ModchartUtilities {
 		});
 
 		#if MODCHARTING_TOOLS
-		setLuaFunction('startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1) {
-			ModchartFuncs.startMod(name, modClass, type, pf);
-		});
+		if (PlayState.SONG.modchartingTools){
+			setLuaFunction('startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1){
+				ModchartFuncs.startMod(name,modClass,type,pf);
 
-		setLuaFunction('setMod', function(name:String, value:Float) {
-			ModchartFuncs.setMod(name, value);
-		});
+				PlayState.instance.playfieldRenderer.modifierTable.reconstructTable(); //needs to be reconstructed for lua modcharts
+			});
+			setLuaFunction('setMod', function(name:String, value:Float){
+				ModchartFuncs.setMod(name, value);
+			});
+			setLuaFunction('setSubMod', function(name:String, subValName:String, value:Float){
+				ModchartFuncs.setSubMod(name, subValName,value);
+			});
+			setLuaFunction('setModTargetLane', function(name:String, value:Int){
+				ModchartFuncs.setModTargetLane(name, value);
+			});
+			setLuaFunction('setModPlayfield', function(name:String, value:Int){
+				ModchartFuncs.setModPlayfield(name,value);
+			});
+			setLuaFunction('addPlayfield', function(?x:Float = 0, ?y:Float = 0, ?z:Float = 0){
+				ModchartFuncs.addPlayfield(x,y,z);
+			});
+			setLuaFunction('removePlayfield', function(idx:Int){
+				ModchartFuncs.removePlayfield(idx);
+			});
+			setLuaFunction('tweenModifier', function(modifier:String, val:Float, time:Float, ease:String){
+				ModchartFuncs.tweenModifier(modifier,val,time,ease);
+			});
+			setLuaFunction('tweenModifierSubValue', function(modifier:String, subValue:String, val:Float, time:Float, ease:String){
+				ModchartFuncs.tweenModifierSubValue(modifier,subValue,val,time,ease);
+			});
+			setLuaFunction('setModEaseFunc', function(name:String, ease:String){
+				ModchartFuncs.setModEaseFunc(name,ease);
+			});
+			setLuaFunction('setMod', function(beat:Float, argsAsString:String){
+				ModchartFuncs.set(beat, argsAsString);
+			});
+			setLuaFunction('easeMod', function(beat:Float, time:Float, easeStr:String, argsAsString:String){
 
-		setLuaFunction('setSubMod', function(name:String, subValName:String, value:Float) {
-			ModchartFuncs.setSubMod(name, subValName, value);
-		});
+				ModchartFuncs.ease(beat, time, easeStr, argsAsString);
+				
+			});
+			setLuaFunction('ease', function(beat:Float, time:Float, easeStr:String, argsAsString:String){
 
-		setLuaFunction('setModTargetLane', function(name:String, value:Int) {
-			ModchartFuncs.setModTargetLane(name, value);
-		});
-
-		setLuaFunction('setModPlayfield', function(name:String, value:Int) {
-			ModchartFuncs.setModPlayfield(name, value);
-		});
-
-		setLuaFunction('addPlayfield', function(?x:Float = 0, ?y:Float = 0, ?z:Float = 0) {
-			ModchartFuncs.addPlayfield(x, y, z);
-		});
-
-		setLuaFunction('removePlayfield', function(idx:Int) {
-			ModchartFuncs.removePlayfield(idx);
-		});
-
-		setLuaFunction('tweenModifier', function(modifier:String, val:Float, time:Float, ease:String) {
-			ModchartFuncs.tweenModifier(modifier, val, time, ease);
-		});
-
-		setLuaFunction('tweenModifierSubValue', function(modifier:String, subValue:String, val:Float, time:Float, ease:String) {
-			ModchartFuncs.tweenModifierSubValue(modifier, subValue, val, time, ease);
-		});
-
-		setLuaFunction('setModEaseFunc', function(name:String, ease:String) {
-			ModchartFuncs.setModEaseFunc(name, ease);
-		});
-
-		// had to change this cuz i already have a `set()` function, sorry mates ;-;
-		setLuaFunction('setMod', function(beat:Float, argsAsString:String) {
-			ModchartFuncs.set(beat, argsAsString);
-		});
-
-		setLuaFunction('easeMod', function(beat:Float, time:Float, easeStr:String, argsAsString:String) {
-			ModchartFuncs.ease(beat, time, easeStr, argsAsString);
-		});
-
-		setLuaFunction('ease', function(beat:Float, time:Float, easeStr:String, argsAsString:String) {
-			ModchartFuncs.ease(beat, time, easeStr, argsAsString);
-		});
+				ModchartFuncs.ease(beat, time, easeStr, argsAsString);
+				
+			});
+		}
 		#end
 
 		executeState("onCreate", []);

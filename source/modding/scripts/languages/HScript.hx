@@ -1,4 +1,4 @@
-package modding;
+package modding.scripts.languages;
 
 import openfl.utils.Assets;
 import hscript.Parser;

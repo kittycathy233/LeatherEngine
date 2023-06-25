@@ -1,5 +1,6 @@
 package game;
 
+import modding.scripts.languages.HScript;
 #if polymod
 import polymod.backends.PolymodAssets;
 #end
@@ -249,6 +250,13 @@ class StageGroup extends FlxGroup {
 				// CUSTOM SHIT
 				default:
 					{
+						if (Assets.exists(Paths.hx('stages/${stage}'))) {
+	
+							PlayState.stage_script = new HScript(Paths.hx('stages/${stage}'));
+							PlayState.stage_script.start();
+	
+							PlayState.scripts.push(PlayState.stage_script);
+						} else {
 						if (stage_Data != null) {
 							camZoom = stage_Data.camera_Zoom;
 
@@ -334,6 +342,7 @@ class StageGroup extends FlxGroup {
 							}
 						}
 					}
+				}
 			}
 		}
 	}
