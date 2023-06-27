@@ -1,5 +1,6 @@
 package modding;
 
+import flixel.util.FlxTimer;
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;
 import flixel.text.FlxText;
@@ -2060,6 +2061,21 @@ class ModchartUtilities {
 			PlayState.instance.updateRating();
 		});
 
+
+		setLuaFunction("runTimer", function(tag:String, time:Float = 1, loops:Int = 1) {
+			cancelTimer(tag);
+			PlayState.instance.luaTimers.set(tag, new FlxTimer().start(time, function(tmr:FlxTimer) {
+				if(tmr.finished) {
+					PlayState.instance.luaTimers.remove(tag);
+				}
+				PlayState.instance.executeALuaState('onTimerCompleted', [tag, tmr.loops, tmr.loopsLeft]);
+				//trace('Timer Completed: ' + tag);
+			}, loops));
+		});
+		setLuaFunction("cancelTimer", function(tag:String) {
+			cancelTimer(tag);
+		});
+
 		#if MODCHARTING_TOOLS
 		if (PlayState.SONG.modchartingTools){
 			setLuaFunction('startMod', function(name:String, modClass:String, type:String = '', pf:Int = -1){
@@ -2247,6 +2263,15 @@ class ModchartUtilities {
 		}
 
 		return PlayState.instance.camGame;
+	}
+
+	function cancelTimer(tag:String) {
+		if(PlayState.instance.luaTimers.exists(tag)) {
+			var theTimer:FlxTimer = PlayState.instance.luaTimers.get(tag);
+			theTimer.cancel();
+			theTimer.destroy();
+			PlayState.instance.luaTimers.remove(tag);
+		}
 	}
 
 	@:access(openfl.display.BlendMode)

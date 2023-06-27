@@ -935,8 +935,10 @@ class PlayState extends MusicBeatState {
 		playerStrums = new FlxTypedGroup<StrumNote>();
 		enemyStrums = new FlxTypedGroup<StrumNote>();
 
-		generateSong(SONG.song);
 		generateEvents();
+
+		generateSong(SONG.song);
+	
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 
@@ -1908,9 +1910,14 @@ class PlayState extends MusicBeatState {
 
 			if (!startTimer.finished)
 				startTimer.active = false;
+
+			for (timer in luaTimers) {
+				timer.active = false;
+			}
 		}
 
 		super.openSubState(SubState);
+
 	}
 
 	override function closeSubState() {
@@ -1931,6 +1938,10 @@ class PlayState extends MusicBeatState {
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			}
 			#end
+
+			for (timer in luaTimers) {
+				timer.active = true;
+			}
 		}
 
 		super.closeSubState();
@@ -2273,6 +2284,11 @@ class PlayState extends MusicBeatState {
 			vocals.stop();
 			FlxG.sound.music.stop();
 
+
+			for (timer in luaTimers) {
+				timer.active = true;
+			}
+			
 			if (boyfriend.otherCharacters == null)
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			else
@@ -2282,6 +2298,7 @@ class PlayState extends MusicBeatState {
 			// Game Over doesn't get his own variable because it's only used here
 			DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			#end
+
 
 			executeALuaState("onDeath", [Conductor.songPosition]);
 		}
@@ -4236,7 +4253,11 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	function executeALuaState(name:String, arguments:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>) {
+
+	public var luaTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
+
+
+	public function executeALuaState(name:String, arguments:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>) {
 		if (stage_arguments == null)
 			stage_arguments = arguments;
 
