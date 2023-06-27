@@ -1425,9 +1425,11 @@ class PlayState extends MusicBeatState {
 		#if VIDEOS_ALLOWED
 		var video_handler:FlxVideo = new FlxVideo();
 
-		/*video_handler.onEndReached.add(video_handler.dispose) = () -> {
-			bruhDialogue(endSongVar);
-		};*/
+		video_handler.onEndReached.add(function()
+			{
+				bruhDialogue(endSongVar);
+				return;
+			}, true);
 		video_handler.onEndReached.add(video_handler.dispose);
 
 
