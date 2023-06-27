@@ -135,7 +135,7 @@ class Note extends FlxSprite {
 		if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
 			heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
 
-		if (utilities.Options.getData("downscroll") && !sustainNote && !inEditor)
+		if (utilities.Options.getData("downscroll") && sustainNote)
 			flipY = true;
 
 		if (isSustainNote && prevNote != null) {
@@ -269,7 +269,7 @@ class Note extends FlxSprite {
 	if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
 		heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
 
-	if (utilities.Options.getData("downscroll") && !sustainNote && !inEditor)
+	if (utilities.Options.getData("downscroll") && sustainNote)
 		flipY = true;
 
 	if (isSustainNote && prevNote != null) {

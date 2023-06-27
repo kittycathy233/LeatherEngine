@@ -67,7 +67,7 @@ class ModchartUtilities {
 			return Reflect.getProperty(PlayState, id);
 
 		if (PlayState.strumLineNotes.length - 1 >= Std.parseInt(id)) @:privateAccess
-			return PlayState.strumLineNotes.members[Std.parseInt(id)%PlayState.strumLineNotes.members.length];
+			return PlayState.strumLineNotes.members[Std.parseInt(id)];
 
 		return null;
 	}

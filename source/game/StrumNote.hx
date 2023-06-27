@@ -1,5 +1,6 @@
 package game;
 
+import flixel.FlxG;
 import utilities.NoteVariables;
 import shaders.ColorSwap;
 import shaders.NoteColors;
