@@ -2694,12 +2694,10 @@ class PlayState extends MusicBeatState {
 			for (shaderKey in shaderThing.keys()) {
 				if (shaderThing.exists(shaderKey))
 					shaderThing.get(shaderKey).update(elapsed);
-				if (customShaderThing.exists(shaderKey))
-					customShaderThing.get(shaderKey).update(elapsed);
 			}
-			for (shaderKey in shaderThing.keys()) {
-				if (customShaderThing.exists(shaderKey))
-					customShaderThing.get(shaderKey).update(elapsed);
+			for (customShaderKey in customShaderThing.keys()) {
+				if (customShaderThing.exists(customShaderKey))
+					customShaderThing.get(customShaderKey).update(elapsed);
 			}
 			
 

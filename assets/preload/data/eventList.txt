@@ -7,11 +7,13 @@ Play Character Animation~Character (Dad, BF, GF)~Animation to play
 Hey!~BF = Only BF, GF = Only GF, anything else = Both~Nothing
 Character Will Idle~Character (BF, Dad, GF)~"true" or "false"
 Set GF Speed~1 = Normal Speed (NOT A DECIMAL)~Nothing
+Set Camera Zoom~Game Camera Zoom (default is defaultCameraZoom)~Hud Camera Zoom (default is 1)
 Add Camera Zoom~Game Camera Add (default = 0.015)~Hud Camera Add (default = 0.03)
 Screen Shake~Camera Shake (duration, intensity)~Hud Shake (duration, intensity)
-Set Camera Zoom~Game Camera Zoom (default is defaultCameraZoom)~Hud Camera Zoom (default is 1)
 Camera Flash~Color (example: 'red')~Duration
 3D Shader~Character (BF, Dad, GF)~Properties formated like: '3,10,0.25' (speed, frequency, amplitude)
 No Shader~Character (BF, Dad, GF)~Nothing
+Set Hud Shader~id~shader
+Set Game Shader~id~shader
 Add Trail~Object Name (dad, boyfriend, girlfriend, etc)~Properties, formatted like: '10,3,0.4,0.05' (sprite count, frame delay, alpha, alpha diff)
 Remove Trail~Object Name (dad, boyfriend, girlfriend, etc)~Nothing

@@ -63,3 +63,5 @@ You can load, share, and play replays of songs you've played! They can even be i
 - larsiusprime + Polymod Contributors - [polymod](https://github.com/larsiusprime/polymod) (funny cool mod loader!!!)
 
 - TheZoroForce240 + FNF-Modcharting-Tools Contributors - [fnf-modcharting-tools](https://github.com/TheZoroForce240/FNF-Modcharting-Tools) (cool modchart shits, check them out!!!)
+
+- EliteMasterEric - [FlxRuntimeShader](https://github.com/elitemastereric) cool class that allows for custom shaders

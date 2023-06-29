@@ -65,6 +65,9 @@ class ModchartUtilities {
 			return lua_Sounds.get(id);
 		else if (lua_Shaders.exists(id))
 			return lua_Shaders.get(id);
+		else if (lua_Custom_Shaders.exists(id))
+			return lua_Custom_Shaders.get(id);
+
 
 		if (Reflect.getProperty(PlayState.instance, id) != null)
 			return Reflect.getProperty(PlayState.instance, id);
@@ -91,6 +94,7 @@ class ModchartUtilities {
 		lua_Sprites.clear();
 		lua_Characters.clear();
 		lua_Shaders.clear();
+		lua_Custom_Shaders.clear();
 		lua_Sounds.clear();
 
 		Lua.close(lua);
