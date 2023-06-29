@@ -165,7 +165,8 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Camera Tracks Direction", "cameraTracksDirections", 1),
 			new BoolOption("Camera Bounce", "cameraZooms", 2),
 			new BoolOption("Flashing Lights", "flashingLights", 3),
-			new BoolOption("Screen Shake", "screenShakes", 4)
+			new BoolOption("Screen Shake", "screenShakes", 4),
+			new BoolOption("Shaders", "shaders", 5)
 		]
 	];
 

@@ -49,6 +49,12 @@ class Paths {
 	inline static public function hx(key:String, ?library:String):String
 		return getPath('$key.hx', TEXT, library);
 
+	inline static public function frag(key:String, ?library:String):String
+		return getPath('shaders/$key.frag', TEXT, library);
+
+	inline static public function vert(key:String, ?library:String):String
+		return getPath('shaders/$key.vert', TEXT, library);
+
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String):String
 		return getPath(file, type, library);
 

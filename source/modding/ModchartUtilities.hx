@@ -1,5 +1,8 @@
 package modding;
 
+import shaders.custom.CustomShader;
+import openfl.filters.ShaderFilter;
+import shaders.custom.flixel.FlxRuntimeShader;
 import flixel.util.FlxTimer;
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;
@@ -50,6 +53,7 @@ class ModchartUtilities {
 
 	public static var lua_Sounds:Map<String, FlxSound> = [];
 	public static var lua_Shaders:Map<String, shaders.Shaders.ShaderEffect> = [];
+	public static var lua_Custom_Shaders:Map<String, CustomShader> = [];
 
 	public var functions_called:Array<String> = [];
 
@@ -2055,6 +2059,14 @@ class ModchartUtilities {
 				lua_Shaders.remove(id);
 				actor.shader = null;
 			}
+		});
+
+		setLuaFunction("setCameraCustomShader", function(id:String, file:String, camera:String){
+
+			var funnyShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			lua_Custom_Shaders.set(id, funnyShader);
+			cameraFromString(camera).setFilters([new ShaderFilter(funnyShader)]);
+
 		});
 
 		setLuaFunction("updateRating", function() {

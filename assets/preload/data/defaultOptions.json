@@ -267,6 +267,10 @@
             "option": "save",
             "value": "{}",
             "save": "autosave"
+        },
+        {
+            "option": "shaders",
+            "value": true
         }
     ]
 }

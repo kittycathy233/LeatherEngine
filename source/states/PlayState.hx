@@ -2689,11 +2689,19 @@ class PlayState extends MusicBeatState {
 			&& !switchedStates
 			&& startedCountdown) {
 			var shaderThing = modding.ModchartUtilities.lua_Shaders;
+			var customShaderThing = modding.ModchartUtilities.lua_Custom_Shaders;
 
 			for (shaderKey in shaderThing.keys()) {
 				if (shaderThing.exists(shaderKey))
 					shaderThing.get(shaderKey).update(elapsed);
+				if (customShaderThing.exists(shaderKey))
+					customShaderThing.get(shaderKey).update(elapsed);
 			}
+			for (shaderKey in shaderThing.keys()) {
+				if (customShaderThing.exists(shaderKey))
+					customShaderThing.get(shaderKey).update(elapsed);
+			}
+			
 
 			setLuaVar("songPos", Conductor.songPosition);
 			setLuaVar("hudZoom", camHUD.zoom);
