@@ -205,6 +205,7 @@ class ModchartUtilities {
 		setVar("flashing", utilities.Options.getData("flashingLights"));
 		setVar("distractions", true);
 		setVar("cameraZooms", utilities.Options.getData("cameraZooms"));
+		setVar("shaders", utilities.Options.getData("shaders"));
 
 		setVar("animatedBackgrounds", utilities.Options.getData("animatedBGs"));
 
@@ -2067,11 +2068,57 @@ class ModchartUtilities {
 
 		setLuaFunction("setCameraCustomShader", function(id:String, file:String, camera:String){
 
-			var funnyShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
-			lua_Custom_Shaders.set(id, funnyShader);
-			cameraFromString(camera).setFilters([new ShaderFilter(funnyShader)]);
+			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			lua_Custom_Shaders.set(id, funnyCustomShader);
+			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
 
 		});
+
+		setLuaFunction("getCustomShaderBool", function(id:String, property:String) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			return funnyCustomShader.getBool(property);
+		});
+
+		setLuaFunction("getCustomShaderInt", function(id:String, property:String) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			return funnyCustomShader.getInt(property);
+		});
+
+		setLuaFunction("getCustomShaderFloat", function(id:String, property:String) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			return funnyCustomShader.getFloat(property);
+		});
+
+		setLuaFunction("setCustomShaderBool", function(id:String, property:String, value:Bool) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setBool(property, value);
+		});
+		
+		setLuaFunction("setCustomShaderInt", function(id:String, property:String, value:Int) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setInt(property, value);
+		});
+
+		setLuaFunction("setCustomShaderFloat", function(id:String, property:String, value:Float) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setFloat(property, value);
+		});
+
+		setLuaFunction("tweeenCustomShaderBool", function(id:String, property:String, value:Bool) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setBool(property, value);
+		});
+		
+		setLuaFunction("tweenCustomShaderInt", function(id:String, property:String, value:Int) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setInt(property, value);
+		});
+
+		setLuaFunction("tweenCustomShaderFloat", function(id:String, property:String, value:Float) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setFloat(property, value);
+		});
+
 
 		setLuaFunction("updateRating", function() {
 			PlayState.instance.updateRating();
@@ -2294,6 +2341,7 @@ class ModchartUtilities {
 	function blendModeFromString(blend:String):BlendMode {
 		return BlendMode.fromString(blend.toLowerCase());
 	}
+
 
 	public static function easeFromString(?ease:String = ''):Float->Float {
 		switch (ease.toLowerCase().trim()) {
