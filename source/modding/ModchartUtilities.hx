@@ -2066,12 +2066,16 @@ class ModchartUtilities {
 			}
 		});
 
-		setLuaFunction("setCameraCustomShader", function(id:String, file:String, camera:String){
+		setLuaFunction("setActorCustomShader", function(id:String, file:String, actor:String){
+			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			lua_Custom_Shaders.set(id, funnyCustomShader);
+			getActorByName(actor).shader = funnyCustomShader;
+		});
 
+		setLuaFunction("setCameraCustomShader", function(id:String, file:String, camera:String){
 			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
-
 		});
 
 		setLuaFunction("getCustomShaderBool", function(id:String, property:String) {
@@ -2103,20 +2107,11 @@ class ModchartUtilities {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			funnyCustomShader.setFloat(property, value);
 		});
-
-		setLuaFunction("tweeenCustomShaderBool", function(id:String, property:String, value:Bool) {
-			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			funnyCustomShader.setBool(property, value);
-		});
 		
 		setLuaFunction("tweenCustomShaderInt", function(id:String, property:String, value:Int) {
-			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			funnyCustomShader.setInt(property, value);
 		});
 
 		setLuaFunction("tweenCustomShaderFloat", function(id:String, property:String, value:Float) {
-			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			funnyCustomShader.setFloat(property, value);
 		});
 
 
