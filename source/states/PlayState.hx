@@ -4549,46 +4549,68 @@ class PlayState extends MusicBeatState {
 				}
 				SONG.keyCount = toChangeAlt;	
 				SONG.playerKeyCount = toChange;
-				SONG.mania = toChange;
 				playerStrums.clear();
 				enemyStrums.clear();
 				strumLineNotes.clear();
+				#if (MODCHARTING_TOOLS && linc_luajit)
+				if (SONG.modchartingTools)
+				{
+					playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
+					playfieldRenderer.cameras = [camHUD];
+					add(playfieldRenderer);
+				}
+				#end
 				binds = Options.getData("binds", "binds")[toChange - 1];
-				if(utilities.Options.getData("middlescroll"))
-					{
-						generateStaticArrows(50, false);
-						generateStaticArrows(0.5, true);
+				if (Options.getData("middlescroll")) {
+					generateStaticArrows(50, false);
+					generateStaticArrows(0.5, true);
+				} else {
+					if (characterPlayingAs == 0) {
+						generateStaticArrows(0, false);
+						generateStaticArrows(1, true);
+					} else {
+						generateStaticArrows(1, false);
+						generateStaticArrows(0, true);
 					}
-					else
-					{
-						if(characterPlayingAs == 0)
-						{
-							generateStaticArrows(0, false);
-							generateStaticArrows(1, true);
-							playerStrums.add(babyArrow);	
-						}
-						else
-						{
-							generateStaticArrows(1, false);
-							generateStaticArrows(0, true);
-							enemyStrums.add(babyArrow);
-						}
-					}
+				}
+				#if MODCHARTING_TOOLS
+				NoteMovement.getDefaultStrumPos(this);
+				#end
+				
 				for (note in unspawnNotes) {
 					note.newNew(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
 				}
-			
 				for (note in notes.members) {
 					note.newNew(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
 				}
+				
 				#if linc_luajit
-				for (i in 0...strumLineNotes.length)
-				{
+				for (i in 0...strumLineNotes.length) {
 					var member = strumLineNotes.members[i];
 		
 					setLuaVar("defaultStrum" + i + "X", member.x);
 					setLuaVar("defaultStrum" + i + "Y", member.y);
 					setLuaVar("defaultStrum" + i + "Angle", member.angle);
+		
+					setLuaVar("defaultStrum" + i, {
+						x: member.x,
+						y: member.y,
+						angle: member.angle,
+					});
+		
+					if (enemyStrums.members.contains(member)) {
+						setLuaVar("enemyStrum" + i % SONG.keyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					} else {
+						setLuaVar("playerStrum" + i % SONG.playerKeyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					}
 				}
 				#end
 		}
