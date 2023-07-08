@@ -40,7 +40,7 @@ class Paths {
 	inline static function getLibraryPathForce(file:String, library:String):String
 		return '$library:assets/$library/$file';
 
-	inline public static function getPreloadPath(file:String):String
+	inline static function getPreloadPath(file:String):String
 		return 'assets/$file';
 
 	inline static public function lua(key:String, ?library:String):String

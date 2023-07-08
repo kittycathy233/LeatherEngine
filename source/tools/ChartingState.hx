@@ -1357,6 +1357,7 @@ class ChartingState extends MusicBeatState {
 				if (beatSnaps.indexOf(beatSnap) - 1 >= 0)
 					beatSnap = beatSnaps[beatSnaps.indexOf(beatSnap) - 1];
 			}
+
 		}
 
 		_song.bpm = tempBpm;

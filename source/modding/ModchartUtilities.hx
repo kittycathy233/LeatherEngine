@@ -2108,17 +2108,9 @@ class ModchartUtilities {
 			funnyCustomShader.setFloat(property, value);
 		});
 		
-		setLuaFunction("tweenCustomShaderInt", function(id:String, property:String, value:Int) {
-		});
-
-		setLuaFunction("tweenCustomShaderFloat", function(id:String, property:String, value:Float) {
-		});
-
-
 		setLuaFunction("updateRating", function() {
 			PlayState.instance.updateRating();
 		});
-
 
 		setLuaFunction("runTimer", function(tag:String, time:Float = 1, loops:Int = 1) {
 			cancelTimer(tag);
