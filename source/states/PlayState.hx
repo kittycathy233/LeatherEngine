@@ -1267,7 +1267,7 @@ class PlayState extends MusicBeatState {
 		updateSongInfoText();
 	}
 
-	public static var scripts:Array<HScript> = [];
+	public var scripts:Array<HScript> = [];
 
 	var script:HScript;
 

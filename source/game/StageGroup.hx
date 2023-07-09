@@ -255,7 +255,7 @@ class StageGroup extends FlxGroup {
 							PlayState.stage_script = new HScript(Paths.hx('stages/${stage}'));
 							PlayState.stage_script.start();
 	
-							PlayState.scripts.push(PlayState.stage_script);
+							PlayState.instance.scripts.push(PlayState.stage_script);
 						} else {
 						if (stage_Data != null) {
 							camZoom = stage_Data.camera_Zoom;
