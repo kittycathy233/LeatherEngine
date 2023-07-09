@@ -100,10 +100,15 @@ class HScript
 
 		// haxeflixel classes
 		interp.variables.set("FlxG", flixel.FlxG);
+		interp.variables.set("FlxSprite", flixel.FlxSprite);
+		interp.variables.set('FlxCamera', flixel.FlxCamera);
+		interp.variables.set("FlxG", flixel.math.FlxMath);
+		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
+		interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
 		interp.variables.set("Polymod", polymod.Polymod);
 		interp.variables.set("Assets", openfl.utils.Assets);
 		interp.variables.set("LimeAssets", lime.utils.Assets);
-		interp.variables.set("FlxSprite", flixel.FlxSprite);
 		interp.variables.set("Math", Math);
 		interp.variables.set("Std", Std);
 		interp.variables.set("StringTools", StringTools);
@@ -113,6 +118,9 @@ class HScript
 		interp.variables.set("Conductor", game.Conductor);
 		interp.variables.set("Paths", Paths);
 		interp.variables.set("CoolUtil", utilities.CoolUtil);
+		interp.variables.set('Options', utilities.Options);
+		interp.variables.set('Character', game.Character);
+		interp.variables.set('Alphabet', ui.Alphabet);
 
 		// function shits
 
@@ -136,6 +144,7 @@ class HScript
 			else
 				trace(class_name + " isn't a valid class or enum!");
 		});
+
 		interp.variables.set("trace", function(value:Dynamic)
 		{
 			trace(value);

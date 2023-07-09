@@ -4573,6 +4573,7 @@ class PlayState extends MusicBeatState {
 
 		//                            name       pos      param 1   param 2
 		executeALuaState("onEvent", [event[0], event[1], event[2], event[3]]);
+		allScriptCall("onEvent", [event[0], event[1], event[2], event[3]]);
 	}
 
 	public function calculateAccuracy() {
