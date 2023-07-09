@@ -115,6 +115,27 @@ class HScript
 		interp.variables.set("CoolUtil", utilities.CoolUtil);
 
 		// function shits
+
+	    interp.variables.set("import", function(class_name:String) {
+			var classes = class_name.split(".");
+	
+			if(Type.resolveClass(class_name) != null)
+				interp.variables.set(classes[classes.length - 1], Type.resolveClass(class_name));
+			else if(Type.resolveEnum(class_name) != null)
+			{
+				var enum_new = {};
+				var good_enum = Type.resolveEnum(class_name);
+	
+				for(constructor in good_enum.getConstructors())
+				{
+					Reflect.setField(enum_new, constructor, good_enum.createByName(constructor));
+				}
+	
+				interp.variables.set(classes[classes.length - 1], enum_new);
+			}
+			else
+				trace(class_name + " isn't a valid class or enum!");
+		});
 		interp.variables.set("trace", function(value:Dynamic)
 		{
 			trace(value);
