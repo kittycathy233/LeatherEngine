@@ -175,9 +175,9 @@ class Character extends FlxSprite {
 		if (icon == null)
 			icon = curCharacter;
 
-		if(Assets.exists(Paths.hx("data/" + curCharacter)))
+		if(Assets.exists(Paths.hx("data/character data" + curCharacter)))
 			{
-				script = new HScript(Paths.hx("data/" + curCharacter));
+				script = new HScript(Paths.hx("data/character data" + curCharacter));
 	
 				script.interp.variables.set("character", this);
 	

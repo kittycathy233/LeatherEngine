@@ -250,9 +250,9 @@ class StageGroup extends FlxGroup {
 				// CUSTOM SHIT
 				default:
 					{
-						if (Assets.exists(Paths.hx('stages/${stage}'))) {
+						if (Assets.exists(Paths.hx('data/stage data/${stage}'))) {
 	
-							PlayState.stage_script = new HScript(Paths.hx('stages/${stage}'));
+							PlayState.stage_script = new HScript(Paths.hx('data/stage data/${stage}'));
 							PlayState.stage_script.start();
 	
 							PlayState.instance.scripts.push(PlayState.stage_script);
