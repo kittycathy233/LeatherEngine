@@ -1,5 +1,9 @@
 package tools;
 
+#if discord_rpc
+import utilities.Discord.DiscordClient;
+#end
+
 import game.StageGroup;
 import flixel.ui.FlxButton;
 import openfl.events.IOErrorEvent;
@@ -26,7 +30,7 @@ using StringTools;
 /**
 	*DEBUG MODE
  */
-class AnimationDebug extends MusicBeatState {
+class CharacterCreator extends MusicBeatState {
 	var char:Character;
 	var animText:FlxText;
 	var moveText:FlxText;
@@ -72,10 +76,15 @@ class AnimationDebug extends MusicBeatState {
 	private var stage_Dropdown:FlxUIDropDownMenuCustom;
 	private var objects:Array<Array<Dynamic>> = [];
 
+	public static var lastState:String = "OptionsMenu";
+
 
 
 
 	override function create() {
+		#if discord_rpc
+		DiscordClient.changePresence("Creating A Character", null, null, true);
+		#end
 		FlxG.mouse.visible = true;
 
 		gridCam = new FlxCamera();
@@ -345,8 +354,14 @@ class AnimationDebug extends MusicBeatState {
 			curAnim -= 1;
 		}
 
-		if (FlxG.keys.justPressed.ESCAPE)
-			FlxG.switchState(new MainMenuState());
+		if (FlxG.keys.justPressed.ESCAPE){
+			if (lastState == "OptionsMenu"){
+				FlxG.switchState(new MainMenuState());
+			}
+			else{
+				FlxG.switchState(new PlayState());
+			}
+		}
 
 		if (FlxG.keys.justPressed.S) {
 			curAnim += 1;

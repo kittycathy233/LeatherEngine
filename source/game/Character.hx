@@ -175,14 +175,6 @@ class Character extends FlxSprite {
 		if (icon == null)
 			icon = curCharacter;
 
-		if(Assets.exists(Paths.hx("data/character data" + curCharacter)))
-			{
-				script = new HScript(Paths.hx("data/character data" + curCharacter));
-	
-				script.interp.variables.set("character", this);
-	
-				script.call("createCharacter", [curCharacter]);
-			}
 
 		// YOOOOOOOOOO POG MODDING STUFF
 		if (character != "")
@@ -232,6 +224,14 @@ class Character extends FlxSprite {
 			characterName = "bf";
 			curCharacter = characterName;
 		}
+		if(Assets.exists(Paths.hx("data/character data/" + characterName + "/script")))
+			{
+				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
+	
+				script.interp.variables.set("character", this);
+	
+				script.call("createCharacter", [curCharacter]);
+			}
 
 		if (Options.getData("optimizedChars") && Assets.exists(Paths.json("character data/optimized_" + characterName + "/config")))
 			characterName = "optimized_" + characterName;

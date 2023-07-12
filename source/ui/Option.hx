@@ -104,7 +104,7 @@ class PageOption extends Option {
 	// OPTIONS //
 	public var Page_Name:String = "Categories";
 
-	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories") {
+	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories", _Description:String = "Test Description") {
 		super(_Option_Name, _Page_Name, _Option_Row);
 
 		// SETTING VALUES //
@@ -148,6 +148,30 @@ class GameStateOption extends Option {
 		super(_Option_Name, null, _Option_Row);
 
 		// SETTING VALUES //
+		this.Game_State = _Game_State;
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
+			FlxG.switchState(Game_State);
+	}
+}
+
+/**
+ * Thing for Animation Debug.
+ */
+ class CharacterCreatorOption extends Option {
+	// OPTIONS //
+
+	public var Game_State:FlxState;
+
+	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
+		super(_Option_Name, null, _Option_Row);
+
+		// SETTING VALUES //
+		tools.CharacterCreator.lastState = "OptionsMenu";
 		this.Game_State = _Game_State;
 	}
 

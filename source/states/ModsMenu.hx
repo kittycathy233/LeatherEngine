@@ -15,7 +15,7 @@ import flixel.group.FlxGroup;
 import tools.ChartingState;
 import tools.StageMakingState;
 import flixel.sound.FlxSound;
-import tools.AnimationDebug;
+import tools.CharacterCreator;
 import utilities.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;

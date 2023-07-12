@@ -2614,10 +2614,12 @@ class PlayState extends MusicBeatState {
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
 
-				FlxG.switchState(new tools.ChartingStateDev());
+				FlxG.switchState(new tools.CharacterCreator(SONG.player2, curStage));
+
+				tools.CharacterCreator.lastState = "PlayState";
 
 				#if discord_rpc
-				DiscordClient.changePresence("Chart Editor Development", null, null, true);
+				DiscordClient.changePresence("Creating A Character", null, null, true);
 				#end
 			}
 

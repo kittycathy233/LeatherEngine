@@ -12,7 +12,7 @@ import flixel.group.FlxGroup;
 import tools.ChartingState;
 import tools.StageMakingState;
 import flixel.sound.FlxSound;
-import tools.AnimationDebug;
+import tools.CharacterCreator;
 import utilities.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -39,7 +39,7 @@ class OptionsMenu extends MusicBeatState {
 
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
-			new PageOption("Gameplay", 0, "Gameplay"),
+			new PageOption("Gameplay", 0, "Gameplay", "Test Description"),
 			new PageOption("Graphics", 1, "Graphics"),
 			new PageOption("Tools (Very WIP)", 2, "Tools"),
 			new PageOption("Misc", 3, "Misc")
@@ -74,15 +74,11 @@ class OptionsMenu extends MusicBeatState {
 		"Tools" => [
 			new PageOption("Back", 0, "Categories"),
 			new GameStateOption("Charter", 1, new ChartingState()),
-			#if debug
-			new GameStateOption("Charter Dev", 1, new ChartingStateDev()),
-			#end
-			new GameStateOption("Animation Debug", 2, new AnimationDebug("dad", "stage")),
+			new CharacterCreatorOption("Character Creator", 2, new CharacterCreator("dad", "stage")),
 			new GameStateOption("Stage Editor", 3, new StageMakingState("stage")),
 			#if MODCHARTING_TOOLS
 			new GameStateOption("Modchart Editor", 4, new modcharting.ModchartEditorState()),
 			#end
-			// new GameStateOption("Character Creator", 4, new CharacterCreationState("bf")),
 			new GameSubstateOption("Import Old Scores", 5, substates.ImportHighscoresSubstate)
 		],
 		"Misc" => [

@@ -2066,16 +2066,29 @@ class ModchartUtilities {
 			}
 		});
 
-		setLuaFunction("setActorCustomShader", function(id:String, file:String, actor:String){
+		setLuaFunction("createCustomShader", function(id:String, file:String, glslVersion:Int = 120	){
 			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			lua_Custom_Shaders.set(id, funnyCustomShader);
+		});
+
+		setLuaFunction("setActorCustomShader", function(id:String, actor:String){
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 			getActorByName(actor).shader = funnyCustomShader;
 		});
 
-		setLuaFunction("setCameraCustomShader", function(id:String, file:String, camera:String){
-			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+		setLuaFunction("setActorNoShader", function(actor:String){
+			getActorByName(actor).shader = null;
+		});
+
+		setLuaFunction("setCameraCustomShader", function(id:String, camera:String){
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
+		});
+
+		setLuaFunction("setCameraNoShader", function(camera:String){
+			cameraFromString(camera).setFilters(null);
 		});
 
 		setLuaFunction("getCustomShaderBool", function(id:String, property:String) {
@@ -2106,6 +2119,22 @@ class ModchartUtilities {
 		setLuaFunction("setCustomShaderFloat", function(id:String, property:String, value:Float) {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			funnyCustomShader.setFloat(property, value);
+		});
+
+		setLuaFunction("tweenCustomShaderInt", function(id:String, property:String, value:Int, time:Float) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			funnyCustomShader.setInt(property, value);
+		});
+
+		setLuaFunction("tweenCustomShaderFloat", function(id:String, shaderProperty:String, value:Float, time:Float, ?ease:String = "linear", ?onComplete:Dynamic) {
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			FlxTween.tween(funnyCustomShader, {shaderProperty: value}, time, {
+				ease: easeFromString(ease),
+				onComplete: function(twn) {
+					if (onComplete != null)
+						onComplete();
+				}
+			});
 		});
 		
 		setLuaFunction("updateRating", function() {
