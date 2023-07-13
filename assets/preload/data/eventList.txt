@@ -13,7 +13,10 @@ Screen Shake~Camera Shake (duration, intensity)~Hud Shake (duration, intensity)
 Camera Flash~Color (example: 'red')~Duration
 3D Shader~Character (BF, Dad, GF)~Properties formated like: '3,10,0.25' (speed, frequency, amplitude)
 No Shader~Character (BF, Dad, GF)~Nothing
-Set Hud Shader~id~shader
-Set Game Shader~id~shader
+Create Custom Shader~Id~Filename
+Set Actor Custom Shader~Id~Actor
+Set Actor No Custom Shader~Actor~Nothing
+Set Camera Custom Shader~Id~Camera - "game" for camGame, "hud" for camHUD, anything else for both.
+Set Camera No Custom Shader~Camera - "game" for camGame, "hud" for camHUD, anything else for both.~Nothing
 Add Trail~Object Name (dad, boyfriend, girlfriend, etc)~Properties, formatted like: '10,3,0.4,0.05' (sprite count, frame delay, alpha, alpha diff)
 Remove Trail~Object Name (dad, boyfriend, girlfriend, etc)~Nothing

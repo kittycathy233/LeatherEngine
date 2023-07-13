@@ -56,7 +56,10 @@ class ThreeDEffect extends ShaderEffect {
 		return v;
 	}
 }
-
+/**
+ * Class for 3d Shader.
+ * This will be softcoded in a .frag file one day.
+ */
 class ThreeDShader extends FlxShader {
 	@:glFragmentSource('
     #pragma header
