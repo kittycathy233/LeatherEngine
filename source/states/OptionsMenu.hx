@@ -95,7 +95,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Disable Debug Menus", "disableDebugMenus", 10),
 			new BoolOption("Invisible Notes", "invisibleNotes", 11),
 			new BoolOption("Auto Pause", "autoPause", 12),
-			new BoolOption("Freeplay Corruption", "loadAsynchronously", 13),
+			new BoolOption("Load Asynchronously", "loadAsynchronously", 13),
 			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", 14),
 			new BoolOption("Skip Results", "skipResultsScreen", 15),
 			new BoolOption("Show Score", "showScore", 16),
@@ -111,7 +111,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Optimized Characters", "optimizedChars", 5),
 			new BoolOption("Animated Backgrounds", "animatedBGs", 6),
 			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7),
-			new BoolOption("Memory Leaks", "memoryLeaks", 8),
+			new BoolOption("Persistent Cached Data", "memoryLeaks", 8),
 		],
 		"Info Display" => [
 			new PageOption("Back", 0, "Graphics"),
@@ -145,12 +145,13 @@ class OptionsMenu extends MusicBeatState {
 		"Note Options" => [
 			new PageOption("Back", 0, "Graphics"),
 			new GameSubstateOption("Note BG Alpha", 1, substates.NoteBGAlphaMenu),
-			new BoolOption("Enemy Note Glow", "enemyStrumsGlow", 2),
-			new BoolOption("Player Note Splashes", "playerNoteSplashes", 3),
-			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 3),
-			new BoolOption("Note Accuracy Text", "displayMs", 4),
-			new GameSubstateOption("Note Colors", 5, substates.NoteColorSubstate),
-			new GameSubstateOption("UI Skin", 6, substates.UISkinSelect)
+			new BoolOption("Player Note Glow", "playerStrumsGlow", 2),
+			new BoolOption("Enemy Note Glow", "enemyStrumsGlow", 3),
+			new BoolOption("Player Note Splashes", "playerNoteSplashes", 4),
+			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 5),
+			new BoolOption("Note Accuracy Text", "displayMs", 6),
+			new GameSubstateOption("Note Colors", 7, substates.NoteColorSubstate),
+			new GameSubstateOption("UI Skin", 8, substates.UISkinSelect)
 		],
 		"Screen Effects" => [
 			new PageOption("Back", 0, "Graphics"),

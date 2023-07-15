@@ -3451,8 +3451,10 @@ class PlayState extends MusicBeatState {
 
 				playerStrums.forEach(function(spr:StrumNote) {
 					if (justPressedArray[spr.ID] && spr.animation.curAnim.name != 'confirm') {
-						spr.playAnim('pressed');
-						spr.resetAnim = 0;
+						if (Options.getData("playerStrumsGlow")){
+							spr.playAnim('pressed');
+							spr.resetAnim = 0;
+						}
 					}
 
 					if (releasedArray[spr.ID]) {
@@ -3740,7 +3742,9 @@ class PlayState extends MusicBeatState {
 			if (startedCountdown) {
 				playerStrums.forEach(function(spr:StrumNote) {
 					if (Math.abs(note.noteData) == spr.ID) {
-						spr.playAnim('confirm', true);
+						if (Options.getData("playerStrumsGlow")){
+							spr.playAnim('confirm', true);
+						}
 					}
 				});
 			}

@@ -1,6 +1,10 @@
 {
     "options": [
         {
+            "option": "playerStrumsGlow",
+            "value": true
+        },
+        {
             "option": "enemyStrumsGlow",
             "value": true
         },
