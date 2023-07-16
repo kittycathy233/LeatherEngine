@@ -1,5 +1,6 @@
 package;
 
+
 import openfl.display.Sprite;
 import openfl.text.TextFormat;
 import utilities.CoolUtil;
@@ -17,6 +18,11 @@ class Main extends Sprite {
 		haxe.Log.trace = CoolUtil.haxe_print;
 
 		addChild(new FlxGame(0, 0, states.TitleState, 60, 60, true));
+
+		#if SCREENSHOTS_ALLOWED
+		flixel.FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
+		plugins.ScreenshotPluginConfig.setScreenshotConfig(PNG, F2);
+		#end
 
 		#if !mobile
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");

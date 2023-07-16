@@ -44,6 +44,10 @@ class ControlMenuSubstate extends MusicBeatSubstate
     var pauseBind:String = utilities.Options.getData("pauseBind", "binds");
     var pauseText:FlxText = new FlxText();
 
+    var screenshotKey:FlxSprite = new FlxSprite();
+    var screenshotBind:String = utilities.Options.getData("screenshotBind", "binds");
+    var screenshotText:FlxText = new FlxText();
+
     var mania_gap:Array<String>;
 
     public function new()
@@ -141,6 +145,25 @@ class ControlMenuSubstate extends MusicBeatSubstate
         pauseText.x = pauseKey.x + (pauseKey.width / 2) - (pauseText.width / 2);
         pauseText.y = pauseKey.y;
 
+        var screenshotIcon:FlxSprite = new FlxSprite();
+        screenshotIcon.frames = Paths.getSparrowAtlas("Bind_Menu_Assets", "preload");
+        screenshotIcon.animation.addByPrefix("idle", "Screenshot", 24);
+        screenshotIcon.animation.play("idle");
+        screenshotIcon.updateHitbox();
+
+        screenshotIcon.x = screenshotKey.x + (screenshotKey.width / 2) - (screenshotIcon.width / 2);
+        screenshotIcon.y = screenshotKey.y - screenshotIcon.height - 16;
+
+        screenshotText.setFormat(Paths.font("vcr.ttf"), 38, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
+
+        screenshotText.text = screenshotBind;
+        screenshotText.x = screenshotKey.x + (screenshotKey.width / 2) - (screenshotText.width / 2);
+        screenshotText.y = screenshotKey.y;
+
+        /*add(screenshotKey);
+        add(screenshotIcon);
+        add(screenshotText);*/
+
         add(pauseKey);
         add(pauseIcon);
         add(pauseText);
@@ -163,6 +186,7 @@ class ControlMenuSubstate extends MusicBeatSubstate
                 fullscreenBind = "F11";
                 killBind = "R";
                 pauseBind = "ENTER";
+                screenshotBind = "F2";
             }
             
             if(back)
@@ -171,6 +195,7 @@ class ControlMenuSubstate extends MusicBeatSubstate
                 utilities.Options.setData(fullscreenBind, "fullscreenBind", "binds");
                 utilities.Options.setData(killBind, "kill", "binds");
                 utilities.Options.setData(pauseBind, "pauseBind", "binds");
+                utilities.Options.setData(screenshotBind, "screenshotBind", "binds");
     
                 PlayerSettings.player1.controls.loadKeyBinds();
     
@@ -207,6 +232,16 @@ class ControlMenuSubstate extends MusicBeatSubstate
                 pauseKey.color = FlxColor.GRAY;
             else
                 pauseKey.color = FlxColor.WHITE;
+
+            if(FlxG.mouse.overlaps(screenshotKey) && FlxG.mouse.justPressed && !selectingStuff)
+            {
+                selectedControl = -3;
+                selectingStuff = true;
+            }
+            else if(FlxG.mouse.overlaps(screenshotKey))
+                screenshotKey.color = FlxColor.GRAY;
+            else
+                screenshotKey.color = FlxColor.WHITE;
     
             for(x in arrow_Group)
             {
@@ -238,6 +273,8 @@ class ControlMenuSubstate extends MusicBeatSubstate
                             killBind = curKey;
                         case -3:
                             pauseBind = curKey;
+                        case -4:
+                            screenshotBind = curKey;
                     }
                 }
             }
@@ -284,6 +321,10 @@ class ControlMenuSubstate extends MusicBeatSubstate
         pauseText.text = pauseBind;
         pauseText.x = pauseKey.x + (pauseKey.width / 2) - (pauseText.width / 2);
         pauseText.y = pauseKey.y + (pauseKey.height / 2) - (pauseText.height / 2);
+
+        screenshotText.text = screenshotBind;
+        screenshotText.x = screenshotKey.x + (screenshotKey.width / 2) - (screenshotKey.width / 2);
+        screenshotText.y = screenshotKey.y + (screenshotKey.height / 2) - (screenshotKey.height / 2);
     }
 
     function create_Arrows(?new_Key_Count)
