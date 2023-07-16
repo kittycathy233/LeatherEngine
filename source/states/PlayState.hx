@@ -1001,6 +1001,7 @@ class PlayState extends MusicBeatState {
 			scripts.push(script);
 		}
 
+
 		if (stage_script != null) {
 			stage_script.interp.variables.set("bf", boyfriend);
 			stage_script.interp.variables.set("gf", gf);

@@ -65,3 +65,5 @@ You can load, share, and play replays of songs you've played! They can even be i
 - TheZoroForce240 + FNF-Modcharting-Tools Contributors - [fnf-modcharting-tools](https://github.com/TheZoroForce240/FNF-Modcharting-Tools) (cool modchart shits, check them out!!!)
 
 - EliteMasterEric - [FlxRuntimeShader](https://github.com/elitemastereric) cool class that allows for custom shaders
+
+- sayofthelor - [flixel-screenshot-plugin](https://github.com/sayofthelor/flixel-screenshot-plugin/) cool screenshot haxelib
