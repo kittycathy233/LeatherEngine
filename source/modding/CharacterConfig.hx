@@ -5,6 +5,7 @@ typedef CharacterConfig =
 	var imagePath:String;
 	var animations:Array<CharacterAnimation>;
 	var defaultFlipX:Bool;
+	var defaultFlipY:Bool;
 	var dancesLeftAndRight:Bool;
 	var graphicsSize:Null<Float>;
 	var graphicSize:Null<Float>;

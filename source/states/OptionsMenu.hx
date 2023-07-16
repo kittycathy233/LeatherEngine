@@ -99,6 +99,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", 14),
 			new BoolOption("Skip Results", "skipResultsScreen", 15),
 			new BoolOption("Show Score", "showScore", 16),
+			new BoolOption("Dinnerbone Mode", "dinnerbone", 17),
 		],
 		"Optimizations" => [
 			new PageOption("Back", 0, "Graphics"),

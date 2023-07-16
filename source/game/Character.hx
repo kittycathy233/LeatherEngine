@@ -249,6 +249,9 @@ class Character extends FlxSprite {
 				flipX = config.defaultFlipX;
 			else
 				flipX = !config.defaultFlipX;
+			if (Options.getData("dinnerbone")){
+				flipY = !config.defaultFlipY;
+			}
 
 			if (config.offsetsFlipWhenPlayer == null) {
 				if (curCharacter.startsWith("bf"))

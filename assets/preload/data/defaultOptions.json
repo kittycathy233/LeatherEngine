@@ -275,6 +275,10 @@
         {
             "option": "shaders",
             "value": true
+        },
+        {
+            "option": "dinnerbone",
+            "value": false
         }
     ]
 }
