@@ -1316,8 +1316,9 @@ class PlayState extends MusicBeatState {
 
 	var script:HScript;
 	var globalScript:HScript;
-
+	#if linc_luajit
 	var globalLuaScript:ModchartUtilities;
+	#end
 
 	var fixedUpdateTime:Float = 0.0;
 
