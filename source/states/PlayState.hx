@@ -1001,44 +1001,38 @@ class PlayState extends MusicBeatState {
 
 			scripts.push(script);
 		}
-		
-		@:privateAccess
-		for (file in ModList.getActiveMods(modding.PolymodHandler.metadataArrays)){
-			if (file.endsWith('.hx')){
-				globalScript = new HScript(Paths.hx('data/scripts/global/'+ Std.string(file)));
+	
 
-				trace(globalScript);
-				trace(file);
+		//global scripts yay
+		#if sys
+		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
 
-
-				globalScript.start();
-
-				scripts.push(globalScript);
-			}
-		}
-		
-		/*var filesPushed:Array<String> = [];
-
-		@:privateAccess
-		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/scripts/global/')];
-
-		@:privateAccess
-		foldersToCheck.insert(0,  Paths.getPreloadPath('data/scripts/global/'));
-
-		for (folder in foldersToCheck)
+		if (modList.length > 0)
 		{
-			if(Assets.exists(folder))
+			for (mod in modList)
 			{
-				for (file in ModList.getActiveMods(modding.PolymodHandler.metadataArrays))
+				if (sys.FileSystem.exists("mods/" + mod + "/data/scripts/global/"))
 				{
-					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					var modGlobalScripts = sys.FileSystem.readDirectory("mods/" + mod + "/data/scripts/global/");
+
+					if (modGlobalScripts.length > 0)
 					{
-						script.start();
-						scripts.push(new HScript(Paths.hx(folder + file)));
+						for (file in modGlobalScripts)
+						{
+							if(file.endsWith('.hx'))
+								{
+									globalScript = new HScript("mods/" + mod + "/data/scripts/global/" + file, true);
+									globalScript.start();
+								
+									scripts.push(globalScript);
+								}
+						}
 					}
 				}
 			}
-		}*/
+		}
+		#end
+
 
 
 		if (stage_script != null) {

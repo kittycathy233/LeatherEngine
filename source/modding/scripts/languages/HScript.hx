@@ -47,7 +47,7 @@ class HScript
 	**/
 	public var create_post:Bool = false;
 
-	public function new(hscript_path:String)
+	public function new(hscript_path:String, ?global:Bool = false)
 	{
 		// parser settings
 		parser.allowJSON = true;
@@ -55,7 +55,13 @@ class HScript
 		parser.allowMetadata = true;
 		
 		// load text
-		program = parser.parseString(Assets.getText(hscript_path));
+		#if sys
+		//Shoutout to @sword_352 on discord for helping my dumbass brain with this
+		if(global)
+			program = parser.parseString(sys.io.File.getContent(hscript_path));
+		else
+		#end
+			program = parser.parseString(Assets.getText(hscript_path));
 
 		set_default_vars();
 
