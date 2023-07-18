@@ -565,13 +565,11 @@ class PlayState extends MusicBeatState {
 		`Map` of `Strings` to Lua Modcharts used for custom events.
 	**/
 	public var event_luas:Map<String, ModchartUtilities> = [];
-	#end
 
-	#if linc_luajit
 	/**
-		Array of Lua scripts in the "global" folder
+		Array of Lua scripts in the "scripts/global" folder
 	**/
-	public var globalScriptArray:Array<ModchartUtilities> = [];
+	public var globalLuaScripts:Array<ModchartUtilities> = [];
 	#end
 
 	/**
@@ -1026,6 +1024,19 @@ class PlayState extends MusicBeatState {
 								
 									scripts.push(globalScript);
 								}
+							#if linc_luajit
+							if(file.endsWith('.lua'))
+								{
+
+									globalLuaExists = true;
+
+									
+									globalLuaScript = (new ModchartUtilities("mods/" + mod + "/data/scripts/global/" + file));
+
+									globalLuaScripts.push(globalLuaScript);
+
+								}
+							#end
 						}
 					}
 				}
@@ -1306,6 +1317,8 @@ class PlayState extends MusicBeatState {
 	var script:HScript;
 	var globalScript:HScript;
 
+	var globalLuaScript:ModchartUtilities;
+
 	var fixedUpdateTime:Float = 0.0;
 
 	function allScriptCall(func:String, ?args:Array<Dynamic>) {
@@ -1533,6 +1546,8 @@ class PlayState extends MusicBeatState {
 
 		if (stage.stageScript != null)
 			stage.stageScript.setupTheShitCuzPullRequestsSuck();
+
+
 
 		if (generatedSomeDumbEventLuas) {
 			for (key in event_luas.keys()) {
@@ -2048,6 +2063,8 @@ class PlayState extends MusicBeatState {
 
 	#if linc_luajit
 	public var generatedSomeDumbEventLuas:Bool = false;
+
+	public var globalLuaExists:Bool = false;
 	#end
 
 	public var ratingStr:String = "";
@@ -4150,12 +4167,14 @@ class PlayState extends MusicBeatState {
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
 
+
 					if (generatedSomeDumbEventLuas) {
 						for (event in event_luas.keys()) {
 							if (event_luas.exists(event))
 								event_luas.get(event).setupTheShitCuzPullRequestsSuck();
 						}
 					}
+
 					#end
 				case "dad" | "opponent" | "1":
 					var oldDad = dad;
@@ -4191,6 +4210,7 @@ class PlayState extends MusicBeatState {
 								event_luas.get(event).setupTheShitCuzPullRequestsSuck();
 						}
 					}
+
 					#end
 
 					@:privateAccess
@@ -4231,12 +4251,14 @@ class PlayState extends MusicBeatState {
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
 
+
 					if (generatedSomeDumbEventLuas) {
 						for (event in event_luas.keys()) {
 							if (event_luas.exists(event))
 								event_luas.get(event).setupTheShitCuzPullRequestsSuck();
 						}
 					}
+
 					#end
 
 					@:privateAccess
@@ -4302,6 +4324,10 @@ class PlayState extends MusicBeatState {
 					event_luas.get(script).executeState(name, arguments);
 			}
 		}
+
+		for (i in globalLuaScripts) {
+			i.executeState(name, arguments);
+		}
 		#end
 	}
 
@@ -4321,6 +4347,7 @@ class PlayState extends MusicBeatState {
 				if (event_luas.exists(script))
 					event_luas.get(script).setVar(name, data);
 			}
+
 		}
 		#end
 	}
@@ -4346,6 +4373,7 @@ class PlayState extends MusicBeatState {
 					luaVar = newLuaVar;
 			}
 		}
+
 
 		if (executeModchart && luaModchart != null) {
 			var newLuaVar = luaModchart.getVar(name, type);
