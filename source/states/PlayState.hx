@@ -2525,7 +2525,7 @@ class PlayState extends MusicBeatState {
 
 				if (daNote != null) {
 					if (daNote.mustPress) {
-						var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
+						var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))%playerStrums.members.length];
 						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
 						daNote.visible = coolStrum.visible;
@@ -2554,7 +2554,7 @@ class PlayState extends MusicBeatState {
 
 						daNote.color = coolStrum.color;
 					} else if (!daNote.wasGoodHit) {
-						var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
+						var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))%enemyStrums.members.length];
 						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
 						daNote.visible = coolStrum.visible;
@@ -4601,7 +4601,8 @@ class PlayState extends MusicBeatState {
 				playerStrums.clear();
 				enemyStrums.clear();
 				strumLineNotes.clear();
-				binds = Options.getData("binds", "binds")[toChange - 1];
+				splash_group.clear();
+				binds = Options.getData("binds", "binds")[SONG.playerKeyCount - 1];
 				if(utilities.Options.getData("middlescroll"))
 					{
 						generateStaticArrows(50, false);
