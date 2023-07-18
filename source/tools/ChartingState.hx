@@ -550,7 +550,6 @@ class ChartingState extends MusicBeatState {
 
 		// Section Titles
 		var sectionText = new FlxText(10, 10, 0, "Section Options", 9);
-		var noteText = new FlxText(10, 240, 0, "Note Options", 9);
 
 		// Interactive Stuff
 
@@ -629,7 +628,17 @@ class ChartingState extends MusicBeatState {
 			pasteSection();
 		});
 
+		var copyEventsButton:FlxButton = new FlxButton(copySectionButton.x, copySectionButton.y + copySectionButton.height + 2, "Copy Events", function() {
+			updateGrid();
+		});
+
+		var pasteEventsButton:FlxButton = new FlxButton(copyEventsButton.x + copyEventsButton.width + 2, copyEventsButton.y, "Paste Events", function() {
+			pasteEvents();
+		});
+		
+
 		// Labels for Interactive Stuff
+		var noteText = new FlxText(10, 240 + copyEventsButton.height + 2, 0, "Note Options", 9);
 		var stepperText:FlxText = new FlxText(110 + copySectionCount.width, 130, 0, "Sections back", 9);
 		var bpmText:FlxText = new FlxText(12 + stepperSectionBPM.width, 100, 0, "New BPM", 9);
 
@@ -638,7 +647,7 @@ class ChartingState extends MusicBeatState {
 		// NOTE SECTION //
 
 		// numbers
-		stepperSusLength = new FlxUINumericStepper(10, 260, Conductor.stepCrochet / 2, 0, 0, 9999);
+		stepperSusLength = new FlxUINumericStepper(10, 260+ copyEventsButton.height + 2, Conductor.stepCrochet / 2, 0, 0, 9999);
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
@@ -680,8 +689,8 @@ class ChartingState extends MusicBeatState {
 		blockPressWhileTypingOn.push(characterGroup_Input);
 
 		// labels
-		var susText = new FlxText(stepperSusLength.x + stepperSusLength.width + 1, stepperSusLength.y, 0, "Sustain note length", 9);
-		var charText = new FlxText(stepperCharLength.x + stepperCharLength.width + 1, stepperCharLength.y, 0, "Character", 9);
+		var susText = new FlxText(stepperSusLength.x + stepperSusLength.width + 1, stepperSusLength.y,  0, "Sustain note length", 9);
+		var charText = new FlxText(stepperCharLength.x + stepperCharLength.width + 1, stepperCharLength.y , 0, "Character", 9);
 
 		var charGroupText = new FlxText(characterGroup_Input.x + characterGroup_Input.width + 1, characterGroup_Input.y, 0,
 			"Character Group (chars seperated by ',')", 9);
@@ -724,6 +733,9 @@ class ChartingState extends MusicBeatState {
 
 		tab_group_section.add(copySectionButton);
 		tab_group_section.add(pasteSectionButton);
+
+		tab_group_section.add(copyEventsButton);
+		tab_group_section.add(pasteEventsButton);
 
 		// final addition
 		UI_box.addGroup(tab_group_section);
@@ -1492,6 +1504,21 @@ class ChartingState extends MusicBeatState {
 		updateGrid();
 	}
 
+	function copyEvents(?sectionNum:Int = 1) {
+		var daSec = FlxMath.maxInt(curSection, sectionNum);
+
+		if (daSec - sectionNum != curSection) {
+			for (note in _song.notes[daSec - sectionNum].sectionNotes) {
+				var strum = note[0] + Conductor.stepCrochet * (Conductor.stepsPerSection * sectionNum);
+
+				var copiedNote:Array<Dynamic> = [strum, note[1], note[2], note[3], note[4]];
+				_song.notes[curSection].sectionNotes.push(copiedNote);
+			}
+		}
+
+		updateGrid();
+	}
+
 	function pasteSection() {
 		var daSec = copiedSection;
 
@@ -1499,9 +1526,23 @@ class ChartingState extends MusicBeatState {
 			for (note in _song.notes[daSec].sectionNotes) {
 				var strum = sectionStartTime() + (note[0] - sectionStartTime(daSec));
 
-				var copiedNote:Array<Dynamic> = [strum, note[1], note[2], note[3], note[4]];
-				_song.notes[curSection].sectionNotes.push(copiedNote);
+				var copiedEvent:Array<Dynamic> = [strum, note[1], note[2], note[3], note[4]];
+				_song.notes[curSection].sectionNotes.push(copiedEvent);
 			}
+		}
+
+		updateGrid();
+	}
+
+	function pasteEvents() {
+
+		var daSec = copiedSection;
+
+		if (daSec != curSection) {
+			var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
+
+			var copiedEvent:Array<Dynamic> = [eventName, noteStrum, eventValue1, eventValue2];
+			events.push(copiedEvent);
 		}
 
 		updateGrid();

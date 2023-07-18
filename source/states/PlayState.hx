@@ -1,5 +1,6 @@
 package states;
 
+import modding.ModList;
 import flixel.group.FlxSpriteGroup;
 #if sys
 import sys.FileSystem;
@@ -1000,6 +1001,44 @@ class PlayState extends MusicBeatState {
 
 			scripts.push(script);
 		}
+		
+		@:privateAccess
+		for (file in ModList.getActiveMods(modding.PolymodHandler.metadataArrays)){
+			if (file.endsWith('.hx')){
+				globalScript = new HScript(Paths.hx('data/scripts/global/'+ Std.string(file)));
+
+				trace(globalScript);
+				trace(file);
+
+
+				globalScript.start();
+
+				scripts.push(globalScript);
+			}
+		}
+		
+		/*var filesPushed:Array<String> = [];
+
+		@:privateAccess
+		var foldersToCheck:Array<String> = [Paths.getPreloadPath('data/scripts/global/')];
+
+		@:privateAccess
+		foldersToCheck.insert(0,  Paths.getPreloadPath('data/scripts/global/'));
+
+		for (folder in foldersToCheck)
+		{
+			if(Assets.exists(folder))
+			{
+				for (file in ModList.getActiveMods(modding.PolymodHandler.metadataArrays))
+				{
+					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					{
+						script.start();
+						scripts.push(new HScript(Paths.hx(folder + file)));
+					}
+				}
+			}
+		}*/
 
 
 		if (stage_script != null) {
@@ -1271,6 +1310,7 @@ class PlayState extends MusicBeatState {
 	public var scripts:Array<HScript> = [];
 
 	var script:HScript;
+	var globalScript:HScript;
 
 	var fixedUpdateTime:Float = 0.0;
 
@@ -2643,7 +2683,7 @@ class PlayState extends MusicBeatState {
 				FlxG.switchState(new modcharting.ModchartEditorState());
 
 				#if discord_rpc
-				DiscordClient.changePresence("Modchart Editor", null, null, true);
+				DiscordClient.changePresence("In The Modchart Editor", null, null, true);
 				#end
 			}
 			#end
