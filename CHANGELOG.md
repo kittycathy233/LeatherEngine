@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Zoom in the chart edtior.
+- Zoom in the chart editor.
 - Lots of new functions and variables in the Lua API. See the wiki!
 - `singDuration` property to character jsons to control their sing duration.
 - Flixel Splash Screen option to toggle the HaxeFlixel splash screen that shows up when the game starts.
