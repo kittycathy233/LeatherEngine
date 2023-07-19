@@ -67,7 +67,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some miscellaneous ui changes in-game.
 - Revamped Animation Debug Menu.
 - Results screen note graph now uses one texture for much better performance.
-- Hitting 9 midsong will now bring you to animation debug
+- Hitting 8 midsong will now bring you to animation debug
+- Better tankman offsets
+- Optimized character spritesheets
 
 ## [0.4.2] - 6/14/2022
 
