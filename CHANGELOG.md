@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Memory Leaks option (stops clearing asset caches).
 - Skip Results Screen Options.
 - You can now zoom into the Animation Debug using the mouse.
+- HScript support! Put a file called "script.hx" into any song folder to run hscript on that song
+- Global scripts! Put any .lua or .hx file into data/scripts/global to have that script run on every song.
+- Softcoded Discord RPC - Check assets/data/rpc-id!
+- Fully softcoded and custom shaders! Check assets/data/modcharts/shader-example.lua
+- Change Keycount events
 
 ### Fixed
 

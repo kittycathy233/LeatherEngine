@@ -1587,7 +1587,7 @@ class PlayState extends MusicBeatState {
 
 		executeALuaState("start", [SONG.song.toLowerCase()], BOTH, [stage.stage]);
 		#end
-		allScriptCall("start", [SONG.song.toLowerCase()],);
+		allScriptCall("start", [SONG.song.toLowerCase()]);
 
 		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
 			allScriptCall("startCountdown", [swagCounter]);
