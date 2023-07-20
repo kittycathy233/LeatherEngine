@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Zoom in the chart edtior.
+- Zoom in the chart editor.
 - Lots of new functions and variables in the Lua API. See the wiki!
 - `singDuration` property to character jsons to control their sing duration.
 - Flixel Splash Screen option to toggle the HaxeFlixel splash screen that shows up when the game starts.
@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Softcoded Discord RPC - Check assets/data/rpc-id!
 - Fully softcoded and custom shaders! Check assets/data/modcharts/shader-example.lua
 - Change Keycount events
+- Copy/Paste events in charter
+- Cool new modchart features via modcharting tools by TheZoroForce240
+- Modcharting tools can be used in lua scripts, hscript, and the modchart editor(hit 9 midsong)
+- Take screenshots by pressing F2 on the keyboard 
 
 ### Fixed
 
@@ -63,6 +67,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some miscellaneous ui changes in-game.
 - Revamped Animation Debug Menu.
 - Results screen note graph now uses one texture for much better performance.
+- Hitting 8 midsong will now bring you to animation debug
+- Better tankman offsets
+- Optimized character spritesheets
 
 ## [0.4.2] - 6/14/2022
 
