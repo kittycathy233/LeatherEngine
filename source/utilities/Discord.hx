@@ -8,12 +8,27 @@ import openfl.Assets;
 
 
 using StringTools;
+typedef DiscordStuffs = {
+	var values:Array<DiscordStuff>;
+}
+
+typedef DiscordStuff = {
+	var id:String;
+	var key:String;
+	var text:String;
+}
 
 class DiscordClient
 {
+
+	public static var discordData:DiscordStuffs;
+
 	public static var started:Bool = false;
 
 	public static var active:Bool = false;
+
+
+	
 
 
 	public function new()
@@ -23,13 +38,21 @@ class DiscordClient
 
 	public static function startLmao()
 	{
-		trace("Discord Client starting...");
-		DiscordRpc.start({
-			clientID: Assets.getText(Paths.txt("rpc-id", "preload")),
-			onReady: onReady,
-			onError: onError,
-			onDisconnected: onDisconnected
-		});
+
+		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
+
+		for (value in discordData.values) {
+			var idStuff = value.id;
+			trace("Discord Client starting...");
+			DiscordRpc.start({
+				clientID: idStuff,
+				onReady: onReady,
+				onError: onError,
+				onDisconnected: onDisconnected
+			});
+		}
+
+
 		trace("Discord Client started.");
 
 		active = true;
@@ -55,12 +78,17 @@ class DiscordClient
 
 	static function onReady()
 	{
-		DiscordRpc.presence({
-			details: "In the Menus",
-			state: null,
-			largeImageKey: Assets.getText(Paths.txt("rpc-largeImageKey", "preload")),
-			largeImageText: Assets.getText(Paths.txt("rpc-largeImageText", "preload"))
-		});
+		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
+		for (value in discordData.values) {
+			var keyLol = value.key;
+			var textLol = value.text;
+			DiscordRpc.presence({
+				details: "In the Menus",
+				state: null,
+				largeImageKey: keyLol,
+				largeImageText: textLol
+			});
+		}
 	}
 
 	static function onError(_code:Int, _message:String)
@@ -92,18 +120,22 @@ class DiscordClient
 		{
 			endTimestamp = startTimestamp + endTimestamp;
 		}
-
-		DiscordRpc.presence({
-			details: details,
-			state: state,
-			largeImageKey: Assets.getText(Paths.txt("rpc-largeImageKey", "preload")),
-			largeImageText: Assets.getText(Paths.txt("rpc-largeImageText", "preload")),
-			smallImageKey: smallImageKey,
-			// Obtained times are in milliseconds so they are divided so Discord can use it
-			startTimestamp: Std.int(startTimestamp / 1000),
-			endTimestamp: Std.int(endTimestamp / 1000)
-		});
-
+		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
+		for (value in discordData.values) {
+			var keyLol = value.key;
+			var textLol = value.text;
+			DiscordRpc.presence({
+				details: details,
+				state: state,
+				largeImageKey: keyLol,
+				largeImageText: textLol,
+				smallImageKey: smallImageKey,
+				// Obtained times are in milliseconds so they are divided so Discord can use it
+				startTimestamp: Std.int(startTimestamp / 1000),
+				endTimestamp: Std.int(endTimestamp / 1000)
+			});
+	
+		}
 		// trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');
 	}
 }
