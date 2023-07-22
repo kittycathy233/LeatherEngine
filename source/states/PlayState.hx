@@ -2724,7 +2724,7 @@ class PlayState extends MusicBeatState {
 		});
 
 		#if linc_luajit
-		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas)
+		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || globalLuaExists)
 			&& generatedMusic
 			&& !switchedStates
 			&& startedCountdown) {
@@ -4176,6 +4176,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
+					for (i in globalLuaScripts) {
+						i.setupTheShitCuzPullRequestsSuck();
+					}
+
 					#end
 				case "dad" | "opponent" | "1":
 					var oldDad = dad;
@@ -4210,6 +4214,10 @@ class PlayState extends MusicBeatState {
 							if (event_luas.exists(event))
 								event_luas.get(event).setupTheShitCuzPullRequestsSuck();
 						}
+					}
+
+					for (i in globalLuaScripts) {
+						i.setupTheShitCuzPullRequestsSuck();
 					}
 
 					#end
@@ -4258,6 +4266,10 @@ class PlayState extends MusicBeatState {
 							if (event_luas.exists(event))
 								event_luas.get(event).setupTheShitCuzPullRequestsSuck();
 						}
+					}
+
+					for (i in globalLuaScripts) {
+						i.setupTheShitCuzPullRequestsSuck();
 					}
 
 					#end
@@ -4337,8 +4349,12 @@ class PlayState extends MusicBeatState {
 			stage_data = data;
 
 		#if linc_luajit
-		if (executeModchart && luaModchart != null && execute_on != STAGE)
+		if (executeModchart && luaModchart != null && execute_on != STAGE){
 			luaModchart.setVar(name, data);
+			for (i in globalLuaScripts) {
+				i.setVar(name, data);
+			}
+		}
 
 		if (stage.stageScript != null && execute_on != MODCHART)
 			stage.stageScript.setVar(name, stage_data);
@@ -4383,6 +4399,14 @@ class PlayState extends MusicBeatState {
 				luaVar = newLuaVar;
 		}
 
+		for (i in globalLuaScripts) {
+			i.getVar(name, type);
+
+			var newLuaVar = luaModchart.getVar(name, type);
+			
+			if (newLuaVar != null)
+				luaVar = newLuaVar;
+		}
 		if (luaVar != null)
 			return luaVar;
 		#end
