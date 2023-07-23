@@ -90,6 +90,7 @@ class Note extends FlxSprite {
 		animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
 		animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);
 		animation.addByPrefix("holdend", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold end0", 24);
+		animation.addByPrefix("glow", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " glow0", 24);
 
 		var lmaoStuff = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
 			- (Std.parseFloat(PlayState.instance.mania_size[localKeyCount - 1])));
@@ -224,6 +225,7 @@ class Note extends FlxSprite {
 	animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
 	animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);
 	animation.addByPrefix("holdend", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold end0", 24);
+	animation.addByPrefix("glow", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " glow0", 24);
 
 	var lmaoStuff = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
 		- (Std.parseFloat(PlayState.instance.mania_size[localKeyCount - 1])));
@@ -333,6 +335,9 @@ class Note extends FlxSprite {
 				if (alpha > 0.3)
 					alpha = 0.3;
 			}
+		}
+		if (canBeHit && utilities.Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default")){
+			animation.play("glow");
 		}
 	}
 

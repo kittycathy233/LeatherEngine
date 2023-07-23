@@ -146,13 +146,14 @@ class OptionsMenu extends MusicBeatState {
 		"Note Options" => [
 			new PageOption("Back", 0, "Graphics"),
 			new GameSubstateOption("Note BG Alpha", 1, substates.NoteBGAlphaMenu),
-			new BoolOption("Player Note Glow", "playerStrumsGlow", 2),
-			new BoolOption("Enemy Note Glow", "enemyStrumsGlow", 3),
-			new BoolOption("Player Note Splashes", "playerNoteSplashes", 4),
-			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 5),
-			new BoolOption("Note Accuracy Text", "displayMs", 6),
-			new GameSubstateOption("Note Colors", 7, substates.NoteColorSubstate),
-			new GameSubstateOption("UI Skin", 8, substates.UISkinSelect)
+			new BoolOption("Player Note Glow When Hit", "playerStrumsGlow", 2),
+			new BoolOption("Enemy Note Glow When Hit", "enemyStrumsGlow", 3),
+			new BoolOption("Note Glow When Can Hit", "playerStrumsGlowWhenCanBeHit", 4),
+			new BoolOption("Player Note Splashes", "playerNoteSplashes", 5),
+			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 6),
+			new BoolOption("Note Accuracy Text", "displayMs", 7),
+			new GameSubstateOption("Note Colors", 8, substates.NoteColorSubstate),
+			new GameSubstateOption("UI Skin", 9, substates.UISkinSelect)
 		],
 		"Screen Effects" => [
 			new PageOption("Back", 0, "Graphics"),

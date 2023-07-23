@@ -9,6 +9,10 @@
             "value": true
         },
         {
+            "option": "playerStrumsGlowWhenCanBeHit",
+            "value": false
+        },
+        {
             "option": "fpsCounter",
             "value": true
         },
