@@ -4400,9 +4400,8 @@ class PlayState extends MusicBeatState {
 		}
 
 		for (i in globalLuaScripts) {
-			i.getVar(name, type);
 
-			var newLuaVar = luaModchart.getVar(name, type);
+			var newLuaVar = i.getVar(name, type);
 			
 			if (newLuaVar != null)
 				luaVar = newLuaVar;
