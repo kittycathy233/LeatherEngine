@@ -1042,6 +1042,37 @@ class PlayState extends MusicBeatState {
 				}
 			}
 		}
+		if (sys.FileSystem.exists("assets/data/scripts/global/"))
+				{
+					var assetsGlobalScripts = sys.FileSystem.readDirectory("assets/data/scripts/global/");
+
+					if (assetsGlobalScripts.length > 0)
+					{
+						for (file in assetsGlobalScripts)
+						{
+							if(file.endsWith('.hx'))
+								{
+									globalScript = new HScript("assets/data/scripts/global/" + file, true);
+									globalScript.start();
+								
+									scripts.push(globalScript);
+								}
+							#if linc_luajit
+							if(file.endsWith('.lua'))
+								{
+
+									globalLuaExists = true;
+
+									
+									globalLuaScript = (new ModchartUtilities("assets/data/scripts/global/" + file));
+
+									globalLuaScripts.push(globalLuaScript);
+
+								}
+							#end
+						}
+					}
+				}
 		#end
 
 
