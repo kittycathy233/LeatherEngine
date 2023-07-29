@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Cool new modchart features via modcharting tools by TheZoroForce240
 - Modcharting tools can be used in lua scripts, hscript, and the modchart editor(hit 9 midsong)
 - Take screenshots by pressing F2 on the keyboard 
+- Note glow when can be hit option 
 
 ### Fixed
 

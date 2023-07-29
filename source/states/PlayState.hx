@@ -1,5 +1,6 @@
 package states;
 
+import haxe.io.Path;
 import modding.ModList;
 import flixel.group.FlxSpriteGroup;
 #if sys

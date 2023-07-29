@@ -54,6 +54,7 @@ class Character extends FlxSprite {
 	public var script:HScript;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDeathCharacter:Bool = false) {
+		
 		super(x, y);
 
 		animOffsets = new Map<String, Array<Dynamic>>();
