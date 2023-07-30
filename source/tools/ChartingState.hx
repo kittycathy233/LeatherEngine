@@ -39,6 +39,8 @@ import openfl.net.FileReference;
 using StringTools;
 
 class ChartingState extends MusicBeatState {
+	public var animOffsets:Map<String, Array<Dynamic>>;
+
 	var _file:FileReference;
 
 	var UI_box:FlxUITabMenu;
@@ -115,6 +117,12 @@ class ChartingState extends MusicBeatState {
 	var min_zoom:Float = 0.5;
 	var max_zoom:Float = 16;
 
+	var lilBuddiesBox:FlxUICheckBox;
+
+	var lilStage:FlxSprite;
+	var lilBf:FlxSprite;
+	var lilOpp:FlxSprite;
+
 
 	override function create() {
 		#if NO_PRELOAD_ALL
@@ -122,6 +130,34 @@ class ChartingState extends MusicBeatState {
 		if (Assets.getLibrary("shared") == null)
 			Assets.loadLibrary("shared").onComplete(function(_) {});
 		#end
+
+		lilStage = new FlxSprite(32, 650);
+		lilStage.loadGraphic(Paths.image("charter/lil_stage", "shared"));
+		lilStage.scrollFactor.set();
+		add(lilStage);
+
+		lilBf = new FlxSprite(185, 550);
+		lilBf.frames = Paths.getSparrowAtlas("charter/lil_bf", "shared");
+		lilBf.animation.addByPrefix("idle", "idle", 12, true);
+		lilBf.animation.play("idle");
+		lilBf.animation.finishCallback = function(name:String){
+			lilBf.animation.play(name, true, false, lilBf.animation.getByName(name).numFrames - 2);
+		}
+		lilBf.scrollFactor.set();
+		add(lilBf);
+
+		lilOpp = new FlxSprite(30, 545);
+		lilOpp.frames = Paths.getSparrowAtlas("charter/lil_opp", "shared");
+		lilOpp.animation.addByPrefix("idle", "idle", 12, true);
+		lilOpp.animation.play("idle");
+		lilOpp.animation.finishCallback = function(name:String){
+			lilOpp.animation.play(name, true, false, lilOpp.animation.getByName(name).numFrames - 2);
+		}
+		lilOpp.scrollFactor.set();
+		add(lilOpp);
+
+		loadOffsetFile("lilBf");
+		loadOffsetFile("lilOpp");
 
 		// preload hitsounds
 		FlxG.sound.load(Paths.sound('CLAP'));
@@ -335,6 +371,15 @@ class ChartingState extends MusicBeatState {
 		};
 		check_mute_vocals.callback();
 
+		lilBuddiesBox = new FlxUICheckBox(check_mute_inst.x, 90, null, null, "Lil' Buddies", 100);
+			lilBuddiesBox.checked = true;
+			lilBuddiesBox.callback = function()
+			{
+				lilBf.visible = lilBuddiesBox.checked;
+				lilOpp.visible = lilBuddiesBox.checked;
+				lilStage.visible = lilBuddiesBox.checked;
+			};
+
 		var check_char_ids = new FlxUICheckBox(check_mute_vocals.x + check_mute_vocals.width + 4, check_mute_vocals.y, null, null, "Character Ids On Notes", 100);
 		check_char_ids.checked = doFunnyNumbers;
 		check_char_ids.callback = function() {
@@ -460,6 +505,8 @@ class ChartingState extends MusicBeatState {
 
 		tab_group_song.add(compatibilityLabel);
 		tab_group_song.add(finalDestinationButton);
+
+		//tab_group_song.add(lilBuddiesBox);
 
 		// final addings
 		UI_box.addGroup(tab_group_song);
@@ -1168,15 +1215,39 @@ class ChartingState extends MusicBeatState {
 
 							if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
 								&& _song.notes[curSection].mustHitSection
-								|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection)
+								|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection){
 								FlxG.sound.play(Paths.sound('CLAP'));
-							else
+							}
+							else{
 								FlxG.sound.play(Paths.sound('SNAP'));
+							}
 						}
 					});
 				}
 			});
 		}
+		curRenderedNotes.forEach(function(note:Note) {
+			if (FlxG.sound.music.playing) {
+				FlxG.overlap(strumLine, note, function(_, _) {
+						if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
+							&& _song.notes[curSection].mustHitSection
+							|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection){
+							var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
+							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
+								lilBf.offset.set(daOffset[0], daOffset[1]);
+							lilBf.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
+							lilBf.updateHitbox();
+						}
+						else{
+							var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
+							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
+								lilOpp.offset.set(daOffset[0], daOffset[1]);
+							lilOpp.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
+							lilOpp.updateHitbox();
+						}
+				});
+			}
+		});
 
 		if (curBeat % Std.int(Conductor.stepsPerSection / Conductor.timeScale[1]) == 0
 			&& curStep >= (Conductor.stepsPerSection * (curSection + 1))) {
@@ -1289,6 +1360,8 @@ class ChartingState extends MusicBeatState {
 			var control = FlxG.keys.pressed.CONTROL;
 
 			if (FlxG.keys.justPressed.SPACE) {
+				lilBf.animation.play("idle");
+				lilOpp.animation.play("idle");
 				if (FlxG.sound.music.playing) {
 					FlxG.sound.music.pause();
 					vocals.pause();
@@ -1306,6 +1379,8 @@ class ChartingState extends MusicBeatState {
 			}
 
 			if (FlxG.mouse.wheel != 0 && !control) {
+				lilBf.animation.play("idle");
+				lilOpp.animation.play("idle");
 				FlxG.sound.music.pause();
 				vocals.pause();
 
@@ -1323,6 +1398,8 @@ class ChartingState extends MusicBeatState {
 
 			if (!FlxG.keys.pressed.SHIFT) {
 				if (FlxG.keys.pressed.W || FlxG.keys.pressed.S) {
+					lilBf.animation.play("idle");
+					lilOpp.animation.play("idle");
 					FlxG.sound.music.pause();
 					vocals.pause();
 
@@ -1337,6 +1414,8 @@ class ChartingState extends MusicBeatState {
 				}
 			} else {
 				if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
+					lilBf.animation.play("idle");
+					lilOpp.animation.play("idle");
 					FlxG.sound.music.pause();
 					vocals.pause();
 
@@ -1445,10 +1524,14 @@ class ChartingState extends MusicBeatState {
 	}
 
 	function resetSection(songBeginning:Bool = false):Void {
+		
 		updateGrid();
 
 		FlxG.sound.music.pause();
 		vocals.pause();
+
+		lilBf.animation.play("idle");
+		lilOpp.animation.play("idle");
 
 		// Basically old shit from changeSection???
 		FlxG.sound.music.time = sectionStartTime();
@@ -1477,6 +1560,9 @@ class ChartingState extends MusicBeatState {
 				FlxG.sound.music.pause();
 				vocals.pause();
 
+				lilBf.animation.play("idle");
+				lilOpp.animation.play("idle");
+
 				FlxG.sound.music.time = sectionStartTime();
 				vocals.time = FlxG.sound.music.time;
 				updateCurStep();
@@ -1485,6 +1571,8 @@ class ChartingState extends MusicBeatState {
 			updateGrid();
 			updateSectionUI();
 		}
+		lilBf.animation.play("idle");
+		lilOpp.animation.play("idle");
 	}
 
 	static var doFunnyNumbers:Bool = true;
@@ -1696,6 +1784,8 @@ class ChartingState extends MusicBeatState {
 				goodNoteInfo = daNoteInfo - _song.playerKeyCount;
 
 			var note:Note = new Note(daStrumTime, goodNoteInfo, null, false, 0, daType, _song, [0], mustPress, true);
+			lilBf.animation.addByPrefix(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData] + "0", 12);
+			lilOpp.animation.addByPrefix(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData] + "0", 12);
 			note.sustainLength = daSus;
 
 			note.setGraphicSize((Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4]) != null ? Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4]) : 0),
@@ -2095,5 +2185,21 @@ class ChartingState extends MusicBeatState {
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+	}
+
+	public function loadOffsetFile(characterName:String) {
+		animOffsets = new Map<String, Array<Dynamic>>();
+		var offsets:Array<String> = CoolUtil.coolTextFile(Paths.txt(characterName));
+
+		for (x in 0...offsets.length) {
+			var selectedOffset = offsets[x];
+			var arrayOffset:Array<String>;
+			arrayOffset = selectedOffset.split(" ");
+
+			addOffset(arrayOffset[0], Std.parseInt(arrayOffset[1]), Std.parseInt(arrayOffset[2]));
+		}
+	}
+	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
+		animOffsets.set(name, [x, y]);
 	}
 }

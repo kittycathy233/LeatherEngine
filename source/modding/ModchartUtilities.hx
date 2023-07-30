@@ -1,5 +1,6 @@
 package modding;
 
+import openfl.display.ShaderParameter;
 import shaders.custom.CustomShader;
 import openfl.filters.ShaderFilter;
 import shaders.custom.flixel.FlxRuntimeShader;
@@ -2126,9 +2127,16 @@ class ModchartUtilities {
 			funnyCustomShader.setInt(property, value);
 		});
 
-		setLuaFunction("tweenCustomShaderFloat", function(id:String, shaderProperty:String, value:Float, time:Float, ?ease:String = "linear", ?onComplete:Dynamic) {
+		setLuaFunction("tweenCustomShaderFloat", function(id:String, property:String, shaderValue:Float, time:Float, ?ease:String = "linear", ?onComplete:Dynamic) {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			FlxTween.tween(funnyCustomShader, {shaderProperty: value}, time, {
+			var prop:ShaderParameter<Float> = Reflect.field(funnyCustomShader.data, property);
+			@:privateAccess
+			if (prop == null)
+			{
+				trace('[WARN] Shader float property ${property} not found.');
+				return;
+			}
+			FlxTween.tween(prop, {value: [shaderValue]}, time, {
 				ease: easeFromString(ease),
 				onComplete: function(twn) {
 					if (onComplete != null)

@@ -50,6 +50,7 @@ class TitleState extends MusicBeatState {
 	var swagShader:TitleEffect;
 
 	override public function create():Void {
+		
 		MusicBeatState.windowNameSuffix = "";
 
 
