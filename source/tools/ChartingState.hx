@@ -740,7 +740,7 @@ class ChartingState extends MusicBeatState {
 		var charText = new FlxText(stepperCharLength.x + stepperCharLength.width + 1, stepperCharLength.y , 0, "Character", 9);
 
 		var charGroupText = new FlxText(characterGroup_Input.x + characterGroup_Input.width + 1, characterGroup_Input.y, 0,
-			"Character Group (chars seperated by ',')", 9);
+			"Character Group (seperated by ',')", 9);
 
 		// note stuff
 		tab_group_section.add(noteText);
