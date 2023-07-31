@@ -118,6 +118,9 @@ class HScript
 		interp.variables.set("Math", Math);
 		interp.variables.set("Std", Std);
 		interp.variables.set("StringTools", StringTools);
+		interp.variables.set("FlxRuntimeShader", shaders.custom.flixel.FlxRuntimeShader);
+		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
+		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 
 		// game classes
 		interp.variables.set("PlayState", states.PlayState);
@@ -127,6 +130,8 @@ class HScript
 		interp.variables.set('Options', utilities.Options);
 		interp.variables.set('Character', game.Character);
 		interp.variables.set('Alphabet', ui.Alphabet);
+		interp.variables.set('ModList', modding.ModList);
+		interp.variables.set('Discord', utilities.Discord.DiscordClient);
 
 		// function shits
 
