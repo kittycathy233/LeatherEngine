@@ -2170,9 +2170,6 @@ class ModchartUtilities {
 
 				PlayState.instance.playfieldRenderer.modifierTable.reconstructTable(); //needs to be reconstructed for lua modcharts
 			});
-			setLuaFunction('setMod', function(name:String, value:Float){
-				ModchartFuncs.setMod(name, value);
-			});
 			setLuaFunction('setSubMod', function(name:String, subValName:String, value:Float){
 				ModchartFuncs.setSubMod(name, subValName,value);
 			});
