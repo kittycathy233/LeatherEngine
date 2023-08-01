@@ -131,7 +131,9 @@ class HScript
 		interp.variables.set('Character', game.Character);
 		interp.variables.set('Alphabet', ui.Alphabet);
 		interp.variables.set('ModList', modding.ModList);
+		#if discord_rpc
 		interp.variables.set('Discord', utilities.Discord.DiscordClient);
+		#end
 
 		// function shits
 

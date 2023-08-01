@@ -156,8 +156,8 @@ class ChartingState extends MusicBeatState {
 		lilOpp.scrollFactor.set();
 		add(lilOpp);
 
-		loadOffsetFile("lilBf");
-		loadOffsetFile("lilOpp");
+		//loadOffsetFile("lilBf");
+		//loadOffsetFile("lilOpp");
 
 		// preload hitsounds
 		FlxG.sound.load(Paths.sound('CLAP'));
@@ -1232,18 +1232,18 @@ class ChartingState extends MusicBeatState {
 						if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
 							&& _song.notes[curSection].mustHitSection
 							|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection){
-							var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
+							/*var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
 							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
-								lilBf.offset.set(daOffset[0], daOffset[1]);
+								lilBf.offset.set(daOffset[0], daOffset[1]);*/
 							lilBf.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
-							lilBf.updateHitbox();
+							//lilBf.updateHitbox();
 						}
 						else{
-							var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
+							/*var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
 							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
-								lilOpp.offset.set(daOffset[0], daOffset[1]);
+								lilOpp.offset.set(daOffset[0], daOffset[1]);*/
 							lilOpp.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
-							lilOpp.updateHitbox();
+							//lilOpp.updateHitbox();
 						}
 				});
 			}
@@ -2187,19 +2187,8 @@ class ChartingState extends MusicBeatState {
 		FlxG.log.error("Problem saving Level data");
 	}
 
-	public function loadOffsetFile(characterName:String) {
-		animOffsets = new Map<String, Array<Dynamic>>();
-		var offsets:Array<String> = CoolUtil.coolTextFile(Paths.txt(characterName));
-
-		for (x in 0...offsets.length) {
-			var selectedOffset = offsets[x];
-			var arrayOffset:Array<String>;
-			arrayOffset = selectedOffset.split(" ");
-
-			addOffset(arrayOffset[0], Std.parseInt(arrayOffset[1]), Std.parseInt(arrayOffset[2]));
+	public function addOffset(name:String, x:Float = 0, y:Float = 0)
+		{
+			animOffsets[name] = [x, y];
 		}
-	}
-	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
-		animOffsets.set(name, [x, y]);
-	}
 }
