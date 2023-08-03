@@ -2093,28 +2093,6 @@ class ModchartUtilities {
 			cameraFromString(camera)._filters.push(new ShaderFilter(funnyCustomShader));
 		});
 
-		/*setLuaFunction("setCameraCustomShaderArray", function(idString:String, camera:String){
-
-			var shaders:Array<CustomShader>;
-
-				for (shaderIndex in 0...shaders.length) {
-					shaders.push((new ShaderFilter(shaders[shaderIndex])));
-				}
-
-			cameraFromString(camera).setFilters(shaders);
-		});*/
-		setLuaFunction("addActorAnimationIndices", function(id:String, prefix:String, indiceString:String, anim:String, fps:Int = 30, looped:Bool = true) {
-			if (getActorByName(id) != null) {
-				var indices:Array<Dynamic> = indiceString.split(",");
-
-				for (indiceIndex in 0...indices.length) {
-					indices[indiceIndex] = Std.parseInt(indices[indiceIndex]);
-				}
-
-				getActorByName(id).animation.addByIndices(anim, prefix, indices, "", fps, looped);
-			}
-		});
-
 		setLuaFunction("setCameraNoCustomShader", function(camera:String){
 			cameraFromString(camera).setFilters(null);
 		});
