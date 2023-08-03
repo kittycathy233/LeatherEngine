@@ -1,5 +1,6 @@
 package modding;
 
+import openfl.filters.BitmapFilter;
 import openfl.display.ShaderParameter;
 import shaders.custom.CustomShader;
 import openfl.filters.ShaderFilter;
@@ -2074,7 +2075,6 @@ class ModchartUtilities {
 
 		setLuaFunction("setActorCustomShader", function(id:String, actor:String){
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			lua_Custom_Shaders.set(id, funnyCustomShader);
 			getActorByName(actor).shader = funnyCustomShader;
 		});
 
@@ -2084,8 +2084,35 @@ class ModchartUtilities {
 
 		setLuaFunction("setCameraCustomShader", function(id:String, camera:String){
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			lua_Custom_Shaders.set(id, funnyCustomShader);
 			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
+		});
+
+		setLuaFunction("pushLuaShaderToCamera", function(id:String, camera:String){
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+			@:privateAccess
+			cameraFromString(camera)._filters.push(new ShaderFilter(funnyCustomShader));
+		});
+
+		/*setLuaFunction("setCameraCustomShaderArray", function(idString:String, camera:String){
+
+			var shaders:Array<CustomShader>;
+
+				for (shaderIndex in 0...shaders.length) {
+					shaders.push((new ShaderFilter(shaders[shaderIndex])));
+				}
+
+			cameraFromString(camera).setFilters(shaders);
+		});*/
+		setLuaFunction("addActorAnimationIndices", function(id:String, prefix:String, indiceString:String, anim:String, fps:Int = 30, looped:Bool = true) {
+			if (getActorByName(id) != null) {
+				var indices:Array<Dynamic> = indiceString.split(",");
+
+				for (indiceIndex in 0...indices.length) {
+					indices[indiceIndex] = Std.parseInt(indices[indiceIndex]);
+				}
+
+				getActorByName(id).animation.addByIndices(anim, prefix, indices, "", fps, looped);
+			}
 		});
 
 		setLuaFunction("setCameraNoCustomShader", function(camera:String){
