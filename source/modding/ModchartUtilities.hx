@@ -2087,7 +2087,7 @@ class ModchartUtilities {
 			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
 		});
 
-		setLuaFunction("pushLuaShaderToCamera", function(id:String, camera:String){
+		setLuaFunction("pushShaderToCamera", function(id:String, camera:String){
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			@:privateAccess
 			cameraFromString(camera)._filters.push(new ShaderFilter(funnyCustomShader));
