@@ -1,5 +1,6 @@
 package modding.scripts.languages;
 
+import states.PlayState;
 import openfl.utils.Assets;
 import hscript.Parser;
 import hscript.Expr;
@@ -135,6 +136,17 @@ class HScript
 		interp.variables.set('Discord', utilities.Discord.DiscordClient);
 		#end
 
+		//modchart tools stuff
+		#if MODCHARTING_TOOLS
+		if (PlayState.SONG.modchartingTools){
+			interp.variables.set('PlayfieldRenderer', modcharting.PlayfieldRenderer);
+			interp.variables.set('ModchartUtil', modcharting.ModchartUtil);
+			interp.variables.set('Modifier', modcharting.Modifier);
+			interp.variables.set('NoteMovement', modcharting.NoteMovement);
+			interp.variables.set('NotePositionData', modcharting.NotePositionData);
+			interp.variables.set('ModchartFile', modcharting.ModchartFile);
+		}
+		#end
 		// function shits
 
 	    interp.variables.set("import", function(class_name:String) {
