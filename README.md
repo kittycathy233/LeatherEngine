@@ -67,3 +67,5 @@ You can load, share, and play replays of songs you've played! They can even be i
 - EliteMasterEric - [FlxRuntimeShader](https://github.com/elitemastereric) cool class that allows for custom shaders
 
 - sayofthelor - [flixel-screenshot-plugin](https://github.com/sayofthelor/flixel-screenshot-plugin/) cool screenshot haxelib
+
+- Rozebud - [fps plus](https://github.com/ThatRozebudDude/FPS-Plus-Public) the idea for lil' buddies and note glow when can be hit came from here
