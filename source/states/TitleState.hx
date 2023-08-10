@@ -1,5 +1,6 @@
 package states;
 
+import docs.DocState;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -291,6 +292,9 @@ class TitleState extends MusicBeatState {
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
+
+		if (FlxG.keys.justPressed.D)
+			FlxG.switchState(new DocState());
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 

@@ -93,6 +93,8 @@
 
 	<assets path="building/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
+	<assets path='web' />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<!--Packages-->
@@ -106,6 +108,8 @@
 	<define name="hscriptPos" />
 
 	<haxelib name="polymod" />
+
+	<haxelib name="cocktail" />
 
 
 
