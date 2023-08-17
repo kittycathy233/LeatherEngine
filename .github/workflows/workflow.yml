@@ -29,21 +29,32 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
-          sudo apt-get install vlc-bin
-          sudo apt-get install luajit
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib install hxcpp > /dev/null
+          haxelib install lime
+          haxelib install openfl
+          haxelib --never install flixel
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons
+          haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
+          haxelib install hscript
+          haxelib install polymod
+          haxelib install hxCodec
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+          haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
+          haxelib install flixel-screenshot-plugin
+          haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile Linux
         run: haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: linuxBuild
           path: 'export/release/linux/bin' 
@@ -64,16 +75,27 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib install hxcpp > /dev/null
+          haxelib install lime
+          haxelib install openfl
+          haxelib --never install flixel
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons
+          haxelib install polymod
+          haxelib git openfl https://github.com/openfl/openfl
+          haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+          haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
+          haxelib install flixel-screenshot-plugin
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile HTML5
         run: haxelib run lime build Project.xml html5 --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish HTMl5 Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v2.2.4
         with:
           name: html5Build
           path: 'export/release/html5/bin' 
@@ -92,9 +114,25 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup C:/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib install hxcpp > nul
+          haxelib install lime
+          haxelib install openfl
+          haxelib --never install flixel
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons
+          haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
+          haxelib install hscript
+          haxelib install polymod
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+          haxelib git openfl https://github.com/openfl/openfl
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+          haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
+          haxelib install flixel-screenshot-plugin
+          haxelib install hxcpp-debug-server
           haxelib list
         shell: cmd
       - name: Create Version Tag
@@ -120,9 +158,25 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install
+          haxelib install hxcpp > /dev/null
+          haxelib install lime
+          haxelib install openfl
+          haxelib --never install flixel
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons
+          haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
+          haxelib install hscript
+          haxelib install polymod
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+          haxelib git openfl https://github.com/openfl/openfl
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+          haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
+          haxelib install flixel-screenshot-plugin
+          haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
