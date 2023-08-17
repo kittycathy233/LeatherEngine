@@ -91,7 +91,7 @@
 
 	<assets path="version.txt" />
 
-	<assets path="building/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
+	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
 
 	<!-- _______________________________ Libraries ______________________________ -->
