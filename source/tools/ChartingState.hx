@@ -1827,7 +1827,8 @@ class ChartingState extends MusicBeatState {
 					+ GRID_SIZE
 					- Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[3])).makeGraphic(8,
 						Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * Conductor.stepsPerSection, 0, gridBG.height)));
-				sustainVis.color = CoolUtil.dominantColor(note);
+				if (note.arrow_Type != 'default')
+					sustainVis.color = CoolUtil.dominantColor(note);
 				curRenderedSustains.add(sustainVis);
 			}
 		}

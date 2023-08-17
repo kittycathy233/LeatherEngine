@@ -1626,6 +1626,7 @@ class PlayState extends MusicBeatState {
 			dad.dance(altAnim);
 			gf.dance();
 			boyfriend.dance();
+			
 
 			var introAssets:Array<String> = [
 				"ui skins/" + SONG.ui_Skin + "/countdown/ready",
@@ -4659,7 +4660,7 @@ class PlayState extends MusicBeatState {
 				strumLineNotes.clear();
 				splash_group.clear();
 				binds = Options.getData("binds", "binds")[SONG.playerKeyCount - 1];
-				if(utilities.Options.getData("middlescroll"))
+				if(Options.getData("middlescroll"))
 					{
 						generateStaticArrows(50, false);
 						generateStaticArrows(0.5, true);
@@ -4695,6 +4696,74 @@ class PlayState extends MusicBeatState {
 					setLuaVar("defaultStrum" + i + "Angle", member.angle);
 				}
 				#end
+			case "change ui skin":
+				var noteskin:String = Std.string(event[2]);
+				SONG.ui_Skin = noteskin;
+				ui_settings = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/config"));
+				mania_size = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniasize"));
+				mania_offset = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniaoffset"));
+
+				// if the file exists, use it dammit
+				if (Assets.exists(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniagap")))
+					mania_gap = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniagap"));
+				else
+					mania_gap = CoolUtil.coolTextFile(Paths.txt("ui skins/default/maniagap"));
+
+				types = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/types"));
+
+				arrow_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/default")));
+				type_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("arrow types/default")));
+
+				// preload ratings
+				uiMap.set("marvelous", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "marvelous")));
+				uiMap.set("sick", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "sick")));
+				uiMap.set("good", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "good")));
+				uiMap.set("bad", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "bad")));
+				uiMap.set("shit", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "shit")));
+
+				// preload numbers
+				for (i in 0...10)
+					uiMap.set(Std.string(i), FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/numbers/num" + Std.string(i))));
+				var healthBarPosY = FlxG.height * 0.9;
+
+				if (Options.getData("downscroll"))
+					healthBarPosY = 60;
+				if (funnyTimeBarStyle.toLowerCase() == 'leather engine'){
+					healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
+				}
+				if (funnyTimeBarStyle.toLowerCase() != ' engine')
+					timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
+
+				playerStrums.clear();
+				enemyStrums.clear();
+				strumLineNotes.clear();
+				splash_group.clear();
+				if(Options.getData("middlescroll"))
+					{
+						generateStaticArrows(50, false);
+						generateStaticArrows(0.5, true);
+					}
+					else
+					{
+						if(characterPlayingAs == 0)
+						{
+							generateStaticArrows(0, false);
+							generateStaticArrows(1, true);
+							playerStrums.add(babyArrow);	
+						}
+						else
+						{
+							generateStaticArrows(1, false);
+							generateStaticArrows(0, true);
+							enemyStrums.add(babyArrow);
+						}
+					}
+				for (note in unspawnNotes) {
+					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+				}
+				for (note in notes.members) {
+					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+				}
 		}
 
 		//                            name       pos      param 1   param 2
