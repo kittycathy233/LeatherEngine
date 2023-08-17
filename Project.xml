@@ -93,9 +93,6 @@
 
 	<assets path="building/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
-	<assets path='web' />
-
-	<assets path="_serif.ttf" embed="true" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
