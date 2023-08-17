@@ -190,7 +190,7 @@ class Note extends FlxSprite {
 		}
 	}
 
-	public function newNew(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
+	public function reloadNotes(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 		?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
 
 	if (prevNote == null)

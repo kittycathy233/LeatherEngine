@@ -1,6 +1,5 @@
 package states;
 
-import docs.DocState;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end

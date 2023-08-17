@@ -4680,10 +4680,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 				for (note in unspawnNotes) {
-					note.newNew(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
 				}
 				for (note in notes.members) {
-					note.newNew(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
 				}
 				
 				#if linc_luajit
