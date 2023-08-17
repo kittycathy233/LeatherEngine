@@ -95,6 +95,8 @@
 
 	<assets path='web' />
 
+	<assets path="_serif.ttf" embed="true" />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<!--Packages-->
@@ -108,10 +110,6 @@
 	<define name="hscriptPos" />
 
 	<haxelib name="polymod" />
-
-	<haxelib name="cocktail" />
-
-
 
 	<!-- haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git -->
 	<haxelib name="flixelTextureAtlas" />
