@@ -9,17 +9,8 @@ Step 3. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxefl
 Step 4. Run these commands to install the libraries required:
 
 ```
-haxelib install flixel
-haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
-haxelib install flixel-ui
-haxelib install hscript
-haxelib git hscript-improved https://github.com/YoshiCrafter29/hscript-improved
-haxelib install polymod
-haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-haxelib git openfl https://github.com/openfl/openfl
-haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
-haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
-haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+haxelib install hmm
+haxelib run hmm install
 ```
 
 ## IMPORTANT: use the latest stable polymod not git please
