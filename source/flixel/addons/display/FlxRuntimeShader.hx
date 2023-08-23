@@ -1,4 +1,4 @@
-package shaders.custom.flixel;
+package flixel.addons.display;
 
 
 

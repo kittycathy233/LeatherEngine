@@ -4,7 +4,7 @@ import openfl.filters.BitmapFilter;
 import openfl.display.ShaderParameter;
 import shaders.custom.CustomShader;
 import openfl.filters.ShaderFilter;
-import shaders.custom.flixel.FlxRuntimeShader;
+import flixel.addons.display.FlxRuntimeShader;
 import flixel.util.FlxTimer;
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;

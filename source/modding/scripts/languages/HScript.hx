@@ -119,7 +119,8 @@ class HScript
 		interp.variables.set("Math", Math);
 		interp.variables.set("Std", Std);
 		interp.variables.set("StringTools", StringTools);
-		interp.variables.set("FlxRuntimeShader", shaders.custom.flixel.FlxRuntimeShader);
+		interp.variables.set("FlxRuntimeShader", flixel.addons.display.FlxRuntimeShader);
+		interp.variables.set("FlxRuntimeShader", shaders.custom.CustomShader);
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 
@@ -134,6 +135,9 @@ class HScript
 		interp.variables.set('ModList', modding.ModList);
 		#if discord_rpc
 		interp.variables.set('Discord', utilities.Discord.DiscordClient);
+		#end
+		#if THREE_D_ALLOWED
+		interp.variables.set('Model', models.Model);
 		#end
 
 		//modchart tools stuff

@@ -87,6 +87,13 @@
         "name": "flixel-screenshot-plugin",
         "type": "haxelib",
         "version": null
+      },
+      {
+        "name": "away3d",
+        "type": "git",
+        "dir": null,
+        "ref": "master",
+        "url": "https://github.com/openfl/away3d"
       }
     ]
   }

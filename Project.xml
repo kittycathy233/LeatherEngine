@@ -43,6 +43,7 @@
 	<define name="VIDEOS_ALLOWED" if="windows || mac || android" />
 	<define name="LUA_ALLOWED" if="desktop" />
 	<define name="SCREENSHOTS_ALLOWED" if="desktop"/>
+	<define name="THREE_D_ALLOWED"/>
 
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
@@ -100,23 +101,14 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-
 	<haxelib name="hscript" />
-	<!--Fix
-	some polymod 1.5.3+ errors lol (needs hscript 2.5.0 i think???)-->
 	<define name="hscriptPos" />
-
 	<haxelib name="polymod" />
-
-	<!-- haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git -->
 	<haxelib name="flixelTextureAtlas" />
-
-
 	<haxelib name="discord_rpc" if="desktop" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
-
 	<haxelib name="flixel-screenshot-plugin" if="SCREENSHOTS_ALLOWED"/>
-
+	<haxelib name="away3d" if="THREE_D_ALLOWED" />
 	<!-- Show debug traces for hxCodec -->
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" />
 	<define name="HXC_DEBUG_TRACE" if="debug" />
@@ -130,7 +122,6 @@
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 
