@@ -149,7 +149,7 @@ class ModchartUtilities {
 	 * @param func Function to use
 	 */
 	function setLuaFunction(name:String, func:Dynamic):Void {
-		Lua_helper.add_callback(lua, name, func);
+		setLuaFunction( name, func);
 	}
 
 	public function new(?path:Null<String>) {
@@ -855,6 +855,28 @@ class ModchartUtilities {
 		});
 
 		// actors
+
+		setLuaFunction("getUnspawnNotes", function() {
+            return PlayState.instance.unspawnNotes.length;
+        });
+        setLuaFunction("getUnspawnedNoteNoteType", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].arrow_Type;
+        });
+        setLuaFunction("getUnspawnedNoteStrumtime", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].strumTime;
+        });
+        setLuaFunction("getUnspawnedNoteMustPress", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].mustPress;
+        });
+        setLuaFunction("getUnspawnedNoteSustainNote", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].isSustainNote;
+        });
+        setLuaFunction("getUnspawnedNoteNoteData", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].noteData;
+        });
+        setLuaFunction("getUnspawnedNoteScaleX", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].scale.x;
+        });
 
 		setLuaFunction("getRenderedNotes", function() {
 			return PlayState.instance.notes.length;

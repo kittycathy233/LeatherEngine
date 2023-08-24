@@ -1273,6 +1273,11 @@ class PlayState extends MusicBeatState {
 			updateRatingText();
 		}
 
+		for (event in events){
+			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
+			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
+		}
+
 		// grouped cuz fuck you this is based on base game B)
 		strumLineNotes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1732,7 +1737,7 @@ class PlayState extends MusicBeatState {
 
 		executeALuaState("songStart", []);
 		allScriptCall("songStart", []);
-		
+
 		resyncVocals();
 	}
 
@@ -2123,6 +2128,9 @@ class PlayState extends MusicBeatState {
 			dad.script.call("fixedUpdate", [fixedUpdateFPS]);
 		if (boyfriend.script != null)
 			boyfriend.script.call("fixedUpdate", [fixedUpdateFPS]);
+
+		executeALuaState("fixedUpdate", [fixedUpdateFPS]);
+		allScriptCall("fixedUpdate", [fixedUpdateFPS]);
 	}
 
 	var fixedUpdateFPS:Int = 60;
@@ -2884,6 +2892,7 @@ class PlayState extends MusicBeatState {
 		}
 		#end
 		allScriptCall("updatePost", [elapsed]);
+		executeALuaState("updatePost", [elapsed]);
 	}
 
 	function endSong():Void {
