@@ -2,7 +2,7 @@
 
 
 ![](https://img.shields.io/github/repo-size/Vortex2Oblivion/LeatherEngine-Extended-Support) ![](https://badgen.net/github/open-issues/Vortex2Oblivion/LeatherEngine-Extended-Support) ![](https://badgen.net/badge/license/GPL-3.0/green)
-[![Build](https://img.shields.io/github/actions/workflow/status/Vortex2Oblivion/LeatherEngine-Extended-Support/main.yml?branch=master&logo=github)](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions/workflows/workflow.yml?query=workflow%3ABuild)
+[![CI](https://img.shields.io/github/actions/workflow/status/Vortex2Oblivion/LeatherEngine-Extended-Support/workflow.yml?branch=master&logo=github)](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions?query=workflow%3ACI)
 
 ![Logo](art/Logo.png)
 
