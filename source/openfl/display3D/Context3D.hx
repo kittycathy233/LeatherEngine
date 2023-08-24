@@ -1,7 +1,9 @@
 package openfl.display3D;
 
 #if !flash
+#if !macro
 import openfl.display3D.utils.UInt8Buff;
+#end
 import openfl.display3D._internal.Context3DState;
 import openfl.display3D._internal.GLBuffer;
 import openfl.display3D._internal.GLFramebuffer;
@@ -1077,7 +1079,7 @@ import lime.math.Vector2;
 			// TODO: Read less pixels if srcRect is smaller
 
 			//! EDITED BY NE_EO TO REDUCE GARBAGE MEMORY
-			var buffer = UInt8Buff.get(backBufferWidth * backBufferHeight * 4); // new UInt8Array(backBufferWidth * backBufferHeight * 4);
+			var buffer = #if !macro UInt8Buff.get(backBufferWidth * backBufferHeight * 4)#else null #end; // new UInt8Array(backBufferWidth * backBufferHeight * 4);
 			var data = buffer.buffer;
 			gl.readPixels(0, 0, backBufferWidth, backBufferHeight, __backBufferTexture.__format, gl.UNSIGNED_BYTE, data);
 

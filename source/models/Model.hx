@@ -1,5 +1,4 @@
 package models;
-
 import away3d.entities.Mesh;
 import away3d.events.Asset3DEvent;
 import away3d.library.assets.Asset3DType;

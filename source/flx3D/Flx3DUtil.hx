@@ -1,3 +1,4 @@
+#if THREE_D_ALLOWED
 package flx3D;
 
 import away3d.core.managers.Stage3DManager;
@@ -49,3 +50,4 @@ class Flx3DUtil
 		return null;
 	}
 }
+#end

@@ -1,3 +1,4 @@
+#if THREE_D_ALLOWED
 package flx3D;
 
 import away3d.containers.View3D;
@@ -116,3 +117,4 @@ class FlxView3D extends FlxSprite
 		return view != null ? view.height = height : height;
 	}
 }
+#end
