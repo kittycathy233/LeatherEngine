@@ -16,9 +16,7 @@ This is the repository for Leather Engine, an engine created for making and play
 
 ### IMPORTANT:
 
-Use the latest stable Polymod (NOT `git`) as it's the version that the engine is currently designed for.
-
-For build instructions go to [Build.md](https://github.com/Leather128/LeatherEngine/blob/main/Build.md)
+For build instructions go to [BUILD.md](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/blob/main/build/BUILD.md)
 
 ## Features
 
