@@ -985,6 +985,7 @@ class PlayState extends MusicBeatState {
 		stage.createLuaStuff();
 
 		executeALuaState("create", [stage.stage], STAGE);
+		allScriptCall("create", [stage.stage]);
 		#end
 
 		if (gf.script != null)
@@ -1085,6 +1086,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		allScriptCall("createStage");
+		executeALuaState("createStage", []);
 
 		if (gf.script != null)
 			gf.script.start();
@@ -1725,7 +1727,12 @@ class PlayState extends MusicBeatState {
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength / songMultiplier);
 		#end
 		#end
+		executeALuaState("startSong", []);
+		allScriptCall("startSong", []);
 
+		executeALuaState("songStart", []);
+		allScriptCall("songStart", []);
+		
 		resyncVocals();
 	}
 
@@ -2304,6 +2311,8 @@ class PlayState extends MusicBeatState {
 
 					executeALuaState("playerTwoTurn", []);
 					executeALuaState("turnChange", ['dad']);
+					allScriptCall("playerTwoTurn");
+					allScriptCall("turnChange", ['dad']);
 				}
 			}
 
@@ -2339,6 +2348,8 @@ class PlayState extends MusicBeatState {
 
 					executeALuaState("playerOneTurn", []);
 					executeALuaState("turnChange", ['bf']);
+					allScriptCall("playerOneTurn");
+					allScriptCall("turnChange", ['bf']);
 				}
 			}
 		}
@@ -2374,6 +2385,7 @@ class PlayState extends MusicBeatState {
 
 
 			executeALuaState("onDeath", [Conductor.songPosition]);
+			allScriptCall("onDeath", [Conductor.songPosition]);
 		}
 
 		if (health < minHealth)
@@ -2456,20 +2468,34 @@ class PlayState extends MusicBeatState {
 							}
 						}
 
-						if (daNote.isSustainNote)
+						if (daNote.isSustainNote){
 							executeALuaState('playerTwoSingHeld', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
 								daNote.strumTime
 							]);
-						else
+							allScriptCall('playerTwoSingHeld', [
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								daNote.arrow_Type,
+								daNote.strumTime
+							]);
+						}
+						else{
 							executeALuaState('playerTwoSing', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
 								daNote.strumTime
 							]);
+							allScriptCall('playerTwoSing', [
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								daNote.arrow_Type,
+								daNote.strumTime
+							]);
+						}
 					} else {
 						if (boyfriend.otherCharacters == null || boyfriend.otherCharacters.length - 1 < daNote.character)
 							boyfriend.playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))], true);
@@ -2484,20 +2510,34 @@ class PlayState extends MusicBeatState {
 							}
 						}
 
-						if (daNote.isSustainNote)
+						if (daNote.isSustainNote){
 							executeALuaState('playerOneSingHeld', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
 								daNote.strumTime
 							]);
-						else
+							allScriptCall("playerOneSingHeld", [
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								daNote.arrow_Type,
+								daNote.strumTime
+							]);
+						}
+						else{
 							executeALuaState('playerOneSing', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
 								daNote.strumTime
 							]);
+							allScriptCall("playerOneSing", [
+								Math.abs(daNote.noteData),
+								Conductor.songPosition,
+								daNote.arrow_Type,
+								daNote.strumTime
+							]);
+						}
 					}
 
 					if (Options.getData("enemyStrumsGlow") && enemyStrums.members.length - 1 == SONG.keyCount - 1) {
@@ -2798,7 +2838,7 @@ class PlayState extends MusicBeatState {
 				elapsed: FlxG.elapsed,
 			});
 			executeALuaState("update", [elapsed]);
-
+			allScriptCall("update", [elapsed]);
 			if (getLuaVar("showOnlyStrums", "bool")) {
 				healthBarBG.visible = false;
 				infoTxt.visible = false;
@@ -3358,13 +3398,17 @@ class PlayState extends MusicBeatState {
 				}
 
 				for (i in 0...justPressedArray.length) {
-					if (justPressedArray[i])
+					if (justPressedArray[i]){
 						executeALuaState("keyPressed", [i]);
+						allScriptCall("keyPressed", [i]);
+					}
 				};
 
 				for (i in 0...releasedArray.length) {
-					if (releasedArray[i])
+					if (releasedArray[i]){
 						executeALuaState("keyReleased", [i]);
+						allScriptCall("keyReleased", [i]);
+					}
 				};
 
 				if (justPressedArray.contains(true) && generatedMusic && !playingReplay) {
@@ -3729,7 +3773,7 @@ class PlayState extends MusicBeatState {
 				(note != null ? note.arrow_Type : "default"),
 				(note != null ? note.isSustainNote : false)
 			]);
-			allScriptCall("playerNoteMiss", [
+			allScriptCall("playerOneMiss", [
 				direction,
 				Conductor.songPosition,
 				(note != null ? note.arrow_Type : "default"),
@@ -3790,11 +3834,11 @@ class PlayState extends MusicBeatState {
 
 				if (note.isSustainNote){
 					executeALuaState("playerOneSingHeld", lua_Data);
-					allScriptCall("playerNoteHitHeld", [note]);
+					allScriptCall("playerOneSingHeld", lua_Data);
 				}
 				else{
 					executeALuaState("playerOneSing", lua_Data);
-					allScriptCall("playerNoteHit", [note]);
+					allScriptCall("playerOneSing", lua_Data);
 				}
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
@@ -3817,11 +3861,11 @@ class PlayState extends MusicBeatState {
 
 				if (note.isSustainNote){
 					executeALuaState("playerTwoSingHeld", lua_Data);
-					allScriptCall("enemyNoteHitHeld", [note]);
+					allScriptCall("playerTwoSingHeld", lua_Data);
 				}
 				else{
 					executeALuaState("playerTwoSing", lua_Data);
-					allScriptCall("enemyNoteHit", [note]);
+					allScriptCall("playerTwoSing", lua_Data);
 				}
 			}
 
@@ -3979,6 +4023,7 @@ class PlayState extends MusicBeatState {
 
 		executeALuaState("beatHit", [curBeat]);
 		allScriptCall("beatHit", [curBeat]);
+		executeALuaState("beatHitPost", [curBeat]);
 		allScriptCall("beatHitPost", [curBeat]);
 	}
 
@@ -4634,11 +4679,13 @@ class PlayState extends MusicBeatState {
 					stage.createLuaStuff();
 
 					executeALuaState("create", [stage.stage], STAGE);
+					allScriptCall("create", [stage.stage]);
 
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
 
-					executeALuaState("start", [stage.stage], STAGE);
+					executeALuaState("start", [stage.stage]);
+					executeALuaState("start", [stage.stage]);
 					#end
 
 					addBgStuff();

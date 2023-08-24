@@ -55,7 +55,7 @@ jobs:
       - name: Compile Linux
         run: haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@main
         with:
           name: linuxBuild
           path: 'export/release/linux/bin' 
@@ -97,7 +97,7 @@ jobs:
       - name: Compile HTML5
         run: haxelib run lime build Project.xml html5 --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish HTMl5 Artifact
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@main
         with:
           name: html5Build
           path: 'export/release/html5/bin' 
