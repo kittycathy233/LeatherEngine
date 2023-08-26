@@ -330,7 +330,7 @@ class TitleState extends MusicBeatState {
 			transitioning = true;
 
 			new FlxTimer().start(2, function(tmr:FlxTimer) {
-				var http = new haxe.Http("https://raw.githubusercontent.com/Leather128/LeatherEngine/main/version.txt");
+				var http = new haxe.Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
 
 				http.onData = function(data:String) {
 					trace(data, DEBUG);
