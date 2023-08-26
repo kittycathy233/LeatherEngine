@@ -2412,15 +2412,19 @@ class PlayState extends MusicBeatState {
 				var strumY = coolStrum.y;
 				daNote.visible = true;
 				daNote.active = true;
-				if (utilities.Options.getData("downscroll"))
+				var strumLineMid = strumLine.y + Note.swagWidth / 2;
+				if (Options.getData("downscroll"))
 					{
+						// Remember = minus makes notes go up, plus makes them go down	
 						daNote.y = strumY + (0.45 * (Conductor.songPosition - daNote.strumTime) * FlxMath.roundDecimal(speed, 2));
 	
 						if (daNote.isSustainNote)
 						{
-							// Remember = minus makes notes go up, plus makes them go down
-							daNote.y += daNote.height / speed;
-	
+							if (daNote.animation.curAnim.name.endsWith("end") && daNote.prevNote != null)
+								daNote.y += daNote.prevNote.height;
+							else
+								daNote.y += daNote.height / 2;
+								
 							if (((daNote.wasGoodHit || daNote.prevNote.wasGoodHit) && daNote.shouldHit)
 								&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (strumLine.y + Note.swagWidth / 2))
 							{

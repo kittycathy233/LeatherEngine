@@ -1,5 +1,6 @@
 package game;
 
+import utilities.Options;
 import shaders.NoteColors;
 import shaders.ColorSwap;
 import game.Song.SwagSong;
@@ -136,7 +137,7 @@ class Note extends FlxSprite {
 		if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
 			heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
 
-		if (utilities.Options.getData("downscroll") && sustainNote)
+		if (Options.getData("downscroll") && sustainNote)
 			flipY = true;
 
 		if (isSustainNote && prevNote != null) {
@@ -271,7 +272,7 @@ class Note extends FlxSprite {
 	if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
 		heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
 
-	if (utilities.Options.getData("downscroll") && sustainNote)
+	if (Options.getData("downscroll") && sustainNote)
 		flipY = true;
 
 	if (isSustainNote && prevNote != null) {
