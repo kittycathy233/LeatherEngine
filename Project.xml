@@ -104,6 +104,7 @@
 	<haxelib name="hscript" />
 	<define name="hscriptPos" />
 	<haxelib name="polymod" />
+	<haxelib name="flxanimate" />
 	<haxelib name="flixelTextureAtlas" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />

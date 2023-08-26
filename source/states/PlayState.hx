@@ -985,8 +985,8 @@ class PlayState extends MusicBeatState {
 		stage.createLuaStuff();
 
 		executeALuaState("create", [stage.stage], STAGE);
-		allScriptCall("create", [stage.stage]);
 		#end
+		allScriptCall("create", [stage.stage]);
 
 		if (gf.script != null)
 			scripts.push(gf.script);
@@ -1273,10 +1273,6 @@ class PlayState extends MusicBeatState {
 			updateRatingText();
 		}
 
-		for (event in events){
-			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
-			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
-		}
 
 		// grouped cuz fuck you this is based on base game B)
 		strumLineNotes.cameras = [camHUD];
@@ -1338,6 +1334,10 @@ class PlayState extends MusicBeatState {
 		} else
 			startCountdown();
 
+		for (event in events){
+			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
+			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
+		}
 		super.create();
 
 		for (script_funny in scripts) {
@@ -1734,9 +1734,6 @@ class PlayState extends MusicBeatState {
 		#end
 		executeALuaState("startSong", []);
 		allScriptCall("startSong", []);
-
-		executeALuaState("songStart", []);
-		allScriptCall("songStart", []);
 
 		resyncVocals();
 	}
@@ -4032,8 +4029,6 @@ class PlayState extends MusicBeatState {
 
 		executeALuaState("beatHit", [curBeat]);
 		allScriptCall("beatHit", [curBeat]);
-		executeALuaState("beatHitPost", [curBeat]);
-		allScriptCall("beatHitPost", [curBeat]);
 	}
 
 	function updateRatingText() {

@@ -149,7 +149,7 @@ class ModchartUtilities {
 	 * @param func Function to use
 	 */
 	function setLuaFunction(name:String, func:Dynamic):Void {
-		setLuaFunction( name, func);
+		Lua_helper.add_callback(lua, name, func);
 	}
 
 	public function new(?path:Null<String>) {
