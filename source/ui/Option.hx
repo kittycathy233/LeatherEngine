@@ -62,7 +62,7 @@ class BoolOption extends Option {
 	}
 
 	public function GetObjectValue():Bool {
-		return utilities.Options.getData(Option_Value);
+		return Options.getData(Option_Value);
 	}
 
 	override function update(elapsed:Float) {
@@ -73,7 +73,7 @@ class BoolOption extends Option {
 	}
 
 	public function ChangeValue() {
-		utilities.Options.setData(!Option_Checked, Option_Value);
+		Options.setData(!Option_Checked, Option_Value);
 
 		Option_Checked = !Option_Checked;
 		Checkbox_Object.checked = Option_Checked;
@@ -256,7 +256,7 @@ class StringSaveOption extends Option {
 		// SETTING VALUES //
 		this.Modes = _Modes;
 		this.Save_Data_Name = _Save_Data_Name;
-		this.Current_Mode = utilities.Options.getData(Save_Data_Name);
+		this.Current_Mode = Options.getData(Save_Data_Name);
 		this.Cool_Name = _Option_Name;
 		this.Option_Name = Cool_Name + " " + Current_Mode;
 
@@ -303,13 +303,13 @@ class StringSaveOption extends Option {
 	}
 
 	function SetDataIGuess() {
-		utilities.Options.setData(Current_Mode, Save_Data_Name);
+		Options.setData(Current_Mode, Save_Data_Name);
 	}
 }
 
 class DisplayFontOption extends StringSaveOption {
 	override function SetDataIGuess() {
 		super.SetDataIGuess();
-		Main.changeFont(utilities.Options.getData("infoDisplayFont"));
+		Main.changeFont(Options.getData("infoDisplayFont"));
 	}
 }

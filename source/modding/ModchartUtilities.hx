@@ -197,19 +197,19 @@ class ModchartUtilities {
 		setVar("keyCount", PlayState.SONG.keyCount);
 		setVar("playerKeyCount", PlayState.SONG.playerKeyCount);
 		setVar("scrollspeed", PlayState.SONG.speed);
-		setVar("fpsCap", utilities.Options.getData("maxFPS"));
-		setVar("bot", utilities.Options.getData("botplay"));
-		setVar("noDeath", utilities.Options.getData("noDeath"));
-		setVar("downscroll", utilities.Options.getData("downscroll") == true ? 1 : 0); // fuck you compatibility
-		setVar("downscrollBool", utilities.Options.getData("downscroll"));
-		setVar("middlescroll", utilities.Options.getData("middlescroll"));
-		setVar("flashingLights", utilities.Options.getData("flashingLights"));
-		setVar("flashing", utilities.Options.getData("flashingLights"));
+		setVar("fpsCap", Options.getData("maxFPS"));
+		setVar("bot", Options.getData("botplay"));
+		setVar("noDeath", Options.getData("noDeath"));
+		setVar("downscroll", Options.getData("downscroll") == true ? 1 : 0); // fuck you compatibility
+		setVar("downscrollBool", Options.getData("downscroll"));
+		setVar("middlescroll", Options.getData("middlescroll"));
+		setVar("flashingLights", Options.getData("flashingLights"));
+		setVar("flashing", Options.getData("flashingLights"));
 		setVar("distractions", true);
-		setVar("cameraZooms", utilities.Options.getData("cameraZooms"));
-		setVar("shaders", utilities.Options.getData("shaders"));
+		setVar("cameraZooms", Options.getData("cameraZooms"));
+		setVar("shaders", Options.getData("shaders"));
 
-		setVar("animatedBackgrounds", utilities.Options.getData("animatedBGs"));
+		setVar("animatedBackgrounds", Options.getData("animatedBGs"));
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
@@ -301,7 +301,7 @@ class ModchartUtilities {
 		// callbacks
 
 		setLuaFunction("flashCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, force:Bool = false) {
-			if (utilities.Options.getData("flashingLights"))
+			if (Options.getData("flashingLights"))
 				cameraFromString(camera).flash(FlxColor.fromString(color), time, null, force);
 		});
 
@@ -2091,8 +2091,11 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("createCustomShader", function(id:String, file:String, glslVersion:Int = 120	){
-			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
-			lua_Custom_Shaders.set(id, funnyCustomShader);
+			if (!lua_Custom_Shaders.exists(id)) {
+				var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+				lua_Custom_Shaders.set(id, funnyCustomShader);
+			} else
+				CoolUtil.coolError("Shader " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
 
 		setLuaFunction("setActorCustomShader", function(id:String, actor:String){

@@ -12,7 +12,7 @@ import flixel.FlxSprite;
 
 class JudgementMenu extends MusicBeatSubstate
 {
-    var judgements:Array<Int> = utilities.Options.getData("judgementTimings");
+    var judgements:Array<Int> = Options.getData("judgementTimings");
 
     var preset:String = "Leather Engine";
 
@@ -56,7 +56,7 @@ class JudgementMenu extends MusicBeatSubstate
 
         if(back)
         {
-            utilities.Options.setData(judgements, "judgementTimings");
+            Options.setData(judgements, "judgementTimings");
             FlxG.state.closeSubState();
         }
 
@@ -69,7 +69,7 @@ class JudgementMenu extends MusicBeatSubstate
 
             if(selected < 0)
                 selected = 3;
-            if(selected > (utilities.Options.getData("marvelousRatings") ? 4 : 3))
+            if(selected > (Options.getData("marvelousRatings") ? 4 : 3))
                 selected = 0;
         }
 
@@ -131,10 +131,10 @@ class JudgementMenu extends MusicBeatSubstate
     {
         judgementText.text = (
             "Preset: " + preset + (selected == 0 ? " <\n" : "\n") +
-            (utilities.Options.getData("marvelousRatings") ? "MARVELOUS: " + Std.string(judgements[0]) + "ms" + (selected == 1 ? " <\n" : "\n") : "") +
-            "SICK: " + Std.string(judgements[1]) + "ms" + (selected == (utilities.Options.getData("marvelousRatings") ? 2 : 1) ? " <\n" : "\n") +
-            "GOOD: " + Std.string(judgements[2]) + "ms" + (selected == (utilities.Options.getData("marvelousRatings") ? 3 : 2) ? " <\n" : "\n") +
-            "BAD: " + Std.string(judgements[3]) + "ms" + (selected == (utilities.Options.getData("marvelousRatings") ? 4 : 3) ? " <\n" : "\n") +
+            (Options.getData("marvelousRatings") ? "MARVELOUS: " + Std.string(judgements[0]) + "ms" + (selected == 1 ? " <\n" : "\n") : "") +
+            "SICK: " + Std.string(judgements[1]) + "ms" + (selected == (Options.getData("marvelousRatings") ? 2 : 1) ? " <\n" : "\n") +
+            "GOOD: " + Std.string(judgements[2]) + "ms" + (selected == (Options.getData("marvelousRatings") ? 3 : 2) ? " <\n" : "\n") +
+            "BAD: " + Std.string(judgements[3]) + "ms" + (selected == (Options.getData("marvelousRatings") ? 4 : 3) ? " <\n" : "\n") +
             "\n"
         );
 

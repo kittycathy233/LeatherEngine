@@ -78,7 +78,7 @@ class Highscore
 		// Reminder that I don't need to format this song, it should come formatted!
 		songScores.set(song, score);
 
-		utilities.Options.setData(songScores, "songScores", "scores");
+		Options.setData(songScores, "songScores", "scores");
 	}
 
 	static function setRank(song:String, rank:String):Void
@@ -86,7 +86,7 @@ class Highscore
 		// Reminder that I don't need to format this song, it should come formatted!
 		songRanks.set(song, rank);
 
-		utilities.Options.setData(songRanks, "songRanks", "scores");
+		Options.setData(songRanks, "songRanks", "scores");
 	}
 
 	static function setAccuracy(song:String, accuracy:Float):Void
@@ -94,7 +94,7 @@ class Highscore
 		// Reminder that I don't need to format this song, it should come formatted!
 		songAccuracies.set(song, accuracy);
 
-		utilities.Options.setData(songAccuracies, "songAccuracies", "scores");
+		Options.setData(songAccuracies, "songAccuracies", "scores");
 	}
 
 	public static function formatSong(song:String, diff:String):String
@@ -141,14 +141,14 @@ class Highscore
 
 	public static function load():Void
 	{
-		if (utilities.Options.getData("songScores", "scores") != null)
-			songScores = utilities.Options.getData("songScores", "scores");
+		if (Options.getData("songScores", "scores") != null)
+			songScores = Options.getData("songScores", "scores");
 
-		if (utilities.Options.getData("songRanks", "scores") != null)
-			songRanks = utilities.Options.getData("songRanks", "scores");
+		if (Options.getData("songRanks", "scores") != null)
+			songRanks = Options.getData("songRanks", "scores");
 
-		if (utilities.Options.getData("songAccuracies", "scores") != null)
-			songAccuracies = utilities.Options.getData("songAccuracies", "scores");
+		if (Options.getData("songAccuracies", "scores") != null)
+			songAccuracies = Options.getData("songAccuracies", "scores");
 	}
 
 	public static function importOldData()

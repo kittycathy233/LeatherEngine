@@ -7,7 +7,7 @@ class Ratings {
 	private static var scores:Array<Dynamic> = [['marvelous', 400], ['sick', 350], ['good', 200], ['bad', 50], ['shit', -150]];
 
 	public static function getRating(time:Float) {
-		var judges = utilities.Options.getData("judgementTimings");
+		var judges = Options.getData("judgementTimings");
 
 		var timings:Array<Array<Dynamic>> = [
 			[judges[0], "marvelous"],
@@ -19,7 +19,7 @@ class Ratings {
 		var rating:String = 'bruh';
 
 		for (x in timings) {
-			if (x[1] == "marvelous" && utilities.Options.getData("marvelousRatings") || x[1] != "marvelous") {
+			if (x[1] == "marvelous" && Options.getData("marvelousRatings") || x[1] != "marvelous") {
 				if (time <= x[0] * PlayState.songMultiplier && rating == 'bruh') {
 					rating = x[1];
 				}
@@ -65,7 +65,7 @@ class Ratings {
 		// yeah this is kinda taken from kade engine but i didnt use the etterna 'wife3' ranking system (instead just my own custom values)
 		var conditions:Array<Bool>;
 
-		switch (utilities.Options.getData("ratingType").toLowerCase()) {
+		switch (Options.getData("ratingType").toLowerCase()) {
 			case "complex":
 				conditions = [
 					accuracy == 100, // SSSS
@@ -118,7 +118,7 @@ class Ratings {
 			PlayState.instance.ratings.get("shit")
 		];
 
-		switch (utilities.Options.getData("ratingType").toLowerCase()) {
+		switch (Options.getData("ratingType").toLowerCase()) {
 			case "complex":
 				if (misses != null) {
 					if (misses == 0) {
@@ -175,7 +175,7 @@ class Ratings {
 			var rating_success = conditions[condition];
 
 			if (rating_success) {
-				switch (utilities.Options.getData("ratingType")) {
+				switch (Options.getData("ratingType")) {
 					case "complex":
 						switch (condition) {
 							case 0:
@@ -251,7 +251,7 @@ class Ratings {
 			}
 		}
 
-		if (utilities.Options.getData("ratingType") != "psych")
+		if (Options.getData("ratingType") != "psych")
 			return "N/A";
 		else
 			return "Rating: ?";

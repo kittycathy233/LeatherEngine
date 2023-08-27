@@ -283,7 +283,7 @@ class StoryMenuState extends MusicBeatState {
 		if (!stopspamming && Assets.exists(Paths.json('song data/${song_name}/${song_file}'))) {
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 
-			if (utilities.Options.getData("flashingLights"))
+			if (Options.getData("flashingLights"))
 				weekGraphics.members[curWeek].startFlashing();
 
 			menuCharacters.members[1].character = menuCharacters.members[1].character + 'Confirm';

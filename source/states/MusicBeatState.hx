@@ -28,7 +28,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		return PlayerSettings.player1.controls;
 
 	override public function new() {
-		if (!utilities.Options.getData('memoryLeaks')) {
+		if (!Options.getData('memoryLeaks')) {
 			#if polymod
 			polymod.Polymod.clearCache();
 			#end
@@ -57,16 +57,16 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		super.update(elapsed);
 
 		if (FlxG.stage != null)
-			FlxG.stage.frameRate = flixel.math.FlxMath.bound(utilities.Options.getData("maxFPS"), 0.1, 1000);
+			FlxG.stage.frameRate = flixel.math.FlxMath.bound(Options.getData("maxFPS"), 0.1, 1000);
 
-		if (!utilities.Options.getData("antialiasing")) {
+		if (!Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {
 				if (Std.isOfType(basic, FlxSprite))
 					Reflect.setProperty(basic, "antialiasing", false);
 			}, true);
 		}
 
-		if (FlxG.keys.checkStatus(FlxKey.fromString(utilities.Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
+		if (FlxG.keys.checkStatus(FlxKey.fromString(Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;
 
 		#if debug
@@ -74,7 +74,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			FlxG.resetState();
 		#end
 
-		FlxG.autoPause = utilities.Options.getData("autoPause");
+		FlxG.autoPause = Options.getData("autoPause");
 
 		Application.current.window.title = windowNamePrefix + windowNameSuffix;
 	}

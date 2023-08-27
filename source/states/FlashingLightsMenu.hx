@@ -2,7 +2,6 @@ package states;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import utilities.Options;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

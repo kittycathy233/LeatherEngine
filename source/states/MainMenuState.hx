@@ -68,7 +68,7 @@ class MainMenuState extends MusicBeatState
 
 		var bg:FlxSprite;
 
-		if(utilities.Options.getData("menuBGs"))
+		if(Options.getData("menuBGs"))
 			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuBG')))
 				bg = new FlxSprite(-80).loadGraphic(Paths.image('ui skins/default/backgrounds/menuBG'));
 			else
@@ -87,7 +87,7 @@ class MainMenuState extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
-		if(utilities.Options.getData("menuBGs"))
+		if(Options.getData("menuBGs"))
 			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat')))
 				magenta = new FlxSprite(-80).loadGraphic(Paths.image('ui skins/default/backgrounds/menuDesat'));
 			else
@@ -127,7 +127,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (utilities.Options.getData("watermarks") ? TitleState.version : "v0.2.7.1"), 16);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (Options.getData("watermarks") ? TitleState.version : "v0.2.7.1"), 16);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -172,7 +172,7 @@ class MainMenuState extends MusicBeatState
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
-				if(utilities.Options.getData("flashingLights"))
+				if(Options.getData("flashingLights"))
 					FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 				menuItems.forEach(function(spr:FlxSprite)
@@ -189,7 +189,7 @@ class MainMenuState extends MusicBeatState
 					}
 					else
 					{
-						if(utilities.Options.getData("flashingLights"))
+						if(Options.getData("flashingLights"))
 						{
 							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(_) { fard(); });
 						}

@@ -2,7 +2,6 @@ package game;
 
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
-import utilities.Options;
 import flixel.FlxG;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;

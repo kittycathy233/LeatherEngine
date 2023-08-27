@@ -19,7 +19,7 @@ class MaxFPSMenu extends MusicBeatSubstate
     {
         super();
 
-        fps = utilities.Options.getData("maxFPS");
+        fps = Options.getData("maxFPS");
         
         var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         bg.alpha = 0;
@@ -47,7 +47,7 @@ class MaxFPSMenu extends MusicBeatSubstate
 
         if(back)
         {
-            utilities.Options.setData(fps, "maxFPS");
+            Options.setData(fps, "maxFPS");
             FlxG.state.closeSubState();
         }
 

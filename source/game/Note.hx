@@ -161,8 +161,8 @@ class Note extends FlxSprite {
 
 				var speed = song.speed;
 
-				if (utilities.Options.getData("useCustomScrollSpeed"))
-					speed = utilities.Options.getData("customScrollSpeed") / PlayState.songMultiplier;
+				if (Options.getData("useCustomScrollSpeed"))
+					speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 				prevNote.updateHitbox();
@@ -296,8 +296,8 @@ class Note extends FlxSprite {
 
 			var speed = song.speed;
 
-			if (utilities.Options.getData("useCustomScrollSpeed"))
-				speed = utilities.Options.getData("customScrollSpeed") / PlayState.songMultiplier;
+			if (Options.getData("useCustomScrollSpeed"))
+				speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
 
 			prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 			prevNote.updateHitbox();
@@ -337,7 +337,7 @@ class Note extends FlxSprite {
 					alpha = 0.3;
 			}
 		}
-		if (canBeHit && utilities.Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default")){
+		if (canBeHit && Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default")){
 			animation.play("glow");
 		}
 	}

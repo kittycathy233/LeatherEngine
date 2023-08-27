@@ -23,7 +23,6 @@ import modcharting.ModchartEditorState;
 #end
 import modding.scripts.languages.HScript;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import utilities.Options;
 import flixel.util.FlxStringUtil;
 import openfl.display.BitmapData;
 import flixel.graphics.FlxGraphic;

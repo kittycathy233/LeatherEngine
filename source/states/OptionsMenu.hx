@@ -184,7 +184,7 @@ class OptionsMenu extends MusicBeatState {
 
 		var menuBG:FlxSprite;
 
-		if(utilities.Options.getData("menuBGs"))
+		if(Options.getData("menuBGs"))
 			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat')))
 				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/default/backgrounds/menuDesat'));
 			else

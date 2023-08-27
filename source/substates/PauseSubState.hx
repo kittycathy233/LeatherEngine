@@ -45,7 +45,7 @@ class PauseSubState extends MusicBeatSubstate {
 
 		var optionsArray = menus.get("options");
 
-		switch (utilities.Options.getData("playAs")) {
+		switch (Options.getData("playAs")) {
 			case "bf":
 				optionsArray.push("Play As BF");
 				menus.set("options", optionsArray);
@@ -223,7 +223,7 @@ class PauseSubState extends MusicBeatSubstate {
 
 					FlxG.resetState();
 				case "bot":
-					utilities.Options.setData(!utilities.Options.getData("botplay"), "botplay");
+					Options.setData(!Options.getData("botplay"), "botplay");
 
 					PlayState.instance.updateSongInfoText();
 					PlayState.SONG.validScore = false;
@@ -233,23 +233,23 @@ class PauseSubState extends MusicBeatSubstate {
 
 					warningAmountLols += 1;
 				case "auto restart":
-					utilities.Options.setData(!utilities.Options.getData("quickRestart"), "quickRestart");
+					Options.setData(!Options.getData("quickRestart"), "quickRestart");
 
 					FlxTween.tween(scoreWarning, {alpha: 1, y: scoreWarning.y + 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 					FlxTween.tween(scoreWarning, {alpha: 0, y: scoreWarning.y - 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 4});
 
 					warningAmountLols += 1;
 				case "no miss":
-					utilities.Options.setData(!utilities.Options.getData("noHit"), "noHit");
+					Options.setData(!Options.getData("noHit"), "noHit");
 
 					FlxTween.tween(scoreWarning, {alpha: 1, y: scoreWarning.y + 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 					FlxTween.tween(scoreWarning, {alpha: 0, y: scoreWarning.y - 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 4});
 
 					warningAmountLols += 1;
 				case "ghost tapping":
-					utilities.Options.setData(!utilities.Options.getData("ghostTapping"), "ghostTapping");
+					Options.setData(!Options.getData("ghostTapping"), "ghostTapping");
 
-					if (utilities.Options.getData("ghostTapping")) // basically making it easier lmao
+					if (Options.getData("ghostTapping")) // basically making it easier lmao
 						PlayState.SONG.validScore = false;
 
 					FlxTween.tween(scoreWarning, {alpha: 1, y: scoreWarning.y + 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
@@ -276,12 +276,12 @@ class PauseSubState extends MusicBeatSubstate {
 					FlxG.cameras.remove(pauseCamera);
 
 					if (PlayState.playingReplay && Replay.getReplayList().length > 0) {
-						Conductor.offset = utilities.Options.getData("songOffset");
+						Conductor.offset = Options.getData("songOffset");
 
 						@:privateAccess
 						{
-							utilities.Options.setData(PlayState.instance.ogJudgementTimings, "judgementTimings");
-							utilities.Options.setData(PlayState.instance.ogGhostTapping, "ghostTapping");
+							Options.setData(PlayState.instance.ogJudgementTimings, "judgementTimings");
+							Options.setData(PlayState.instance.ogGhostTapping, "ghostTapping");
 						}
 
 						FlxG.switchState(new ReplaySelectorState());
@@ -294,9 +294,9 @@ class PauseSubState extends MusicBeatSubstate {
 
 					PlayState.playingReplay = false;
 				case "no death":
-					utilities.Options.setData(!utilities.Options.getData("noDeath"), "noDeath");
+					Options.setData(!Options.getData("noDeath"), "noDeath");
 
-					if (utilities.Options.getData("noDeath"))
+					if (Options.getData("noDeath"))
 						PlayState.SONG.validScore = false;
 
 					FlxTween.tween(scoreWarning, {alpha: 1, y: scoreWarning.y + 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
@@ -304,13 +304,13 @@ class PauseSubState extends MusicBeatSubstate {
 
 					warningAmountLols += 1;
 				case "play as bf":
-					utilities.Options.setData("opponent", "playAs");
+					Options.setData("opponent", "playAs");
 
 					var optionsArray = menus.get("options");
 
 					optionsArray.remove(daSelected);
 
-					switch (utilities.Options.getData("playAs")) {
+					switch (Options.getData("playAs")) {
 						case "bf":
 							optionsArray.push("Play As BF");
 							menus.set("options", optionsArray);
@@ -334,13 +334,13 @@ class PauseSubState extends MusicBeatSubstate {
 
 					warningAmountLols += 1;
 				case "play as opponent":
-					utilities.Options.setData("bf", "playAs");
+					Options.setData("bf", "playAs");
 
 					var optionsArray = menus.get("options");
 
 					optionsArray.remove(daSelected);
 
-					switch (utilities.Options.getData("playAs")) {
+					switch (Options.getData("playAs")) {
 						case "bf":
 							optionsArray.push("Play As BF");
 							menus.set("options", optionsArray);

@@ -19,7 +19,7 @@ class ResultsScreenSubstate extends MusicBeatSubstate {
 	public function new() {
 		super();
 
-        if (utilities.Options.getData("skipResultsScreen")) {
+        if (Options.getData("skipResultsScreen")) {
             PlayState.instance.finishSongStuffs();
             return;
         }

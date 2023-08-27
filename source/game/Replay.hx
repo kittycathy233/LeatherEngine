@@ -48,10 +48,10 @@ class Replay
 			difficulty = PlayState.storyDifficultyStr.toLowerCase();
 		}
 
-		ghostTapping = utilities.Options.getData("ghostTapping");
+		ghostTapping = Options.getData("ghostTapping");
 		offset = Conductor.offset;
-		judgementTimings = utilities.Options.getData("judgementTimings");
-		antiMash = utilities.Options.getData("antiMash");
+		judgementTimings = Options.getData("judgementTimings");
+		antiMash = Options.getData("antiMash");
 
 		inputs = [];
 	}

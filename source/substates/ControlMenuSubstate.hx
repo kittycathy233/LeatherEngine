@@ -25,7 +25,7 @@ class ControlMenuSubstate extends MusicBeatSubstate
 
     public var arrow_Configs:Map<String, Array<String>> = new Map<String, Array<String>>();
 
-    var binds:Array<Array<String>> = utilities.Options.getData("binds", "binds");
+    var binds:Array<Array<String>> = Options.getData("binds", "binds");
 
     var selectedControl:Int = 0;
     var selectingStuff:Bool = false;
@@ -33,19 +33,19 @@ class ControlMenuSubstate extends MusicBeatSubstate
     var coolText:FlxText = new FlxText(0,25,0,"Use LEFT and RIGHT to change number of keys\nESCAPE to save binds and exit menu\nRESET+SHIFT to Reset Binds to default\n", 32);
 
     var killKey:FlxSprite = new FlxSprite();
-    var killBind:String = utilities.Options.getData("kill", "binds");
+    var killBind:String = Options.getData("kill", "binds");
     var killText:FlxText = new FlxText();
 
     var fullscreenKey:FlxSprite = new FlxSprite();
-    var fullscreenBind:String = utilities.Options.getData("fullscreenBind", "binds");
+    var fullscreenBind:String = Options.getData("fullscreenBind", "binds");
     var fullscreenText:FlxText = new FlxText();
 
     var pauseKey:FlxSprite = new FlxSprite();
-    var pauseBind:String = utilities.Options.getData("pauseBind", "binds");
+    var pauseBind:String = Options.getData("pauseBind", "binds");
     var pauseText:FlxText = new FlxText();
 
     var screenshotKey:FlxSprite = new FlxSprite();
-    var screenshotBind:String = utilities.Options.getData("screenshotBind", "binds");
+    var screenshotBind:String = Options.getData("screenshotBind", "binds");
     var screenshotText:FlxText = new FlxText();
 
     var mania_gap:Array<String>;
@@ -191,11 +191,11 @@ class ControlMenuSubstate extends MusicBeatSubstate
             
             if(back)
             {
-                utilities.Options.setData(this.binds, "binds", "binds");
-                utilities.Options.setData(fullscreenBind, "fullscreenBind", "binds");
-                utilities.Options.setData(killBind, "kill", "binds");
-                utilities.Options.setData(pauseBind, "pauseBind", "binds");
-                utilities.Options.setData(screenshotBind, "screenshotBind", "binds");
+                Options.setData(this.binds, "binds", "binds");
+                Options.setData(fullscreenBind, "fullscreenBind", "binds");
+                Options.setData(killBind, "kill", "binds");
+                Options.setData(pauseBind, "pauseBind", "binds");
+                Options.setData(screenshotBind, "screenshotBind", "binds");
     
                 PlayerSettings.player1.controls.loadKeyBinds();
     

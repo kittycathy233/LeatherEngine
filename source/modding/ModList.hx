@@ -10,7 +10,7 @@ class ModList {
 
 	public static function setModEnabled(mod:String, enabled:Bool):Void {
 		modList.set(mod, enabled);
-		utilities.Options.setData(modList, "modlist", "modlist");
+		Options.setData(modList, "modlist", "modlist");
 	}
 
 	public static function getModEnabled(mod:String):Bool {
@@ -32,8 +32,8 @@ class ModList {
 	}
 
 	public static function load():Void {
-		if (utilities.Options.getData("modlist", "modlist") != null && utilities.Options.getData("modlist", "modlist") != [])
-			modList = utilities.Options.getData("modlist", "modlist");
+		if (Options.getData("modlist", "modlist") != null && Options.getData("modlist", "modlist") != [])
+			modList = Options.getData("modlist", "modlist");
 	}
 }
 #end

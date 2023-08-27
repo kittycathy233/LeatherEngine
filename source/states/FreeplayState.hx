@@ -151,7 +151,7 @@ class FreeplayState extends MusicBeatState {
 			}
 		}
 
-		if (utilities.Options.getData("menuBGs"))
+		if (Options.getData("menuBGs"))
 			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuBG')))
 				bg = new FlxSprite().loadGraphic(Paths.image('ui skins/default/backgrounds/menuDesat'));
 			else
@@ -501,7 +501,7 @@ class FreeplayState extends MusicBeatState {
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		// Song Inst
-		if (utilities.Options.getData("freeplayMusic")) {
+		if (Options.getData("freeplayMusic")) {
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName, curDiffString.toLowerCase()), 0.7);
 
 			if (vocals.active && vocals.playing)

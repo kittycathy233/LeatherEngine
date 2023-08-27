@@ -7,9 +7,9 @@ class MusicUtilities
 	 */
 	public static function GetTitleMusicPath():String
 	{
-		if (utilities.Options.getData("oldTitle"))
+		if (Options.getData("oldTitle"))
 			return Paths.music('title');
-		else if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || utilities.Options.getData("nightMusic"))
+		else if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || Options.getData("nightMusic"))
 			return Paths.music('freakyNightMenu');
 		else
 			return Paths.music('freakyMenu');

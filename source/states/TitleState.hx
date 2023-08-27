@@ -71,7 +71,7 @@ class TitleState extends MusicBeatState {
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
 			#if FLX_NO_DEBUG
-			if (utilities.Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
+			if (Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
 				doneFlixelSplash = true;
 				flixel.system.FlxSplash.nextState = states.TitleState;
 				FlxG.switchState(new flixel.system.FlxSplash());
@@ -79,7 +79,7 @@ class TitleState extends MusicBeatState {
 			}
 			#end
 
-			if (utilities.Options.getData("flashingLights") == null)
+			if (Options.getData("flashingLights") == null)
 				FlxG.switchState(new FlashingLightsMenu());
 
 			curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -87,7 +87,7 @@ class TitleState extends MusicBeatState {
 			super.create();
 
 			#if discord_rpc
-			if (!DiscordClient.started && utilities.Options.getData("discordRPC"))
+			if (!DiscordClient.started && Options.getData("discordRPC"))
 				DiscordClient.initialize();
 
 			Application.current.onExit.add(function(exitCode) {
@@ -143,10 +143,10 @@ class TitleState extends MusicBeatState {
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			if (utilities.Options.getData("oldTitle"))
+			if (Options.getData("oldTitle"))
 				playTitleMusic();
 			else {
-				if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || utilities.Options.getData("nightMusic")) {
+				if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || Options.getData("nightMusic")) {
 					playTitleMusic();
 					Conductor.changeBPM(117);
 				} else {
@@ -157,11 +157,11 @@ class TitleState extends MusicBeatState {
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 
-			Main.toggleFPS(utilities.Options.getData("fpsCounter"));
-			Main.toggleMem(utilities.Options.getData("memoryCounter"));
-			Main.toggleVers(utilities.Options.getData("versionDisplay"));
+			Main.toggleFPS(Options.getData("fpsCounter"));
+			Main.toggleMem(Options.getData("memoryCounter"));
+			Main.toggleVers(Options.getData("versionDisplay"));
 
-			Main.changeFont(utilities.Options.getData("infoDisplayFont"));
+			Main.changeFont(Options.getData("infoDisplayFont"));
 		}
 
 		version = '${MusicBeatState.windowNamePrefix}-git (v${Assets.getText("version.txt")})';
@@ -170,7 +170,7 @@ class TitleState extends MusicBeatState {
 
 		var bg:FlxSprite = new FlxSprite();
 
-		if (utilities.Options.getData("oldTitle")) {
+		if (Options.getData("oldTitle")) {
 			bg.loadGraphic(Paths.image("title/stageback"));
 			bg.antialiasing = true;
 			bg.setGraphicSize(Std.int(FlxG.width * 1.1));
@@ -181,7 +181,7 @@ class TitleState extends MusicBeatState {
 
 		add(bg);
 
-		if (utilities.Options.getData("oldTitle")) {
+		if (Options.getData("oldTitle")) {
 			old_logo = new FlxSprite().loadGraphic(Paths.image('title/logo'));
 			old_logo.screenCenter();
 			old_logo.antialiasing = true;
@@ -192,7 +192,7 @@ class TitleState extends MusicBeatState {
 		} else {
 			logoBl = new FlxSprite(0, 0);
 
-			if (utilities.Options.getData("watermarks"))
+			if (Options.getData("watermarks"))
 				logoBl.frames = Paths.getSparrowAtlas('title/leatherLogoBumpin');
 			else
 				logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
@@ -223,7 +223,7 @@ class TitleState extends MusicBeatState {
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 
-		if (!utilities.Options.getData("oldTitle")) {
+		if (!Options.getData("oldTitle")) {
 			add(logoBl);
 			add(gfDance);
 			add(titleText);
@@ -252,7 +252,7 @@ class TitleState extends MusicBeatState {
 
 		FlxG.mouse.visible = false;
 
-		if (utilities.Options.getData("watermarks"))
+		if (Options.getData("watermarks"))
 			titleTextData = CoolUtil.coolTextFile(Paths.txt("watermarkTitleText", "preload"));
 		else
 			titleTextData = CoolUtil.coolTextFile(Paths.txt("titleText", "preload"));
@@ -319,10 +319,10 @@ class TitleState extends MusicBeatState {
 			if (titleText != null)
 				titleText.animation.play('press');
 
-			if (utilities.Options.getData("flashingLights"))
+			if (Options.getData("flashingLights"))
 				FlxG.camera.flash(FlxColor.WHITE, 1);
 
-			if (utilities.Options.getData("oldTitle"))
+			if (Options.getData("oldTitle"))
 				FlxG.sound.play(Paths.music("titleShoot"), 0.7);
 			else
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
@@ -397,7 +397,7 @@ class TitleState extends MusicBeatState {
 	override function beatHit() {
 		super.beatHit();
 
-		if (!utilities.Options.getData("oldTitle")) {
+		if (!Options.getData("oldTitle")) {
 			logoBl.animation.play('bump');
 			danceLeft = !danceLeft;
 
@@ -449,7 +449,7 @@ class TitleState extends MusicBeatState {
 		if (!skippedIntro) {
 			MusicBeatState.windowNameSuffix = "";
 
-			if (utilities.Options.getData("flashingLights"))
+			if (Options.getData("flashingLights"))
 				FlxG.camera.flash(FlxColor.WHITE, 4);
 
 			remove(ngSpr);
