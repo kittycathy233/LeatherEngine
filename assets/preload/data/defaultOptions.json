@@ -288,6 +288,10 @@
         {
             "option": "dinnerbone",
             "value": false
+        },
+        {
+            "option": "colorQuant",
+            "value": false
         }
     ]
 }

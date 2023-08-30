@@ -56,6 +56,8 @@ class StageGroup extends FlxGroup {
 	private var trainCooldown:Int = 0;
 	private var curLight:Int = 0;
 
+	var stage_script:HScript;
+
 	// MALL STUFF
 	private var santa:FlxSprite;
 	private var upperBoppers:FlxSprite;
@@ -252,11 +254,11 @@ class StageGroup extends FlxGroup {
 					{
 						if (Assets.exists(Paths.hx('data/stage data/${stage}'))) {
 	
-							PlayState.stage_script = new HScript(Paths.hx('data/stage data/${stage}'));
-							PlayState.stage_script.start();
+							stage_script = new HScript(Paths.hx('data/stage data/${stage}'));
+							stage_script.start();
 	
-							PlayState.instance.scripts.push(PlayState.stage_script);
-						} else {
+							PlayState.instance.scripts.push(stage_script);
+						}
 						if (stage_Data != null) {
 							camZoom = stage_Data.camera_Zoom;
 
@@ -340,7 +342,6 @@ class StageGroup extends FlxGroup {
 								} else
 									add(Sprite);
 							}
-						}
 					}
 				}
 			}
