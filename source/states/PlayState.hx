@@ -1002,7 +1002,7 @@ class PlayState extends MusicBeatState {
 		}
 	
 
-		//global scripts yay
+		//global scripts yay.
 		#if sys
 		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
 
