@@ -89,7 +89,7 @@ class FreeplayState extends MusicBeatState {
 	override function create() {
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
-
+		
 		MusicBeatState.windowNameSuffix = " Freeplay";
 
 		var black = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -442,7 +442,7 @@ class FreeplayState extends MusicBeatState {
 					PlayState.storyWeek = songs[curSelected].week;
 					trace('CUR WEEK' + PlayState.storyWeek);
 
-					if (Assets.exists(Paths.inst(PlayState.SONG.song, curDiffString.toLowerCase()))) {
+					if (Assets.exists(Paths.inst(PlayState.SONG.song, PlayState.storyDifficultyStr))) {
 						#if sys
 						stop_loading_songs = true;
 						#end
@@ -454,7 +454,7 @@ class FreeplayState extends MusicBeatState {
 						destroyFreeplayVocals();
 						LoadingState.loadAndSwitchState(new PlayState());
 					} else {
-						if (Assets.exists(Paths.inst(songs[curSelected].songName.toLowerCase(), curDiffString.toLowerCase())))
+						if (Assets.exists(Paths.inst(songs[curSelected].songName.toLowerCase(), curDiffString)))
 							CoolUtil.coolError(PlayState.SONG.song.toLowerCase()
 								+ " (JSON) != "
 								+ songs[curSelected].songName.toLowerCase() + " (FREEPLAY)\nTry making them the same.",
