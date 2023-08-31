@@ -2093,7 +2093,6 @@ class ModchartUtilities {
 		setLuaFunction("createCustomShader", function(id:String, file:String, glslVersion:Int = 120	){
 			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
 			lua_Custom_Shaders.set(id, funnyCustomShader);
-			CoolUtil.coolError("Shader " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
 
 		setLuaFunction("setActorCustomShader", function(id:String, actor:String){

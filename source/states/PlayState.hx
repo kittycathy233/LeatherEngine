@@ -4682,18 +4682,19 @@ class PlayState extends MusicBeatState {
 
 					defaultCamZoom = stage.camZoom;
 
+					allScriptCall("create", [stage.stage]);
+
 					#if linc_luajit
 					stage.createLuaStuff();
 
 					executeALuaState("create", [stage.stage], STAGE);
-					allScriptCall("create", [stage.stage]);
 
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
 
-					executeALuaState("start", [stage.stage]);
-					executeALuaState("start", [stage.stage]);
+					executeALuaState("start", [stage.stage], STAGE);
 					#end
+					allScriptCall("start", [stage.stage]);
 
 					addBgStuff();
 				}
