@@ -25,7 +25,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -72,7 +72,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -113,7 +113,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -159,7 +159,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
