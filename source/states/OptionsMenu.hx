@@ -41,8 +41,8 @@ class OptionsMenu extends MusicBeatState {
 		"Categories" => [
 			new PageOption("Gameplay", 0, "Gameplay", "Test Description"),
 			new PageOption("Graphics", 1, "Graphics"),
-			new PageOption("Tools (Very WIP)", 2, "Tools"),
-			new PageOption("Misc", 3, "Misc")
+			new PageOption("Misc", 2, "Misc"),
+			new PageOption("Developer Options", 3, "Developer Options")
 		],
 		"Gameplay" => [
 			new PageOption("Back", 0, "Categories"),
@@ -162,6 +162,11 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Flashing Lights", "flashingLights", 3),
 			new BoolOption("Screen Shake", "screenShakes", 4),
 			new BoolOption("Shaders", "shaders", 5)
+		],
+		"Developer Options" => [
+			new PageOption("Back", 0, "Categories"),
+			new BoolOption("Developer Mode", "developer", 1),
+			new ToolboxOption("Opem The Toolbox", 1, new tools.toolbox.ToolboxPlaceholder()),
 		]
 	];
 

@@ -292,6 +292,10 @@
         {
             "option": "colorQuant",
             "value": false
+        },
+        {
+            "option": "developer",
+            "value": false
         }
     ]
 }

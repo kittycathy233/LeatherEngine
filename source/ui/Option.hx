@@ -160,6 +160,30 @@ class GameStateOption extends Option {
 }
 
 /**
+ * Stuff for toolbox.
+ */
+ class ToolboxOption extends Option {
+	// OPTIONS //
+	public var Game_State:FlxState;
+
+	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
+		super(_Option_Name, null, _Option_Row);
+
+		// SETTING VALUES //
+		this.Game_State = _Game_State;
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if (!Options.getData("developer")) this.visible = false; else { this.visible = true; if (Alphabet_Text.targetY == 0) {Alphabet_Text.targetY -= 1; }}
+
+		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0 && Options.getData("developer"))
+			FlxG.switchState(Game_State);
+	}
+}
+
+/**
  * Thing for Animation Debug.
  */
  class CharacterCreatorOption extends Option {
@@ -313,3 +337,4 @@ class DisplayFontOption extends StringSaveOption {
 		Main.changeFont(Options.getData("infoDisplayFont"));
 	}
 }
+

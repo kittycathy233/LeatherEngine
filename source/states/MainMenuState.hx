@@ -1,5 +1,7 @@
 package states;
 
+import flixel.system.debug.interaction.tools.Tool;
+import tools.toolbox.Toolbox;
 import utilities.Options;
 import flixel.util.FlxTimer;
 import game.Replay;
@@ -46,6 +48,9 @@ class MainMenuState extends MusicBeatState
 
 		if(Replay.getReplayList().length > 0)
 			optionShit.push('replays');
+
+		if(Options.getData("developer"))
+			optionShit.push('toolbox');
 		
 		#if !web
 		//optionShit.push('multiplayer');
@@ -235,6 +240,8 @@ class MainMenuState extends MusicBeatState
 			case 'replays':
 				FlxG.switchState(new ReplaySelectorState());
 			#end
+			case 'toolbox':
+				FlxG.switchState(new tools.toolbox.ToolboxPlaceholder());
 		}
 	}
 

@@ -123,6 +123,8 @@ class ChartingState extends MusicBeatState {
 	var lilBf:FlxSprite;
 	var lilOpp:FlxSprite;
 
+	var ui_Skin:Null<String>;
+
 
 	override function create() {
 		#if NO_PRELOAD_ALL
@@ -130,6 +132,22 @@ class ChartingState extends MusicBeatState {
 		if (Assets.getLibrary("shared") == null)
 			Assets.loadLibrary("shared").onComplete(function(_) {});
 		#end
+
+		var menuBG:FlxSprite;
+
+		if(Options.getData("menuBGs"))
+			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuCharter')))
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/default/backgrounds/menuCharter'));
+			else
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuCharter'));
+		else
+			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.BLACK, false, "optimizedMenuDesat");
+
+		menuBG.updateHitbox();
+		menuBG.screenCenter();
+		menuBG.antialiasing = true;
+		menuBG.scrollFactor.set();
+		add(menuBG);
 
 		lilStage = new FlxSprite(32, 650);
 		lilStage.loadGraphic(Paths.image("charter/lil_stage", "shared"));
