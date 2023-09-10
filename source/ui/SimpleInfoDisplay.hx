@@ -57,6 +57,14 @@ class SimpleInfoDisplay extends TextField {
 							text += '${CoolUtil.formatBytes(Memory.getCurrentUsage())} / ${CoolUtil.formatBytes(Memory.getPeakUsage())}';
 						case 2: // Version
 							text += 'v${Application.current.meta.get('version')}';
+						case 3: // Dev Mode
+							var traced = CoolUtil.tracedShit - CoolUtil.lastPos;
+							text += '${traced} traced line${traced > 0 ? "s" : ""}';
+							if (CoolUtil.errors > CoolUtil.lastErrors) {
+								var errors = CoolUtil.errors - CoolUtil.lastErrors;
+								text += ' | ${errors} error${errors > 0 ? "s" : ""}';
+							}
+							text += " (F6 to open)\n";
 					}
 
 					text += "\n";

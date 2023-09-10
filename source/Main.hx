@@ -1,6 +1,8 @@
 package;
 
 
+import utilities.logs.Log;
+import flixel.system.debug.log.LogStyle;
 import openfl.display.Sprite;
 import openfl.text.TextFormat;
 import utilities.CoolUtil;
@@ -10,9 +12,31 @@ import flixel.FlxGame;
 class Main extends Sprite {
 
 	public static var instance:Main = null;
+	public static var color:Dynamic;
+	public static var logs:Log;
 	
 	public function new() {
 		super();
+
+		flixel.system.frontEnds.LogFrontEnd.onLogs = function(Data, Style, FireOnce) {
+			if (Options.getData("developer")) {
+				var prefix = "[FLIXEL]";
+				if (Style == LogStyle.CONSOLE)  {prefix = "> ";					color = CoolUtil.ascii_colors["default"];	}
+				if (Style == LogStyle.ERROR)    {prefix = "[FLIXEL ERROR]";		color = CoolUtil.ascii_colors["red"];	}
+				if (Style == LogStyle.NORMAL)   {prefix = "[FLIXEL]";			color = CoolUtil.ascii_colors["white"];	}
+				if (Style == LogStyle.NOTICE)   {prefix = "[FLIXEL NOTICE]";	color = CoolUtil.ascii_colors["green"];	}
+				if (Style == LogStyle.WARNING)  {prefix = "[FLIXEL WARNING]";	color = CoolUtil.ascii_colors["yellow"];	}
+
+				var d:Dynamic = Data;
+				if (!(d is Array))
+					d = [d];
+				var a:Array<Dynamic> = d;
+				var strs = [for(e in a) Std.string(e)];
+				for(e in strs) {
+					(Style == LogStyle.ERROR ? CoolUtil.coolError : CoolUtil.haxe_trace)('$prefix $e', color);
+				}
+			}
+		};
 
 		CoolUtil.haxe_trace = haxe.Log.trace;
 		haxe.Log.trace = CoolUtil.haxe_print;
@@ -29,6 +53,10 @@ class Main extends Sprite {
 		addChild(display);
 		#end
 
+		logs = new Log();
+
+		addChild(logs);
+
 
 	}
 
@@ -42,6 +70,9 @@ class Main extends Sprite {
 
 	public static function toggleVers(versEnabled:Bool):Void
 		display.infoDisplayed[2] = versEnabled;
+
+	public static function toggleLog(logEnabled:Bool):Void
+		display.infoDisplayed[3] = logEnabled;
 
 	public static function changeFont(font:String):Void
 		display.defaultTextFormat = new TextFormat(font, (font == "_sans" ? 12 : 14), display.textColor);

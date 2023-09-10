@@ -93,6 +93,8 @@ class BoolOption extends Option {
 			#end
 			case "versionDisplay":
 				Main.toggleVers(Option_Checked);
+			case "developer":
+				Main.toggleLog(Option_Checked);
 		}
 	}
 }

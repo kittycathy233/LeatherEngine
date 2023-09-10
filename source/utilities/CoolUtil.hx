@@ -1,5 +1,7 @@
 package utilities;
 
+import utilities.logs.messages.LogMessage;
+import openfl.display.Sprite;
 import flixel.math.FlxMath;
 import openfl.utils.Function;
 import flixel.tweens.FlxTween;
@@ -13,6 +15,20 @@ import lime.utils.Assets;
 using StringTools;
 
 class CoolUtil {
+
+	public static var consoleOpened:Bool = false;
+    public static var consoleVisible:Bool = false;
+
+	public static var logsText:Sprite;
+	public static var lastPos:Int = 0;
+    public static var tracedShit:Int = 0;
+    public static var errors:Int = 0;
+    public static var lastErrors:Int = 0;
+    public static var oldLogsText:String = "";
+    public static var lastCommands:Array<String> = [];
+
+	public static var messages:Array<LogMessage> = [];
+
 	public static function boundTo(value:Float, min:Float, max:Float):Float {
 		var newValue:Float = value;
 
@@ -126,6 +142,7 @@ class CoolUtil {
 	**/
 	public static function coolError(message:Null<String> = null, title:Null<String> = null):Void {
 		trace(title + " /// " + message, ERROR);
+		errors++;
 
 		var text:FlxText = new FlxText(0, 0, 1280, title + "\n\n" + message, 32);
 		text.font = Paths.font("vcr.ttf");
@@ -178,6 +195,36 @@ class CoolUtil {
 		@author Leather128
 	**/
 	public static function haxe_print(value:Dynamic, ?pos_infos:haxe.PosInfos):Void {
+		var thing = "";
+        if (Std.isOfType(value, String)) {
+            thing = value;
+        } else {
+            thing = Std.string(value);
+        }
+		if (consoleOpened && consoleVisible) {
+            // logsText.text = "Logs are redirected in detached console.\nPress F8 to reattach the logs to the game.";
+
+            var out = Sys.stdout(); // using stdout so that it doesnt show LogsOverlay.hx:43: at the beginning
+            for(e in thing.split("\n")) {
+                tracedShit++;
+                out.writeString('[LE LOGS] $e\n'); 
+            }
+        } else {
+            if (logsText == null) return;
+            if (messages.length > 0) {
+                var msg = messages[messages.length - 1];
+                if (msg != null && msg.message == thing) {
+                    msg.messageCount++;
+                    return;
+                }
+            }
+            var e = new LogMessage(0, 0, thing, 0xFFFFFFFF);
+            messages.push(e);
+            logsText.addChild(e);
+            while(messages.length > 100)
+                logsText.removeChild(messages.shift());
+            tracedShit++;
+        }
 		if (pos_infos.customParams == null)
 			print(value, null, pos_infos);
 		else {

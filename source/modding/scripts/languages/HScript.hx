@@ -125,6 +125,7 @@ class HScript
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 
 		//haxe stuff
+		interp.variables.set('HttpBase', haxe.http.HttpBase);
 		interp.variables.set('Http', haxe.Http);
 		interp.variables.set('SysHttp', sys.Http);
 		interp.variables.set('Json', haxe.Json);
