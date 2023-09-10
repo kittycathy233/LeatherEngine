@@ -126,7 +126,9 @@ class HScript
 
 		//haxe stuff
 		interp.variables.set('Http', haxe.Http);
+		#if sys
 		interp.variables.set('SysHttp', sys.Http);
+		#end
 		interp.variables.set('Json', haxe.Json);
 		interp.variables.set('BytesOutput', haxe.io.BytesOutput);
 
