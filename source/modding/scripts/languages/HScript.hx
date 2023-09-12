@@ -132,7 +132,7 @@ class HScript
 		interp.variables.set('JsHttp', js.Http);
 		#elseif flash
 		interp.variables.set('FlashHttp', flash.Http);
-		end
+		#end
 		interp.variables.set('Json', haxe.Json);
 		interp.variables.set('BytesOutput', haxe.io.BytesOutput);
 
