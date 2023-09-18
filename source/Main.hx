@@ -1,6 +1,7 @@
 package;
 
 
+import flixel.util.FlxColor;
 import utilities.logs.Log;
 import flixel.system.debug.log.LogStyle;
 import openfl.display.Sprite;
@@ -12,7 +13,6 @@ import flixel.FlxGame;
 class Main extends Sprite {
 
 	public static var instance:Main = null;
-	public static var color:Dynamic;
 	public static var logs:Log;
 	
 	public function new() {
@@ -21,11 +21,12 @@ class Main extends Sprite {
 		flixel.system.frontEnds.LogFrontEnd.onLogs = function(Data, Style, FireOnce) {
 			if (Options.getData("developer")) {
 				var prefix = "[FLIXEL]";
-				if (Style == LogStyle.CONSOLE)  {prefix = "> ";					color = CoolUtil.ascii_colors["default"];	}
-				if (Style == LogStyle.ERROR)    {prefix = "[FLIXEL ERROR]";		color = CoolUtil.ascii_colors["red"];	}
-				if (Style == LogStyle.NORMAL)   {prefix = "[FLIXEL]";			color = CoolUtil.ascii_colors["white"];	}
-				if (Style == LogStyle.NOTICE)   {prefix = "[FLIXEL NOTICE]";	color = CoolUtil.ascii_colors["green"];	}
-				if (Style == LogStyle.WARNING)  {prefix = "[FLIXEL WARNING]";	color = CoolUtil.ascii_colors["yellow"];	}
+				var color:FlxColor = FlxColor.WHITE;
+				if (Style == LogStyle.CONSOLE)  {prefix = "> ";					color = FlxColor.WHITE;	}
+				if (Style == LogStyle.ERROR)    {prefix = "[FLIXEL ERROR]";		color = FlxColor.RED;	}
+				if (Style == LogStyle.NORMAL)   {prefix = "[FLIXEL]";			color = FlxColor.WHITE;	}
+				if (Style == LogStyle.NOTICE)   {prefix = "[FLIXEL NOTICE]";	color = FlxColor.GREEN;	}
+				if (Style == LogStyle.WARNING)  {prefix = "[FLIXEL WARNING]";	color = FlxColor.YELLOW;	}
 
 				var d:Dynamic = Data;
 				if (!(d is Array))
