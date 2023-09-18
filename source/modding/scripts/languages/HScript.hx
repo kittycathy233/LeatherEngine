@@ -139,6 +139,7 @@ class HScript
 		interp.variables.set('Character', game.Character);
 		interp.variables.set('Alphabet', ui.Alphabet);
 		interp.variables.set('ModList', modding.ModList);
+		interp.variables.set('CustomState', modding.custom.CustomState);
 		#if discord_rpc
 		interp.variables.set('Discord', utilities.Discord.DiscordClient);
 		#end
@@ -147,7 +148,7 @@ class HScript
 		#end
 
 		//modchart tools stuff
-		#if MODCHARTING_TOOLS
+		/*#if MODCHARTING_TOOLS
 		if (PlayState.SONG.modchartingTools){
 			interp.variables.set('PlayfieldRenderer', modcharting.PlayfieldRenderer);
 			interp.variables.set('ModchartUtil', modcharting.ModchartUtil);
@@ -156,7 +157,7 @@ class HScript
 			interp.variables.set('NotePositionData', modcharting.NotePositionData);
 			interp.variables.set('ModchartFile', modcharting.ModchartFile);
 		}
-		#end
+		#end*/
 		// function shits
 
 	    interp.variables.set("import", function(class_name:String) {

@@ -1,5 +1,6 @@
 package states;
 
+import modding.scripts.languages.HScript;
 import flixel.system.debug.interaction.tools.Tool;
 import tools.toolbox.Toolbox;
 import utilities.Options;
@@ -28,18 +29,64 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
+	/**
+		Current instance of `MainMenuState`.
+	**/
+	public static var instance:MainMenuState = null;
+
 	static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
+	public var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var ui_Skin:Null<String>;
+	public var scripts:Array<HScript> = [];
+	var classScripts:HScript;
+
+	function allScriptCall(func:String, ?args:Array<Dynamic>) {
+		for (cool_script in scripts) {
+			cool_script.call(func, args);
+		}
+	}
+
+	function loadScripts(){
+		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
+
+		if (modList.length > 0)
+		{
+			for (mod in modList)
+			{
+				if (sys.FileSystem.exists("mods/" + mod + "/classes/states/MainMenuState"))
+				{
+					var modclassScriptss = sys.FileSystem.readDirectory("mods/" + mod + "/classes/states/MainMenuState");
+
+					if (modclassScriptss.length > 0)
+					{
+						for (file in modclassScriptss)
+						{
+							if(file.endsWith('.hx'))
+								{
+									classScripts = new HScript("mods/" + mod + "/classes/states/MainMenuState/" + file, true);
+									classScripts.start();
+								
+									scripts.push(classScripts);
+								}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	override function create()
 	{
+		instance = this;
+
+		loadScripts();
+	
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 		
@@ -51,6 +98,8 @@ class MainMenuState extends MusicBeatState
 
 		if(Options.getData("developer"))
 			optionShit.push('toolbox');
+
+		allScriptCall("buttonsAdded");
 		
 		#if !web
 		//optionShit.push('multiplayer');
@@ -140,6 +189,8 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 
 		super.create();
+
+		allScriptCall("createPost");
 	}
 
 	var selectedSomethin:Bool = false;
@@ -196,16 +247,20 @@ class MainMenuState extends MusicBeatState
 					{
 						if(Options.getData("flashingLights"))
 						{
-							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(_) { fard(); });
+							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(_) { changeState(); });
 						}
 						else
-							new FlxTimer().start(1, function(_) { fard(); }, 1);
+							new FlxTimer().start(1, function(_) { changeState(); }, 1);
 					}
 				});
 			}
 		}
 
+		allScriptCall("update", [elapsed]);
+
 		super.update(elapsed);
+
+		allScriptCall("updatePost", [elapsed]);
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -213,7 +268,7 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	function fard()
+	function changeState()
 	{
 		var daChoice:String = optionShit[curSelected];
 		
@@ -243,11 +298,12 @@ class MainMenuState extends MusicBeatState
 			case 'toolbox':
 				FlxG.switchState(new tools.toolbox.ToolboxPlaceholder());
 		}
+		allScriptCall("changeState");
 	}
 
-	function changeItem(huh:Int = 0)
+	function changeItem(itemChange:Int = 0)
 	{
-		curSelected += huh;
+		curSelected += itemChange;
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -266,5 +322,6 @@ class MainMenuState extends MusicBeatState
 
 			spr.updateHitbox();
 		});
+		allScriptCall("changeItem", [itemChange]);
 	}
 }

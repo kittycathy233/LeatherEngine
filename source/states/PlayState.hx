@@ -1337,6 +1337,16 @@ class PlayState extends MusicBeatState {
 			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
+		/*#if MODCHARTING_TOOLS
+		if (SONG.modchartingTools){
+			HScript.interp.variables.set('PlayfieldRenderer', modcharting.PlayfieldRenderer);
+			HScript.interp.variables.set('ModchartUtil', modcharting.ModchartUtil);
+			HScript.interp.variables.set('Modifier', modcharting.Modifier);
+			HScript.interp.variables.set('NoteMovement', modcharting.NoteMovement);
+			HScript.interp.variables.set('NotePositionData', modcharting.NotePositionData);
+			HScript.interp.variables.set('ModchartFile', modcharting.ModchartFile);
+		}
+		#end*/
 		super.create();
 
 		for (script_funny in scripts) {
