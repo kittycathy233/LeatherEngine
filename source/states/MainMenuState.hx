@@ -53,6 +53,7 @@ class MainMenuState extends MusicBeatState
 	}
 
 	function loadScripts(){
+		#if sys
 		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
 
 		if (modList.length > 0)
@@ -79,6 +80,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 		}
+		#end
 	}
 
 	override function create()
