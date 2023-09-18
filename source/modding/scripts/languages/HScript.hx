@@ -124,9 +124,15 @@ class HScript
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 
-		//haxe stuff
+		//http stuff
 		interp.variables.set('Http', haxe.Http);
-		interp.variables.set('SysHttp', sys.Http);
+		#if sys
+		interp.variables.set('HttpSys', sys.Http);
+		#elseif js
+		interp.variables.set('HttpJs', haxe.http.HttpJs);
+		#elseif flash
+		interp.variables.set('HttpFlash', haxe.HttpFlash);
+		#end
 		interp.variables.set('Json', haxe.Json);
 		interp.variables.set('BytesOutput', haxe.io.BytesOutput);
 
