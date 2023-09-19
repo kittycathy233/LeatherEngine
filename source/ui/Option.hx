@@ -1,5 +1,7 @@
 package ui;
 
+import utilities.CoolUtil;
+import states.TitleState;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -257,6 +259,65 @@ class ModOption extends FlxTypedGroup<FlxSprite> {
 			Alphabet_Text.alpha = 1;
 			Mod_Icon.alpha = 1;
 		} else {
+			Alphabet_Text.alpha = 0.6;
+			Mod_Icon.alpha = 0.6;
+		}
+	}
+}
+
+class NewModOption extends FlxTypedGroup<FlxSprite> {
+	// variables //
+	public var Alphabet_Text:Alphabet;
+	public var Mod_Icon:ModIcon;
+
+	public var Mod_Enabled:Bool = false;
+
+	// options //
+	public var Option_Row:Int = 0;
+
+	public var Option_Name:String = "";
+	public var Option_Value:String = "Template Mod";
+
+	public function new(_Option_Name:String = "", _Option_Value:String = "Template Mod", _Option_Row:Int = 0) {
+		super();
+
+		// SETTING VALUES //
+		this.Option_Name = _Option_Name;
+		this.Option_Value = _Option_Value;
+		this.Option_Row = _Option_Row;
+
+		// CREATING OTHER OBJECTS //
+		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
+		Alphabet_Text.isMenuItem = true;
+		Alphabet_Text.targetY = Option_Row;
+		add(Alphabet_Text);
+
+		Mod_Icon = new ModIcon(Option_Value);
+		Mod_Icon.sprTracker = Alphabet_Text;
+		add(Mod_Icon);
+
+		Mod_Enabled = ModList.modList.get(Option_Value);
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if(Alphabet_Text.targetY == 0){
+			Alphabet_Text.alpha = 1;
+			Mod_Icon.alpha = 1;
+			if (FlxG.keys.justPressed.ENTER) {
+				Mod_Enabled = !Mod_Enabled;
+				@:privateAccess
+				if (Std.isOfType(FlxG.state, TitleState)) TitleState.initialized = false;
+				if (FlxG.sound.music != null) {
+					FlxG.sound.music.fadeOut(0.25, 0);
+					FlxG.sound.music.persist = false;
+				}
+				FlxG.sound.play(Paths.sound('confirmMenu'), 1);
+				Options.setData(Option_Value, "curMod");
+				FlxG.resetState();
+			}
+		}else {
 			Alphabet_Text.alpha = 0.6;
 			Mod_Icon.alpha = 0.6;
 		}

@@ -39,7 +39,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	var ui_Skin:Null<String>;
 
-	public var page:FlxTypedGroup<ModOption> = new FlxTypedGroup<ModOption>();
+	public var page:FlxTypedGroup<NewModOption> = new FlxTypedGroup<NewModOption>();
 
 	public static var instance:SwitchModSubstate;
 
@@ -57,22 +57,16 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		var menuBG:FlxSprite;
 
-		menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.BLACK, false, "optimizedMenuDesat");
-
+		menuBG = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK, false, "optimizedMenuDesat");
         menuBG.alpha = 0.5;
-
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
 		menuBG.antialiasing = true;
+        menuBG.scrollFactor.set();
 		add(menuBG);
 
 		super.create();
-
 		add(page);
-
-		if(FlxG.sound.music == null)
-			FlxG.sound.playMusic(MusicUtilities.GetOptionsMenuMusic(), 0.7, true);
 
 		PolymodHandler.loadModMetadata();
 
@@ -80,6 +74,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		descBg = new FlxSprite(0, FlxG.height - 90).makeGraphic(FlxG.width, 90, 0xFF000000);
 		descBg.alpha = 0.6;
+        descBg.scrollFactor.set();
 		add(descBg);
 
 		descriptionText = new FlxText(descBg.x, descBg.y + 4, FlxG.width, "Template Description", 18);
@@ -91,7 +86,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 		descriptionText.screenCenter(X);
 		add(descriptionText);
 
-		var leText:String = "Press ENTER to enable / disable the currently selected mod.";
+		var leText:String = "Press ENTER to switch to the currently selected mod.";
 
 		var text:FlxText = new FlxText(0, FlxG.height - 22, FlxG.width, leText, 18);
 		text.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, RIGHT);
@@ -104,7 +99,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 	function loadMods()
 	{
-		page.forEachExists(function(option:ModOption)
+		page.forEachExists(function(option:NewModOption)
 		{
 			page.remove(option);
 			option.kill();
@@ -115,7 +110,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		for(modId in PolymodHandler.metadataArrays)
 		{
-			var modOption = new ModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+			var modOption = new NewModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
 			page.add(modOption);
 			optionLoopNum++;
 		}
@@ -145,7 +140,6 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		if (controls.BACK)
 		{
-			PolymodHandler.loadMods();
 			close();
 		}
 

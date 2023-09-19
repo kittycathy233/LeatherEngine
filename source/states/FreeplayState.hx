@@ -1,5 +1,7 @@
 package states;
 
+import sys.FileSystem;
+import modding.SwitchModSubstate;
 import game.Conductor;
 #if sys
 import sys.thread.Thread;
@@ -115,8 +117,14 @@ class FreeplayState extends MusicBeatState {
 
 		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 			TitleState.playTitleMusic();
+		var initSonglist;
+		if (!FileSystem.exists("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt"))
+			initSonglist = CoolUtil.coolTextFile("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt");
+		else
+			initSonglist = CoolUtil.coolTextFile("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt");
 
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		if(curSelected > initSonglist.length)
+			curSelected = 0;
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
@@ -279,6 +287,12 @@ class FreeplayState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
+		
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new SwitchModSubstate());
+			persistentUpdate = false;
+		}
+
 		super.update(elapsed);
 
 		if (FlxG.sound.music.playing)

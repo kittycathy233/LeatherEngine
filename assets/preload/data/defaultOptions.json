@@ -296,6 +296,10 @@
         {
             "option": "developer",
             "value": false
+        },
+        {
+            "option": "curMod",
+            "value": "Friday Night Funkin'"
         }
     ]
 }

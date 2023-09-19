@@ -5,6 +5,9 @@ import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import states.PlayState;
+
+using StringTools;
 
 class Paths {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
@@ -15,30 +18,61 @@ class Paths {
 	inline static public function setCurrentLevel(name:String):Void
 		currentLevel = name.toLowerCase();
 
-	static function getPath(file:String, type:AssetType, library:Null<String>):String {
-		if (library != null)
-			return getLibraryPath(file, library);
-
-		if (currentLevel != null) {
-			var levelPath = getLibraryPathForce(file, currentLevel);
-
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
-
-			levelPath = getLibraryPathForce(file, "shared");
-
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
+	public static function getPath(file:String, type:AssetType, ?library:Null<String>, forceLibrary:Bool = false)
+		{
+			if (!forceLibrary) {
+				try {
+					var p = "";
+					if (!library.toLowerCase().startsWith("mods")
+					 && library != "mods/~"
+					 && library != "~"
+					 &&   (
+						   (PlayState.instance != null && OpenFlAssets.exists(p = getLibraryPathForce('songs/${PlayState.instance.curSong}/$file', 'mods/${Options.getData("curMod")}')))
+						|| OpenFlAssets.exists(p = getLibraryPathForce(file, 'mods/${Options.getData("curMod")}'))
+						|| OpenFlAssets.exists(p = getLibraryPathForce(file, Options.getData("curMod")))
+						|| OpenFlAssets.exists(p = getLibraryPathForce(file, "mods/Friday Night Funkin'")))) { // can use assets from the fnf mod itself
+						return p;
+					}
+				} catch(e) {
+	
+				}
+			}
+			
+			
+			file = file.replace("\\", "/");
+			while(file.contains("//")) {
+				file = file.replace("//", "/");
+			}
+			while(file.startsWith("/")) file = file.substr(1);
+			if (library != null)
+				return getLibraryPath(file, library);
+	
+			if (currentLevel != null)
+			{
+				var levelPath = getLibraryPathForce(file, currentLevel);
+				
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+	
+				levelPath = getLibraryPathForce(file, "shared");
+		
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+			}
+	
+			return getPreloadPath(file);
 		}
-
-		return getPreloadPath(file);
-	}
 
 	static public function getLibraryPath(file:String, library = "preload"):String
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
 
-	inline static function getLibraryPathForce(file:String, library:String):String
-		return '$library:assets/$library/$file';
+	inline static function getLibraryPathForce(file:String, library:String)
+		{
+			var finalPath = '$library:assets/$library/$file';
+			if (library.startsWith("mods/"))
+				finalPath = finalPath.toLowerCase();
+			return finalPath;
+		}
 
 	inline static function getPreloadPath(file:String):String
 		return 'assets/$file';
