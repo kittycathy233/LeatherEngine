@@ -168,4 +168,7 @@ class Paths {
 		else
 			return FlxAtlasFrames.fromSparrow(image("Bind_Menu_Assets", "preload"), file('images/Bind_Menu_Assets.xml', "preload"));
 	}
+
+	inline static public function modTxt(key:String, ?library:String):String
+		return getPath('mods/$key.txt', TEXT, library);
 }

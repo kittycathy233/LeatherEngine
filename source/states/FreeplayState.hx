@@ -118,10 +118,12 @@ class FreeplayState extends MusicBeatState {
 		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 			TitleState.playTitleMusic();
 		var initSonglist;
-		if (!FileSystem.exists("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt"))
-			initSonglist = CoolUtil.coolTextFile("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt");
+		if (FileSystem.exists("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt"))
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt");
+		else if(FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt"))
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt");
 		else
-			initSonglist = CoolUtil.coolTextFile("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt");
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt");
 
 		if(curSelected > initSonglist.length)
 			curSelected = 0;
