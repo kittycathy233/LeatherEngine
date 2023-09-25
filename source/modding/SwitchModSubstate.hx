@@ -154,7 +154,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 		for (x in page.members)
 		{
 			x.Alphabet_Text.targetY = bruh - curSelected;
-
+			
 			if(x.Alphabet_Text.targetY == 0)
 			{
 				descriptionText.screenCenter(X);

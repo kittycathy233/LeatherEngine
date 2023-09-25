@@ -1,6 +1,5 @@
 package states;
 
-import modding.SwitchModSubstate;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -78,10 +77,12 @@ class StoryMenuState extends MusicBeatState {
 
 	override function update(elapsed:Float) {
 
+		#if sys
 		if(FlxG.keys.justPressed.TAB){
-			openSubState(new SwitchModSubstate());
+			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
+		#end
 		
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 

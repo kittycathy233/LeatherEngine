@@ -278,7 +278,7 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 	public var Option_Name:String = "";
 	public var Option_Value:String = "Template Mod";
 
-	public function new(_Option_Name:String = "", _Option_Value:String = "Template Mod", _Option_Row:Int = 0) {
+	public function new(_Option_Name:String = "", _Option_Value:String = "Friday Night Funkin'", _Option_Row:Int = 0) {
 		super();
 
 		// SETTING VALUES //
@@ -290,10 +290,12 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
 		Alphabet_Text.isMenuItem = true;
 		Alphabet_Text.targetY = Option_Row;
+		Alphabet_Text.scrollFactor.set();
 		add(Alphabet_Text);
 
 		Mod_Icon = new ModIcon(Option_Value);
 		Mod_Icon.sprTracker = Alphabet_Text;
+		Mod_Icon.scrollFactor.set();
 		add(Mod_Icon);
 
 		Mod_Enabled = ModList.modList.get(Option_Value);
