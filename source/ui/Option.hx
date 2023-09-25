@@ -265,7 +265,7 @@ class ModOption extends FlxTypedGroup<FlxSprite> {
 	}
 }
 
-class NewModOption extends FlxTypedGroup<FlxSprite> {
+class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 	// variables //
 	public var Alphabet_Text:Alphabet;
 	public var Mod_Icon:ModIcon;

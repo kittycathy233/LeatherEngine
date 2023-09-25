@@ -39,7 +39,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 	var curSelected:Int = 0;
 	var ui_Skin:Null<String>;
 
-	public var page:FlxTypedGroup<NewModOption> = new FlxTypedGroup<NewModOption>();
+	public var page:FlxTypedGroup<ChangeModOption> = new FlxTypedGroup<ChangeModOption>();
 
 	public static var instance:SwitchModSubstate;
 
@@ -97,7 +97,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 	function loadMods()
 	{
-		page.forEachExists(function(option:NewModOption)
+		page.forEachExists(function(option:ChangeModOption)
 		{
 			page.remove(option);
 			option.kill();
@@ -109,7 +109,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 		for(modId in PolymodHandler.metadataArrays)
 		{
 			if (ModList.modList.get(modId)){
-				var modOption = new NewModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+				var modOption = new ChangeModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
 				page.add(modOption);
 				optionLoopNum++;
 			}
