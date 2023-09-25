@@ -1,6 +1,5 @@
 package states;
 
-import modding.SwitchModSubstate;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -287,10 +286,12 @@ class TitleState extends MusicBeatState {
 		if (controls.RIGHT)
 			swagShader.update(elapsed * 0.1);
 
+		#if sys
 		if(FlxG.keys.justPressed.TAB){
-			openSubState(new SwitchModSubstate());
+			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
+		#end
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;

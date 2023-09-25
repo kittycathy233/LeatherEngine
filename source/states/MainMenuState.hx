@@ -1,6 +1,5 @@
 package states;
 
-import modding.SwitchModSubstate;
 import modding.scripts.languages.HScript;
 import flixel.system.debug.interaction.tools.Tool;
 import tools.toolbox.Toolbox;
@@ -202,10 +201,12 @@ class MainMenuState extends MusicBeatState
 	{
 
 
+		#if sys
 		if(FlxG.keys.justPressed.TAB){
-			openSubState(new SwitchModSubstate());
+			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
+		#end
 
 		FlxG.camera.followLerp = elapsed * 3.6;
 
