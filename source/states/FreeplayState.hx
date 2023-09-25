@@ -1,7 +1,6 @@
 package states;
 
 import modding.ModList;
-import modding.SwitchModSubstate;
 import game.Conductor;
 #if sys
 import sys.thread.Thread;
@@ -306,10 +305,12 @@ class FreeplayState extends MusicBeatState {
 
 	override function update(elapsed:Float) {
 		
+		#if sys
 		if(FlxG.keys.justPressed.TAB){
-			openSubState(new SwitchModSubstate());
+			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
+		#end
 
 		super.update(elapsed);
 
