@@ -1,5 +1,6 @@
 package states;
 
+import modding.ModList;
 import game.Conductor;
 #if sys
 import sys.thread.Thread;
@@ -115,8 +116,27 @@ class FreeplayState extends MusicBeatState {
 
 		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 			TitleState.playTitleMusic();
-
+		#if sys
+		var initSonglist;
+		if(!ModList.modList.get(Options.getData("curMod"))){
+			Options.setData("Friday Night Funkin'", "curMod");
+			CoolUtil.coolError("Hmmm... I couldnt find the mod you are trying to switch to.\nIt is either disabled or not in the files.\nI switched the mod to base game to avoid a crash!","Leather Engine's No Crash, We Help Fix Stuff Tool");
+		}
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt"))
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt");
+		else if(sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt"))
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt");
+		else if(sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt"))
+			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt");
+		else
+			initSonglist = [];
+		#else
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		#end
+		
+
+		if(curSelected > initSonglist.length)
+			curSelected = 0;
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
@@ -239,8 +259,13 @@ class FreeplayState extends MusicBeatState {
 			new FlxTimer().start(1, function(_) songsReady = true);
 		}
 
-		selectedColor = songs[curSelected].color;
-		bg.color = selectedColor;
+		if (songs.length != 0){
+			selectedColor = songs[curSelected].color;
+			bg.color = selectedColor;
+		}
+		else{
+			bg.color = 0xFF7C689E;
+		}
 
 		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
 		textBG.alpha = 0.6;
@@ -279,6 +304,14 @@ class FreeplayState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
+		
+		#if sys
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new modding.SwitchModSubstate());
+			persistentUpdate = false;
+		}
+		#end
+
 		super.update(elapsed);
 
 		if (FlxG.sound.music.playing)
@@ -482,8 +515,10 @@ class FreeplayState extends MusicBeatState {
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
 		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
-		curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
+		if(songs.length != 0){
+			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
+			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
+		}
 		#end
 
 		if (curDiffArray.length > 1)
@@ -493,6 +528,7 @@ class FreeplayState extends MusicBeatState {
 	}
 
 	function changeSelection(change:Int = 0) {
+		if(grpSongs.length != 0 || curSelected != 0)
 		curSelected = FlxMath.wrap(curSelected + change, 0, grpSongs.length - 1);
 
 		// Sounds
@@ -509,13 +545,16 @@ class FreeplayState extends MusicBeatState {
 		}
 
 		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
-		curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
+		if(songs.length != 0){
+			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
+			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
+		}
 		#end
 
-		curDiffArray = songs[curSelected].difficulties;
-
-		changeDiff();
+		if(songs.length != 0){
+			curDiffArray = songs[curSelected].difficulties;
+			changeDiff();
+		}
 
 		var bullShit:Int = 0;
 
@@ -548,7 +587,7 @@ class FreeplayState extends MusicBeatState {
 			}
 		}
 
-		if (change != 0) {
+		if (change != 0 && songs.length != 0) {
 			var newColor:FlxColor = songs[curSelected].color;
 
 			if (newColor != selectedColor) {
@@ -564,8 +603,11 @@ class FreeplayState extends MusicBeatState {
 					}
 				});
 			}
-		} else
-			bg.color = songs[curSelected].color;
+		} else{
+			if(songs.length != 0){
+				bg.color = songs[curSelected].color;
+			}
+		}
 	}
 
 	public function destroyFreeplayVocals(?destroyInst:Bool = true) {

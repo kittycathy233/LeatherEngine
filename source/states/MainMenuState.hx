@@ -199,6 +199,15 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+
+
+		#if sys
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new modding.SwitchModSubstate());
+			persistentUpdate = false;
+		}
+		#end
+
 		FlxG.camera.followLerp = elapsed * 3.6;
 
 

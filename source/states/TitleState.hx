@@ -286,6 +286,13 @@ class TitleState extends MusicBeatState {
 		if (controls.RIGHT)
 			swagShader.update(elapsed * 0.1);
 
+		#if sys
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new modding.SwitchModSubstate());
+			persistentUpdate = false;
+		}
+		#end
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 

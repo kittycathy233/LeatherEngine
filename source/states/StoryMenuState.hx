@@ -76,6 +76,14 @@ class StoryMenuState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
+
+		#if sys
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new modding.SwitchModSubstate());
+			persistentUpdate = false;
+		}
+		#end
+		
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 
 		weekScoreText.text = "WEEK SCORE:" + lerpScore;
