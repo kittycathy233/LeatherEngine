@@ -1,5 +1,6 @@
 package states;
 
+import modding.SwitchModSubstate;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -76,6 +77,12 @@ class StoryMenuState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
+
+		if(FlxG.keys.justPressed.TAB){
+			openSubState(new SwitchModSubstate());
+			persistentUpdate = false;
+		}
+		
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.5));
 
 		weekScoreText.text = "WEEK SCORE:" + lerpScore;

@@ -51,8 +51,6 @@ class SwitchModSubstate extends MusicBeatSubstate
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 
-		MusicBeatState.windowNameSuffix = " Mods Menu";
-
 		instance = this;
 
 		var menuBG:FlxSprite;
@@ -110,9 +108,11 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		for(modId in PolymodHandler.metadataArrays)
 		{
-			var modOption = new NewModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-			page.add(modOption);
-			optionLoopNum++;
+			if (ModList.modList.get(modId)){
+				var modOption = new NewModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+				page.add(modOption);
+				optionLoopNum++;
+			}
 		}
 	}
 
