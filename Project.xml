@@ -101,9 +101,9 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib name="hscript" />
+	<haxelib name="hscript-improved"/>
 	<define name="hscriptPos" />
-	<haxelib name="polymod" />
+	<haxelib name="scriptless-polymod" />
 	<haxelib name="flxanimate" />
 	<haxelib name="flixelTextureAtlas" />
 	<haxelib name="discord_rpc" if="desktop" />
