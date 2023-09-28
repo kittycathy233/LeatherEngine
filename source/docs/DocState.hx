@@ -1,5 +1,7 @@
 package docs;
 
+import states.LoadingState;
+import states.MainMenuState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import cocktail.api.Cocktail;
@@ -13,5 +15,11 @@ class DocState extends MusicBeatState {
         add(bg);
         Cocktail.boot("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/docs/test/index.html");
         super.create();
+    }
+    override function update(elapsed:Float){
+        if (FlxG.keys.justPressed.ESCAPE){
+            LoadingState.loadAndSwitchState(new MainMenuState());
+        }
+        super.update(elapsed);
     }
 }

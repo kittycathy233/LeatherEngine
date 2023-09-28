@@ -127,8 +127,6 @@
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
-	<haxeflag name="-dce" value="no" />
-
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place
