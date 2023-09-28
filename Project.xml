@@ -44,7 +44,7 @@
 	<define name="LUA_ALLOWED" if="desktop" />
 	<define name="SCREENSHOTS_ALLOWED" if="desktop"/>
 	<define name="THREE_D_ALLOWED"/>
-	<define name="DOCS_ALLOWED"/>
+	<define name="DOCS_ALLOWED" unless="web" />
 
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
