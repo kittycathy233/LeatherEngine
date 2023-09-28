@@ -41,9 +41,11 @@
         "version": null
       },
       {
-        "name": "hscript",
-        "type": "haxelib",
-        "version": null
+        "name": "hscript-improved",
+        "type": "git",
+        "dir": null,
+        "ref": "master",
+        "url": "https://github.com/FNF-CNE-Devs/hscript-improved"
       },
       {
         "name": "hxcpp-debug-server",
@@ -65,9 +67,11 @@
         "url": "https://github.com/Leather128/linc_luajit.git"
       },
       {
-        "name": "polymod",
-        "type": "haxelib",
-        "version": null
+        "name": "scriptless-polymod",
+        "type": "git",
+        "dir": null,
+        "ref": "master",
+        "url": "https://github.com/swordcube/scriptless-polymod"
       },
       {
         "name": "flixelTextureAtlas",
@@ -94,6 +98,20 @@
         "dir": null,
         "ref": "master",
         "url": "https://github.com/openfl/away3d"
+      },
+      {
+        "name": "flxanimate",
+        "type": "git",
+        "dir": null,
+        "ref": "master",
+        "url": "https://github.com/FNF-CNE-Devs/flxanimate"
+      },
+      {
+        "name": "cocktail4X",
+        "type": "git",
+        "dir": null,
+        "ref": "master",
+        "url": "https://github.com/Vortex2Oblivion/Cocktail-4X"
       }
     ]
   }

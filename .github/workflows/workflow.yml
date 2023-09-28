@@ -48,7 +48,7 @@ jobs:
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
           haxelib git cocktail4X https://github.com/Vortex2Oblivion/Cocktail-4X
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FNF-CNE-Devs/flxanimate
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
           haxelib list
@@ -93,7 +93,7 @@ jobs:
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
           haxelib install flixel-screenshot-plugin
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FNF-CNE-Devs/flxanimate
           haxelib git cocktail4X https://github.com/Vortex2Oblivion/Cocktail-4X
           haxelib install away3d
           haxelib list
@@ -140,7 +140,7 @@ jobs:
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
           haxelib git cocktail4X https://github.com/Vortex2Oblivion/Cocktail-4X
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FNF-CNE-Devs/flxanimate
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
           haxelib list
@@ -187,7 +187,7 @@ jobs:
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FNF-CNE-Devs/flxanimate
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
           haxelib list
