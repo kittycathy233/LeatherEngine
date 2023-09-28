@@ -123,6 +123,7 @@ class HScript
 		interp.variables.set("FlxRuntimeShader", shaders.custom.CustomShader);
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
+		interp.variables.set('FlxAnimate', flxanimate.FlxAnimate);
 
 		//http stuff
 		interp.variables.set('Http', haxe.Http);
