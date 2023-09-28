@@ -166,7 +166,7 @@ class OptionsMenu extends MusicBeatState {
 		"Developer Options" => [
 			new PageOption("Back", 0, "Categories"),
 			new BoolOption("Developer Mode", "developer", 1),
-			new ToolboxOption("Opem The Toolbox", 1, new tools.toolbox.ToolboxPlaceholder()),
+			new ToolboxOption("Open The Toolbox", 1, new tools.toolbox.ToolboxPlaceholder()),
 		]
 	];
 
