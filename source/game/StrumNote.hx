@@ -57,9 +57,9 @@ class StrumNote extends FlxSprite
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 
-		colorSwap.hue = noteColor[0] / 360;
-		colorSwap.saturation = noteColor[1] / 100;
-		colorSwap.brightness = noteColor[2] / 100;
+		colorSwap.r = noteColor[0];
+		colorSwap.g = noteColor[1];
+		colorSwap.b = noteColor[2];
 	}
 
 	override function update(elapsed:Float)
@@ -86,17 +86,17 @@ class StrumNote extends FlxSprite
 
 		if (anim == "static")
 		{
-			colorSwap.hue = 0;
-			colorSwap.saturation = 0;
-			colorSwap.brightness = 0;
+			colorSwap.r = 0;
+			colorSwap.g = 0;
+			colorSwap.b = 0;
 
 			swagWidth = width;
 		}
 		else
 		{
-			colorSwap.hue = noteColor[0] / 360;
-			colorSwap.saturation = noteColor[1] / 100;
-			colorSwap.brightness = noteColor[2] / 100;
+			colorSwap.r = noteColor[0];
+			colorSwap.g = noteColor[1];
+			colorSwap.b = noteColor[2];
 		}
 
 		if (ui_Skin != "pixel")
