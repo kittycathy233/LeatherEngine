@@ -3,128 +3,65 @@ package shaders;
 import flixel.system.FlxAssets.FlxShader;
 
 /**
- * Cool Shader by ShadowMario that changes RGB based on HSV.
+ * Port of https://www.shadertoy.com/view/sslyDB
  */
 class ColorSwap {
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();
-	public var hue(default, set):Float = 0;
-	public var saturation(default, set):Float = 0;
-	public var brightness(default, set):Float = 0;
+	public var r(default, set):Float = 255;
+	public var g(default, set):Float = 0;
+	public var b(default, set):Float = 0;
 
-	private function set_hue(value:Float) {
-		hue = value;
-		shader.uTime.value[0] = hue;
-		return hue;
+	private function set_r(value:Float) {
+		r = value;
+		shader.red.value = [r];
+		return r;
 	}
 
-	private function set_saturation(value:Float) {
-		saturation = value;
-		shader.uTime.value[1] = saturation;
-		return saturation;
+	private function set_g(value:Float) {
+		g = value;
+		shader.green.value = [g];
+		return g;
 	}
 
-	private function set_brightness(value:Float) {
-		brightness = value;
-		shader.uTime.value[2] = brightness;
-		return brightness;
+	private function set_b(value:Float) {
+		b = value;
+		shader.blue.value = [b];
+		return b;
 	}
 
 	public function new() {
-		shader.uTime.value = [0, 0, 0];
-		shader.awesomeOutline.value = [false];
+		r = 255;
+		g = 0;
+		b = 0;
 	}
 }
 
 class ColorSwapShader extends FlxShader {
 	@:glFragmentSource('
-		#pragma header
+	#pragma header
 
-		uniform vec3 uTime;
-		uniform bool awesomeOutline;
+	uniform float red;
+	uniform float green;
+	uniform float blue;
 
-		const float offset = 1.0 / 128.0;
-		vec3 normalizeColor(vec3 color)
-		{
-			return vec3(
-				color[0] / 255.0,
-				color[1] / 255.0,
-				color[2] / 255.0
-			);
-		}
-
-		vec3 rgb2hsv(vec3 c)
-		{
-			vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-			vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-			vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-			float d = q.x - min(q.w, q.y);
-			float e = 1.0e-10;
-			return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-		}
-
-		vec3 hsv2rgb(vec3 c)
-		{
-			vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-			vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-			return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-		}
-
-		void main()
-		{
-			vec4 color = flixel_texture2D(bitmap, openfl_TextureCoordv);
-
-			vec4 swagColor = vec4(rgb2hsv(vec3(color[0], color[1], color[2])), color[3]);
-
-			// [0] is the hue???
-			swagColor[0] = swagColor[0] + uTime[0];
-			swagColor[1] = swagColor[1] + uTime[1];
-			swagColor[2] = swagColor[2] * (1.0 + uTime[2]);
-			
-			if(swagColor[1] < 0.0)
-			{
-				swagColor[1] = 0.0;
-			}
-			else if(swagColor[1] > 1.0)
-			{
-				swagColor[1] = 1.0;
-			}
-
-			color = vec4(hsv2rgb(vec3(swagColor[0], swagColor[1], swagColor[2])), swagColor[3]);
-
-			if (awesomeOutline)
-			{
-				 // Outline bullshit?
-				vec2 size = vec2(3, 3);
-
-				if (color.a <= 0.5) {
-					float w = size.x / openfl_TextureSize.x;
-					float h = size.y / openfl_TextureSize.y;
-					
-					if (flixel_texture2D(bitmap, vec2(openfl_TextureCoordv.x + w, openfl_TextureCoordv.y)).a != 0.
-					|| flixel_texture2D(bitmap, vec2(openfl_TextureCoordv.x - w, openfl_TextureCoordv.y)).a != 0.
-					|| flixel_texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y + h)).a != 0.
-					|| flixel_texture2D(bitmap, vec2(openfl_TextureCoordv.x, openfl_TextureCoordv.y - h)).a != 0.)
-						color = vec4(1.0, 1.0, 1.0, 1.0);
-				}
-			}
-			gl_FragColor = color;
-
-			/* 
-			if (color.a > 0.5)
-				gl_FragColor = color;
-			else
-			{
-				float a = flixel_texture2D(bitmap, vec2(openfl_TextureCoordv + offset, openfl_TextureCoordv.y)).a +
-						  flixel_texture2D(bitmap, vec2(openfl_TextureCoordv, openfl_TextureCoordv.y - offset)).a +
-						  flixel_texture2D(bitmap, vec2(openfl_TextureCoordv - offset, openfl_TextureCoordv.y)).a +
-						  flixel_texture2D(bitmap, vec2(openfl_TextureCoordv, openfl_TextureCoordv.y + offset)).a;
-				if (color.a < 1.0 && a > 0.0)
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.8);
-				else
-					gl_FragColor = color;
-			} */
-		}')
+	void main() {
+	
+	  vec4 col = flixel_texture2D(bitmap, openfl_TextureCoordv);
+	  
+	  const vec3 target = vec3(1.0, 0.0, 0.0); // Find red
+	  vec3 replace = vec3(red / 255.0, green / 255.0, blue / 255.0); // Replace with color
+	  
+	  const float threshold = 0.75; // Controls target color range
+	  const float softness = 0.3; // Controls linear falloff
+	  
+	  // Get difference to use for falloff if required
+	  float diff = distance(col.rgb, target) - threshold;
+	  
+	  // Apply linear falloff if needed, otherwise clamp
+	  float factor = clamp(diff / softness, 0.0, 1.0);
+	  
+	  gl_FragColor = vec4(mix(replace, col.rgb, factor), col.a);
+	}')
 	public function new() {
 		super();
 	}

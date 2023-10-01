@@ -28,16 +28,16 @@ class NoteColorSubstate extends MusicBeatSubstate
     var selectedControl:Int = 0;
     var selectingStuff:Bool = false;
 
-    var coolText:FlxText = new FlxText(0,25,0,"Use UP and DOWN to change number of keys\nLEFT and RIGHT to change arrow selected\nHue: 0, Saturation: 0, Value: 0\n", 32);
+    var coolText:FlxText = new FlxText(0,25,0,"Use UP and DOWN to change number of keys\nLEFT and RIGHT to change arrow selected\nRed: 0, Green: 0, Blue: 0\n", 32);
 
     var mania_gap:Array<String>;
 
-    var selectedValue:Int = 0; // 0 = hue, 1 = saturation, 2 = value... k?
+    var selectedValue:Int = 0; // 0 = red, 1 = green, 2 = blue
 
     var current_ColorVals:Array<Int> = [0,0,0];
 
-    var colorMins:Array<Int> = [-360, -100, -100];
-    var colorMaxs:Array<Int> = [360, 100, 100];
+    var colorMins:Array<Int> = [0, 0, 0];
+    var colorMaxs:Array<Int> = [255, 255, 255];
 
     public function new()
     {
@@ -93,9 +93,9 @@ class NoteColorSubstate extends MusicBeatSubstate
             {
                 current_ColorVals = [0,0,0];
 
-                arrow_Group.members[selectedControl].colorSwap.hue = 0;
-                arrow_Group.members[selectedControl].colorSwap.saturation = 0;
-                arrow_Group.members[selectedControl].colorSwap.brightness = 0;
+                arrow_Group.members[selectedControl].colorSwap.r = 0;
+                arrow_Group.members[selectedControl].colorSwap.g = 0;
+                arrow_Group.members[selectedControl].colorSwap.b = 0;
 
                 NoteColors.setNoteColor(NoteVariables.Other_Note_Anim_Stuff[key_Count - 1][selectedControl], current_ColorVals);
             }
@@ -156,11 +156,11 @@ class NoteColorSubstate extends MusicBeatSubstate
                 switch(selectedValue)
                 {
                     case 0:
-                        arrow_Group.members[selectedControl].colorSwap.hue = current_ColorVals[selectedValue] / 360;
+                        arrow_Group.members[selectedControl].colorSwap.r = current_ColorVals[selectedValue];
                     case 1:
-                        arrow_Group.members[selectedControl].colorSwap.saturation = current_ColorVals[selectedValue] / 100;
+                        arrow_Group.members[selectedControl].colorSwap.g = current_ColorVals[selectedValue];
                     case 2:
-                        arrow_Group.members[selectedControl].colorSwap.brightness = current_ColorVals[selectedValue] / 100;
+                        arrow_Group.members[selectedControl].colorSwap.b = current_ColorVals[selectedValue];
                 }
 
                 NoteColors.setNoteColor(NoteVariables.Other_Note_Anim_Stuff[key_Count - 1][selectedControl], current_ColorVals);
@@ -218,7 +218,7 @@ class NoteColorSubstate extends MusicBeatSubstate
                 val = "> " + val + " <";
         }
 
-        coolText.text = "Use UP and DOWN to change number of keys or the selected color\nLEFT and RIGHT to change arrow selected or the color selected\nR to Reset Note Colors\nENTER to select a note\nHue: " + hue + ", Saturation: " + sat + ", Value: " + val + "\n";
+        coolText.text = "Use UP and DOWN to change number of keys or the selected color\nLEFT and RIGHT to change arrow selected or the color selected\nR to Reset Note Colors\nENTER to select a note\nRed: " + hue + ", Green: " + sat + ", Blue: " + val + "\n";
         coolText.screenCenter(X);
     }
 

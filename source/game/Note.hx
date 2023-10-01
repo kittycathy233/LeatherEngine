@@ -185,9 +185,9 @@ class Note extends FlxSprite {
 
 			var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData]);
 
-			colorSwap.hue = noteColor[0] / 360;
-			colorSwap.saturation = noteColor[1] / 100;
-			colorSwap.brightness = noteColor[2] / 100;
+			colorSwap.r = noteColor[0];
+			colorSwap.g = noteColor[1];
+			colorSwap.b = noteColor[2];
 		}
 	}
 
@@ -320,9 +320,9 @@ class Note extends FlxSprite {
 
 		var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData]);
 
-		colorSwap.hue = noteColor[0] / 360;
-		colorSwap.saturation = noteColor[1] / 100;
-		colorSwap.brightness = noteColor[2] / 100;
+		colorSwap.r = noteColor[0];
+		colorSwap.g = noteColor[1];
+		colorSwap.b = noteColor[2];
 	}
 }
 
