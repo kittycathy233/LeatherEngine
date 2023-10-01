@@ -128,6 +128,81 @@ class CoolUtil {
 
 		return maxKey;
 	}
+	/**
+	 * Gets the highest number from a list.
+	 * Shoutout to @crinfarr on Discord.
+	 * https://discord.com/channels/162395145352904705/162395145352904705/1157847259858354236
+	 * @param ...nums 
+	 * @return T
+	 */
+	public static function max<T:Float>(...nums:T):T {
+		var max:Null<T>=null;
+		for (n in nums) {
+			if (max == null || n > max)
+				max = n;
+		}
+		return max;
+	}
+
+	/**
+	 * Gets the lowest number from a list.
+	 * Shoutout to @crinfarr on Discord.
+	 * https://discord.com/channels/162395145352904705/162395145352904705/1157847259858354236
+	 * @param ...nums 
+	 * @return T
+	 */
+	public static function min<T:Float>(...nums:T):T {
+		var min:Null<T>=null;
+		for (n in nums) {
+			if (min == null || n < min)
+				min = n;
+		}
+		return min;
+	}
+
+	/**
+	 * Converts rgb values into hsv values.
+	 * See: https://math.stackexchange.com/questions/556341/rgb-to-hsv-color-conversion-algorithm
+	 * See: https://github.com/python/cpython/blob/3.9/Lib/colorsys.py
+	 * @param r The red value
+	 * @param g The green value
+	 * @param b The blue value
+	 * @return Array<Int>
+	 */
+	public static function rgbToHsv(r:Int, g:Int, b:Int):Array<Int> {
+		r = Std.int(r / 255);
+		b = Std.int(b / 255);
+		g = Std.int(g / 255);
+
+		var maxc = max(r, g, b);
+  		var minc = min(r, g, b);
+
+		var h;
+
+		var v = maxc;
+		
+		if(minc == maxc)
+			return [Std.int(0),Std.int(0),Std.int(v)];
+
+		var s = (maxc-minc) / maxc;
+		var rc = (maxc-r) / (maxc-minc);
+		var gc = (maxc-g) / (maxc-minc);
+		var bc = (maxc-b) / (maxc-minc);
+
+		if (r == maxc){
+			h = 0.0 + bc - gc;
+		}
+		else if  (g == maxc){
+			h = 2.0 + rc - bc;
+		}
+		else{
+			h = 4.0 + gc - rc;
+		}
+
+		h = (h / 6.0) % 1.0;
+
+		return[Std.int(h * 360),Std.int(s * 100),Std.int(v * 100)];
+	}
 
 	/**
 		Funny handler for `Application.current.window.alert` that *doesn't* crash on Linux and shit.
