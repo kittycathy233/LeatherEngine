@@ -86,7 +86,7 @@ class StrumNote extends FlxSprite
 
 		if (anim == "static")
 		{
-			colorSwap.r = 0;
+			colorSwap.r = 255;
 			colorSwap.g = 0;
 			colorSwap.b = 0;
 

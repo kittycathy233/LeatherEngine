@@ -13,26 +13,26 @@ class ColorSwap {
 
 	private function set_r(value:Float) {
 		r = value;
-		shader.red.value = [r];
+		shader.red.value = [r/255];
 		return r;
 	}
 
 	private function set_g(value:Float) {
 		g = value;
-		shader.green.value = [g];
+		shader.green.value = [g/255];
 		return g;
 	}
 
 	private function set_b(value:Float) {
 		b = value;
-		shader.blue.value = [b];
+		shader.blue.value = [b/255];
 		return b;
 	}
 
 	public function new() {
-		r = 255;
-		g = 0;
-		b = 0;
+		r = 255/255;
+		g = 0/255;
+		b = 0/255;
 	}
 }
 
@@ -40,28 +40,22 @@ class ColorSwapShader extends FlxShader {
 	@:glFragmentSource('
 	#pragma header
 
-	uniform float red;
+	uniform float red = 255;
 	uniform float green;
 	uniform float blue;
 
 	void main() {
+
+	vec4  col = flixel_texture2D(bitmap, openfl_TextureCoordv);
 	
-	  vec4 col = flixel_texture2D(bitmap, openfl_TextureCoordv);
-	  
-	  const vec3 target = vec3(1.0, 0.0, 0.0); // Find red
-	  vec3 replace = vec3(red / 255.0, green / 255.0, blue / 255.0); // Replace with color
-	  
-	  const float threshold = 0.75; // Controls target color range
-	  const float softness = 0.3; // Controls linear falloff
-	  
-	  // Get difference to use for falloff if required
-	  float diff = distance(col.rgb, target) - threshold;
-	  
-	  // Apply linear falloff if needed, otherwise clamp
-	  float factor = clamp(diff / softness, 0.0, 1.0);
-	  
-	  gl_FragColor = vec4(mix(replace, col.rgb, factor), col.a);
-	}')
+	const vec3 target = vec3(1.0, 0.0, 0.0); // Find red	
+	
+	// Get difference to use for falloff if required
+	float diff = col.r - ((col.g + col.b) / 2.0);
+	
+	gl_FragColor = vec4(((col.g + col.b) / 2.0) + (red * diff), col.g + (green * diff), col.b + (blue * diff), col.a);
+	}
+	')
 	public function new() {
 		super();
 	}
