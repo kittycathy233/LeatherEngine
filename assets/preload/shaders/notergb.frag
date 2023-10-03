@@ -1,20 +1,16 @@
 #pragma header
 
-void main() {
+uniform float red = 255;
+uniform float green;
+uniform float blue;
 
-  vec4 col = flixel_texture2D(bitmap, openfl_TextureCoordv);
-  
-  const vec3 target = vec3(0.0, 1.0, 0.0); // Find green
-  const vec3 replace = vec3(1.0, 0.0, 0.0); // Replace with red
-  
-  const float threshold = 0.5; // Controls target color range
-  const float softness = 0.3; // Controls linear falloff
-  
+void main() {
+  vec4  col = flixel_texture2D(bitmap, openfl_TextureCoordv);
+
+  const vec3 target = vec3(1.0, 0.0, 0.0); // Find red
+
   // Get difference to use for falloff if required
-  float diff = distance(col.rgb, target) - threshold;
-  
-  // Apply linear falloff if needed, otherwise clamp
-  float factor = clamp(diff / softness, 0.0, 1.0);
-  
-  gl_FragColor = vec4(mix(replace, col.rgb, factor), col.a);
+  float diff = col.r - ((col.g + col.b) / 2.0);
+
+  gl_FragColor = vec4(((col.g + col.b) / 2.0) + (red * diff), col.g + (green * diff), col.b + (blue * diff), col.a);
 }
