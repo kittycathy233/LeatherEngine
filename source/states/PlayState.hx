@@ -1882,7 +1882,7 @@ class PlayState extends MusicBeatState {
 			usedKeyCount = SONG.playerKeyCount;
 
 		for (i in 0...usedKeyCount) {
-			var babyArrow = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount);
+			var babyArrow = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount, player);
 
 			babyArrow.frames = Paths.getSparrowAtlas('ui skins/' + SONG.ui_Skin + "/arrows/default");
 

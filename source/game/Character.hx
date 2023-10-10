@@ -28,6 +28,7 @@ class Character extends FlxSprite {
 	public var dancesLeftAndRight:Bool = false;
 
 	public var barColor:FlxColor = FlxColor.WHITE;
+	public var noteColors:Array<Array<Array<Int>>>;
 	public var positioningOffset:Array<Float> = [0, 0];
 	public var cameraOffset:Array<Float> = [0, 0];
 
@@ -352,6 +353,22 @@ class Character extends FlxSprite {
 			config.barColor = [255, 0, 0];
 
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
+
+		if (config.noteColors == null){
+			config.noteColors = [
+				[[204,204,204]],
+				[[194,75,153],[249,57,63]],
+				[[194,75,153],[204,204,204],[249,57,63]],
+				[[194,75,153],[0,255,255],[18,250,5],[249,57,63]],
+				[[194,75,153],[0,255,255],[204,204,204],[18,250,5],[249,57,63]],
+				[[194,75,153],[18,250,5],[249,57,63],[255,255,0],[0,255,255],[0,51,255]],
+				[[194,75,153],[18,250,5],[249,57,63],[204,204,204],[255,255,0],[0,255,255],[0,51,255]],
+				[[194,75,153],[0,255,255],[18,250,5],[249,57,63],[255,255,0],[139,74,255],[255,0,0],[0,51,255]],
+				[[194,75,153],[0,255,255],[18,250,5],[249,57,63],[204,204,204],[255,255,0],[139,74,255],[255,0,0],[0,51,255]],
+			];
+		}
+
+		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		if (config.cameraOffset != null) {
 			if (flipX)

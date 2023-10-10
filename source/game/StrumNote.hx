@@ -27,9 +27,9 @@ class StrumNote extends FlxSprite
 
 	public var colorSwap:ColorSwap;
 
-	var noteColor:Array<Int> = [0, 0, 0];
+	var noteColor:Array<Int> = [255,0,0];
 
-	public function new(x:Float, y:Float, leData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int)
+	public function new(x:Float, y:Float, leData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int, ?isPlayer:Float)
 	{
 		if (ui_Skin == null)
 			ui_Skin = PlayState.SONG.ui_Skin;
@@ -45,6 +45,8 @@ class StrumNote extends FlxSprite
 
 		noteData = leData;
 
+		var localKeyCount = (isPlayer == 1) ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
+
 		this.ui_Skin = ui_Skin;
 		this.ui_settings = ui_settings;
 		this.mania_size = mania_size;
@@ -52,10 +54,11 @@ class StrumNote extends FlxSprite
 
 		super(x, y);
 
-		noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
-
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
+
+		var charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
+		noteColor = charColors.config.noteColors[localKeyCount - 1][noteData];
 
 		colorSwap.r = noteColor[0];
 		colorSwap.g = noteColor[1];

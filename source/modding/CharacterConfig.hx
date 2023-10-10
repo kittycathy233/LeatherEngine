@@ -10,6 +10,7 @@ typedef CharacterConfig =
 	var graphicsSize:Null<Float>;
 	var graphicSize:Null<Float>;
 	var barColor:Array<Int>;
+	var noteColors:Array<Array<Array<Int>>>;
 	var positionOffset:Array<Float>;
 	var cameraOffset:Array<Float>;
 	var singDuration:Null<Float>;
