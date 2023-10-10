@@ -183,7 +183,8 @@ class Note extends FlxSprite {
 			colorSwap = new ColorSwap();
 			shader = colorSwap.shader;
 
-			var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData]);
+			var charColors = (mustPress) ? PlayState.boyfriend : PlayState.dad;
+			var noteColor = charColors.config.noteColors[localKeyCount - 1][noteData];
 
 			colorSwap.r = noteColor[0];
 			colorSwap.g = noteColor[1];
@@ -318,7 +319,8 @@ class Note extends FlxSprite {
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 
-		var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData]);
+		var charColors = (mustPress) ? PlayState.boyfriend : PlayState.dad;
+		var noteColor = charColors.config.noteColors[localKeyCount - 1][noteData];
 
 		colorSwap.r = noteColor[0];
 		colorSwap.g = noteColor[1];
