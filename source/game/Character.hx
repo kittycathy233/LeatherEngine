@@ -1,5 +1,6 @@
 package game;
 
+import shaders.NoteColors;
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
@@ -70,96 +71,10 @@ class Character extends FlxSprite {
 		var ilikeyacutg:Bool = false;
 
 		switch (curCharacter) {
-			case 'bf-pixel-dead':
-				swapLeftAndRightSingPlayer = false;
-
-				frames = Paths.getSparrowAtlas('characters/bfPixelsDEAD');
-				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
-				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
-				animation.addByPrefix('deathLoop', "Retry Loop", 24, true);
-				animation.addByPrefix('deathConfirm', "RETRY CONFIRM", 24, false);
-
-				playAnim('firstDeath');
-				// pixel bullshit
-				setGraphicSize(Std.int(width * 6));
-
-				antialiasing = false;
-				flipX = true;
-				barColor = FlxColor.fromRGB(123, 214, 246);
-			case 'senpai':
-				frames = Paths.getSparrowAtlas('characters/senpai');
-				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'SENPAI RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'SENPAI DOWN NOTE', 24, false);
-
-				playAnim('idle');
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				cameraOffset = [15, 0];
-				positioningOffset = [317, 522];
-
-				antialiasing = false;
-				barColor = FlxColor.fromRGB(255, 170, 111);
-			case 'senpai-angry':
-				frames = Paths.getSparrowAtlas('characters/senpai');
-				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
-				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
-				animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
-				animation.addByPrefix('singRIGHT', 'Angry Senpai RIGHT NOTE', 24, false);
-				animation.addByPrefix('singDOWN', 'Angry Senpai DOWN NOTE', 24, false);
-
-				playAnim('idle');
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				cameraOffset = [15, 0];
-				positioningOffset = [317, 522];
-
-				antialiasing = false;
-				barColor = FlxColor.fromRGB(255, 170, 111);
-			case 'spirit':
-				frames = Paths.getPackerAtlas('characters/spirit');
-				animation.addByPrefix('idle', "idle spirit_", 24, false);
-				animation.addByPrefix('singUP', "up_", 24, false);
-				animation.addByPrefix('singRIGHT', "right_", 24, false);
-				animation.addByPrefix('singLEFT', "left_", 24, false);
-				animation.addByPrefix('singDOWN', "spirit down_", 24, false);
-
-				setGraphicSize(Std.int(width * 6));
-				updateHitbox();
-
-				playAnim('idle');
-
-				positioningOffset = [67, 122];
-
-				antialiasing = false;
-				barColor = FlxColor.fromRGB(255, 60, 110);
-
-				coolTrail = new FlxTrail(this, null, 4, 24, 0.3, 0.069);
-			case 'parents-christmas':
-				frames = Paths.getSparrowAtlas('characters/mom_dad_christmas_assets');
-				animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
-				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
-				animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
-				animation.addByPrefix('singLEFT', 'Parent Left Note Dad', 24, false);
-				animation.addByPrefix('singRIGHT', 'Parent Right Note Dad', 24, false);
-
-				animation.addByPrefix('singUP-alt', 'Parent Up Note Mom', 24, false);
-
-				animation.addByPrefix('singDOWN-alt', 'Parent Down Note Mom', 24, false);
-				animation.addByPrefix('singLEFT-alt', 'Parent Left Note Mom', 24, false);
-				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
-
-				playAnim('idle');
-				barColor = FlxColor.fromRGB(199, 111, 211);
 			case '':
 				trace("NO VALUE THINGY LOL DONT LOAD SHIT");
 				deathCharacter = "bf-dead";
+				noteColors = NoteColors.defaultColors;
 
 			default:
 				if (isPlayer)
@@ -355,18 +270,9 @@ class Character extends FlxSprite {
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
 
 		if (config.noteColors == null){
-			config.noteColors = [
-				[[204,204,204]],
-				[[194,75,153],[249,57,63]],
-				[[194,75,153],[204,204,204],[249,57,63]],
-				[[194,75,153],[0,255,255],[18,250,5],[249,57,63]],
-				[[194,75,153],[0,255,255],[204,204,204],[18,250,5],[249,57,63]],
-				[[194,75,153],[18,250,5],[249,57,63],[255,255,0],[0,255,255],[0,51,255]],
-				[[194,75,153],[18,250,5],[249,57,63],[204,204,204],[255,255,0],[0,255,255],[0,51,255]],
-				[[194,75,153],[0,255,255],[18,250,5],[249,57,63],[255,255,0],[139,74,255],[255,0,0],[0,51,255]],
-				[[194,75,153],[0,255,255],[18,250,5],[249,57,63],[204,204,204],[255,255,0],[139,74,255],[255,0,0],[0,51,255]],
-			];
+			config.noteColors = NoteColors.defaultColors;
 		}
+		noteColors = config.noteColors;
 
 		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 

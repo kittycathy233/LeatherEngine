@@ -58,7 +58,7 @@ class StrumNote extends FlxSprite
 		shader = colorSwap.shader;
 
 		var charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
-		noteColor = charColors.config.noteColors[localKeyCount - 1][noteData];
+		noteColor = charColors.noteColors[localKeyCount - 1][noteData];
 
 		colorSwap.r = noteColor[0];
 		colorSwap.g = noteColor[1];
