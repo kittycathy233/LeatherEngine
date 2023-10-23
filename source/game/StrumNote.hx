@@ -45,7 +45,7 @@ class StrumNote extends FlxSprite
 
 		noteData = leData;
 
-		var localKeyCount = (isPlayer == 1) ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
+		var localKeyCount = (isPlayer == 1) ? PlayState.SONG.playerKeyCount : keyCount;
 
 		this.ui_Skin = ui_Skin;
 		this.ui_settings = ui_settings;
