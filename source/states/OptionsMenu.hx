@@ -153,7 +153,9 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 6),
 			new BoolOption("Note Accuracy Text", "displayMs", 7),
 			new GameSubstateOption("Note Colors", 8, substates.NoteColorSubstate),
-			new GameSubstateOption("UI Skin", 9, substates.UISkinSelect)
+			new BoolOption("Use Custom Note Colors", "customNoteColors", 9),
+			new BoolOption("Custom Note Colors Both Sides", "noteColorsAllChars", 10),
+			new GameSubstateOption("UI Skin", 11, substates.UISkinSelect)
 		],
 		"Screen Effects" => [
 			new PageOption("Back", 0, "Graphics"),
