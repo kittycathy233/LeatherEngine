@@ -58,8 +58,14 @@ class StrumNote extends FlxSprite
 		shader = colorSwap.shader;
 
 		var charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
-		if (!customColors) noteColor = charColors.noteColors[localKeyCount - 1][noteData]; 
-		else noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
+		if (!customColors) 
+			noteColor = charColors.noteColors[localKeyCount - 1][noteData]; 
+		else 
+			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
+
+		//idk why || doesnt work??
+		if(Options.getData("customNoteColors"))
+			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 
 		colorSwap.r = noteColor[0];
 		colorSwap.g = noteColor[1];
