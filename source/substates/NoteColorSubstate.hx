@@ -34,7 +34,7 @@ class NoteColorSubstate extends MusicBeatSubstate
 
     var selectedValue:Int = 0; // 0 = red, 1 = green, 2 = blue
 
-    var current_ColorVals:Array<Int> = [0,0,0];
+    var current_ColorVals:Array<Int> = [255,0,0];
 
     var colorMins:Array<Int> = [0, 0, 0];
     var colorMaxs:Array<Int> = [255, 255, 255];
@@ -238,7 +238,7 @@ class NoteColorSubstate extends MusicBeatSubstate
 
 		for (i in 0...key_Count)
         {
-            var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, "default", ui_settings, mania_size, key_Count);
+            var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, "default", ui_settings, mania_size, key_Count, null, true);
 
             babyArrow.frames = Paths.getSparrowAtlas("ui skins/default/arrows/default", 'shared');
 
