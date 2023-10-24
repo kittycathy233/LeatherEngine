@@ -91,9 +91,9 @@ class NoteColorSubstate extends MusicBeatSubstate
         {
             if(reset)
             {
-                current_ColorVals = [0,0,0];
+                current_ColorVals = [255,0,0];
 
-                arrow_Group.members[selectedControl].colorSwap.r = 0;
+                arrow_Group.members[selectedControl].colorSwap.r = 255;
                 arrow_Group.members[selectedControl].colorSwap.g = 0;
                 arrow_Group.members[selectedControl].colorSwap.b = 0;
 
@@ -204,21 +204,21 @@ class NoteColorSubstate extends MusicBeatSubstate
 
     function update_Text()
     {
-        var hue = Std.string(current_ColorVals[0]);
-        var sat = Std.string(current_ColorVals[1]);
-        var val = Std.string(current_ColorVals[2]);
+        var red = Std.string(current_ColorVals[0]);
+        var green = Std.string(current_ColorVals[1]);
+        var blue = Std.string(current_ColorVals[2]);
 
         switch(selectedValue)
         {
             case 0:
-                hue = "> " + hue + " <";
+                red = "> " + red + " <";
             case 1:
-                sat = "> " + sat + " <";
+                green = "> " + green + " <";
             case 2:
-                val = "> " + val + " <";
+                blue = "> " + blue + " <";
         }
 
-        coolText.text = "Use UP and DOWN to change number of keys or the selected color\nLEFT and RIGHT to change arrow selected or the color selected\nR to Reset Note Colors\nENTER to select a note\nRed: " + hue + ", Green: " + sat + ", Blue: " + val + "\n";
+        coolText.text = "Use UP and DOWN to change number of keys or the selected color\nLEFT and RIGHT to change arrow selected or the color selected\nR to Reset Note Colors\nENTER to select a note\nRed: " + red + ", Green: " + green + ", Blue: " + blue + "\n";
         coolText.screenCenter(X);
     }
 
