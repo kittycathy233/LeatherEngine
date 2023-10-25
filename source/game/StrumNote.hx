@@ -27,7 +27,9 @@ class StrumNote extends FlxSprite
 
 	public var colorSwap:ColorSwap;
 
-	var noteColor:Array<Int> = [255,0,0];
+	public var noteColor:Array<Int> = [255,0,0];
+
+	public var isPlayer:Float;
 
 	public function new(x:Float, y:Float, leData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int, ?isPlayer:Float, customColors:Bool = false)
 	{
@@ -51,6 +53,7 @@ class StrumNote extends FlxSprite
 		this.ui_settings = ui_settings;
 		this.mania_size = mania_size;
 		this.keyCount = keyCount;
+		this.isPlayer = isPlayer;
 
 		super(x, y);
 

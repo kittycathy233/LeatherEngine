@@ -4402,6 +4402,51 @@ class PlayState extends MusicBeatState {
 						bar.createFilledBar(dad.barColor, boyfriend.barColor);
 						bar.updateFilledBar();
 					}
+					for (note in notes.members){
+						if(note.affectedbycolor){
+							var charColors = (note.mustPress) ? boyfriend : dad;
+							var noteColor;
+							if (!Options.getData("customNoteColors"))
+								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+							else
+								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+							note.colorSwap.r = noteColor[0];
+							note.colorSwap.g = noteColor[1];
+							note.colorSwap.b = noteColor[2];
+						}
+					}
+					for (note in unspawnNotes){
+						if(note.affectedbycolor){
+							var charColors = (note.mustPress) ? boyfriend : dad;
+							var noteColor;
+							if (!Options.getData("customNoteColors"))
+								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+							else
+								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+							note.colorSwap.r = noteColor[0];
+							note.colorSwap.g = noteColor[1];
+							note.colorSwap.b = noteColor[2];
+						}
+					}
+					@:privateAccess
+					if(!Options.getData("customNoteColors")){
+							for (strum in playerStrums.members) {
+								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
+								var noteColor;
+								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
+								strum.colorSwap.r = noteColor[0];
+								strum.colorSwap.g = noteColor[1];
+								strum.colorSwap.b = noteColor[2];
+							}
+							for (strum in enemyStrums.members) {
+								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
+								var noteColor;
+								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
+								strum.colorSwap.r = noteColor[0];
+								strum.colorSwap.g = noteColor[1];
+								strum.colorSwap.b = noteColor[2];
+							}
+						}
 			}
 		} else
 			CoolUtil.coolError("The character " + event[3] + " isn't in any character cache!\nHow did this happen? ¯|_(ツ)_|¯",
