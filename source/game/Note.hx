@@ -47,6 +47,7 @@ class Note extends FlxSprite {
 	public var playMissOnMiss:Bool = true;
 
 	public var colorSwap:ColorSwap;
+	public var affectedbycolor:Bool = false;
 
 	public var inEditor:Bool = false;
 
@@ -172,7 +173,6 @@ class Note extends FlxSprite {
 			centerOrigin();
 		}
 
-		var affectedbycolor:Bool = false;
 
 		if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] != null) {
 			if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] == "true")
@@ -312,7 +312,6 @@ class Note extends FlxSprite {
 		centerOrigin();
 	}
 
-	var affectedbycolor:Bool = false;
 
 	if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] != null) {
 		if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] == "true")
