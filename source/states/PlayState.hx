@@ -4405,11 +4405,10 @@ class PlayState extends MusicBeatState {
 							note.colorSwap.b = noteColor[2];
 						}
 					}
-					@:privateAccess
-					if(!Options.getData("customNoteColors")){
 							for (strum in playerStrums.members) {
 								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
 								var noteColor;
+								@:privateAccess
 								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
 								strum.colorSwap.r = noteColor[0];
 								strum.colorSwap.g = noteColor[1];
@@ -4418,12 +4417,12 @@ class PlayState extends MusicBeatState {
 							for (strum in enemyStrums.members) {
 								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
 								var noteColor;
+								@:privateAccess
 								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
 								strum.colorSwap.r = noteColor[0];
 								strum.colorSwap.g = noteColor[1];
 								strum.colorSwap.b = noteColor[2];
 							}
-						}
 			}
 		} else
 			CoolUtil.coolError("The character " + event[3] + " isn't in any character cache!\nHow did this happen? ¯|_(ツ)_|¯",
