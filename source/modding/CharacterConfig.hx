@@ -11,6 +11,7 @@ typedef CharacterConfig =
 	var graphicSize:Null<Float>;
 	var barColor:Array<Int>;
 	var noteColors:Array<Array<Array<Int>>>;
+	var notesMatchBar:Null<Bool>;
 	var positionOffset:Array<Float>;
 	var cameraOffset:Array<Float>;
 	var singDuration:Null<Float>;

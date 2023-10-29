@@ -30,6 +30,7 @@ class Character extends FlxSprite {
 
 	public var barColor:FlxColor = FlxColor.WHITE;
 	public var noteColors:Array<Array<Array<Int>>>;
+	public var notesMatchBar:Bool = false;
 	public var positioningOffset:Array<Float> = [0, 0];
 	public var cameraOffset:Array<Float> = [0, 0];
 
@@ -267,14 +268,22 @@ class Character extends FlxSprite {
 		if (config.barColor == null)
 			config.barColor = [255, 0, 0];
 
+		if (config.notesMatchBar == null)
+			config.notesMatchBar = false;
+
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
+
+		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		if (config.noteColors == null){
 			config.noteColors = NoteColors.defaultColors;
 		}
+		if(config.notesMatchBar){
+			config.noteColors[localKeyCount - 1][localKeyCount] = config.barColor;
+		}
+
 		noteColors = config.noteColors;
 
-		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		if (config.cameraOffset != null) {
 			if (flipX)
