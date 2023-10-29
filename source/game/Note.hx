@@ -190,9 +190,11 @@ class Note extends FlxSprite {
 			else
 				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[song.keyCount - 1][noteData]);
 
-			colorSwap.r = noteColor[0];
-			colorSwap.g = noteColor[1];
-			colorSwap.b = noteColor[2];
+			if(noteColor != null){
+				colorSwap.r = noteColor[0];
+				colorSwap.g = noteColor[1];
+				colorSwap.b = noteColor[2];
+			}
 		}
 	}
 
