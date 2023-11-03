@@ -1845,8 +1845,14 @@ class ChartingState extends MusicBeatState {
 					+ GRID_SIZE
 					- Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[3])).makeGraphic(8,
 						Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * Conductor.stepsPerSection, 0, gridBG.height)));
-				if (note.arrow_Type != 'default')
-					sustainVis.color = CoolUtil.dominantColor(note);
+				if (note.affectedbycolor){
+					var colorSwap = new shaders.ColorSwap();
+					sustainVis.shader = colorSwap.shader;
+					sustainVis.color = FlxColor.RED;
+					colorSwap.r = note.colorSwap.r;
+					colorSwap.g = note.colorSwap.g;
+					colorSwap.b = note.colorSwap.b;
+				}
 				curRenderedSustains.add(sustainVis);
 			}
 		}
