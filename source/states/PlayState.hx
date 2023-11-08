@@ -1559,6 +1559,7 @@ class PlayState extends MusicBeatState {
 	function startCountdown():Void {
 
 		allScriptCall("generateStaticArrows");
+		executeALuaState("generateStaticArrows", []);
 		
 		inCutscene = false;
 		paused = false;
@@ -1588,6 +1589,8 @@ class PlayState extends MusicBeatState {
 		var swagCounter:Int = 0;
 
 		allScriptCall("startCountdown", [-1]);
+		executeALuaState("startCountdown", [-1]);
+
 
 		#if linc_luajit
 		if (executeModchart && luaModchart != null)
@@ -1875,7 +1878,7 @@ class PlayState extends MusicBeatState {
 
 	var babyArrow:StrumNote;
 
-	public function generateStaticArrows(player:Float, ?isPlayer:Bool = false):Void {
+	public function generateStaticArrows(player:Float, ?isPlayer:Bool = false, ?showReminders:Bool = true):Void {
 		var usedKeyCount = SONG.keyCount;
 
 		if (isPlayer)
@@ -1925,7 +1928,7 @@ class PlayState extends MusicBeatState {
 
 			strumLineNotes.add(babyArrow);
 
-			if (usedKeyCount != 4 && isPlayer && Options.getData("extraKeyReminders")) {
+			if (usedKeyCount != 4 && isPlayer && Options.getData("extraKeyReminders") && showReminders) {
 				// var coolWidth = Std.int(40 - ((key_Count - 5) * 2) + (key_Count == 10 ? 30 : 0));
 				// funny 4 key math i guess, full num is 2.836842105263158 (width / previous key width thingy which was 38)
 				var coolWidth = Math.ceil(babyArrow.width / 2.83684);
@@ -4327,7 +4330,7 @@ class PlayState extends MusicBeatState {
 						bar.createFilledBar(dad.barColor, boyfriend.barColor);
 						bar.updateFilledBar();
 					}
-				case "bf" | "boyfriend" | "player" | "0":
+				case "bf" | "boyfriend" | "player" | "0":{
 					var oldBF = boyfriend;
 					oldBF.alpha = 0.00001;
 
@@ -4368,61 +4371,66 @@ class PlayState extends MusicBeatState {
 					}
 
 					#end
+				}
 
-					@:privateAccess
+				@:privateAccess
+				{
+					var bar = PlayState.instance.healthBar;
+
+					iconP1.scale.set(1, 1);
+					iconP1.changeIconSet(boyfriend.icon);
+
+					bar.createFilledBar(dad.barColor, boyfriend.barColor);
+					bar.updateFilledBar();
+				}
+				for (note in notes.members){
+					if(note.affectedbycolor){
+						var charColors = (note.mustPress) ? boyfriend : dad;
+						var noteColor;
+						if (!Options.getData("customNoteColors"))
+							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+						else
+							noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+						note.colorSwap.r = noteColor[0];
+						note.colorSwap.g = noteColor[1];
+						note.colorSwap.b = noteColor[2];
+					}
+				}
+				for (note in unspawnNotes){
+					if(note.affectedbycolor){
+						var charColors = (note.mustPress) ? boyfriend : dad;
+						var noteColor;
+						if (!Options.getData("customNoteColors"))
+							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+						else
+							noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+							note.colorSwap.r = noteColor[0];
+							note.colorSwap.g = noteColor[1];
+							note.colorSwap.b = noteColor[2];
+						}
+					}
+				//the strums need to be cleared for the note colors to change when switching characters, oof.
+				playerStrums.clear();
+				enemyStrums.clear();
+				strumLineNotes.clear();
+				if(Options.getData("middlescroll"))
 					{
-						var bar = PlayState.instance.healthBar;
-
-						iconP1.scale.set(1, 1);
-						iconP1.changeIconSet(boyfriend.icon);
-
-						bar.createFilledBar(dad.barColor, boyfriend.barColor);
-						bar.updateFilledBar();
+						generateStaticArrows(50, false, false);
+						generateStaticArrows(0.5, true, false);
 					}
-					for (note in notes.members){
-						if(note.affectedbycolor){
-							var charColors = (note.mustPress) ? boyfriend : dad;
-							var noteColor;
-							if (!Options.getData("customNoteColors"))
-								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-							else
-								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
-							note.colorSwap.r = noteColor[0];
-							note.colorSwap.g = noteColor[1];
-							note.colorSwap.b = noteColor[2];
+					else
+					{
+						if(characterPlayingAs == 0)
+						{
+							generateStaticArrows(0, false, false);
+							generateStaticArrows(1, true, false);
+						}
+						else
+						{
+							generateStaticArrows(1, false, false);
+							generateStaticArrows(0, true, false);
 						}
 					}
-					for (note in unspawnNotes){
-						if(note.affectedbycolor){
-							var charColors = (note.mustPress) ? boyfriend : dad;
-							var noteColor;
-							if (!Options.getData("customNoteColors"))
-								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-							else
-								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
-							note.colorSwap.r = noteColor[0];
-							note.colorSwap.g = noteColor[1];
-							note.colorSwap.b = noteColor[2];
-						}
-					}
-							for (strum in playerStrums.members) {
-								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
-								var noteColor;
-								@:privateAccess
-								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
-								strum.colorSwap.r = noteColor[0];
-								strum.colorSwap.g = noteColor[1];
-								strum.colorSwap.b = noteColor[2];
-							}
-							for (strum in enemyStrums.members) {
-								var charColors = (strum.isPlayer == 1) ? boyfriend : dad;
-								var noteColor;
-								@:privateAccess
-								noteColor = charColors.noteColors[SONG.keyCount - 1][strum.noteData];
-								strum.colorSwap.r = noteColor[0];
-								strum.colorSwap.g = noteColor[1];
-								strum.colorSwap.b = noteColor[2];
-							}
 			}
 		} else
 			CoolUtil.coolError("The character " + event[3] + " isn't in any character cache!\nHow did this happen? ¯|_(ツ)_|¯",
