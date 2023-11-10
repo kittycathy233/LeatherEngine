@@ -40,7 +40,7 @@ jobs:
       - name: Compile Linux
         run: |
           cd crash
-          haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
+          haxelib run lime build application.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@main
         with:
