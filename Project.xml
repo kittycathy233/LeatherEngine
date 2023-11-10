@@ -94,7 +94,7 @@
 	<assets path="version.txt" />
 
 	<assets path="Crash.exe" if="windows" />
-	<assets path="Crash" if="linux" />
+	<assets path="linux/Crash" rename="crash" if="linux" />
 
 	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
