@@ -2106,17 +2106,16 @@ class ModchartUtilities {
 
 		setLuaFunction("setCameraCustomShader", function(id:String, camera:String){
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			cameraFromString(camera).setFilters([new ShaderFilter(funnyCustomShader)]);
+			cameraFromString(camera).filters = [new ShaderFilter(funnyCustomShader)];
 		});
 
 		setLuaFunction("pushShaderToCamera", function(id:String, camera:String){
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			@:privateAccess
-			cameraFromString(camera)._filters.push(new ShaderFilter(funnyCustomShader));
+			cameraFromString(camera).filters.push(new ShaderFilter(funnyCustomShader));
 		});
 
 		setLuaFunction("setCameraNoCustomShader", function(camera:String){
-			cameraFromString(camera).setFilters(null);
+			cameraFromString(camera).filters = null;
 		});
 
 		setLuaFunction("getCustomShaderBool", function(id:String, property:String) {
