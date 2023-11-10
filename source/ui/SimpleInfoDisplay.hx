@@ -1,5 +1,6 @@
 package ui;
 
+import utilities.logs.Logs;
 import utilities.CoolUtil;
 import flixel.FlxG;
 import lime.app.Application;
@@ -11,7 +12,7 @@ import external.memory.Memory;
  * Shows basic info about the game.
  */
 class SimpleInfoDisplay extends TextField {
-	//                                      fps    mem    version
+	//                                       fps    mem  version
 	public var infoDisplayed:Array<Bool> = [false, false, false];
 
 	public var currentFPS:Int = 0;

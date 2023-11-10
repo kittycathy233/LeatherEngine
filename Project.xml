@@ -93,6 +93,9 @@
 
 	<assets path="version.txt" />
 
+	<assets path="Crash.exe" if="windows" />
+	<assets path="Crash" if="linux" />
+
 	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
 
@@ -103,7 +106,6 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
 	<haxelib name="hscript-improved"/>
-	<define name="hscriptPos" />
 	<haxelib name="scriptless-polymod" />
 	<haxelib name="flxanimate" />
 	<haxelib name="flixelTextureAtlas" />
@@ -112,13 +114,8 @@
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
 	<haxelib name="flixel-screenshot-plugin" if="SCREENSHOTS_ALLOWED"/>
 	<haxelib name="away3d" if="THREE_D_ALLOWED" />
-	<!-- Show debug traces for hxCodec -->
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" />
-	<define name="HXC_DEBUG_TRACE" if="debug" />
-
 	<haxelib name="fnf-modcharting-tools" />
-	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />
-	<define name="LEATHER" if="MODCHARTING_TOOLS" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -127,6 +124,19 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<haxeflag name="-dce" value="no" />
+
+	<define name="hscriptPos" />
+
+	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />
+	<define name="LEATHER" if="MODCHARTING_TOOLS" />
+
+	<!-- Show debug traces for hxCodec -->
+	<define name="HXC_DEBUG_TRACE" if="debug" />
+
+	<!-- Akways enable Null Object Reference check for crash dialog -->
+	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
+	<haxedef name="HXCPP_STACK_LINE" if="release" />
+	<haxedef name="HXCPP_STACK_TRACE" if="release" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

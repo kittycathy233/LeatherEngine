@@ -99,6 +99,7 @@ class BoolOption extends Option {
 	}
 }
 
+
 /**
  * Very simple option that transfers you to a different page when selecting it.
  */

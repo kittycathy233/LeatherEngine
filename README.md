@@ -73,4 +73,6 @@ You can load, share, and play replays of songs you've played! They can even be i
 
 - sayofthelor - [flixel-screenshot-plugin](https://github.com/sayofthelor/flixel-screenshot-plugin/) cool screenshot haxelib
 
-- Rozebud - [fps plus](https://github.com/ThatRozebudDude/FPS-Plus-Public) the idea for lil' buddies and note glow when can be hit came from here
+- Rozebud - [fps plus](https://github.com/ThatRozebudDude/FPS-Plus-Public) lil' buddies and note glow when can be hit came from here
+
+- gedehari - code for crash handeler, they make some cool stuff check them out!
