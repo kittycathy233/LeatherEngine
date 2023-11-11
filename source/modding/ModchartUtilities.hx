@@ -2148,23 +2148,19 @@ class ModchartUtilities {
 			funnyCustomShader.setFloat(property, value);
 		});
 
+		setLuaFunction("tweenShader", function(id:String, property:String, value:Float, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
+			var shader:CustomShader = lua_Custom_Shaders.get(id);
+			if (shader != null) {
+				shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
+			} else {
+				trace('Shader named $shader doesn\'t exist!', ERROR);
+			}
+		});
+
 		setLuaFunction("updateRating", function() {
 			PlayState.instance.updateRating();
 		});
 
-		setLuaFunction("runTimer", function(tag:String, time:Float = 1, loops:Int = 1) {
-			cancelTimer(tag);
-			PlayState.instance.luaTimers.set(tag, new FlxTimer().start(time, function(tmr:FlxTimer) {
-				if(tmr.finished) {
-					PlayState.instance.luaTimers.remove(tag);
-				}
-				PlayState.instance.executeALuaState('onTimerCompleted', [tag, tmr.loops, tmr.loopsLeft]);
-				//trace('Timer Completed: ' + tag);
-			}, loops));
-		});
-		setLuaFunction("cancelTimer", function(tag:String) {
-			cancelTimer(tag);
-		});
 
 		#if MODCHARTING_TOOLS
 		if (PlayState.SONG.modchartingTools){
@@ -2350,14 +2346,6 @@ class ModchartUtilities {
 		return PlayState.instance.camGame;
 	}
 
-	function cancelTimer(tag:String) {
-		if(PlayState.instance.luaTimers.exists(tag)) {
-			var theTimer:FlxTimer = PlayState.instance.luaTimers.get(tag);
-			theTimer.cancel();
-			theTimer.destroy();
-			PlayState.instance.luaTimers.remove(tag);
-		}
-	}
 
 	@:access(openfl.display.BlendMode)
 	function blendModeFromString(blend:String):BlendMode {

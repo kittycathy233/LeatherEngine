@@ -2026,9 +2026,6 @@ class PlayState extends MusicBeatState {
 			if (!startTimer.finished)
 				startTimer.active = false;
 
-			for (timer in luaTimers) {
-				timer.active = false;
-			}
 		}
 
 		super.openSubState(SubState);
@@ -2054,9 +2051,6 @@ class PlayState extends MusicBeatState {
 			}
 			#end
 
-			for (timer in luaTimers) {
-				timer.active = true;
-			}
 		}
 
 		super.closeSubState();
@@ -2408,11 +2402,6 @@ class PlayState extends MusicBeatState {
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-
-			for (timer in luaTimers) {
-				timer.active = true;
-			}
-			
 			if (boyfriend.otherCharacters == null)
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			else
@@ -4487,7 +4476,6 @@ class PlayState extends MusicBeatState {
 	}
 
 
-	public var luaTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 
 
 	public function executeALuaState(name:String, arguments:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>) {
