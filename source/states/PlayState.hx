@@ -1105,15 +1105,15 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/data/scripts/local/")){
-			var localScripts = sys.FileSystem.readDirectory("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/");
-			if (localScripts.length > 0){
-				for (file in localScripts){
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/")){
+			var songScripts = sys.FileSystem.readDirectory("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/");
+			if (songScripts.length > 0){
+				for (file in songScripts){
 					if(file.endsWith('.hx')){
-					localScript = new HScript("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file, true);
-					localScript.start();
+					songScript = new HScript("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file, true);
+					songScript.start();
 									
-					scripts.push(localScript);
+					scripts.push(songScript);
 				}
 				#if linc_luajit
 				if(file.endsWith('.lua')){

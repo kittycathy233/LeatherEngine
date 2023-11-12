@@ -1056,6 +1056,7 @@ class ModchartUtilities {
 			}
 		});
 
+
 		// actors
 
 		setLuaFunction("makeNoteCopy", function(id:String, noteIdx:Int) {
@@ -1385,7 +1386,7 @@ class ModchartUtilities {
                 getActorByName(id).singAnimPrefix = prefix;
             }
         });
-		
+
         setLuaFunction("setCharacterPreventDanceForAnim", function(id:String, preventDanceForAnim:Bool = true) {
             if(getCharacterByName(id) != null)
             {
