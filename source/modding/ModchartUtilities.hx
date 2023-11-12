@@ -201,6 +201,7 @@ class ModchartUtilities {
 
 		// get some fukin globals up in here bois
 
+		setVar("songLower", PlayState.SONG.song.toLowerCase());
 		setVar("difficulty", PlayState.storyDifficultyStr);
 		setVar("bpm", Conductor.bpm);
 		setVar("songBpm", PlayState.SONG.bpm);
@@ -221,9 +222,12 @@ class ModchartUtilities {
 
 		setVar("animatedBackgrounds", Options.getData("animatedBGs"));
 
+        setVar("charsAndBGs", Options.getData("charsAndBGs"));
+
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
 		setVar("stepCrochet", Conductor.stepCrochet);
+		setVar("crochetUnscaled", Conductor.stepCrochet);
 		setVar("crochet", Conductor.crochet);
 		setVar("safeZoneOffset", Conductor.safeZoneOffset);
 
@@ -254,6 +258,17 @@ class ModchartUtilities {
 
 		setVar("characterPlayingAs", PlayState.characterPlayingAs);
 		setVar("inReplay", PlayState.playingReplay);
+
+		setVar("player1", PlayState.SONG.player1);
+        setVar("player2", PlayState.SONG.player2);
+
+        setVar("curStage", PlayState.SONG.stage);
+
+		#if mobile
+        setVar("mobile", true);
+        #else 
+        setVar("mobile", false);
+        #end
 
 		// other globals
 
