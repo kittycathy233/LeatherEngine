@@ -1,5 +1,6 @@
 package modding;
 
+import flixel.math.FlxMath;
 import openfl.filters.BitmapFilter;
 import openfl.display.ShaderParameter;
 import shaders.custom.CustomShader;
@@ -343,6 +344,40 @@ class ModchartUtilities {
 
 			PlayState.instance.processEvent([event_name, Conductor.songPosition, string_arg_1, string_arg_2]);
 		});
+
+		setLuaFunction("addCharacterToMap", function(m:String, character:String) {
+            var map:Map<String, Dynamic>;
+
+            switch(m.toLowerCase())
+            {
+                case "dad" | "opponent" | "player2" | "1":
+                    map = PlayState.instance.dadMap;
+                case "gf" | "girlfriend" | "player3" | "2":
+                    map = PlayState.instance.gfMap;
+                default:
+                    map = PlayState.instance.bfMap;
+            }
+            var funnyCharacter:Character;
+
+            if(map == PlayState.instance.bfMap)
+                funnyCharacter = new Boyfriend(100, 100, character);
+            else
+                funnyCharacter = new Character(100, 100, character);
+
+            funnyCharacter.alpha = 0.00001;
+            PlayState.instance.add(funnyCharacter);
+
+            map.set(character, funnyCharacter);
+
+            if(funnyCharacter.otherCharacters != null)
+            {
+                for(character in funnyCharacter.otherCharacters)
+                {
+                    character.alpha = 0.00001;
+                    PlayState.instance.add(character);
+                }
+            }
+        });
 
 		setLuaFunction("setCamera", function(id:String, camera:String = "") {
 			var actor:FlxSprite = getActorByName(id);
@@ -1091,7 +1126,6 @@ class ModchartUtilities {
 			return PlayState.instance.notes.members[id].noteData;
 		});
 
-
 		setLuaFunction("getRenderedNoteParentX", function(id:Int) {
 			return PlayState.instance.notes.members[id].prevNote.x;
 		});
@@ -1152,6 +1186,14 @@ class ModchartUtilities {
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
 			PlayState.instance.notes.members[id].angle = angle;
 		});
+
+		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
+            PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
+        });
+
+		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
+            PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
+        });
 
 		setLuaFunction("isSustain", function(id:Int) {
 			return PlayState.instance.notes.members[id].isSustainNote;
@@ -1310,6 +1352,56 @@ class ModchartUtilities {
 				getActorByName(id).shouldDance = shouldDance;
 			}
 		});
+		setLuaFunction("setCharacterPlayFullAnim", function(id:String, playFullAnim:Bool = true) {
+            if(getCharacterByName(id) != null)
+                {
+                    var character = getCharacterByName(id);
+                    if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                    {
+                        character.otherCharacters[0].playFullAnim = playFullAnim;
+                        return;
+                    }
+                        
+                }
+            if(getActorByName(id) != null)
+            {
+                getActorByName(id).playFullAnim = playFullAnim;
+            }
+        });
+
+        setLuaFunction("setCharacterSingPrefix", function(id:String, prefix:String) {
+            if(getCharacterByName(id) != null)
+                {
+                    var character = getCharacterByName(id);
+                    if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                    {
+                        character.otherCharacters[0].singAnimPrefix = prefix;
+                        return;
+                    }
+                        
+                }
+            if(getActorByName(id) != null)
+            {
+                getActorByName(id).singAnimPrefix = prefix;
+            }
+        });
+		
+        setLuaFunction("setCharacterPreventDanceForAnim", function(id:String, preventDanceForAnim:Bool = true) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    character.otherCharacters[0].preventDanceForAnim = preventDanceForAnim;
+                    return;
+                }
+                    
+            }
+            if(getActorByName(id) != null)
+            {
+                getActorByName(id).preventDanceForAnim = preventDanceForAnim;
+            }
+        });
 
 		setLuaFunction("playCharacterDance", function(id:String, ?altAnim:String) {
 			if (getActorByName(id) != null) {
@@ -1403,6 +1495,18 @@ class ModchartUtilities {
 			if (getActorByName(id) != null)
 				getActorByName(id).flipY = flip;
 		});
+
+		setLuaFunction("getActorFlipX", function(id:String) {
+            if(getActorByName(id) != null)
+                return getActorByName(id).flipX;
+            return false;
+        });
+
+		setLuaFunction("getActorFlipY", function(flip:Bool, id:String) {
+           if(getActorByName(id) != null)
+                return getActorByName(id).flipY;
+            return false;
+        });
 
 		setLuaFunction("setActorTrailVisible", function(id:String, visibleVal:Bool) {
 			var char = getCharacterByName(id);
@@ -2095,6 +2199,37 @@ class ModchartUtilities {
 					}
 				});
 		});
+
+		//vc dumb
+		setLuaFunction("tweenFadeCubeInOut", function(id:String, toAlpha:Float, time:Float, onComplete:String = "") {
+            if(getActorByName(id) != null)
+                PlayState.instance.tweenManager.tween(getActorByName(id), {alpha: toAlpha}, time, {ease: FlxEase.cubeInOut, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {executeState(onComplete,[id]);}}});
+        });
+
+		setLuaFunction("tweenActorProperty", function(id:String, prop:String, value:Dynamic, time:Float, easeStr:String = "linear") {
+            var actor = getActorByName(id);
+            var ease = easeFromString(easeStr);
+
+            if(actor != null && Reflect.getProperty(actor, prop) != null)
+            {
+                var startVal = Reflect.getProperty(actor, prop);
+
+                PlayState.instance.tweenManager.num(startVal, value, time, {onUpdate: function(tween:FlxTween){
+					var ting = FlxMath.lerp(startVal,value, ease(tween.percent));
+                    Reflect.setProperty(actor, prop, ting);
+				}, ease: ease, onComplete: function(tween:FlxTween) {
+					Reflect.setProperty(actor, prop, value);
+				}});
+            }
+        });
+
+        setLuaFunction("setActorProperty", function(id:String, prop:String, value:Dynamic) {
+            var actor = getActorByName(id);
+            if(actor != null && Reflect.getProperty(actor, prop) != null)
+            {
+                Reflect.setProperty(actor, prop, value);
+            }
+        });
 
 		setLuaFunction("tweenActorColor", function(id:String, r1:Int, g1:Int, b1:Int, r2:Int, g2:Int, b2:Int, time:Float, onComplete:String = "") {
 			var actor = getActorByName(id);

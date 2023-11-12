@@ -586,13 +586,21 @@ class PlayState extends MusicBeatState {
 	// unused for now ;)
 	// public var scripts:Array<HScript> = [];
 	public var ratingsGroup:FlxSpriteGroup = new FlxSpriteGroup();
+
 	/**
 	 * Stage HScript
 	 */
 	public static var stage_script:HScript = null;
+
+	/**
+	 * Manages a dumb tween thing
+	 */
+	public var tweenManager:FlxTweenManager;
 	
 
 	override public function create() {
+
+		tweenManager = new FlxTweenManager();
 		// set instance because duh
 		instance = this;
 
@@ -1000,12 +1008,6 @@ class PlayState extends MusicBeatState {
 		if (boyfriend.script != null)
 			scripts.push(boyfriend.script);
 
-		if (Assets.exists(Paths.hx("data/song data/" + SONG.song.toLowerCase() + "/script"))) {
-			script = new HScript(Paths.hx("data/song data/" + SONG.song.toLowerCase() + "/script"));
-			script.start();
-
-			scripts.push(script);
-		}
 	
 
 		//global scripts yay.
@@ -1096,6 +1098,27 @@ class PlayState extends MusicBeatState {
 				if(file.endsWith('.lua')){
 					globalLuaExists = true;
 					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
+					globalLuaScripts.push(globalLuaScript);
+					}
+				#end
+				}
+			}
+		}
+
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/data/scripts/local/")){
+			var localScripts = sys.FileSystem.readDirectory("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/");
+			if (localScripts.length > 0){
+				for (file in localScripts){
+					if(file.endsWith('.hx')){
+					localScript = new HScript("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file, true);
+					localScript.start();
+									
+					scripts.push(localScript);
+				}
+				#if linc_luajit
+				if(file.endsWith('.lua')){
+					globalLuaExists = true;
+					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
 					globalLuaScripts.push(globalLuaScript);
 					}
 				#end
@@ -1391,6 +1414,7 @@ class PlayState extends MusicBeatState {
 	public var scripts:Array<HScript> = [];
 
 	var script:HScript;
+	var noteScript:HScript;
 	var globalScript:HScript;
 	var localScript:HScript;
 	#if linc_luajit
@@ -1795,6 +1819,8 @@ class PlayState extends MusicBeatState {
 		#end
 		executeALuaState("startSong", []);
 		allScriptCall("startSong", []);
+		executeALuaState("songStart", []);
+		allScriptCall("songStart", []);
 
 		resyncVocals();
 	}
@@ -2181,6 +2207,12 @@ class PlayState extends MusicBeatState {
 		if (boyfriend.script != null)
 			boyfriend.script.call("fixedUpdate", [fixedUpdateFPS]);
 
+		setLuaVar("songPos", Conductor.songPosition);
+		setLuaVar("bot", Options.getData("botplay"));
+		setLuaVar("hudZoom", camHUD.zoom);
+		setLuaVar("curBeat", curBeat);
+		setLuaVar("cameraZoom", FlxG.camera.zoom);
+
 		executeALuaState("fixedUpdate", [fixedUpdateFPS]);
 		allScriptCall("fixedUpdate", [fixedUpdateFPS]);
 	}
@@ -2198,7 +2230,10 @@ class PlayState extends MusicBeatState {
 			fixedUpdateTime = 0;
 		}
 
+
 		super.update(elapsed);
+
+		tweenManager.update(elapsed);
 
 		FlxG.camera.followLerp = elapsed * 2.4;
 
@@ -5023,6 +5058,22 @@ class PlayState extends MusicBeatState {
 
 		events.sort((a, b) -> Std.int(a[1] - b[1]));
 	}
+	public function setupNoteTypeScript(noteType:String)
+		{
+				#if linc_luajit
+				if(!event_luas.exists(noteType.toLowerCase()) && Assets.exists(Paths.lua("arrow types/" + noteType)))
+				{
+					event_luas.set(noteType.toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("arrow types/" + noteType))));			
+					generatedSomeDumbEventLuas = true;
+				}
+				#end	
+				if (Assets.exists(Paths.hx("data/arrow types/" + noteType))) {
+					noteScript = new HScript(Paths.hx("data/arrow types/" + noteType));
+					noteScript.start();
+		
+					scripts.push(noteScript);
+				}
+		}
 }
 
 enum Execute_On {
