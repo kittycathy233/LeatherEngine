@@ -487,6 +487,11 @@ class PlayState extends MusicBeatState {
 	**/
 	public var baseEvents:Array<Array<Dynamic>> = [];
 
+	/**
+	 * Used lua cameras?
+	 */
+	public var usedLuaCameras:Bool = false;
+
 	public function new(?_replay:Replay) {
 		super();
 
@@ -585,6 +590,7 @@ class PlayState extends MusicBeatState {
 	 * Stage HScript
 	 */
 	public static var stage_script:HScript = null;
+	
 
 	override public function create() {
 		// set instance because duh
@@ -1398,6 +1404,26 @@ class PlayState extends MusicBeatState {
 			cool_script.call(func, args);
 		}
 	}
+
+	public function reorderCameras(?newCam:FlxCamera = null)
+		{
+			var cameras = FlxG.cameras.list.copy();
+			for (c in cameras)
+			{
+				FlxG.cameras.remove(c, false);
+			}
+			for (i in 0...cameras.length)
+			{
+				if (i == cameras.length-1 && newCam != null)
+				{
+					FlxG.cameras.add(newCam, false);
+				}
+				FlxG.cameras.add(cameras[i], false);
+			}
+			FlxG.cameras.setDefaultDrawTarget(camGame, true);
+			executeALuaState("onReorderCameras", [newCam]);
+			allScriptCall("onReorderCameras", [newCam]);
+		}
 
 	public static var playCutsceneLmao:Bool = false;
 	public static var playCutsceneOnPauseLmao:Bool = false;

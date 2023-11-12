@@ -38,6 +38,13 @@ import modcharting.ModchartFuncs;
 
 using StringTools;
 
+typedef LuaCamera =
+{
+    var cam:FlxCamera;
+    var shaders:Array<BitmapFilter>;
+    var shaderNames:Array<String>;
+} 
+
 class ModchartUtilities {
 	public var lua:State = null;
 
@@ -56,6 +63,7 @@ class ModchartUtilities {
 	public static var lua_Sounds:Map<String, FlxSound> = [];
 	public static var lua_Shaders:Map<String, shaders.Shaders.ShaderEffect> = [];
 	public static var lua_Custom_Shaders:Map<String, CustomShader> = [];
+	public static var lua_Cameras:Map<String, LuaCamera> = [];
 
 	public var functions_called:Array<String> = [];
 
@@ -69,6 +77,8 @@ class ModchartUtilities {
 			return lua_Shaders.get(id);
 		else if (lua_Custom_Shaders.exists(id))
 			return lua_Custom_Shaders.get(id);
+		else if (lua_Cameras.exists(id))
+            return lua_Cameras.get(id).cam;
 
 
 		if (Reflect.getProperty(PlayState.instance, id) != null)
@@ -333,6 +343,14 @@ class ModchartUtilities {
 				Reflect.setProperty(actor, "cameras", [cameraFromString(camera)]);
 		});
 
+		setLuaFunction("justPressed", function(key:String = "SPACE") {
+            return Reflect.getProperty(FlxG.keys.justPressed, key);
+        });
+
+        setLuaFunction("pressed", function(key:String = "SPACE") {
+            return Reflect.getProperty(FlxG.keys.pressed, key);
+        });
+
 		setLuaFunction("setGraphicSize", function(id:String, width:Int = 0, height:Int = 0) {
 			var actor:FlxSprite = getActorByName(id);
 
@@ -353,6 +371,12 @@ class ModchartUtilities {
 			if (actor != null)
 				actor.blend = blendModeFromString(blend);
 		});
+
+		setLuaFunction("getSingDirectionID",function(id:Int) {
+            var thing = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
+            var singDir = utilities.NoteVariables.Character_Animation_Arrays[PlayState.SONG.playerKeyCount - 1][Std.int(Math.abs(id % PlayState.SONG.playerKeyCount))];
+            return thing.indexOf(singDir);
+        });
 
 		// sprites
 
@@ -520,6 +544,25 @@ class ModchartUtilities {
 				getActorByName(id).screenCenter((direction.toLowerCase().contains('x') ? 0x01 : 0x00) + (direction.toLowerCase().contains('y') ? 0x10 : 0x00));
 		});
 
+		setLuaFunction("actorScreenCenter", function(id:String) {
+            if(getCharacterByName(id) != null)
+                {
+                    var character = getCharacterByName(id);
+                    if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                    {
+                        character.otherCharacters[0].screenCenter();
+                        return;
+                    }
+                        
+                }
+            var actor = getActorByName(id);
+
+            if(getActorByName(id) != null)
+            {
+                actor.screenCenter();
+            }
+        });
+
 		setLuaFunction("add", function(id:String) {
 			FlxG.state.add(getActorByName(id));
 		});
@@ -563,6 +606,16 @@ class ModchartUtilities {
 			if (getActorByName(id) != null)
 				Reflect.setProperty(getActorByName(id), "text", text);
 		});
+
+		setLuaFunction("setActorFont", function(id:String, font:String) {
+            if(getActorByName(id) != null)
+                Reflect.setProperty(getActorByName(id), "font", Paths.font(font));
+        });
+
+		setLuaFunction("setActorOutlineColor", function(id:String, color:String) {
+            if(getActorByName(id) != null)
+                Reflect.setProperty(getActorByName(id), "borderColor", FlxColor.fromString(color));
+        });
 
 		setLuaFunction("setActorAlignment", function(id:String, align:String) {
 			if (getActorByName(id) != null)
@@ -653,6 +706,45 @@ class ModchartUtilities {
 			} else
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
+		
+		setLuaFunction("makeSpriteCopy", function(id:String, targetID:String) {
+            var actor:FlxSprite = null;
+            if(getCharacterByName(targetID) != null)
+            {
+                var character = getCharacterByName(targetID);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    actor = character.otherCharacters[0];
+                }                    
+            }
+            if(getActorByName(targetID) != null && actor == null)
+                actor = getActorByName(targetID);
+
+            if(!lua_Sprites.exists(id) && actor != null)
+            {
+                var Sprite:FlxSprite = new FlxSprite(actor.x, actor.y);
+
+                Sprite.loadGraphicFromSprite(actor);
+
+                Sprite.alpha = actor.alpha;
+                Sprite.angle = actor.angle;
+                Sprite.offset.x = actor.offset.x;
+                Sprite.offset.y = actor.offset.y;
+                Sprite.origin.x = actor.origin.x;
+                Sprite.origin.y = actor.origin.y;
+                Sprite.scale.x = actor.scale.x;
+                Sprite.scale.y = actor.scale.y;
+                Sprite.active = false;
+                Sprite.animation.frameIndex = actor.animation.frameIndex;
+                Sprite.flipX = actor.flipX;
+                Sprite.flipY = actor.flipY;
+                Sprite.animation.curAnim = actor.animation.curAnim;
+                //trace('made sprite copy');
+                lua_Sprites.set(id, Sprite);
+    
+                PlayState.instance.add(Sprite);
+            }
+        });
 
 		setLuaFunction("makeAnimatedSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
 			if (!lua_Sprites.exists(id)) {
@@ -808,6 +900,66 @@ class ModchartUtilities {
 			return PlayState.instance.camHUD.y;
 		});
 
+		setLuaFunction("makeCamera", function(camStr:String) {
+            var newCam:FlxCamera = new FlxCamera();
+            newCam.bgColor.alpha = 0;
+            PlayState.instance.reorderCameras(newCam);
+            lua_Cameras.set(camStr, {cam: newCam, shaders: [], shaderNames: []});
+            PlayState.instance.usedLuaCameras = true;
+        });
+
+        setLuaFunction("setNoteCameras", function(camStr:String) {
+            var cameras = camStr.split(',');
+            var camList:Array<FlxCamera> = [];
+            for (c in cameras)
+            {
+                var cam = getCameraByName(c);
+                if (cam != null)
+                    camList.push(cam.cam);
+            }
+            if (camList.length > 0)
+            {
+                
+                PlayState.strumLineNotes.cameras = camList;
+                PlayState.instance.notes.cameras = camList;
+            }
+        });
+
+        setLuaFunction("setObjectCameras", function(id:String, camStr:String) {
+            var cameras = camStr.split(',');
+            var actor:FlxSprite = getActorByName(id);
+            var camList:Array<FlxCamera> = [];
+            for (c in cameras)
+            {
+                var cam = getCameraByName(c);
+                if (cam != null)
+                    camList.push(cam.cam);
+            }
+            if (camList.length > 0)
+            {
+                if(actor != null)
+                    Reflect.setProperty(actor, "cameras", camList);
+            }
+        });
+
+		setLuaFunction("getCameraScrollX", function(camStr:String) {
+            var cam = getCameraByName(camStr);
+            if(cam != null)
+            {
+                return cam.cam.scroll.x;
+            }
+            return 0.0;
+        });
+
+        setLuaFunction("getCameraScrollY", function(camStr:String) {
+            var cam = getCameraByName(camStr);
+            if(cam != null)
+            {
+                return cam.cam.scroll.y;
+            }
+            return 0.0;
+        });
+
 		setLuaFunction("setCamPosition", function(x:Int, y:Int) {
 			@:privateAccess
 			{
@@ -856,6 +1008,36 @@ class ModchartUtilities {
 
 		// actors
 
+		setLuaFunction("makeNoteCopy", function(id:String, noteIdx:Int) {
+            var actor:FlxSprite = PlayState.instance.notes.members[noteIdx];
+            
+
+            if(!lua_Sprites.exists(id) && actor != null)
+            {
+                var Sprite:FlxSprite = new FlxSprite(actor.x, actor.y);
+
+                Sprite.loadGraphicFromSprite(actor);
+
+                Sprite.alpha = actor.alpha;
+                Sprite.angle = actor.angle;
+                Sprite.offset.x = actor.offset.x;
+                Sprite.offset.y = actor.offset.y;
+                Sprite.origin.x = actor.origin.x;
+                Sprite.origin.y = actor.origin.y;
+                Sprite.scale.x = actor.scale.x;
+                Sprite.scale.y = actor.scale.y;
+                Sprite.active = false;
+                Sprite.animation.frameIndex = actor.animation.frameIndex;
+                Sprite.flipX = actor.flipX;
+                Sprite.flipY = actor.flipY;
+                Sprite.animation.curAnim = actor.animation.curAnim;
+                //trace('made sprite copy');
+                lua_Sprites.set(id, Sprite);
+    
+                PlayState.instance.add(Sprite);
+            }
+        });
+
 		setLuaFunction("getUnspawnNotes", function() {
             return PlayState.instance.unspawnNotes.length;
         });
@@ -894,13 +1076,6 @@ class ModchartUtilities {
 			return PlayState.instance.notes.members[id].noteData;
 		});
 
-		setLuaFunction("isSustain", function(id:Int) {
-			return PlayState.instance.notes.members[id].isSustainNote;
-		});
-
-		setLuaFunction("isParentSustain", function(id:Int) {
-			return PlayState.instance.notes.members[id].prevNote.isSustainNote;
-		});
 
 		setLuaFunction("getRenderedNoteParentX", function(id:Int) {
 			return PlayState.instance.notes.members[id].prevNote.x;
@@ -921,9 +1096,6 @@ class ModchartUtilities {
 			return PlayState.strumLineNotes.members[Math.floor(Math.abs(PlayState.instance.notes.members[id].noteData))].x;
 		});
 
-		setLuaFunction("anyNotes", function() {
-			return PlayState.instance.notes.members.length != 0;
-		});
 
 		setLuaFunction("getRenderedNoteStrumtime", function(id:Int) {
 			return PlayState.instance.notes.members[id].strumTime;
@@ -964,6 +1136,18 @@ class ModchartUtilities {
 
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
 			PlayState.instance.notes.members[id].angle = angle;
+		});
+
+		setLuaFunction("isSustain", function(id:Int) {
+			return PlayState.instance.notes.members[id].isSustainNote;
+		});
+
+		setLuaFunction("isParentSustain", function(id:Int) {
+			return PlayState.instance.notes.members[id].prevNote.isSustainNote;
+		});
+
+		setLuaFunction("anyNotes", function() {
+			return PlayState.instance.notes.members.length != 0;
 		});
 
 		setLuaFunction("setActorX", function(x:Float, id:String) {
@@ -1015,6 +1199,36 @@ class ModchartUtilities {
 				getActorByName(id).velocity.x = x;
 			}
 		});
+
+		setLuaFunction("setActorOriginX", function(x:Float,id:String) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    character.otherCharacters[0].origin.x = x;
+                    return;
+                }
+                    
+            }
+            if(getActorByName(id) != null)
+                getActorByName(id).origin.x = x;
+        });
+		
+        setLuaFunction("setActorOriginY", function(x:Float,id:String) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    character.otherCharacters[0].origin.y = x;
+                    return;
+                }
+                    
+            }
+            if(getActorByName(id) != null)
+                getActorByName(id).origin.y = x;
+        });
 
 		setLuaFunction("setActorAntialiasing", function(antialiasing:Bool, id:String) {
 			if (getActorByName(id) != null) {
@@ -1241,6 +1455,59 @@ class ModchartUtilities {
 			else
 				return 0.0;
 		});
+
+		setLuaFunction("setActorReflection", function(id:String, r:Bool) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    for (i in 0...character.otherCharacters.length)
+                        character.otherCharacters[i].drawReflection = r;
+                    return;
+                }
+            }
+            Reflect.setProperty(getActorByName(id), "drawReflection", r);
+        });
+
+        setLuaFunction("setActorReflectionYOffset", function(id:String, y:Float) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    Reflect.setProperty(character.otherCharacters[0], "reflectionYOffset", y);
+                    return;
+                }
+            }
+            Reflect.setProperty(getActorByName(id), "reflectionYOffset", y);
+        });
+
+        setLuaFunction("setActorReflectionAlpha", function(id:String, a:Float) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    Reflect.setProperty(character.otherCharacters[0], "reflectionAlpha", a);
+                    return;
+                }
+            }
+            Reflect.setProperty(getActorByName(id), "reflectionAlpha", a);
+        });
+
+        setLuaFunction("setActorReflectionColor", function(id:String, color:String) {
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    Reflect.setProperty(character.otherCharacters[0], "reflectionColor", FlxColor.fromString(color));
+                    return;
+                }
+            }
+            Reflect.setProperty(getActorByName(id), "reflectionColor", FlxColor.fromString(color));
+        });
 
 		setLuaFunction("setWindowPos", function(x:Int, y:Int) {
 			Application.current.window.move(x, y);
@@ -2344,6 +2611,17 @@ class ModchartUtilities {
 		}
 
 		return PlayState.instance.camGame;
+	}
+	function getCameraByName(id:String):LuaCamera{
+		if(lua_Cameras.exists(id))
+			return lua_Cameras.get(id);
+	
+		switch(id.toLowerCase()){
+			case 'camhud' | 'hud': return lua_Cameras.get("hud");
+		}
+			
+	
+		return lua_Cameras.get("game");
 	}
 
 
