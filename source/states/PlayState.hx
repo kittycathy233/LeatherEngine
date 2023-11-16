@@ -1681,6 +1681,10 @@ class PlayState extends MusicBeatState {
 				event_lua.setupTheShitCuzPullRequestsSuck();
 			}
 		}
+		
+		for (i in globalLuaScripts) {
+			i.setupTheShitCuzPullRequestsSuck();
+		}
 
 		for (i in 0...strumLineNotes.length) {
 			var member = strumLineNotes.members[i];

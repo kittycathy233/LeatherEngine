@@ -57,6 +57,13 @@ class Character extends FlxSprite {
 
 	public var singAnimPrefix:String = 'sing';
 
+	public var playFullAnim:Bool = false;
+	public var preventDanceForAnim:Bool = false;
+
+
+	public var lastHitStrumTime:Float = 0;
+	public var justHitStrumTime:Float = -5000;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDeathCharacter:Bool = false) {
 		
 		super(x, y);
@@ -325,6 +332,20 @@ class Character extends FlxSprite {
 
 	override function update(elapsed:Float) {
 		if (!debugMode && curCharacter != '' && animation.curAnim != null) {
+			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+				{
+					playAnim(animation.curAnim.name + '-loop');
+				}
+				else if (playFullAnim && animation.curAnim.finished)
+				{
+					playFullAnim = false;
+					dance();
+				}
+				else if (preventDanceForAnim && animation.curAnim.finished)
+				{
+					preventDanceForAnim = false;
+					dance();
+				}
 			if (!isPlayer) {
 				if (animation.curAnim.name.startsWith('sing'))
 					holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
@@ -355,7 +376,7 @@ class Character extends FlxSprite {
 	 */
 	public function dance(?altAnim:String = '') {
 		if (shouldDance) {
-			if (!debugMode && curCharacter != '' && animation.curAnim != null) {
+			if (!debugMode && curCharacter != '' && animation.curAnim != null && !playFullAnim && !preventDanceForAnim) {
 				var alt = "";
 
 				if ((!dancesLeftAndRight && animation.getByName("idle" + altAnim) != null)
@@ -390,6 +411,8 @@ class Character extends FlxSprite {
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
 		if (!animation.exists(AnimName))
 			return;
+
+		preventDanceForAnim = false; //reset it
 		
 		animation.play(AnimName, Force, Reversed, Frame);
 

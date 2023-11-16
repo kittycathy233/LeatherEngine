@@ -259,7 +259,7 @@ class FreeplayState extends MusicBeatState {
 			new FlxTimer().start(1, function(_) songsReady = true);
 		}
 
-		if (songs.length != 0){
+		if (songs.length != 0 && curSelected <= 0){
 			selectedColor = songs[curSelected].color;
 			bg.color = selectedColor;
 		}
