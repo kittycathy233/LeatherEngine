@@ -1,5 +1,8 @@
 package game;
 
+import game.Note.JsonData;
+import openfl.Assets;
+import haxe.Json;
 import flixel.FlxG;
 import utilities.NoteVariables;
 import shaders.ColorSwap;
@@ -26,10 +29,13 @@ class StrumNote extends FlxSprite
 	public var keyCount:Int;
 
 	public var colorSwap:ColorSwap;
-
 	public var noteColor:Array<Int> = [255,0,0];
+	public var affectedbycolor:Bool = false;
 
 	public var isPlayer:Float;
+
+	public var jsonData:JsonData;
+	
 
 	public function new(x:Float, y:Float, leData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int, ?isPlayer:Float, customColors:Bool = false)
 	{
@@ -55,6 +61,13 @@ class StrumNote extends FlxSprite
 		this.keyCount = keyCount;
 		this.isPlayer = isPlayer;
 
+		if(Assets.exists(Paths.json("ui skins/" + ui_Skin + "/config"))){
+			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + ui_Skin + "/config")));	
+			for (value in jsonData.values) {
+				this.affectedbycolor = value.affectedbycolor;
+			}
+		}
+
 		super(x, y);
 
 		colorSwap = new ColorSwap();
@@ -62,24 +75,26 @@ class StrumNote extends FlxSprite
 
 		var charColors;
 
-		if(Options.getData("middlescroll")){
-			charColors = (isPlayer == 1) ? PlayState.dad : PlayState.boyfriend;
-		}
-		else{
-			charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
-		}
-		if (!customColors) 
-			noteColor = charColors.noteColors[localKeyCount - 1][noteData]; 
-		else 
-			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
+		if(affectedbycolor){
+			if(Options.getData("middlescroll")){
+				charColors = (isPlayer == 1) ? PlayState.dad : PlayState.boyfriend;
+			}
+			else{
+				charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
+			}
+			if (!customColors) 
+				noteColor = charColors.noteColors[localKeyCount - 1][noteData]; 
+			else 
+				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 
-		//idk why || doesnt work??
-		if(Options.getData("customNoteColors"))
-			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
+			//idk why || doesnt work??
+			if(Options.getData("customNoteColors"))
+				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 
-		colorSwap.r = noteColor[0];
-		colorSwap.g = noteColor[1];
-		colorSwap.b = noteColor[2];
+			colorSwap.r = noteColor[0];
+			colorSwap.g = noteColor[1];
+			colorSwap.b = noteColor[2];
+	}
 	}
 
 	override function update(elapsed:Float)

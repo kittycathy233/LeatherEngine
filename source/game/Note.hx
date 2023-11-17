@@ -261,3 +261,10 @@ typedef NoteType = {
 	var hitDamage:Float;
 	var missDamage:Float;
 }
+typedef StrumJson = {
+	var affectedbycolor:Bool;
+}
+typedef JsonData = {
+	var values:Array<StrumJson>;
+}
+

@@ -1,5 +1,8 @@
 package game;
 
+import game.Note.JsonData;
+import haxe.Json;
+import openfl.Assets;
 import shaders.NoteColors;
 import shaders.ColorSwap;
 import utilities.NoteVariables;
@@ -9,8 +12,11 @@ import flixel.FlxSprite;
 
 class NoteSplash extends FlxSprite {
 	public var target:FlxSprite;
-
+	
 	public var colorSwap:ColorSwap;
+	public var noteColor:Array<Int> = [255,0,0];
+	public var affectedbycolor:Bool = false;
+	public var jsonData:JsonData;
 
 	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false) {
 		this.target = target;
@@ -37,21 +43,28 @@ class NoteSplash extends FlxSprite {
 		updateHitbox();
 		centerOffsets();
 
+		if(Assets.exists(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config"))){
+			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config")));	
+			for (value in jsonData.values) {
+				this.affectedbycolor = value.affectedbycolor;
+			}
+		}
+
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 
 		var charColors = (isPlayer) ? PlayState.boyfriend : PlayState.dad;
-		var noteColor;
 
-		if (!Options.getData("customNoteColors"))
-			noteColor = charColors.noteColors[localKeyCount - 1][noteData];
-		else
-			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[PlayState.SONG.keyCount - 1][noteData]);
+		if(affectedbycolor){
+			if (!Options.getData("customNoteColors"))
+				noteColor = charColors.noteColors[localKeyCount - 1][noteData];
+			else
+				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[PlayState.SONG.keyCount - 1][noteData]);
 
-		colorSwap.r = noteColor[0];
-		colorSwap.g = noteColor[1];
-		colorSwap.b = noteColor[2];
-
+			colorSwap.r = noteColor[0];
+			colorSwap.g = noteColor[1];
+			colorSwap.b = noteColor[2];
+		}
 		update(0);
 	}
 
