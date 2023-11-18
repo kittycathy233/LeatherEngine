@@ -18,7 +18,7 @@ class NoteSplash extends FlxSprite {
 	public var affectedbycolor:Bool = false;
 	public var jsonData:JsonData;
 
-	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false) {
+	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false, ?ui_Skin:String) {
 		this.target = target;
 
 		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
@@ -43,8 +43,11 @@ class NoteSplash extends FlxSprite {
 		updateHitbox();
 		centerOffsets();
 
-		if(Assets.exists(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config"))){
-			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config")));	
+		if (ui_Skin == null)
+			ui_Skin = PlayState.SONG.ui_Skin;
+
+		if(Assets.exists(Paths.json("ui skins/" + ui_Skin + "/config"))){
+			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + ui_Skin + "/config")));	
 			for (value in jsonData.values) {
 				this.affectedbycolor = value.affectedbycolor;
 			}

@@ -2670,7 +2670,7 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("createCustomShader", function(id:String, file:String, ?glslVersion:Int = 120){
-			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)), null, glslVersion);
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 		});
 

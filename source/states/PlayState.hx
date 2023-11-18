@@ -4934,22 +4934,20 @@ class PlayState extends MusicBeatState {
 				splash_group.clear();
 				if(Options.getData("middlescroll"))
 					{
-						generateStaticArrows(50, false);
-						generateStaticArrows(0.5, true);
+						generateStaticArrows(50, false, false);
+						generateStaticArrows(0.5, true, false);
 					}
 					else
 					{
 						if(characterPlayingAs == 0)
 						{
-							generateStaticArrows(0, false);
-							generateStaticArrows(1, true);
-							playerStrums.add(babyArrow);	
+							generateStaticArrows(0, false, false);
+							generateStaticArrows(1, true, false);
 						}
 						else
 						{
-							generateStaticArrows(1, false);
-							generateStaticArrows(0, true);
-							enemyStrums.add(babyArrow);
+							generateStaticArrows(1, false, false);
+							generateStaticArrows(0, true, false);
 						}
 					}
 				for (note in unspawnNotes) {

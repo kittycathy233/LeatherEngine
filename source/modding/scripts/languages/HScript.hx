@@ -108,6 +108,7 @@ class HScript
 		// haxeflixel classes
 		interp.variables.set("FlxG", flixel.FlxG);
 		interp.variables.set("FlxSprite", flixel.FlxSprite);
+		interp.variables.set("FlxSound", flixel.sound.FlxSound);
 		interp.variables.set('FlxCamera', flixel.FlxCamera);
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
