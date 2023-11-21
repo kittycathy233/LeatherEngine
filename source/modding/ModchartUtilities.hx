@@ -2727,7 +2727,7 @@ class ModchartUtilities {
 			funnyCustomShader.setFloat(property, value);
 		});
 
-		setLuaFunction("tweenShader", function(id:String, property:String, value:Float, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
+		setLuaFunction("tweenShader", function(id:String, property:String, value:Float, duration:Float, ?ease:String = "linear", ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
 			var shader:CustomShader = lua_Custom_Shaders.get(id);
 			if (shader != null) {
 				shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
