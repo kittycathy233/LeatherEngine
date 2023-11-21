@@ -183,10 +183,21 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (Options.getData("watermarks") ? TitleState.version : "v0.2.7.1"), 16);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (Options.getData("watermarks") ? TitleState.version : "v0.2.8"), 16);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
+
+		var switchInfo:FlxText = new FlxText(5, versionShit.y - versionShit.height, 0, 'Hit TAB to switch mods.', 16);
+		switchInfo.scrollFactor.set();
+		switchInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(switchInfo);
+
+		var modInfo:FlxText = new FlxText(5, switchInfo.y - switchInfo.height, 0, '${modding.PolymodHandler.metadataArrays.length} mods loaded, ${modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays).length} mods active.', 16);
+		modInfo.scrollFactor.set();
+		modInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(modInfo);
+
 
 		changeItem();
 
