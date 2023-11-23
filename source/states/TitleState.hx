@@ -1,5 +1,6 @@
 package states;
 
+import modding.scripts.languages.HScript;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -49,7 +50,30 @@ class TitleState extends MusicBeatState {
 
 	var swagShader:TitleEffect;
 
+	public static var instance:TitleState = null;
+
+	public var scripts:Array<HScript> = [];
+	var script:HScript;
+
+	function allScriptCall(func:String, ?args:Array<Dynamic>) {
+		for (cool_script in scripts) {
+			cool_script.call(func, args);
+		}
+	}
+
+	function loadScripts(){
+		#if sys
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx")){
+			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx", true);
+			script.start();		
+			scripts.push(script);
+		}
+		#end
+	}
+
 	override public function create():Void {
+
+		instance = this;
 		
 		MusicBeatState.windowNameSuffix = "";
 
@@ -84,6 +108,8 @@ class TitleState extends MusicBeatState {
 
 			curWacky = FlxG.random.getObject(getIntroTextShit());
 
+
+
 			super.create();
 
 			#if discord_rpc
@@ -103,7 +129,11 @@ class TitleState extends MusicBeatState {
 
 
 			firstTimeStarting = true;
+
 		}
+
+		loadScripts();
+
 
 		new FlxTimer().start(1, function(tmr:FlxTimer) startIntro());
 	}
@@ -126,6 +156,8 @@ class TitleState extends MusicBeatState {
 
 	function startIntro() {
 		if (!initialized) {
+
+			allScriptCall("startIntro");
 
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
@@ -162,6 +194,8 @@ class TitleState extends MusicBeatState {
 			Main.toggleVers(Options.getData("versionDisplay"));
 
 			Main.changeFont(Options.getData("infoDisplayFont"));
+
+			allScriptCall("startIntroPost");
 		}
 
 		version = '${MusicBeatState.windowNamePrefix}-git (v${Assets.getText("version.txt")})';
@@ -261,6 +295,7 @@ class TitleState extends MusicBeatState {
 			skipIntro();
 		else
 			initialized = true;
+
 	}
 
 	function getIntroTextShit():Array<Array<String>> {
@@ -342,6 +377,7 @@ class TitleState extends MusicBeatState {
 
 			transitioning = true;
 
+			allScriptCall("checkForUpdate");
 			new FlxTimer().start(2, function(tmr:FlxTimer) {
 				var http = new haxe.Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
 
@@ -370,27 +406,34 @@ class TitleState extends MusicBeatState {
 			skipIntro();
 
 		super.update(elapsed);
+		allScriptCall("update", [elapsed]);
 	}
 
 	function createCoolText(textArray:Array<String>) {
+		allScriptCall("createCoolText");
 		for (i in 0...textArray.length) {
 			addMoreText(textArray[i]);
 		}
+		allScriptCall("createCoolTextPost");
 	}
 
 	function addMoreText(text:String) {
+		allScriptCall("addMoreText");
 		var coolText:Alphabet = new Alphabet(0, 0, text.toUpperCase(), true, false);
 		coolText.screenCenter(X);
 		coolText.y += (textGroup.length * 60) + 200;
 		credGroup.add(coolText);
 		textGroup.add(coolText);
+		allScriptCall("addMoreTextPost");
 	}
 
 	function deleteCoolText() {
+		allScriptCall("deleteCoolText");
 		while (textGroup.members.length > 0) {
 			credGroup.remove(textGroup.members[0], true);
 			textGroup.remove(textGroup.members[0], true);
 		}
+		allScriptCall("deleteCoolTextPost");
 	}
 
 	function textDataText(line:Int) {
@@ -411,13 +454,17 @@ class TitleState extends MusicBeatState {
 		super.beatHit();
 
 		if (!Options.getData("oldTitle")) {
-			logoBl.animation.play('bump');
+			if(logoBl != null){
+				logoBl.animation.play('bump');
+			}
 			danceLeft = !danceLeft;
 
-			if (danceLeft)
-				gfDance.animation.play('danceRight');
-			else
-				gfDance.animation.play('danceLeft');
+			if(gfDance != null){
+				if (danceLeft)
+					gfDance.animation.play('danceRight');
+				else
+					gfDance.animation.play('danceLeft');
+			}
 
 			switch (curBeat) {
 				case 1:
@@ -454,11 +501,13 @@ class TitleState extends MusicBeatState {
 			skippedIntro = true;
 			MusicBeatState.windowNameSuffix = "";
 		}
+		allScriptCall("beatHit");
 	}
 
 	var skippedIntro:Bool = false;
 
 	function skipIntro():Void {
+		allScriptCall("skipIntro");
 		if (!skippedIntro) {
 			MusicBeatState.windowNameSuffix = "";
 
@@ -469,5 +518,6 @@ class TitleState extends MusicBeatState {
 			remove(credGroup);
 			skippedIntro = true;
 		}
+		allScriptCall("skipIntroPost");
 	}
 }

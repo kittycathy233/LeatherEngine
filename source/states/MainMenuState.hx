@@ -44,7 +44,7 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	var ui_Skin:Null<String>;
 	public var scripts:Array<HScript> = [];
-	var classScripts:HScript;
+	var script:HScript;
 
 	function allScriptCall(func:String, ?args:Array<Dynamic>) {
 		for (cool_script in scripts) {
@@ -54,40 +54,19 @@ class MainMenuState extends MusicBeatState
 
 	function loadScripts(){
 		#if sys
-		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
-
-		if (modList.length > 0)
-		{
-			for (mod in modList)
-			{
-				if (sys.FileSystem.exists("mods/" + mod + "/classes/states/MainMenuState"))
-				{
-					var modclassScriptss = sys.FileSystem.readDirectory("mods/" + mod + "/classes/states/MainMenuState");
-
-					if (modclassScriptss.length > 0)
-					{
-						for (file in modclassScriptss)
-						{
-							if(file.endsWith('.hx'))
-								{
-									classScripts = new HScript("mods/" + mod + "/classes/states/MainMenuState/" + file, true);
-									classScripts.start();
-								
-									scripts.push(classScripts);
-								}
-						}
-					}
-				}
-			}
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx")){
+			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx", true);
+			script.start();		
+			scripts.push(script);
 		}
 		#end
 	}
 
+
 	override function create()
 	{
-		instance = this;
-
 		loadScripts();
+		instance = this;
 	
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");

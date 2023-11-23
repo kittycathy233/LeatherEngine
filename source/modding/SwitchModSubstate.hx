@@ -108,7 +108,7 @@ class SwitchModSubstate extends MusicBeatSubstate
 
 		for(modId in PolymodHandler.metadataArrays)
 		{
-			if (ModList.modList.get(modId)){
+			if (ModList.modList.get(modId) && ModList.modMetadatas.get(modId).metadata.get('canBeSwitchedTo') != 'false'){
 				var modOption = new ChangeModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
 				page.add(modOption);
 				optionLoopNum++;

@@ -118,9 +118,11 @@ class ModsMenu extends MusicBeatState
 
 		for(modId in PolymodHandler.metadataArrays)
 		{
-			var modOption = new ModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
-			page.add(modOption);
-			optionLoopNum++;
+			if(ModList.modMetadatas.get(modId).metadata.get('canBeDisabled') != 'false'){
+				var modOption = new ModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+				page.add(modOption);
+				optionLoopNum++;
+			}
 		}
 	}
 

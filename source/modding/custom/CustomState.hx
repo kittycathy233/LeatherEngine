@@ -5,12 +5,14 @@ import states.MusicBeatState;
 
 class CustomState extends MusicBeatState {
     public var script:HScript;
+    public static var instance:CustomState = null;
     override function new(script:String){
+        instance = this;
         this.script = new HScript(Paths.hx("classes/states/" + script));
+        this.script.start();
         super();
     }
     override function create(){
-        allScriptCall("create");
         super.create();
         allScriptCall("createPost");
     }
