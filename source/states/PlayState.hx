@@ -1398,6 +1398,7 @@ class PlayState extends MusicBeatState {
 			HScript.interp.variables.set('ModchartFile', modcharting.ModchartFile);
 		}
 		#end*/
+
 		super.create();
 
 		for (script_funny in scripts) {

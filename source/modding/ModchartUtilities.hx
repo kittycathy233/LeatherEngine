@@ -1,5 +1,8 @@
 package modding;
 
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.FlxInput.FlxInputState;
+import game.Note;
 import flixel.math.FlxMath;
 import openfl.filters.BitmapFilter;
 import openfl.display.ShaderParameter;
@@ -210,6 +213,7 @@ class ModchartUtilities {
 		setVar("playerKeyCount", PlayState.SONG.playerKeyCount);
 		setVar("scrollspeed", PlayState.SONG.speed);
 		setVar("fpsCap", Options.getData("maxFPS"));
+		setVar("opponentPlay", PlayState.characterPlayingAs == 1);
 		setVar("bot", Options.getData("botplay"));
 		setVar("noDeath", Options.getData("noDeath"));
 		setVar("downscroll", Options.getData("downscroll") == true ? 1 : 0); // fuck you compatibility
@@ -396,6 +400,20 @@ class ModchartUtilities {
 			if (actor != null)
 				Reflect.setProperty(actor, "cameras", [cameraFromString(camera)]);
 		});
+
+		setLuaFunction("justPressedDodgeKey", function() {
+            
+            var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+            if (gamepad != null)
+            {
+                if (gamepad.checkStatus(FlxGamepadInputID.fromString("SPACE"), FlxInputState.JUST_PRESSED))
+                {
+                    return true;
+                }
+
+            }
+            return FlxG.keys.checkStatus(FlxKey.fromString("SPACE"), FlxInputState.JUST_PRESSED);
+        });
 
 		setLuaFunction("justPressed", function(key:String = "SPACE") {
             return Reflect.getProperty(FlxG.keys.justPressed, key);
@@ -1181,6 +1199,10 @@ class ModchartUtilities {
 			return PlayState.instance.notes.members[id].scale.x;
 		});
 
+		setLuaFunction("getRenderedNoteScaleY", function(id:Int) {
+            return PlayState.instance.notes.members[id].scale.y;
+        });
+
 		setLuaFunction("setRenderedNotePos", function(x:Float, y:Float, id:Int) {
 			if (PlayState.instance.notes.members[id] == null)
 				throw('error! you cannot set a rendered notes position when it doesnt exist! ID: ' + id);
@@ -1198,9 +1220,50 @@ class ModchartUtilities {
 			PlayState.instance.notes.members[id].scale.set(scale, scale);
 		});
 
+		setLuaFunction("setRenderedNoteScaleX", function(scale:Float, id:Int) {
+            PlayState.instance.notes.members[id].scale.x = scale;
+        });
+        setLuaFunction("setRenderedNoteScaleY", function(scale:Float, id:Int) {
+            PlayState.instance.notes.members[id].scale.y = scale;
+        });
+
 		setLuaFunction("setRenderedNoteScaleXY", function(scaleX:Int, scaleY:Int, id:Int) {
 			PlayState.instance.notes.members[id].scale.set(scaleX, scaleY);
-		});
+		});	
+
+		setLuaFunction("isRenderedNoteSustainEnd", function(id:Int) {
+            if (PlayState.instance.notes.members[id].animation.curAnim != null)
+                return PlayState.instance.notes.members[id].animation.curAnim.name.endsWith('end');
+            return false;
+        });
+
+        setLuaFunction("getRenderedNoteSustainScaleY", function(id:Int) {
+            return PlayState.instance.notes.members[id].sustainScaleY;
+        });
+
+		setLuaFunction("getRenderedNoteOffsetX", function(id:Int) {
+            var daNote:Note = PlayState.instance.notes.members[id];
+            if (daNote.mustPress)
+            {
+                var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
+                if (PlayState.instance.prevPlayerXVals.exists(arrayVal))
+                    return PlayState.instance.prevPlayerXVals.get(arrayVal) - daNote.xOffset;
+            }
+            else 
+            {
+                var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
+                if (PlayState.instance.prevEnemyXVals.exists(arrayVal))
+                    return PlayState.instance.prevEnemyXVals.get(arrayVal) - daNote.xOffset;
+            }
+
+            return 0;
+        });
+
+        setLuaFunction("getRenderedNoteOffsetY", function(id:Int) {
+            var daNote:Note = PlayState.instance.notes.members[id];
+            return daNote.yOffset;
+        });
+
 
 		setLuaFunction("getRenderedNoteWidth", function(id:Int) {
 			return PlayState.instance.notes.members[id].width;
@@ -1209,6 +1272,10 @@ class ModchartUtilities {
 		setLuaFunction("getRenderedNoteHeight", function(id:Int) {
 			return PlayState.instance.notes.members[id].height;
 		});
+
+		setLuaFunction("getRenderedNotePrevNoteStrumtime", function(id:Int) {
+            return PlayState.instance.notes.members[id].prevNoteStrumtime;
+        });
 
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
 			PlayState.instance.notes.members[id].angle = angle;
@@ -2643,6 +2710,31 @@ class ModchartUtilities {
 
 			return id;
 		});
+
+		setLuaFunction("getStrumTimeFromStep", function(step:Float) {
+            var beat = step*0.25;
+            var totalTime:Float = 0;
+            var curBpm = Conductor.bpm;
+            if (PlayState.SONG != null)
+                curBpm = PlayState.SONG.bpm;
+            for (i in 0...Math.floor(beat))
+            {
+                if (Conductor.bpmChangeMap.length > 0)
+                {
+                    for (j in 0...Conductor.bpmChangeMap.length)
+                    {
+                        if (totalTime >= Conductor.bpmChangeMap[j].songTime)
+                            curBpm = Conductor.bpmChangeMap[j].bpm;
+                    }
+                }
+                totalTime += (60/curBpm)*1000;
+            }
+
+            var leftOverBeat = beat - Math.floor(beat);
+            totalTime += (60/curBpm)*1000*leftOverBeat;
+
+            return totalTime;
+        });
 
 		// shader bullshit
 

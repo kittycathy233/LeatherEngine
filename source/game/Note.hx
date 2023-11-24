@@ -1,5 +1,6 @@
 package game;
 
+import flixel.util.FlxColor;
 import utilities.Options;
 import shaders.NoteColors;
 import shaders.ColorSwap;
@@ -21,6 +22,8 @@ class Note extends FlxSprite {
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
+	public var prevNoteStrumtime:Float = 0;
+	public var prevNoteIsSustainNote:Bool = false;
 
 	public var singAnimPrefix:String = "sing"; //hopefully should make things easier
 	public var singAnimSuffix:String = ""; //for alt anims lol
@@ -34,6 +37,11 @@ class Note extends FlxSprite {
 	public var noteScore:Float = 1;
 
 	public static var swagWidth:Float = 160 * 0.7;
+
+	public var sustainScaleY:Float = 1;
+
+	public var xOffset:Float = 0;
+	public var yOffset:Float = 0;
 
 	public var rawNoteData:Int = 0;
 
@@ -58,6 +66,34 @@ class Note extends FlxSprite {
 	public var mesh:modcharting.SustainStrip = null;
 	public var z:Float = 0;
 	#end
+
+	/**
+	 * @see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
+	 * @see https://step-mania.fandom.com/wiki/Notes
+	 */
+	public static var quantColors:Array<FlxColor> = [
+		0xff230f, 
+		0x134fff,
+		0x8a07e0,
+		0x47fa16,
+		0xd600d3,
+		0xf67904,
+		0x00c8ac,
+		0x26a829,
+		0xbbbbbb,
+		0xA7C7E7,
+		0x808000,
+	];
+
+	public static var ratingColors:Array<FlxColor> = [
+
+	];
+
+	/**
+	 * @see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
+	 * @see https://step-mania.fandom.com/wiki/Notes
+	 */
+	public static var beats:Array<Int> = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 			?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
@@ -152,6 +188,9 @@ class Note extends FlxSprite {
 	
 			if (isSustainNote && prevNote != null) {
 				alpha = 0.6;
+
+				prevNoteStrumtime = prevNote.strumTime;
+				prevNoteIsSustainNote = prevNote.isSustainNote;
 	
 				if (song.ui_Skin != 'pixel')
 					x += width / 2;
@@ -176,10 +215,13 @@ class Note extends FlxSprite {
 	
 					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 					prevNote.updateHitbox();
+					prevNote.sustainScaleY = prevNote.scale.y;
 				}
 	
 				centerOffsets();
 				centerOrigin();
+
+				sustainScaleY = scale.y;
 			}
 	
 	
