@@ -1285,10 +1285,6 @@ class ModchartUtilities {
             PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
         });
 
-		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
-            PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
-        });
-
 		setLuaFunction("isSustain", function(id:Int) {
 			return PlayState.instance.notes.members[id].isSustainNote;
 		});
