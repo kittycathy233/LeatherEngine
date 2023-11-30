@@ -187,6 +187,12 @@ class PlayState extends MusicBeatState {
 	**/
 	public var camFollow:FlxObject;
 
+
+	/**
+	 * Should the camera be centered?
+	 */
+	public var centerCamera:Bool = false;
+
 	/**
 		Copy of `camFollow` used for transitioning between songs smoother.
 	**/
@@ -196,6 +202,16 @@ class PlayState extends MusicBeatState {
 		`Bool` for whether or not the camera is currently zooming in and out to the song's beat.
 	**/
 	public var camZooming:Bool = false;
+
+	/**
+	 Speed of camera.
+	 **/
+	public var cameraSpeed:Float = 1;
+
+	/**
+	 Speed of camera zooming.
+	 **/
+	public var cameraZoomSpeed:Float = 1;
 
 	/**
 		Shortner for `SONG.song`.
@@ -2251,10 +2267,10 @@ class PlayState extends MusicBeatState {
 
 		tweenManager.update(elapsed);
 
-		FlxG.camera.followLerp = elapsed * 2.4;
+		FlxG.camera.followLerp = (elapsed * 2.4) *cameraSpeed;
 
 		var icon_Zoom_Lerp = elapsed * 9;
-		var camera_Zoom_Lerp = elapsed * 3;
+		var camera_Zoom_Lerp = (elapsed * 3) * cameraZoomSpeed;
 
 		iconP1.scale.set(FlxMath.lerp(iconP1.scale.x, iconP1.startSize, icon_Zoom_Lerp * songMultiplier),
 			FlxMath.lerp(iconP1.scale.y, iconP1.startSize, icon_Zoom_Lerp * songMultiplier));
@@ -2386,12 +2402,15 @@ class PlayState extends MusicBeatState {
 			// offsetY = luaModchart.getVar("followYOffset", "float");
 
 			setLuaVar("mustHit", PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection);
+			
+			if(!PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
+			{
+				var midPos = dad.getMainCharacter().getMidpoint();
 
-			if (!PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
-				var midPos = dad.getMidpoint();
-
-				if (Options.getData("cameraTracksDirections") && dad.animation.curAnim != null) {
-					switch (dad.animation.curAnim.name.toLowerCase()) {
+				if(utilities.Options.getData("cameraTracksDirections") && dad.animation.curAnim != null)
+				{
+					switch(dad.animation.curAnim.name.toLowerCase())
+					{
 						case "singleft":
 							midPos.x -= 50;
 						case "singright":
@@ -2406,10 +2425,12 @@ class PlayState extends MusicBeatState {
 				midPos.x += stage.p2_Cam_Offset.x;
 				midPos.y += stage.p2_Cam_Offset.y;
 
-				if (camFollow.x != midPos.x + 150 + dad.cameraOffset[0] || camFollow.y != midPos.y + -100 + dad.cameraOffset[1]) {
-					camFollow.setPosition(midPos.x + 150 + dad.cameraOffset[0], midPos.y - 100 + dad.cameraOffset[1]);
-
-					switch (dad.curCharacter) {
+				//if(camFollow.x != midPos.x + 150 + dad.cameraOffset[0] || camFollow.y != midPos.y + - 100 + dad.cameraOffset[1])
+				//{
+					camFollow.setPosition(midPos.x + 150 + dad.getMainCharacter().cameraOffset[0], midPos.y - 100 + dad.getMainCharacter().cameraOffset[1]);
+	
+					switch (dad.curCharacter)
+					{
 						case 'mom':
 							camFollow.y = midPos.y;
 						case 'senpai':
@@ -2424,14 +2445,17 @@ class PlayState extends MusicBeatState {
 					executeALuaState("turnChange", ['dad']);
 					allScriptCall("playerTwoTurn");
 					allScriptCall("turnChange", ['dad']);
-				}
+				//}
 			}
 
-			if (PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
-				var midPos = boyfriend.getMidpoint();
+			if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
+			{
+				var midPos = boyfriend.getMainCharacter().getMidpoint();
 
-				if (Options.getData("cameraTracksDirections") && boyfriend.animation.curAnim != null) {
-					switch (boyfriend.animation.curAnim.name) {
+				if(Options.getData("cameraTracksDirections") && boyfriend.animation.curAnim != null)
+				{
+					switch(boyfriend.animation.curAnim.name)
+					{
 						case "singLEFT":
 							midPos.x -= 50;
 						case "singRIGHT":
@@ -2446,11 +2470,12 @@ class PlayState extends MusicBeatState {
 				midPos.x += stage.p1_Cam_Offset.x;
 				midPos.y += stage.p1_Cam_Offset.y;
 
-				if (camFollow.x != midPos.x - 100 + boyfriend.cameraOffset[0]
-					|| camFollow.y != midPos.y - 100 + boyfriend.cameraOffset[1]) {
-					camFollow.setPosition(midPos.x - 100 + boyfriend.cameraOffset[0], midPos.y - 100 + boyfriend.cameraOffset[1]);
-
-					switch (curStage) {
+				//if(camFollow.x != midPos.x - 100 + boyfriend.cameraOffset[0] || camFollow.y != midPos.y - 100 + boyfriend.cameraOffset[1])
+				//{
+					camFollow.setPosition(midPos.x - 100 + boyfriend.getMainCharacter().cameraOffset[0], midPos.y - 100 + boyfriend.getMainCharacter().cameraOffset[1]);
+	
+					switch (curStage)
+					{
 						case 'limo':
 							camFollow.x = midPos.x - 300;
 						case 'mall':
@@ -2461,6 +2486,55 @@ class PlayState extends MusicBeatState {
 					executeALuaState("turnChange", ['bf']);
 					allScriptCall("playerOneTurn");
 					allScriptCall("turnChange", ['bf']);
+				//}
+			}
+
+			if (centerCamera)
+			{
+				var midPos = boyfriend.getMainCharacter().getMidpoint();
+				midPos.x += stage.p1_Cam_Offset.x;
+				midPos.y += stage.p1_Cam_Offset.y;
+				camFollow.setPosition(midPos.x - 100 + boyfriend.getMainCharacter().cameraOffset[0], midPos.y - 100 + boyfriend.getMainCharacter().cameraOffset[1]);
+				midPos = dad.getMainCharacter().getMidpoint();
+				midPos.x += stage.p2_Cam_Offset.x;
+				midPos.y += stage.p2_Cam_Offset.y;
+				camFollow.x += midPos.x + 150 + dad.getMainCharacter().cameraOffset[0];
+				camFollow.y += midPos.y - 100 + dad.getMainCharacter().cameraOffset[1];
+				camFollow.x *= 0.5;
+				camFollow.y *= 0.5;
+				if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
+				{
+					if(Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().animation.curAnim != null)
+					{
+						switch(boyfriend.getMainCharacter().animation.curAnim.name)
+						{
+							case "singLEFT":
+								camFollow.x -= 50;
+							case "singRIGHT":
+								camFollow.x += 50;
+							case "singUP":
+								camFollow.y -= 50;
+							case "singDOWN":
+								camFollow.y += 50;
+						}
+					}
+				}
+				else 
+				{
+					if(Options.getData("cameraTracksDirections") && dad.getMainCharacter().animation.curAnim != null)
+					{
+						switch(dad.getMainCharacter().animation.curAnim.name.toLowerCase())
+						{
+							case "singleft":
+								camFollow.x -= 50;
+							case "singright":
+								camFollow.x += 50;
+							case "singup":
+								camFollow.y -= 50;
+							case "singdown":
+								camFollow.y += 50;
+						}
+					}
 				}
 			}
 		}
@@ -2996,6 +3070,14 @@ class PlayState extends MusicBeatState {
 		allScriptCall("updatePost", [elapsed]);
 		executeALuaState("updatePost", [elapsed]);
 	}
+
+	override function destroy()
+		{
+			#if linc_luajit
+			ModchartUtilities.killShaders();
+			#end
+			super.destroy();
+		}
 
 	function endSong():Void {
 		canPause = false;
@@ -4791,6 +4873,16 @@ class PlayState extends MusicBeatState {
 					else
 						speed = funnySpeed;
 				}
+			case "change camera speed":
+				var speed:Float = Std.parseFloat(event[2]);
+				if(Math.isNaN(speed))
+					speed = 1;
+				cameraSpeed = speed;
+			case "change camera zoom speed":
+				var speed:Float = Std.parseFloat(event[2]);
+				if(Math.isNaN(speed))
+					speed = 1;
+				cameraZoomSpeed = speed;
 			case "character will idle?":
 				var char = getCharFromEvent(event[2]);
 

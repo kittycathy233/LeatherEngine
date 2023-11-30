@@ -117,6 +117,13 @@ class ModchartUtilities {
 		return lua_Cameras.get("game");
 	}
 
+	public static function killShaders(){
+		for (cam in lua_Cameras){
+			cam.shaders = [];
+			cam.shaderNames = [];
+		}
+	}
+
 	public function die() {
 		PlayState.songMultiplier = oldMultiplier;
 
@@ -2741,6 +2748,15 @@ class ModchartUtilities {
 			}
 			else{
 				funnyCustomShader.setBool(property, value);
+			}
+		});
+
+		setLuaFunction("tweenShaderProperty", function(id:String, property:String, value:Float, duration:Float, ?ease:String = "linear", ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
+			var shader:CustomShader = lua_Custom_Shaders.get(id);
+			if (shader != null) {
+				shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
+			} else {
+				trace('Shader named $shader doesn\'t exist!', ERROR);
 			}
 		});
 

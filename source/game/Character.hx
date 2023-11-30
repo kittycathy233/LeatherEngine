@@ -427,4 +427,14 @@ class Character extends FlxSprite {
 	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
 		animOffsets.set(name, [(isPlayer && offsetsFlipWhenPlayer) || (!isPlayer && offsetsFlipWhenEnemy) ? -x : x, y]);
 	}
+	public var followMainCharacter:Bool = false;
+	public function getMainCharacter():Character
+	{
+		if (otherCharacters != null && otherCharacters.length > 0)
+		{
+			if (followMainCharacter)
+				return otherCharacters[0];
+		}
+		return this;
+	}
 }
