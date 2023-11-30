@@ -30,7 +30,7 @@ Install Visual Studio Community 2019, and while installing instead of selecting 
 
 In your package manager, install the following packages:
 
-```sh
+````sh
 sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 sudo apt-get install vlc-bin
@@ -43,3 +43,4 @@ sudo pacman -S luajit
 ``` (Pacman Example)
 
 Step 5. Run `lime test [platform]` in the project directory while replacing '[platform]' with your build target (usually `html5`, `windows`, `linux`, `mac`, or whatever platform you are building for).
+````

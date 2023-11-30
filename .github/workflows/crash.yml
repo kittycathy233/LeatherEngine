@@ -2,7 +2,7 @@
 
 name: Crash Build
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   workflow_dispatch:
@@ -43,10 +43,10 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: linuxBuild
-          path: 'crash/export/linux/bin' 
+          path: "crash/export/linux/bin"
   buildWindows:
     runs-on: windows-latest
-    
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@main

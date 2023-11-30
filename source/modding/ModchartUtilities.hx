@@ -2844,7 +2844,15 @@ class ModchartUtilities {
 
 		setLuaFunction("setShaderProperty", function(id:String, property:String, value:Dynamic) {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			funnyCustomShader.setFloat(property, value);
+			if(Std.isOfType(value, Float)){
+				funnyCustomShader.setFloat(property, Std.parseFloat(value));
+			}
+			else if(Std.isOfType(value, Int)){
+				funnyCustomShader.setInt(property, Std.parseInt(value));
+			}
+			else{
+				funnyCustomShader.setBool(property, value);
+			}
 		});
 
 		setLuaFunction("updateRating", function() {

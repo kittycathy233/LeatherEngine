@@ -2,13 +2,13 @@
 
 name: CI build
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: linuxBuild
-          path: 'export/release/linux/bin' 
+          path: "export/release/linux/bin"
 
   buildHTML5:
     # The type of runner that the job will run on
@@ -103,11 +103,11 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: html5Build
-          path: 'export/release/html5/bin' 
+          path: "export/release/html5/bin"
 
   buildWindows:
     runs-on: windows-latest
-    
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@main

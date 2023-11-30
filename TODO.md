@@ -1,6 +1,6 @@
 # todo
 
-## high priority 
+## high priority
 
 - allow note types to use lua scripts
 - rework note type and ui skin system(s)
