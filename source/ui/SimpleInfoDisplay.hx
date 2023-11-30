@@ -1,6 +1,5 @@
 package ui;
 
-import utilities.logs.Logs;
 import utilities.CoolUtil;
 import flixel.FlxG;
 import lime.app.Application;
