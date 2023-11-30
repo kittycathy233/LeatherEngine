@@ -105,6 +105,18 @@ class ModchartUtilities {
 		return null;
 	}
 
+	function getCameraByName(id:String):LuaCamera{
+		if(lua_Cameras.exists(id))
+			return lua_Cameras.get(id);
+	
+		switch(id.toLowerCase()){
+			case 'camhud' | 'hud': return lua_Cameras.get("hud");
+		}
+			
+	
+		return lua_Cameras.get("game");
+	}
+
 	public function die() {
 		PlayState.songMultiplier = oldMultiplier;
 
@@ -112,6 +124,7 @@ class ModchartUtilities {
 		lua_Characters.clear();
 		lua_Shaders.clear();
 		lua_Custom_Shaders.clear();
+		lua_Cameras.clear();
 		lua_Sounds.clear();
 
 		Lua.close(lua);
@@ -177,6 +190,9 @@ class ModchartUtilities {
 		lua_Characters.set("boyfriend", PlayState.boyfriend);
 		lua_Characters.set("girlfriend", PlayState.gf);
 		lua_Characters.set("dad", PlayState.dad);
+
+		lua_Cameras.set("game", {cam: PlayState.instance.camGame, shaders: [], shaderNames: []});
+        lua_Cameras.set("hud", {cam: PlayState.instance.camHUD, shaders: [], shaderNames: []});	
 
 		lua_Sounds.set("Inst", FlxG.sound.music);
 		@:privateAccess
@@ -2699,7 +2715,7 @@ class ModchartUtilities {
 
 		//dumb vc functions
 		setLuaFunction("initShader", function(id:String, file:String, ?glslVersion:Int = 120){
-			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)));
+			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)), null, glslVersion);
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 		});
 
@@ -2924,18 +2940,6 @@ class ModchartUtilities {
 
 		return PlayState.instance.camGame;
 	}
-	function getCameraByName(id:String):LuaCamera{
-		if(lua_Cameras.exists(id))
-			return lua_Cameras.get(id);
-	
-		switch(id.toLowerCase()){
-			case 'camhud' | 'hud': return lua_Cameras.get("hud");
-		}
-			
-	
-		return lua_Cameras.get("game");
-	}
-
 
 	@:access(openfl.display.BlendMode)
 	function blendModeFromString(blend:String):BlendMode {
