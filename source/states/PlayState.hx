@@ -1879,7 +1879,17 @@ class PlayState extends MusicBeatState {
 						gottaHitNote = true;
 				}
 
-				var daNoteData:Int = Std.int(songNotes[1] % (!gottaHitNote ? SONG.keyCount : SONG.playerKeyCount));
+				var daNoteData:Int = Std.int(songNotes[1] % (SONG.keyCount + SONG.playerKeyCount));
+				if (section.mustHitSection && daNoteData >= SONG.playerKeyCount)
+					{
+						daNoteData -= SONG.playerKeyCount;
+						daNoteData %= SONG.keyCount;
+					}
+					else if (!section.mustHitSection && daNoteData >= SONG.keyCount)
+					{
+						daNoteData -= SONG.keyCount;
+						daNoteData %= SONG.playerKeyCount;
+					}
 				var oldNote:Note;
 
 				if (unspawnNotes.length > 0)
@@ -4935,20 +4945,20 @@ class PlayState extends MusicBeatState {
 				splash_group.clear();
 				if(Options.getData("middlescroll"))
 					{
-						generateStaticArrows(50, false, false);
-						generateStaticArrows(0.5, true, false);
+						generateStaticArrows(50, false);
+						generateStaticArrows(0.5, true);
 					}
 					else
 					{
 						if(characterPlayingAs == 0)
 						{
-							generateStaticArrows(0, false, false);
-							generateStaticArrows(1, true, false);
+							generateStaticArrows(0, false);
+							generateStaticArrows(1, true);
 						}
 						else
 						{
-							generateStaticArrows(1, false, false);
-							generateStaticArrows(0, true, false);
+							generateStaticArrows(1, false);
+							generateStaticArrows(0, true);
 						}
 					}
 				for (note in unspawnNotes) {

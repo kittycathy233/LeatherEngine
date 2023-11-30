@@ -1186,10 +1186,6 @@ class ModchartUtilities {
             PlayState.instance.unspawnNotes[id].angle = offset;
         });
 
-		setLuaFunction("setUnspawnedNoteAngle", function(id:Int, offset:Float) {
-            PlayState.instance.unspawnNotes[id].angle = offset;
-        });
-
 		setLuaFunction("getRenderedNotes", function() {
 			return PlayState.instance.notes.length;
 		});
@@ -1590,22 +1586,30 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getPlayingActorAnimation", function(id:String) {
-			if (getActorByName(id) != null) {
-				if (Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim") != null)
-					return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim"), "name");
-			}
+            if(getCharacterByName(id) != null)
+            {
+                var character = getCharacterByName(id);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                    return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(character.otherCharacters[0], "animation"), "curAnim"), "name");
+            }
+            if(getActorByName(id) != null)
+            {
+                if(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim") != null)
+                    return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim"), "name");
+            }
 
-			return "unknown";
-		});
+            return "unknown";
+        });
 
-		setLuaFunction("getPlayingActorAnimationFrame", function(id:String) {
-			if (getActorByName(id) != null) {
-				if (Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim") != null)
-					return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim"), "curFrame");
-			}
+        setLuaFunction("getPlayingActorAnimationFrame", function(id:String) {
+            if(getActorByName(id) != null)
+            {
+                if(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim") != null)
+                    return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim"), "curFrame");
+            }
 
-			return 0;
-		});
+            return 0;
+        });
 
 		setLuaFunction("setActorAlpha", function(alpha:Float,id:String) {
             if(getCharacterByName(id) != null)
@@ -1622,10 +1626,20 @@ class ModchartUtilities {
                 Reflect.setProperty(getActorByName(id), "alpha", alpha);
         });
 
-		setLuaFunction("setActorVisible", function(visible:Bool, id:String) {
-			if (getActorByName(id) != null)
-				getActorByName(id).visible = visible;
-		});
+		setLuaFunction("setActorVisible", function(visible:Bool,id:String) {
+            if(getCharacterByName(id) != null)
+                {
+                    var character = getCharacterByName(id);
+                    if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                    {
+                        character.otherCharacters[0].visible = visible;
+                        return;
+                    }
+                        
+                }
+            if(getActorByName(id) != null)
+                getActorByName(id).visible = visible;
+        });
 
 		setLuaFunction("setActorColor", function(id:String, r:Int, g:Int, b:Int, alpha:Int = 255) {
 			if (getActorByName(id) != null) {
@@ -2788,6 +2802,8 @@ class ModchartUtilities {
 		}
 
 		if (PlayState.dad.otherCharacters != null) {
+			lua_Sprites.set('dad', PlayState.dad.otherCharacters[0]);
+			lua_Characters.set('dad', PlayState.dad.otherCharacters[0]);
 			for (char in 0...PlayState.dad.otherCharacters.length) {
 				lua_Sprites.set("dadCharacter" + char, PlayState.dad.otherCharacters[char]);
 				lua_Characters.set("dadCharacter" + char, PlayState.dad.otherCharacters[char]);
@@ -2819,6 +2835,12 @@ class ModchartUtilities {
 				}
 			}
 		}
+
+		lua_Sprites.set("iconP1", PlayState.instance.iconP1);
+        lua_Sprites.set("iconP2", PlayState.instance.iconP2);
+
+        setVar("player1", PlayState.boyfriend.curCharacter);
+        setVar("player2", PlayState.dad.curCharacter);
 
 		for (script in extra_scripts) {
 			script.setupTheShitCuzPullRequestsSuck();
