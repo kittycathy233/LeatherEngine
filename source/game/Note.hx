@@ -45,6 +45,8 @@ class Note extends FlxSprite {
 
 	public var rawNoteData:Int = 0;
 
+	public var localAngle:Float = 0;
+
 	public var character:Int = 0;
 
 	public var characters:Array<Int> = [];
