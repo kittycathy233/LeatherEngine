@@ -45,6 +45,7 @@ class Note extends FlxSprite {
 
 	public var rawNoteData:Int = 0;
 
+	public var modAngle:Float = 0;
 	public var localAngle:Float = 0;
 
 	public var character:Int = 0;
@@ -253,6 +254,8 @@ class Note extends FlxSprite {
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
+
+		angle = angle + modAngle + localAngle;
 
 		calculateCanBeHit();
 

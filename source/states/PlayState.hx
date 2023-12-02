@@ -1447,25 +1447,19 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	public function reorderCameras(?newCam:FlxCamera = null)
-		{
-			var cameras = FlxG.cameras.list.copy();
-			for (c in cameras)
-			{
-				FlxG.cameras.remove(c, false);
-			}
-			for (i in 0...cameras.length)
-			{
-				if (i == cameras.length-1 && newCam != null)
-				{
-					FlxG.cameras.add(newCam, false);
-				}
-				FlxG.cameras.add(cameras[i], false);
-			}
-			FlxG.cameras.setDefaultDrawTarget(camGame, true);
-			executeALuaState("onReorderCameras", [newCam]);
-			allScriptCall("onReorderCameras", [newCam]);
+	public function reorderCameras(?newCam:FlxCamera = null){
+		var cameras = FlxG.cameras.list.copy();
+		for (c in cameras){
+			FlxG.cameras.remove(c, false);
 		}
+		for (i in 0...cameras.length){
+			if (i == cameras.length-1 && newCam != null){
+				FlxG.cameras.add(newCam, false);
+			}
+			FlxG.cameras.add(cameras[i], false);
+		}
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+	}
 
 	public static var playCutsceneLmao:Bool = false;
 	public static var playCutsceneOnPauseLmao:Bool = false;
@@ -1840,9 +1834,9 @@ class PlayState extends MusicBeatState {
 		#end
 		#end
 		executeALuaState("startSong", []);
-		allScriptCall("startSong", []);
+		allScriptCall("startSong");
 		executeALuaState("songStart", []);
-		allScriptCall("songStart", []);
+		allScriptCall("songStart");
 
 		resyncVocals();
 	}

@@ -105,6 +105,8 @@ class PauseSubState extends MusicBeatSubstate {
 		updateAlphabets();
 
 		cameras = [pauseCamera];
+		if (PlayState.instance.usedLuaCameras)
+			cameras = [FlxG.cameras.list[FlxG.cameras.list.length-1]];
 	}
 
 	var justPressedAcceptLol:Bool = true;

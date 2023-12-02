@@ -72,6 +72,8 @@ class ModchartUtilities {
 
 	public var functions_called:Array<String> = [];
 
+	private var localFilters:Array<CustomShader> = [];
+
 	function getActorByName(id:String):Dynamic {
 		// lua objects or what ever
 		if (lua_Sprites.exists(id))
@@ -215,6 +217,8 @@ class ModchartUtilities {
 
 		if (path == null)
 			path = PolymodAssets.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath));
+
+		//trace('Loaded script file at: $path');
 
 		var result = LuaL.dofile(lua, path); // execute le file
 
@@ -1206,7 +1210,7 @@ class ModchartUtilities {
         });
 
 		setLuaFunction("setUnspawnedNoteAngle", function(id:Int, offset:Float) {
-            PlayState.instance.unspawnNotes[id].angle = offset;
+            PlayState.instance.unspawnNotes[id].localAngle  = offset;
         });
 
 		setLuaFunction("getRenderedNotes", function() {
@@ -1247,7 +1251,6 @@ class ModchartUtilities {
 
 			return PlayState.strumLineNotes.members[Math.floor(Math.abs(PlayState.instance.notes.members[id].noteData))].x;
 		});
-
 
 		setLuaFunction("getRenderedNoteStrumtime", function(id:Int) {
 			return PlayState.instance.notes.members[id].strumTime;
@@ -1336,7 +1339,7 @@ class ModchartUtilities {
         });
 
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
-			PlayState.instance.notes.members[id].angle = angle;
+			PlayState.instance.notes.members[id].modAngle = angle;
 		});
 
 		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
@@ -2668,16 +2671,22 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setCameraCustomShader", function(id:String, camera:String){
+			if (!Options.getData("shaders"))
+                return;
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			cameraFromString(camera).filters = [new ShaderFilter(funnyCustomShader)];
 		});
 
 		setLuaFunction("pushShaderToCamera", function(id:String, camera:String){
+			if (!Options.getData("shaders"))
+                return;
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			cameraFromString(camera).filters.push(new ShaderFilter(funnyCustomShader));
 		});
 
 		setLuaFunction("setCameraNoCustomShader", function(camera:String){
+			if (!Options.getData("shaders"))
+                return;
 			cameraFromString(camera).filters = null;
 		});
 
@@ -2727,24 +2736,22 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setCameraShader", function(camera:String, id:String){
+			if (!Options.getData("shaders"))
+                return;
+
+			var cam = lua_Cameras.get(camera);
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			if(cameraFromString(camera).filters.length == 0){
-				cameraFromString(camera).filters = [new ShaderFilter(funnyCustomShader)];
+			if(cam != null && funnyCustomShader != null){
+				cam.shaders.push(new ShaderFilter(funnyCustomShader)); //use reflect to workaround compiler errors
+                cam.shaderNames.push(id);
+                cam.cam.filters = cam.shaders;
 			}
-			else{
-				cameraFromString(camera).filters.push(new ShaderFilter(funnyCustomShader));
-			}
-			trace("shaders");
-			trace(cameraFromString(camera).filters);
 		});
 
 		setLuaFunction("setShaderProperty", function(id:String, property:String, value:Dynamic) {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			if(Std.isOfType(value, Float)){
 				funnyCustomShader.setFloat(property, Std.parseFloat(value));
-			}
-			else if(Std.isOfType(value, Int)){
-				funnyCustomShader.setInt(property, Std.parseInt(value));
 			}
 			else{
 				funnyCustomShader.setBool(property, value);
