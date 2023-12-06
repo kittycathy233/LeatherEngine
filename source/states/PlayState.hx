@@ -1439,8 +1439,6 @@ class PlayState extends MusicBeatState {
 	var globalLuaScript:ModchartUtilities;
 	#end
 
-	var fixedUpdateTime:Float = 0.0;
-
 	function allScriptCall(func:String, ?args:Array<Dynamic>) {
 		for (cool_script in scripts) {
 			cool_script.call(func, args);
@@ -2224,38 +2222,32 @@ class PlayState extends MusicBeatState {
 	function fixedUpdate() {
 
 		if (script != null)
-			script.call("fixedUpdate", [fixedUpdateFPS]);
+			script.call("fixedUpdate", [1 / 120]);
 
 		if (gf.script != null)
-			gf.script.call("fixedUpdate", [fixedUpdateFPS]);
+			gf.script.call("fixedUpdate", [1 / 120]);
 		if (dad.script != null)
-			dad.script.call("fixedUpdate", [fixedUpdateFPS]);
+			dad.script.call("fixedUpdate", [1 / 120]);
 		if (boyfriend.script != null)
-			boyfriend.script.call("fixedUpdate", [fixedUpdateFPS]);
+			boyfriend.script.call("fixedUpdate", [1 / 120]);
 
+		#if linc_luajit
 		setLuaVar("songPos", Conductor.songPosition);
 		setLuaVar("bot", Options.getData("botplay"));
 		setLuaVar("hudZoom", camHUD.zoom);
 		setLuaVar("curBeat", curBeat);
 		setLuaVar("cameraZoom", FlxG.camera.zoom);
 
-		executeALuaState("fixedUpdate", [fixedUpdateFPS]);
-		allScriptCall("fixedUpdate", [fixedUpdateFPS]);
+		executeALuaState("fixedUpdate", [1 / 120]);
+		#end
+		allScriptCall("fixedUpdate", [1 / 120]);
 	}
 
-	var fixedUpdateFPS:Int = 60;
+	var fixedUpdateTime:Float = 0.0;
 
 	override public function update(elapsed:Float) {
 		if (script != null)
 			script.update(elapsed);
-
-		fixedUpdateTime += elapsed;
-
-		if (fixedUpdateTime > 1 / fixedUpdateFPS) {
-			fixedUpdate();
-			fixedUpdateTime = 0;
-		}
-
 
 		super.update(elapsed);
 
@@ -2299,6 +2291,13 @@ class PlayState extends MusicBeatState {
 		}
 
 		song_info_timer += elapsed;
+
+		fixedUpdateTime += elapsed;
+
+		if (fixedUpdateTime >= 1 / 120) {
+			fixedUpdate();
+			fixedUpdateTime = 0;
+		}
 
 		if (song_info_timer >= 0.25 / songMultiplier) {
 			updateSongInfoText();

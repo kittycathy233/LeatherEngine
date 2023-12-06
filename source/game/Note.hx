@@ -265,7 +265,7 @@ class Note extends FlxSprite {
 					alpha = 0.3;
 			}
 		}
-		if (canBeHit && Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default")){
+		if (canBeHit && Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default") && animation != null){
 			animation.play("glow");
 		}
 	}

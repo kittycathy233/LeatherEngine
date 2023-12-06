@@ -282,6 +282,10 @@
       "save": "autosave"
     },
     {
+      "option": "backupDuration",
+      "value": 10
+    },
+    {
       "option": "shaders",
       "value": true
     },

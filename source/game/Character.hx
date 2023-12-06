@@ -282,7 +282,13 @@ class Character extends FlxSprite {
 
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
 
-		var localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
+		var localKeyCount;
+		if(PlayState.SONG.playerKeyCount != null && PlayState.SONG.keyCount != null ){
+			localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
+		}
+		else{
+			localKeyCount = isPlayer ? 4 : 4;
+		}
 
 		if (config.noteColors == null){
 			config.noteColors = NoteColors.defaultColors;

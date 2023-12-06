@@ -63,11 +63,13 @@ class NoteSplash extends FlxSprite {
 				noteColor = charColors.noteColors[localKeyCount - 1][noteData];
 			else
 				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[PlayState.SONG.keyCount - 1][noteData]);
-
-			colorSwap.r = noteColor[0];
-			colorSwap.g = noteColor[1];
-			colorSwap.b = noteColor[2];
 		}
+		else{
+			noteColor = [255,0,0];
+		}
+		colorSwap.r = noteColor[0];
+		colorSwap.g = noteColor[1];
+		colorSwap.b = noteColor[2];
 		update(0);
 	}
 

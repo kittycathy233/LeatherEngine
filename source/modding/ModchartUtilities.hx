@@ -356,6 +356,10 @@ class ModchartUtilities {
 			version: lime.app.Application.current.meta.get('version'),
 		});
 
+		setVar("version", {
+			version: lime.app.Application.current.meta.get('version'),
+		});
+
 		// callbacks
 
 		setLuaFunction("trace", function(str:Dynamic = "") {

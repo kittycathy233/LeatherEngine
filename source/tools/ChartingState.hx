@@ -1,5 +1,6 @@
 package tools;
 
+import flixel.util.FlxTimer;
 import flixel.FlxObject;
 import game.EventSprite;
 import utilities.NoteVariables;
@@ -315,9 +316,78 @@ class ChartingState extends MusicBeatState {
 		updateHeads();
 		updateGrid();
 
+		new FlxTimer().start(Options.getData("backupDuration") * 60, backupChart, 0);
+		new FlxTimer().start(Options.getData("backupDuration") * 60, backupEvents, 0);
+
 		super.create();
 
 		loadedAutosave = false;
+	}
+
+	private function backupChart(_):Void{
+		trace("trying to make a backup of the chart...");
+		var json:Dynamic;
+		var date:String = Date.now().toString();
+		var path:String;
+		date = StringTools.replace(date, " ", "_");
+		date = StringTools.replace(date, ":", "'");
+		json = {"song": _song};
+		json.song.events = [];
+		var data:String = Json.stringify(json);
+
+		if ((data != null) && (data.length > 0)) {
+			var gamingName = _song.song.toLowerCase();
+
+			if (difficulty.toLowerCase() != 'normal')
+				gamingName = gamingName + '-' + difficulty.toLowerCase();
+
+			#if sys
+			path = "./backups/" + "backup-" + gamingName + '-on-' + date + ".json";
+			if (!sys.FileSystem.exists("./backups/"))
+				sys.FileSystem.createDirectory("./backups/");
+			sys.io.File.saveContent(path, Std.string(data.trim()));
+			trace("chart backup made!");
+			#else
+			trace("failed to make backup!")
+			#end
+		}
+	}
+	private function backupEvents(_):Void {
+		trace("trying to make a backup of the events...");
+		var json:Dynamic;
+		var date:String = Date.now().toString();
+		var path:String;
+		date = StringTools.replace(date, " ", "_");
+		date = StringTools.replace(date, ":", "'");
+
+		json = {
+			"song": {
+				"events": []
+			}
+		};
+		json.song.events = events;
+		var data:String = Json.stringify(json);
+		if ((data != null) && (data.length > 0)) {
+			
+			var gamingName = _song.song.toLowerCase();
+
+			gamingName = "events-";
+
+			gamingName += _song.song.toLowerCase();
+
+			if (difficulty.toLowerCase() != 'normal')
+				gamingName = gamingName + '-' + difficulty.toLowerCase();
+
+			#if sys
+			path = "./backups/" + "backup-" + gamingName + '-on-' + date + ".json";
+			if (!sys.FileSystem.exists("./backups/"))
+				sys.FileSystem.createDirectory("./backups/");
+			sys.io.File.saveContent(path, Std.string(data.trim()));
+			trace("events backup made!");
+			#else
+			trace("failed to make backup!")
+			#end
+		}
 	}
 
 	function addSongUI():Void {
