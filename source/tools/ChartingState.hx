@@ -348,7 +348,7 @@ class ChartingState extends MusicBeatState {
 			sys.io.File.saveContent(path, Std.string(data.trim()));
 			trace("chart backup made!");
 			#else
-			trace("failed to make backup!")
+			trace("failed to make backup!");
 			#end
 		}
 	}
@@ -385,7 +385,7 @@ class ChartingState extends MusicBeatState {
 			sys.io.File.saveContent(path, Std.string(data.trim()));
 			trace("events backup made!");
 			#else
-			trace("failed to make backup!")
+			trace("failed to make backup!");
 			#end
 		}
 	}
