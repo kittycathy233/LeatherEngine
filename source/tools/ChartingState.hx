@@ -138,12 +138,12 @@ class ChartingState extends MusicBeatState {
 		var menuBG:FlxSprite;
 
 		if(Options.getData("menuBGs"))
-			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat')))
-				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/default/backgrounds/menuDesat'));
+			if (!Assets.exists(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuCharter')))
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/default/backgrounds/menuCharter'));
 			else
-				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat'));
+				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuCharter'));
 		else
-			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.BLACK, false, "optimizedMenuDesat");
+			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.BLACK, false, "optimizedMenuCharter");
 
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
