@@ -1288,6 +1288,7 @@ class ModchartUtilities {
 		setLuaFunction("setRenderedNoteScaleX", function(scale:Float, id:Int) {
             PlayState.instance.notes.members[id].scale.x = scale;
         });
+		
         setLuaFunction("setRenderedNoteScaleY", function(scale:Float, id:Int) {
             PlayState.instance.notes.members[id].scale.y = scale;
         });
