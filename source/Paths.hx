@@ -140,4 +140,8 @@ class Paths {
 		else
 			return FlxAtlasFrames.fromSparrow(image("Bind_Menu_Assets", "preload"), file('images/Bind_Menu_Assets.xml', "preload"));
 	}
+
+	inline static public function getTextureAtlas(key:String, ?library:String):String {
+		return getPath('images/$key', IMAGE, library);
+	}
 }

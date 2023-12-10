@@ -1,5 +1,6 @@
 package game;
 
+import flxanimate.FlxAnimate;
 import shaders.NoteColors;
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
@@ -35,6 +36,8 @@ class Character extends FlxSprite {
 	public var cameraOffset:Array<Float> = [0, 0];
 
 	public var otherCharacters:Array<Character>;
+	public var textureAtlas:FlxAnimate = null;
+	public var useTextureAtlas:Bool = false;
 
 	public var offsetsFlipWhenPlayer:Bool = true;
 	public var offsetsFlipWhenEnemy:Bool = false;
@@ -59,7 +62,6 @@ class Character extends FlxSprite {
 
 	public var playFullAnim:Bool = false;
 	public var preventDanceForAnim:Bool = false;
-
 
 	public var lastHitStrumTime:Float = 0;
 	public var justHitStrumTime:Float = -5000;
@@ -199,8 +201,16 @@ class Character extends FlxSprite {
 
 			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT)))
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
-			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT)))
-				frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
+			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
+				//frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
+				//makeGraphic(1, 1, FlxColor.TRANSPARENT);
+				useTextureAtlas = true;
+				textureAtlas = new FlxAnimate(x, y, Paths.getTextureAtlas(config.imagePath));
+				textureAtlas.flipX = flipX;
+				textureAtlas.flipY = flipY;
+				textureAtlas.scale = scale;
+				textureAtlas.antialiasing = antialiasing;
+			}
 			else
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
 
@@ -213,12 +223,23 @@ class Character extends FlxSprite {
 				scale.set(size, size);
 
 			for (selected_animation in config.animations) {
-				if (selected_animation.indices != null && selected_animation.indices.length > 0) {
-					animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps,
-						selected_animation.looped);
-				} else {
-					animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+				if(!useTextureAtlas){
+					if (selected_animation.indices != null && selected_animation.indices.length > 0) {
+						animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps, selected_animation.looped);
+					} else {
+						animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+					}
 				}
+				else{
+					trace("added anim!");
+					textureAtlas.anim.addBySymbol(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped, this.x, this.y);
+				}
+			}
+
+			if(useTextureAtlas){
+				trace("our anims are:");
+				@:privateAccess
+				trace(textureAtlas.anim.animsMap);
 			}
 
 			if (isDeathCharacter)
@@ -283,11 +304,11 @@ class Character extends FlxSprite {
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
 
 		var localKeyCount;
-		if(FlxG.state == new PlayState()){
+		if(FlxG.state == PlayState.instance){
 			localKeyCount = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 		}
 		else{
-			localKeyCount = isPlayer ? 4 : 4;
+			localKeyCount = 4;
 		}
 
 		if (config.noteColors == null){
@@ -334,6 +355,27 @@ class Character extends FlxSprite {
 		}
 	}
 
+	override public function draw()
+		{
+			if (useTextureAtlas)
+			{
+				textureAtlas.visible = visible;
+				textureAtlas.color = color;
+				textureAtlas.alpha = alpha;
+				textureAtlas.scale = scale;
+				textureAtlas.antialiasing = antialiasing;
+				textureAtlas.cameras = cameras;
+				textureAtlas.x = x - offset.x;
+				textureAtlas.y = y - offset.y;
+				textureAtlas.scrollFactor = scrollFactor;
+				textureAtlas.flipX = flipX;
+				textureAtlas.flipY = flipY;
+				textureAtlas.draw();
+			}
+			else
+				super.draw();
+		}
+
 	public var shouldDance:Bool = true;
 
 	override function update(elapsed:Float) {
@@ -370,6 +412,8 @@ class Character extends FlxSprite {
 		}
 		if(script != null)
 			script.update(elapsed);
+		if(useTextureAtlas)
+			textureAtlas.update(elapsed);
 		super.update(elapsed);
 	}
 
@@ -419,8 +463,14 @@ class Character extends FlxSprite {
 			return;
 
 		preventDanceForAnim = false; //reset it
-		
-		animation.play(AnimName, Force, Reversed, Frame);
+
+		if(useTextureAtlas){
+			textureAtlas.anim.play(AnimName, Force, Reversed, Frame);
+			trace("played anim: " + AnimName);
+		}
+		else{
+			animation.play(AnimName, Force, Reversed, Frame);
+		}
 
 		var daOffset = animOffsets.get(AnimName);
 
