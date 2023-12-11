@@ -537,7 +537,7 @@ class FreeplayState extends MusicBeatState {
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		// Song Inst
-		if (Options.getData("freeplayMusic")) {
+		if (Options.getData("freeplayMusic") && curSelected <= 0) {
 			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName, curDiffString.toLowerCase()), 0.7);
 
 			if (vocals.active && vocals.playing)
