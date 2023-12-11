@@ -227,12 +227,7 @@ class ModchartUtilities {
 			// FlxG.switchState(new MainMenuState());
 		}
 
-		// this might become a problem if i don't do this
-		setVar("require", false);
-		setVar("os", false);
-
 		// get some fukin globals up in here bois
-
 		setVar("songLower", PlayState.SONG.song.toLowerCase());
 		setVar("difficulty", PlayState.storyDifficultyStr);
 		setVar("bpm", Conductor.bpm);
@@ -254,8 +249,7 @@ class ModchartUtilities {
 		setVar("shaders", Options.getData("shaders"));
 
 		setVar("animatedBackgrounds", Options.getData("animatedBGs"));
-
-        setVar("charsAndBGs", Options.getData("charsAndBGs"));
+    setVar("charsAndBGs", Options.getData("charsAndBGs"));
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
@@ -268,7 +262,6 @@ class ModchartUtilities {
 		setVar("cameraZoom", FlxG.camera.zoom);
 
 		setVar("cameraAngle", FlxG.camera.angle);
-
 		setVar("camHudAngle", PlayState.instance.camHUD.angle);
 
 		setVar("followXOffset", 0);
@@ -293,15 +286,15 @@ class ModchartUtilities {
 		setVar("inReplay", PlayState.playingReplay);
 
 		setVar("player1", PlayState.SONG.player1);
-        setVar("player2", PlayState.SONG.player2);
+    setVar("player2", PlayState.SONG.player2);
 
-        setVar("curStage", PlayState.SONG.stage);
+    setVar("curStage", PlayState.SONG.stage);
 
 		#if mobile
         setVar("mobile", true);
         #else 
         setVar("mobile", false);
-        #end
+    #end
 
 		// other globals
 
