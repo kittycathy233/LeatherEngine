@@ -2650,13 +2650,15 @@ class PlayState extends MusicBeatState {
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 							allScriptCall('playerTwoSingHeld', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 						}
 						else{
@@ -2664,13 +2666,15 @@ class PlayState extends MusicBeatState {
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 							allScriptCall('playerTwoSing', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 						}
 					} else {
@@ -2692,13 +2696,15 @@ class PlayState extends MusicBeatState {
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 							allScriptCall("playerOneSingHeld", [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 						}
 						else{
@@ -2706,13 +2712,15 @@ class PlayState extends MusicBeatState {
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 							allScriptCall("playerOneSing", [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
-								daNote.strumTime
+								daNote.strumTime,
+								daNote.character
 							]);
 						}
 					}
@@ -4000,7 +4008,7 @@ class PlayState extends MusicBeatState {
 
 			calculateAccuracy();
 
-			var lua_Data:Array<Dynamic> = [note.noteData, Conductor.songPosition, note.arrow_Type, note.strumTime];
+			var lua_Data:Array<Dynamic> = [note.noteData, Conductor.songPosition, note.arrow_Type, note.strumTime, note.character];
 
 			if (characterPlayingAs == 0) {
 				if (boyfriend.otherCharacters != null && !(boyfriend.otherCharacters.length - 1 < note.character))

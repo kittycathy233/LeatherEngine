@@ -1677,6 +1677,7 @@ class ModchartUtilities {
 				Reflect.setProperty(getActorByName(id), "color", FlxColor.fromRGB(r, g, b, alpha));
 			}
 		});
+		
 		setLuaFunction("setActorColorRGB", function(id:String, color:String) {
             var actor:FlxSprite = getActorByName(id);
 
@@ -2537,6 +2538,11 @@ class ModchartUtilities {
 			Conductor.songPosition = position;
 			setVar('songPos', Conductor.songPosition);
 		});
+
+		setLuaFunction("getSongPosition", function() {
+			return Conductor.songPosition;
+		});
+
 
 		setLuaFunction("stopSong", function() {
 			@:privateAccess
