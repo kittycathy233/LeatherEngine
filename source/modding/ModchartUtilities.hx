@@ -1,5 +1,6 @@
 package modding;
 
+import hxnoise.Perlin;
 import utilities.NoteVariables;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.FlxInput.FlxInputState;
@@ -180,6 +181,8 @@ class ModchartUtilities {
 
 	public var extra_scripts:Array<ModchartUtilities> = [];
 
+	public var perlin:Perlin;
+
 	/**
 	 * Easy wrapper for `Lua_helper.add_callback`.
 	 * @param name Function name
@@ -191,6 +194,8 @@ class ModchartUtilities {
 
 	public function new(?path:Null<String>) {
 		oldMultiplier = PlayState.songMultiplier;
+		
+		perlin = new Perlin();
 
 		lua_Sprites.set("boyfriend", PlayState.boyfriend);
 		lua_Sprites.set("girlfriend", PlayState.gf);
@@ -354,6 +359,10 @@ class ModchartUtilities {
 		});
 
 		// callbacks
+
+		setLuaFunction("perlin", function(x:Float, y:Float, z:Float) {
+            return perlin.perlin(x,y,z);
+        });
 
 		setLuaFunction("trace", function(str:Dynamic = "") {
             trace(str);
