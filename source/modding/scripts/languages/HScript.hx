@@ -2,6 +2,7 @@ package modding.scripts.languages;
 
 import states.PlayState;
 import openfl.utils.Assets;
+import flixel.FlxG;
 import hscript.Parser;
 import hscript.Expr;
 import hscript.Interp;
