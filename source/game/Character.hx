@@ -462,6 +462,14 @@ class Character extends FlxSprite {
 		if (!animation.exists(AnimName))
 			return;
 
+		
+		if (singAnimPrefix != 'sing' && AnimName.contains('sing')){
+			var anim = AnimName;
+			anim = anim.replace('sing', singAnimPrefix);
+			if (animation.getByName(anim) != null) //check if it exists so no broken anims
+				AnimName = anim;
+		}
+
 		preventDanceForAnim = false; //reset it
 
 		if(useTextureAtlas){

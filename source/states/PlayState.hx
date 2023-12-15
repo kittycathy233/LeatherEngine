@@ -2629,9 +2629,14 @@ class PlayState extends MusicBeatState {
 				if (!daNote.mustPress && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
 					camZooming = true;
 
+					var singAnim:String = NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(false) - 1][Std.int(Math.abs(daNote.noteData))] + (characterPlayingAs == 0 ? altAnim : "") + daNote.singAnimSuffix;
+					if (daNote.singAnimPrefix != 'sing'){
+						singAnim = singAnim.replace('sing', daNote.singAnimPrefix);
+					}
+
 					if (characterPlayingAs == 0) {
 						if (dad.otherCharacters == null || dad.otherCharacters.length - 1 < daNote.character)
-							dad.playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))] + altAnim, true);
+							dad.playAnim(singAnim, true);
 						else {
 							if (daNote.characters.length <= 1)
 								dad.otherCharacters[daNote.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))]
@@ -2679,7 +2684,7 @@ class PlayState extends MusicBeatState {
 						}
 					} else {
 						if (boyfriend.otherCharacters == null || boyfriend.otherCharacters.length - 1 < daNote.character)
-							boyfriend.playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))], true);
+							boyfriend.playAnim(singAnim, true);
 						else if (daNote.characters.length <= 1)
 							boyfriend.otherCharacters[daNote.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))],
 								true);
@@ -4010,6 +4015,11 @@ class PlayState extends MusicBeatState {
 
 			var lua_Data:Array<Dynamic> = [note.noteData, Conductor.songPosition, note.arrow_Type, note.strumTime, note.character];
 
+			var singAnim:String = NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][Std.int(Math.abs(note.noteData % getCorrectKeyCount(true)))] + (characterPlayingAs == 1 ? altAnim : "") + note.singAnimSuffix;
+			if (note.singAnimPrefix != 'sing'){
+				singAnim = singAnim.replace('sing', note.singAnimPrefix);
+			}
+
 			if (characterPlayingAs == 0) {
 				if (boyfriend.otherCharacters != null && !(boyfriend.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)
@@ -5181,6 +5191,15 @@ class PlayState extends MusicBeatState {
 					scripts.push(noteScript);
 				}
 		}
+	function getCorrectKeyCount(player:Bool)
+	{
+		var kc = SONG.keyCount;
+		if ((player && characterPlayingAs == 0) || (characterPlayingAs == 1 && !player))
+		{
+			kc = SONG.playerKeyCount;
+		}
+		return kc;
+	}
 }
 
 enum Execute_On {
