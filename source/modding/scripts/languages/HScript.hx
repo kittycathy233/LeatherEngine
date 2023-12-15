@@ -165,8 +165,8 @@ class HScript
 		#end
 
 		//modchart tools stuff
-		/*#if MODCHARTING_TOOLS
-		if (PlayState.SONG.modchartingTools){
+		#if MODCHARTING_TOOLS
+		if (FlxG.state == PlayState.instance){
 			interp.variables.set('PlayfieldRenderer', modcharting.PlayfieldRenderer);
 			interp.variables.set('ModchartUtil', modcharting.ModchartUtil);
 			interp.variables.set('Modifier', modcharting.Modifier);
@@ -174,7 +174,7 @@ class HScript
 			interp.variables.set('NotePositionData', modcharting.NotePositionData);
 			interp.variables.set('ModchartFile', modcharting.ModchartFile);
 		}
-		#end*/
+		#end
 		// function shits
 
 	    interp.variables.set("import", function(class_name:String) {
