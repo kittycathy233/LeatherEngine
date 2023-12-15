@@ -2784,6 +2784,9 @@ class ModchartUtilities {
 			PlayState.instance.updateRating();
 		});
 
+		setLuaFunction("getOption", function(saveStr:String) {
+			return Options.getData(saveStr);
+		});
 
 		#if MODCHARTING_TOOLS
 		if (PlayState.SONG.modchartingTools){
