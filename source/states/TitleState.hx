@@ -437,14 +437,16 @@ class TitleState extends MusicBeatState {
 	}
 
 	function textDataText(line:Int) {
-		var lineText:Null<String> = titleTextData[line];
+		if(line >= 0){
+			var lineText:Null<String> = titleTextData[line];
 
-		if (lineText != null) {
-			if (lineText.contains("~")) {
-				var coolText = lineText.split("~");
-				createCoolText(coolText);
-			} else
-				addMoreText(lineText);
+			if (lineText != null) {
+				if (lineText.contains("~")) {
+					var coolText = lineText.split("~");
+					createCoolText(coolText);
+				} else
+					addMoreText(lineText);
+			}
 		}
 	}
 
