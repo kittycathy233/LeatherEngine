@@ -13,8 +13,6 @@ haxelib install hmm
 haxelib run hmm install
 ```
 
-## IMPORTANT: use the latest stable polymod not git please
-
 Dependencies for compiling:
 
 ## Windows
