@@ -9,11 +9,22 @@ Step 3. [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxefl
 Step 4. Run these commands to install the libraries required:
 
 ```
-haxelib install hmm
-haxelib run hmm install
+haxelib install flixel-tools
+haxelib install flixel-ui
+haxelib install flixel-addons
+haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
+haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+haxelib install away3d
+haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
+haxelib install hxCodec
+haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
+haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+haxelib git hxNoise https://github.com/whuop/hxNoise
+haxelib install flixel-screenshot-plugin
+haxelib install hxcpp-debug-server
 ```
-
-## IMPORTANT: use the latest stable polymod not git please
 
 Dependencies for compiling:
 
