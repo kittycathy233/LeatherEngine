@@ -1053,7 +1053,6 @@ class PlayState extends MusicBeatState {
 							if(file.endsWith('.lua'))
 								{
 
-									globalLuaExists = true;
 
 									
 									globalLuaScript = (new ModchartUtilities("mods/" + mod + "/data/scripts/global/" + file));
@@ -1086,9 +1085,7 @@ class PlayState extends MusicBeatState {
 							if(file.endsWith('.lua'))
 								{
 
-									globalLuaExists = true;
-
-									
+							
 									globalLuaScript = (new ModchartUtilities("assets/data/scripts/global/" + file));
 
 									globalLuaScripts.push(globalLuaScript);
@@ -1112,7 +1109,6 @@ class PlayState extends MusicBeatState {
 				}
 				#if linc_luajit
 				if(file.endsWith('.lua')){
-					globalLuaExists = true;
 					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
 					globalLuaScripts.push(globalLuaScript);
 					}
@@ -1133,7 +1129,6 @@ class PlayState extends MusicBeatState {
 				}
 				#if linc_luajit
 				if(file.endsWith('.lua')){
-					globalLuaExists = true;
 					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
 					globalLuaScripts.push(globalLuaScript);
 					}
@@ -1691,8 +1686,10 @@ class PlayState extends MusicBeatState {
 			}
 		}
 		
-		for (i in globalLuaScripts) {
-			i.setupTheShitCuzPullRequestsSuck();
+		if (globalLuaScripts.length != 0){
+			for (i in globalLuaScripts) {
+				i.setupTheShitCuzPullRequestsSuck();
+			}
 		}
 
 		for (i in 0...strumLineNotes.length) {
@@ -2211,8 +2208,6 @@ class PlayState extends MusicBeatState {
 
 	#if linc_luajit
 	public var generatedSomeDumbEventLuas:Bool = false;
-
-	public var globalLuaExists:Bool = false;
 	#end
 
 	public var ratingStr:String = "";
@@ -2232,12 +2227,6 @@ class PlayState extends MusicBeatState {
 			boyfriend.script.call("fixedUpdate", [1 / 120]);
 
 		#if linc_luajit
-		setLuaVar("songPos", Conductor.songPosition);
-		setLuaVar("bot", Options.getData("botplay"));
-		setLuaVar("hudZoom", camHUD.zoom);
-		setLuaVar("curBeat", curBeat);
-		setLuaVar("cameraZoom", FlxG.camera.zoom);
-
 		executeALuaState("fixedUpdate", [1 / 120]);
 		#end
 		allScriptCall("fixedUpdate", [1 / 120]);
@@ -2987,7 +2976,7 @@ class PlayState extends MusicBeatState {
 		});
 
 		#if linc_luajit
-		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || globalLuaExists)
+		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || globalLuaScripts.length != 0)
 			&& generatedMusic
 			&& !switchedStates
 			&& startedCountdown) {
@@ -4456,8 +4445,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
+					if(globalLuaScripts.length != 0){
 					for (i in globalLuaScripts) {
 						i.setupTheShitCuzPullRequestsSuck();
+					}
 					}
 
 					#end
@@ -4496,8 +4487,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					for (i in globalLuaScripts) {
-						i.setupTheShitCuzPullRequestsSuck();
+					if(globalLuaScripts.length != 0){
+						for (i in globalLuaScripts) {
+							i.setupTheShitCuzPullRequestsSuck();
+						}
 					}
 
 					#end
@@ -4548,8 +4541,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					for (i in globalLuaScripts) {
-						i.setupTheShitCuzPullRequestsSuck();
+					if(globalLuaScripts.length != 0){
+						for (i in globalLuaScripts) {
+							i.setupTheShitCuzPullRequestsSuck();
+						}
 					}
 
 					#end
@@ -4666,8 +4661,10 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		for (i in globalLuaScripts) {
-			i.executeState(name, arguments);
+		if(globalLuaScripts.length != 0){
+			for (i in globalLuaScripts) {
+				i.executeState(name, arguments);
+			}
 		}
 		#end
 	}
@@ -4679,6 +4676,9 @@ class PlayState extends MusicBeatState {
 		#if linc_luajit
 		if (executeModchart && luaModchart != null && execute_on != STAGE){
 			luaModchart.setVar(name, data);
+		}
+
+		if(globalLuaScripts.length != 0){
 			for (i in globalLuaScripts) {
 				i.setVar(name, data);
 			}
@@ -4727,12 +4727,14 @@ class PlayState extends MusicBeatState {
 				luaVar = newLuaVar;
 		}
 
-		for (i in globalLuaScripts) {
+		if(globalLuaScripts.length != 0){
+			for (i in globalLuaScripts) {
 
-			var newLuaVar = i.getVar(name, type);
-			
-			if (newLuaVar != null)
-				luaVar = newLuaVar;
+				var newLuaVar = i.getVar(name, type);
+				
+				if (newLuaVar != null)
+					luaVar = newLuaVar;
+			}
 		}
 		if (luaVar != null)
 			return luaVar;

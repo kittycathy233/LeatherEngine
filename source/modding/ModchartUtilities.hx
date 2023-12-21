@@ -2755,11 +2755,31 @@ class ModchartUtilities {
 			var cam = lua_Cameras.get(camera);
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			if(cam != null && funnyCustomShader != null){
-				cam.shaders.push(new ShaderFilter(funnyCustomShader)); //use reflect to workaround compiler errors
+				cam.shaders.push(new ShaderFilter(funnyCustomShader));
                 cam.shaderNames.push(id);
                 cam.cam.filters = cam.shaders;
 			}
 		});
+
+		setLuaFunction("removeCameraShader", function(camStr:String, shaderName:String) {
+            if (!Options.getData("shaders"))
+                return;
+            var cam = lua_Cameras.get(camStr);
+            if (cam != null)
+            {
+                if (cam.shaderNames.contains(shaderName))
+                {
+                    var idx:Int = cam.shaderNames.indexOf(shaderName);
+                    if (idx != -1)
+                    {
+                        cam.shaderNames.remove(cam.shaderNames[idx]);
+                        cam.shaders.remove(cam.shaders[idx]);
+                        cam.cam.filters = cam.shaders;
+                    }
+                    
+                }
+            }
+        });
 
 		setLuaFunction("setShaderProperty", function(id:String, property:String, value:Dynamic) {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);

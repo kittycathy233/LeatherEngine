@@ -13,6 +13,7 @@ import utilities.CoolUtil;
 import states.PlayState;
 import flixel.FlxSprite;
 import modding.CharacterConfig;
+import flixel.util.FlxDestroyUtil;
 
 using StringTools;
 
@@ -202,14 +203,10 @@ class Character extends FlxSprite {
 			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT)))
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
 			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
-				//frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
-				//makeGraphic(1, 1, FlxColor.TRANSPARENT);
 				useTextureAtlas = true;
 				textureAtlas = new FlxAnimate(x, y, Paths.getTextureAtlas(config.imagePath));
-				textureAtlas.flipX = flipX;
-				textureAtlas.flipY = flipY;
-				textureAtlas.scale = scale;
-				textureAtlas.antialiasing = antialiasing;
+				textureAtlas.showPivot = false;
+				trace("loaded texture atlas!");
 			}
 			else
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
@@ -231,16 +228,13 @@ class Character extends FlxSprite {
 					}
 				}
 				else{
-					trace("added anim!");
-					textureAtlas.anim.addBySymbol(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped, this.x, this.y);
+					if(selected_animation.indices != null && selected_animation.indices.length > 0)
+						textureAtlas.anim.addBySymbolIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, selected_animation.fps, selected_animation.looped);
+					else
+						textureAtlas.anim.addBySymbol(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
 				}
 			}
 
-			if(useTextureAtlas){
-				trace("our anims are:");
-				@:privateAccess
-				trace(textureAtlas.anim.animsMap);
-			}
 
 			if (isDeathCharacter)
 				playAnim("firstDeath");
@@ -357,24 +351,40 @@ class Character extends FlxSprite {
 
 	override public function draw()
 		{
-			if (useTextureAtlas)
-			{
-				textureAtlas.visible = visible;
-				textureAtlas.color = color;
-				textureAtlas.alpha = alpha;
-				textureAtlas.scale = scale;
-				textureAtlas.antialiasing = antialiasing;
-				textureAtlas.cameras = cameras;
-				textureAtlas.x = x - offset.x;
-				textureAtlas.y = y - offset.y;
-				textureAtlas.scrollFactor = scrollFactor;
-				textureAtlas.flipX = flipX;
-				textureAtlas.flipY = flipY;
+			if(useTextureAtlas){
+				copyAtlasValues();
 				textureAtlas.draw();
+				return;
 			}
-			else
-				super.draw();
+			super.draw();
 		}
+	public function copyAtlasValues()
+	{
+		@:privateAccess
+		{
+			textureAtlas.cameras = cameras;
+			textureAtlas.scrollFactor = scrollFactor;
+			textureAtlas.scale = scale;
+			textureAtlas.offset = offset;
+			textureAtlas.origin = origin;
+			textureAtlas.x = x;
+			textureAtlas.y = y;
+			textureAtlas.angle = angle;
+			textureAtlas.alpha = alpha;
+			textureAtlas.visible = visible;
+			textureAtlas.flipX = flipX;
+			textureAtlas.flipY = flipY;
+			textureAtlas.shader = shader;
+			textureAtlas.antialiasing = antialiasing;
+			textureAtlas.colorTransform = colorTransform;
+			textureAtlas.color = color;
+		}
+	}
+	public override function destroy()
+	{
+		super.destroy();
+	}
+
 
 	public var shouldDance:Bool = true;
 
