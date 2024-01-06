@@ -3,7 +3,7 @@ package shaders;
 import flixel.system.FlxAssets.FlxShader;
 
 /**
- * Port of https://www.shadertoy.com/view/sslyDB
+ * Stripped down version of https://github.com/FNF-CNE-Devs/YoshiCrafterEngine/blob/main/source/NoteShader.hx
  */
 class ColorSwap {
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();

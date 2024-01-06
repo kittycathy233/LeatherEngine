@@ -183,7 +183,7 @@ class Character extends FlxSprite {
 			}
 
 			if (config.offsetsFlipWhenPlayer == null) {
-				if (curCharacter.startsWith("bf"))
+				if (curCharacter.contains("bf"))
 					offsetsFlipWhenPlayer = false;
 				else
 					offsetsFlipWhenPlayer = true;
@@ -191,7 +191,7 @@ class Character extends FlxSprite {
 				offsetsFlipWhenPlayer = config.offsetsFlipWhenPlayer;
 
 			if (config.offsetsFlipWhenEnemy == null) {
-				if (curCharacter.startsWith("bf"))
+				if (curCharacter.contains("bf"))
 					offsetsFlipWhenEnemy = true;
 				else
 					offsetsFlipWhenEnemy = false;
@@ -263,7 +263,7 @@ class Character extends FlxSprite {
 
 			if (config.swapDirectionSingWhenPlayer != null)
 				swapLeftAndRightSingPlayer = config.swapDirectionSingWhenPlayer;
-			else if (curCharacter.startsWith("bf"))
+			else if (curCharacter.contains("bf"))
 				swapLeftAndRightSingPlayer = false;
 
 			if (config.singDuration != null)

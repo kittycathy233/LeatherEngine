@@ -22,14 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Persistent Cached Data option (stops clearing asset caches).
 - Skip Results Screen Options.
 - You can now zoom into the Animation Debug using the mouse.
-- HScript support! Put a file called "script.hx" into any song folder to run hscript on that song
-- Global scripts! Put any .lua or .hx file into data/scripts/global to have that script run on every song.
+- HScript support!
+- Global / local scripts! Put any .lua or .hx file into data/scripts/global to have that script run on every song in every mod. Put a .lua or .hx file into data/scripts/local to have it run on every song in the mod it is in.
+- You can put any .lua or .hx file into a song folder to have it run (like psych engine)
 - Softcoded Discord RPC - Check assets/data/discord.json
 - Fully softcoded and custom shaders! Check assets/data/modcharts/shader-example.lua
 - Change Keycount events
 - Copy/Paste events in charter
 - Cool new modchart features via modcharting tools by TheZoroForce240
-- Modcharting tools can be used in lua scripts, hscript, and the modchart editor(hit 9 midsong)
+- Modcharting tools can be used in lua scripts, hscript, and the modchart editor (hit 9 midsong)
 - Take screenshots by pressing F2 on the keyboard
 - Note glow when can be hit option
 - Lil' Buddies in charter
