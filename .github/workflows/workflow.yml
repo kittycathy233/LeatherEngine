@@ -156,9 +156,17 @@ jobs:
       - name: Compile
         run: |
           dir
-          cd haxe-4.3.3-win64/lib/hxcpp/git/tools
+          cd ..
+          cd ..
+          cd ..
+          cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
-          cd -
+          cd ..
+          cd ..
+          cd ..
+          cd ..
+          cd ..
+          cd a\LeatherEngine-Extended-Support\LeatherEngine-Extended-Support
           haxelib --always run lime build windows --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@main
