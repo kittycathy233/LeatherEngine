@@ -155,7 +155,8 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: |
-          cd $(haxelib libpath hxcpp)/tools/hxcpp
+          dir
+          cd haxelib/haxe/lib/hxcpp/git/tools
           haxe compile.hxml
           cd -
           haxelib --always run lime build windows --app-version="4.0.0-${{ github.run_id}}"
@@ -206,7 +207,7 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: |
-          cd haxelib/haxe/lib/hxcpp/git/tools
+          cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
           haxelib --always run lime build mac --app-version="4.0.0-${{ github.run_id}}"
