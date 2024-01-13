@@ -59,6 +59,7 @@ jobs:
         run: |
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
+          cd -
           haxelib --always run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@main
@@ -125,7 +126,7 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup C:/haxelib
-          haxelib install hxcpp > nul
+          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
           haxelib install lime
           haxelib install openfl
           haxelib --never install flixel 
@@ -154,9 +155,10 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: |
-          haxelib --always run lime build windows --app-version="4.0.0-${{ github.run_id}}"
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
+          cd -
+          haxelib --always run lime build windows --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
@@ -206,6 +208,7 @@ jobs:
         run: |
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
+          cd -
           haxelib --always run lime build mac --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@main
