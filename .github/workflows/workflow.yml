@@ -159,7 +159,7 @@ jobs:
           cd ..
           cd ..
           cd ..
-          cd $(haxelib libpath hxcpp)/tools/hxcpp
+          cd HaxeToolkit/haxe/lib/hxcpp/git/tools/hxcpp
           haxe compile.hxml
           cd ..
           cd ..
