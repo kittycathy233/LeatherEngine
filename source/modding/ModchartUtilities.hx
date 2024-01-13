@@ -1284,8 +1284,12 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setRenderedNoteScale", function(scale:Float, id:Int) {
-			PlayState.instance.notes.members[id].scale.set(scale, scale);
-		});
+            PlayState.instance.notes.members[id].setGraphicSize(Std.int(PlayState.instance.notes.members[id].width * scale));
+        });
+
+        setLuaFunction("setRenderedNoteScale", function(scaleX:Int, scaleY:Int, id:Int) {
+            PlayState.instance.notes.members[id].setGraphicSize(scaleX,scaleY);
+        });
 
 		setLuaFunction("setRenderedNoteScaleX", function(scale:Float, id:Int) {
             PlayState.instance.notes.members[id].scale.x = scale;
@@ -1745,15 +1749,16 @@ class ModchartUtilities {
 				getActorByName(id).modAngle = angle;
 		});
 
-		setLuaFunction("setActorScale", function(scale:Float, id:String) {
-			if (getActorByName(id) != null)
-				getActorByName(id).scale.set(scale, scale);
-		});
+		setLuaFunction("setActorScale", function(scale:Float,id:String) {
+            if(getActorByName(id) != null)
+                getActorByName(id).setGraphicSize(Std.int(getActorByName(id).width * scale));
+        });
 
-		setLuaFunction("setActorScaleXY", function(scaleX:Float, scaleY:Float, id:String) {
-			if (getActorByName(id) != null)
-				getActorByName(id).scale.set(scaleX, scaleY);
-		});
+		setLuaFunction("setActorScaleXY", function(scaleX:Float, scaleY:Float, id:String)
+			{
+				if(getActorByName(id) != null)
+					getActorByName(id).setGraphicSize(Std.int(getActorByName(id).width * scaleX), Std.int(getActorByName(id).height * scaleY));
+			});
 
 		setLuaFunction("setActorFlipX", function(flip:Bool, id:String) {
 			if (getActorByName(id) != null)

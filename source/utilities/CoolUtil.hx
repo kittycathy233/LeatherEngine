@@ -1,6 +1,7 @@
 package utilities;
 
 
+import lime.graphics.Image;
 import flixel.math.FlxMath;
 import openfl.utils.Function;
 import flixel.tweens.FlxTween;
@@ -299,6 +300,12 @@ class CoolUtil {
 				haxe_trace(message, pos_infos);
 		}
 	}
+
+
+	public static function changeWindowIcon(path:String){
+		if(#if sys sys.FileSystem.exists(path) || #end Assets.exists(path)) FlxG.stage.window.setIcon(Image.fromBitmapData(path));
+	}
+
 
 	/**
 		Access to the old `haxe.Log.trace` function.

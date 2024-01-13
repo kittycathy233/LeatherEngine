@@ -490,6 +490,9 @@ class Character extends FlxSprite {
 			animation.play(AnimName, Force, Reversed, Frame);
 		}
 
+		if (AnimName.contains('dodge'))
+			preventDanceForAnim = true;
+
 		var daOffset = animOffsets.get(AnimName);
 
 		if (animOffsets.exists(AnimName))

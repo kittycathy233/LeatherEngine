@@ -35,6 +35,8 @@ class StrumNote extends FlxSprite
 	public var isPlayer:Float;
 
 	public var jsonData:JsonData;
+
+	public var modAngle:Float = 0;
 	
 
 	public function new(x:Float, y:Float, leData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int, ?isPlayer:Float, customColors:Bool = false)
@@ -99,6 +101,7 @@ class StrumNote extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		angle = modAngle;
 		if (resetAnim > 0)
 		{
 			resetAnim -= elapsed;

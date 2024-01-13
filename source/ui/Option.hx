@@ -1,5 +1,6 @@
 package ui;
 
+import lime.graphics.Image;
 import utilities.CoolUtil;
 import states.TitleState;
 #if discord_rpc
@@ -24,6 +25,7 @@ class Option extends FlxTypedGroup<FlxSprite> {
 
 	public var Option_Name:String = "";
 	public var Option_Value:String = "downscroll";
+
 
 	public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0) {
 		super();
@@ -179,7 +181,7 @@ class GameStateOption extends Option {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (!Options.getData("developer")) this.visible = false; else { this.visible = true; if (Alphabet_Text.targetY == 0) {Alphabet_Text.targetY -= 1; }}
+		if (!Options.getData("developer")) this.visible = false; else { this.visible = true;}
 
 		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0 && Options.getData("developer"))
 			FlxG.switchState(Game_State);
@@ -319,12 +321,17 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				FlxG.sound.play(Paths.sound('confirmMenu'), 1);
 				Options.setData(Option_Value, "curMod");
 				FlxG.resetState();
+				lime.utils.Assets.cache.clear();
+            	openfl.utils.Assets.cache.clear();
+				CoolUtil.changeWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 			}
 		}else {
 			Alphabet_Text.alpha = 0.6;
 			Mod_Icon.alpha = 0.6;
 		}
 	}
+
+
 }
 #end
 

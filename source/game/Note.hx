@@ -255,7 +255,7 @@ class Note extends FlxSprite {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		angle = angle + modAngle + localAngle;
+		angle = modAngle + localAngle;
 
 		calculateCanBeHit();
 
