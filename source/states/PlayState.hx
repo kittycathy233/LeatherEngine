@@ -2827,7 +2827,7 @@ class PlayState extends MusicBeatState {
 							var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
 							var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 	
-							daNote.visible = coolStrum.visible;
+							if(coolStrum != null) daNote.visible = coolStrum.visible;
 	
 							if(!prevEnemyXVals.exists(arrayVal))
 							{
@@ -2843,23 +2843,24 @@ class PlayState extends MusicBeatState {
 	
 								prevEnemyXVals.set(arrayVal, tempShit);
 							}
-							else
-								daNote.x = coolStrum.x + prevEnemyXVals.get(arrayVal) - daNote.xOffset;
+							else{
+								if(coolStrum != null) daNote.x = coolStrum.x + prevEnemyXVals.get(arrayVal) - daNote.xOffset;
+							}
 		
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null)
 								daNote.modAngle = coolStrum.angle;
 							
-							if(coolStrum.alpha != 1)
+							if(coolStrum.alpha != 1 && coolStrum != null)
 								daNote.alpha = coolStrum.alpha;
 		
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null)
 								daNote.modAngle = coolStrum.angle;
 							daNote.flipX = coolStrum.flipX;
 	
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null)
 								daNote.flipY = coolStrum.flipY;
 	
-							daNote.color = coolStrum.color;
+							if(coolStrum != null) daNote.color = coolStrum.color;
 
 						}
 				}
@@ -2868,7 +2869,7 @@ class PlayState extends MusicBeatState {
 					if (daNote.mustPress
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
-						&& !daNote.wasGoodHit) {
+						&& !daNote.wasGoodHit && daNote != null) {
 						vocals.volume = 0;
 						noteMiss(daNote.noteData, daNote);
 					}
@@ -4982,12 +4983,12 @@ class PlayState extends MusicBeatState {
 			case "change keycount":
 				var toChange:Int = Std.parseInt(event[2]);
 				var toChangeAlt:Int = Std.parseInt(event[3]);
-				if (toChange < 1 || Math.isNaN(toChange)){
+				if (toChange < 1 || Math.isNaN(toChange))
 					toChange = 1;
-				}
-				if (toChangeAlt < 1 || Math.isNaN(toChangeAlt)){
+				
+				if (toChangeAlt < 1 || Math.isNaN(toChangeAlt))
 					toChangeAlt = 1;
-				}
+				
 				SONG.keyCount = toChangeAlt;	
 				SONG.playerKeyCount = toChange;
 				SONG.mania = toChange;
@@ -5007,13 +5008,11 @@ class PlayState extends MusicBeatState {
 						{
 							generateStaticArrows(0, false);
 							generateStaticArrows(1, true);
-							playerStrums.add(babyArrow);	
 						}
 						else
 						{
 							generateStaticArrows(1, false);
 							generateStaticArrows(0, true);
-							enemyStrums.add(babyArrow);
 						}
 					}
 				for (note in unspawnNotes) {
@@ -5022,7 +5021,6 @@ class PlayState extends MusicBeatState {
 				for (note in notes.members) {
 					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
 				}
-				
 				#if linc_luajit
 				for (i in 0...strumLineNotes.length) {
 					var member = strumLineNotes.members[i];
@@ -5030,6 +5028,26 @@ class PlayState extends MusicBeatState {
 					setLuaVar("defaultStrum" + i + "X", member.x);
 					setLuaVar("defaultStrum" + i + "Y", member.y);
 					setLuaVar("defaultStrum" + i + "Angle", member.angle);
+		
+					setLuaVar("defaultStrum" + i, {
+						x: member.x,
+						y: member.y,
+						angle: member.angle,
+					});
+		
+					if (enemyStrums.members.contains(member)) {
+						setLuaVar("enemyStrum" + i % SONG.keyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					} else {
+						setLuaVar("playerStrum" + i % SONG.playerKeyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					}
 				}
 				#end
 			case "change ui skin":
@@ -5076,20 +5094,20 @@ class PlayState extends MusicBeatState {
 				splash_group.clear();
 				if(Options.getData("middlescroll"))
 					{
-						generateStaticArrows(50, false);
-						generateStaticArrows(0.5, true);
+						generateStaticArrows(50, false, false);
+						generateStaticArrows(0.5, true, false);
 					}
 					else
 					{
 						if(characterPlayingAs == 0)
 						{
-							generateStaticArrows(0, false);
-							generateStaticArrows(1, true);
+							generateStaticArrows(0, false, false);
+							generateStaticArrows(1, true, false);
 						}
 						else
 						{
-							generateStaticArrows(1, false);
-							generateStaticArrows(0, true);
+							generateStaticArrows(1, false, false);
+							generateStaticArrows(0, true, false);
 						}
 					}
 				for (note in unspawnNotes) {

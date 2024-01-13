@@ -295,10 +295,10 @@ class ModchartUtilities {
 
     setVar("curStage", PlayState.SONG.stage);
 
-		#if mobile
-        setVar("mobile", true);
-        #else 
-        setVar("mobile", false);
+	#if mobile
+    setVar("mobile", true);
+    #else 
+    setVar("mobile", false);
     #end
 
 		// other globals
@@ -2752,6 +2752,35 @@ class ModchartUtilities {
 			var funnyCustomShader:CustomShader = new CustomShader(Assets.getText(Paths.frag(file)), null, glslVersion);
 			lua_Custom_Shaders.set(id, funnyCustomShader);
 		});
+
+		setLuaFunction("setActorShader", function(actorStr:String, shaderName:String) {
+            if (!Options.getData("shaders"))
+                return;
+
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(shaderName);
+            if(getCharacterByName(actorStr) != null)
+            {
+                var character = getCharacterByName(actorStr);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    for (c in 0...character.otherCharacters.length)
+                    {
+                        character.otherCharacters[c].shader = funnyCustomShader;
+                    }
+                    return;
+                }                    
+            }
+            var actor = getActorByName(actorStr);
+            
+
+            if(actor != null && funnyCustomShader != null)
+            {
+                actor.shader = funnyCustomShader; //use reflect to workaround compiler errors
+
+                //trace('added shader '+shaderName+" to " + actorStr);
+
+            }
+        });
 
 		setLuaFunction("setCameraShader", function(camera:String, id:String){
 			if (!Options.getData("shaders"))
