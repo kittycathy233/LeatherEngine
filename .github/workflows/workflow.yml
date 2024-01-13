@@ -214,12 +214,12 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Rebuild hxcpp command line tool
         run: |
-         cd tools/hxcpp
-         haxe compile.hxml
+          cd tools/hxcpp
+          haxe compile.hxml
       - name: Build hxcpp binaries 
         run: |
-         cd project
-        neko build.n
+          cd project
+          neko build.n
       - name: Compile
         run: haxelib --always run lime build mac --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
