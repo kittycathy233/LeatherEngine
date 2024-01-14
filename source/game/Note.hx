@@ -10,10 +10,11 @@ import utilities.NoteVariables;
 import states.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxSkewedSprite;
 
 using StringTools;
 
-class Note extends FlxSprite {
+class Note extends FlxSkewedSprite {
 	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;

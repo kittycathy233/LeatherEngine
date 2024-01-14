@@ -113,6 +113,9 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Animated Backgrounds", "animatedBGs", 6),
 			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7),
 			new BoolOption("Persistent Cached Data", "memoryLeaks", 8),
+			#if MODCHARTING_TOOLS
+			new BoolOption("Optimized Modcharts", "optimizedModcharts", 5),
+			#end
 		],
 		"Info Display" => [
 			new PageOption("Back", 0, "Graphics"),

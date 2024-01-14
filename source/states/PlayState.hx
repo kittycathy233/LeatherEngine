@@ -1166,7 +1166,7 @@ class PlayState extends MusicBeatState {
 		splash_group.add(cache_splash);
 
 		#if (MODCHARTING_TOOLS && linc_luajit)
-		if (SONG.modchartingTools)
+		if (SONG.modchartingTools || Assets.exists(Paths.json("song data/" + SONG.song + "/modchart")) || Assets.exists(Paths.json("song data/" + SONG.song + "/modchart" + storyDifficultyStr.toLowerCase())))
 		{
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
 			playfieldRenderer.cameras = [camHUD];
@@ -1399,16 +1399,6 @@ class PlayState extends MusicBeatState {
 			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
-		/*#if MODCHARTING_TOOLS
-		if (SONG.modchartingTools){
-			HScript.interp.variables.set('PlayfieldRenderer', modcharting.PlayfieldRenderer);
-			HScript.interp.variables.set('ModchartUtil', modcharting.ModchartUtil);
-			HScript.interp.variables.set('Modifier', modcharting.Modifier);
-			HScript.interp.variables.set('NoteMovement', modcharting.NoteMovement);
-			HScript.interp.variables.set('NotePositionData', modcharting.NotePositionData);
-			HScript.interp.variables.set('ModchartFile', modcharting.ModchartFile);
-		}
-		#end*/
 
 		super.create();
 
@@ -2235,6 +2225,7 @@ class PlayState extends MusicBeatState {
 
 	var fixedUpdateTime:Float = 0.0;
 
+
 	override public function update(elapsed:Float) {
 		if (script != null)
 			script.update(elapsed);
@@ -2564,7 +2555,7 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if (generatedMusic && !switchedStates && startedCountdown) {
+		if (generatedMusic && !switchedStates && startedCountdown && notes != null && playerStrums.members.length != 0 && enemyStrums.members.length != 0) {
 			notes.forEachAlive(function(daNote:Note) {
 				var coolStrum = (daNote.mustPress ? playerStrums.members[Math.floor(Math.abs(daNote.noteData))%playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData))%enemyStrums.members.length]);
 				var strumY = coolStrum.y;
@@ -2781,53 +2772,59 @@ class PlayState extends MusicBeatState {
 					daNote.destroy();
 				}
 
-				if (daNote != null) {
-					if (daNote.mustPress)
+				if (daNote != null && coolStrum != null) {
+					if (daNote.mustPress && daNote != null)
 						{
 							var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
 							var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 							
-							daNote.visible = coolStrum.visible;
+							if (coolStrum != null) daNote.visible = coolStrum.visible;
 	
-							if(!prevPlayerXVals.exists(arrayVal))
+							if(!prevPlayerXVals.exists(arrayVal) && prevPlayerXVals != null)
 							{
 								var tempShit:Float = 0.0;
 		
-								daNote.x = coolStrum.x;
+								if(coolStrum != null) daNote.x = coolStrum.x;
 	
-								while(Std.int(daNote.x + (daNote.width / 2)) != Std.int(coolStrum.x + (coolStrum.width / 2)))
-								{
-									daNote.x += (daNote.x + daNote.width > coolStrum.x + coolStrum.width ? -0.1 : 0.1);
-									tempShit += (daNote.x + daNote.width > coolStrum.x + coolStrum.width ? -0.1 : 0.1);
+								if (daNote != null && coolStrum != null){
+									while(Std.int(daNote.x + (daNote.width / 2)) != Std.int(coolStrum.x + (coolStrum.width / 2)) && coolStrum != null && daNote != null)
+									{
+										daNote.x += (daNote.x + daNote.width > coolStrum.x + coolStrum.width ? -0.1 : 0.1);
+										tempShit += (daNote.x + daNote.width > coolStrum.x + coolStrum.width ? -0.1 : 0.1);
+									}
 								}
 	
 								prevPlayerXVals.set(arrayVal, tempShit);
 							}
-							else
-								daNote.x = coolStrum.x + prevPlayerXVals.get(arrayVal) - daNote.xOffset;
+							else{
+								if(coolStrum != null) daNote.x = coolStrum.x + prevPlayerXVals.get(arrayVal) - daNote.xOffset;
+							}
 		
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
 								daNote.modAngle = coolStrum.angle;
 							
-							if(coolStrum.alpha != 1)
+							if(coolStrum.alpha != 1 && coolStrum != null && daNote != null)
 								daNote.alpha = coolStrum.alpha;
 		
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
 								daNote.modAngle = coolStrum.angle;
-							daNote.flipX = coolStrum.flipX;
+
+							if(coolStrum != null && daNote != null)
+								daNote.flipX = coolStrum.flipX;
 	
-							if (!daNote.isSustainNote)
+							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
 								daNote.flipY = coolStrum.flipY;
 	
-							daNote.color = coolStrum.color;
+							if(coolStrum != null && daNote != null)
+								daNote.color = coolStrum.color;
 		
 						}
-						else if (!daNote.wasGoodHit)
+						else if (!daNote.wasGoodHit && daNote != null)
 						{
 							var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
 							var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 	
-							if(coolStrum != null) daNote.visible = coolStrum.visible;
+							if(coolStrum != null && daNote != null) daNote.visible = coolStrum.visible;
 	
 							if(!prevEnemyXVals.exists(arrayVal))
 							{
@@ -4991,7 +4988,6 @@ class PlayState extends MusicBeatState {
 				
 				SONG.keyCount = toChangeAlt;	
 				SONG.playerKeyCount = toChange;
-				SONG.mania = toChange;
 				playerStrums.clear();
 				enemyStrums.clear();
 				strumLineNotes.clear();
@@ -5015,11 +5011,13 @@ class PlayState extends MusicBeatState {
 							generateStaticArrows(0, true);
 						}
 					}
-				for (note in unspawnNotes) {
+				notes.forEachAlive(function(note:Note)
+				{
 					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
-				}
-				for (note in notes.members) {
-					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+				});
+				for (i in 0...unspawnNotes.length) {
+					unspawnNotes[i].reloadNotes(unspawnNotes[i].strumTime, unspawnNotes[i].noteData, null, unspawnNotes[i].isSustainNote, unspawnNotes[i].character, 
+						unspawnNotes[i].arrow_Type, PlayState.SONG, unspawnNotes[i].characters, unspawnNotes[i].mustPress, unspawnNotes[i].inEditor);
 				}
 				#if linc_luajit
 				for (i in 0...strumLineNotes.length) {

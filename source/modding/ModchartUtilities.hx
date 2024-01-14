@@ -73,7 +73,7 @@ class ModchartUtilities {
 
 	public var functions_called:Array<String> = [];
 
-	private var localFilters:Array<CustomShader> = [];
+	public static var instance:ModchartUtilities = null;
 
 	function getActorByName(id:String):Dynamic {
 		// lua objects or what ever
@@ -193,6 +193,9 @@ class ModchartUtilities {
 	}
 
 	public function new(?path:Null<String>) {
+
+		instance = this;
+
 		oldMultiplier = PlayState.songMultiplier;
 		
 		perlin = new Perlin();

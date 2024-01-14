@@ -312,6 +312,10 @@
     {
       "option": "noteColorsAllChars",
       "value": false
+    },
+    {
+      "option": "optimizedModcharts",
+      "value": false
     }
   ]
 }

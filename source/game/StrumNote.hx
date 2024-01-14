@@ -9,13 +9,15 @@ import shaders.ColorSwap;
 import shaders.NoteColors;
 import states.PlayState;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxSkewedSprite;
+
 
 using StringTools;
 
 /*
 	credit to psych engine devs (sorry idk who made this originally, all ik is that srperez modified it for shaggy and then i got it from there)
  */
-class StrumNote extends FlxSprite
+class StrumNote extends FlxSkewedSprite
 {
 	public var resetAnim:Float = 0;
 
