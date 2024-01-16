@@ -37,8 +37,6 @@ class Character extends FlxSprite {
 	public var cameraOffset:Array<Float> = [0, 0];
 
 	public var otherCharacters:Array<Character>;
-	public var textureAtlas:FlxAnimate = null;
-	public var useTextureAtlas:Bool = false;
 
 	public var offsetsFlipWhenPlayer:Bool = true;
 	public var offsetsFlipWhenEnemy:Bool = false;
@@ -203,10 +201,7 @@ class Character extends FlxSprite {
 			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT)))
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
 			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
-				useTextureAtlas = true;
-				textureAtlas = new FlxAnimate(x, y, Paths.getTextureAtlas(config.imagePath));
-				textureAtlas.showPivot = false;
-				trace("loaded texture atlas!");
+				frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
 			}
 			else
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
@@ -220,18 +215,10 @@ class Character extends FlxSprite {
 				scale.set(size, size);
 
 			for (selected_animation in config.animations) {
-				if(!useTextureAtlas){
-					if (selected_animation.indices != null && selected_animation.indices.length > 0) {
-						animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps, selected_animation.looped);
-					} else {
-						animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
-					}
-				}
-				else{
-					if(selected_animation.indices != null && selected_animation.indices.length > 0)
-						textureAtlas.anim.addBySymbolIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, selected_animation.fps, selected_animation.looped);
-					else
-						textureAtlas.anim.addBySymbol(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+				if (selected_animation.indices != null && selected_animation.indices.length > 0) {
+					animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps, selected_animation.looped);
+				} else {
+					animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
 				}
 			}
 
@@ -349,42 +336,6 @@ class Character extends FlxSprite {
 		}
 	}
 
-	override public function draw()
-		{
-			if(useTextureAtlas){
-				copyAtlasValues();
-				textureAtlas.draw();
-				return;
-			}
-			super.draw();
-		}
-	public function copyAtlasValues()
-	{
-		@:privateAccess
-		{
-			textureAtlas.cameras = cameras;
-			textureAtlas.scrollFactor = scrollFactor;
-			textureAtlas.scale = scale;
-			textureAtlas.offset = offset;
-			textureAtlas.origin = origin;
-			textureAtlas.x = x;
-			textureAtlas.y = y;
-			textureAtlas.angle = angle;
-			textureAtlas.alpha = alpha;
-			textureAtlas.visible = visible;
-			textureAtlas.flipX = flipX;
-			textureAtlas.flipY = flipY;
-			textureAtlas.shader = shader;
-			textureAtlas.antialiasing = antialiasing;
-			textureAtlas.colorTransform = colorTransform;
-			textureAtlas.color = color;
-		}
-	}
-	public override function destroy()
-	{
-		super.destroy();
-	}
-
 
 	public var shouldDance:Bool = true;
 
@@ -422,8 +373,6 @@ class Character extends FlxSprite {
 		}
 		if(script != null)
 			script.update(elapsed);
-		if(useTextureAtlas)
-			textureAtlas.update(elapsed);
 		super.update(elapsed);
 	}
 
@@ -482,13 +431,8 @@ class Character extends FlxSprite {
 
 		preventDanceForAnim = false; //reset it
 
-		if(useTextureAtlas){
-			textureAtlas.anim.play(AnimName, Force, Reversed, Frame);
-			trace("played anim: " + AnimName);
-		}
-		else{
-			animation.play(AnimName, Force, Reversed, Frame);
-		}
+
+		animation.play(AnimName, Force, Reversed, Frame);
 
 		if (AnimName.contains('dodge'))
 			preventDanceForAnim = true;
