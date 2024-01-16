@@ -117,7 +117,7 @@
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" />
 	<haxelib name="hxNoise"/>
 	<haxelib name="systools" if="cpp" />
-	<haxelib name="fnf-modcharting-tools"/>
+	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
