@@ -114,6 +114,7 @@ class HScript
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
 		interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+		interp.variables.set('FlxColor', modding.helpers.FlxColorHelper);
 		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
 		interp.variables.set("Polymod", polymod.Polymod);
 		interp.variables.set("Assets", openfl.utils.Assets);
@@ -126,18 +127,7 @@ class HScript
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		interp.variables.set('FlxAnimate', flxanimate.FlxAnimate);
-
-		//http stuff
-		interp.variables.set('Http', haxe.Http);
-		#if sys
-		interp.variables.set('HttpSys', sys.Http);
-		#elseif js
-		interp.variables.set('HttpJs', haxe.http.HttpJs);
-		#elseif flash
-		interp.variables.set('HttpFlash', haxe.HttpFlash);
-		#end
 		interp.variables.set('Json', haxe.Json);
-		interp.variables.set('BytesOutput', haxe.io.BytesOutput);
 
 		// game classes
 		interp.variables.set("PlayState", states.PlayState);
@@ -160,9 +150,6 @@ class HScript
         interp.variables.set('FirstPersonController', away3d.controllers.FirstPersonController);
         interp.variables.set('HoverController', away3d.controllers.HoverController);
 		interp.variables.set('ObjectContainer3D', away3d.containers.ObjectContainer3D);
-
-		interp.variables.set('MotionBlurFilter3D', away3d.filters.MotionBlurFilter3D);
-		interp.variables.set('BloomFilter3D', away3d.filters.BloomFilter3D);
 		#end
 
 		//modchart tools stuff
