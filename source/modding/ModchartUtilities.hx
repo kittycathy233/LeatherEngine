@@ -1356,6 +1356,10 @@ class ModchartUtilities {
 			PlayState.instance.notes.members[id].modAngle = angle;
 		});
 
+		setLuaFunction("getUnspawnedNoteSingAnimPrefix", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].singAnimPrefix;
+        });
+
 		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
             PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
         });

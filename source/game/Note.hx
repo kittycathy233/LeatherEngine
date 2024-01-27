@@ -271,9 +271,14 @@ class Note extends FlxSkewedSprite {
 		}
 	}
 
+	public inline function checkPlayerMustPress() //flips must press for opponent mode
+	{
+			return (PlayState.characterPlayingAs == 1 ? !mustPress : mustPress);
+	}
+
 	public function calculateCanBeHit() {
 		if (this != null) {
-			if (mustPress) {
+			if (checkPlayerMustPress()) {
 				/**
 					TODO: make this shit use something from the arrow config .txt file
 				**/

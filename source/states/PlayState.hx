@@ -2557,7 +2557,7 @@ class PlayState extends MusicBeatState {
 
 		if (generatedMusic && !switchedStates && startedCountdown && notes != null && playerStrums.members.length != 0 && enemyStrums.members.length != 0) {
 			notes.forEachAlive(function(daNote:Note) {
-				var coolStrum = (daNote.mustPress ? playerStrums.members[Math.floor(Math.abs(daNote.noteData))%playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData))%enemyStrums.members.length]);
+				var coolStrum = (daNote.checkPlayerMustPress() ? playerStrums.members[Math.floor(Math.abs(daNote.noteData))%playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData))%enemyStrums.members.length]);
 				var strumY = coolStrum.y;
 				daNote.visible = true;
 				daNote.active = true;
@@ -2606,7 +2606,7 @@ class PlayState extends MusicBeatState {
 
 			
 
-				if (!daNote.mustPress && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
+				if (!daNote.checkPlayerMustPress() && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
 					camZooming = true;
 
 					var singAnim:String = NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(false) - 1][Std.int(Math.abs(daNote.noteData))] + (characterPlayingAs == 0 ? altAnim : "") + daNote.singAnimSuffix;
@@ -2619,13 +2619,11 @@ class PlayState extends MusicBeatState {
 							dad.playAnim(singAnim, true);
 						else {
 							if (daNote.characters.length <= 1)
-								dad.otherCharacters[daNote.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))]
-									+ altAnim, true);
+								dad.otherCharacters[daNote.character].playAnim(singAnim);
 							else {
 								for (character in daNote.characters) {
 									if (dad.otherCharacters.length - 1 >= character)
-										dad.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))]
-											+ altAnim, true);
+										dad.otherCharacters[character].playAnim(singAnim);
 								}
 							}
 						}
@@ -2773,7 +2771,7 @@ class PlayState extends MusicBeatState {
 				}
 
 				if (daNote != null && coolStrum != null) {
-					if (daNote.mustPress && daNote != null)
+					if (daNote.checkPlayerMustPress() && daNote != null)
 						{
 							var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
 							var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
@@ -2863,7 +2861,7 @@ class PlayState extends MusicBeatState {
 				}
 
 				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime) {
-					if (daNote.mustPress
+					if (daNote.checkPlayerMustPress()
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
 						&& !daNote.wasGoodHit && daNote != null) {
@@ -3566,7 +3564,7 @@ class PlayState extends MusicBeatState {
 								inputs.remove(input);
 							} else if (input[2] == 2 && Conductor.songPosition >= input[1] + input[3]) {
 								for (note in notes) {
-									if (note.mustPress
+									if (note.checkPlayerMustPress()
 										&& FlxMath.roundDecimal(note.strumTime, 2) == FlxMath.roundDecimal(input[1], 2)
 										&& note.noteData == input[0]) {
 										justPressedArray[input[0]] = true;
@@ -3632,7 +3630,7 @@ class PlayState extends MusicBeatState {
 					notes.forEachAlive(function(note:Note) {
 						note.calculateCanBeHit();
 
-						if (note.canBeHit && note.mustPress && !note.tooLate && !note.isSustainNote)
+						if (note.canBeHit && note.checkPlayerMustPress() && !note.tooLate && !note.isSustainNote)
 							possibleNotes.push(note);
 					});
 
@@ -3726,7 +3724,7 @@ class PlayState extends MusicBeatState {
 					notes.forEachAlive(function(daNote:Note) {
 						daNote.calculateCanBeHit();
 
-						if (heldArray[daNote.noteData] && daNote.isSustainNote && daNote.mustPress) {
+						if (heldArray[daNote.noteData] && daNote.isSustainNote && daNote.checkPlayerMustPress()) {
 							if (daNote.canBeHit) {
 								if (characterPlayingAs == 0) {
 									if (boyfriend.otherCharacters == null || boyfriend.otherCharacters.length - 1 < daNote.character)
@@ -3810,7 +3808,7 @@ class PlayState extends MusicBeatState {
 			} else {
 				notes.forEachAlive(function(note:Note) {
 					if (note.shouldHit) {
-						if (note.mustPress && note.strumTime <= Conductor.songPosition) {
+						if (note.checkPlayerMustPress() && note.strumTime <= Conductor.songPosition) {
 							if (characterPlayingAs == 0) {
 								if (boyfriend.otherCharacters == null || boyfriend.otherCharacters.length - 1 < note.character)
 									boyfriend.holdTimer = 0;
@@ -3888,7 +3886,7 @@ class PlayState extends MusicBeatState {
 		if (note == null)
 			canMiss = true;
 		else {
-			if (note.mustPress)
+			if (note.checkPlayerMustPress())
 				canMiss = true;
 		}
 
@@ -4036,13 +4034,11 @@ class PlayState extends MusicBeatState {
 			if (characterPlayingAs == 0) {
 				if (boyfriend.otherCharacters != null && !(boyfriend.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)
-						boyfriend.otherCharacters[note.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))],
-							true);
+						boyfriend.otherCharacters[note.character].playAnim(singAnim);
 					else {
 						for (character in note.characters) {
 							if (boyfriend.otherCharacters.length - 1 >= character)
-								boyfriend.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))],
-									true);
+								boyfriend.otherCharacters[character].playAnim(singAnim);
 						}
 					}
 				else
@@ -4586,7 +4582,7 @@ class PlayState extends MusicBeatState {
 				}
 				for (note in notes.members){
 					if(note.affectedbycolor){
-						var charColors = (note.mustPress) ? boyfriend : dad;
+						var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
 						var noteColor;
 						if (!Options.getData("customNoteColors"))
 							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
@@ -4599,7 +4595,7 @@ class PlayState extends MusicBeatState {
 				}
 				for (note in unspawnNotes){
 					if(note.affectedbycolor){
-						var charColors = (note.mustPress) ? boyfriend : dad;
+						var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
 						var noteColor;
 						if (!Options.getData("customNoteColors"))
 							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
@@ -5013,11 +5009,11 @@ class PlayState extends MusicBeatState {
 					}
 				notes.forEachAlive(function(note:Note)
 				{
-					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
 				});
 				for (i in 0...unspawnNotes.length) {
 					unspawnNotes[i].reloadNotes(unspawnNotes[i].strumTime, unspawnNotes[i].noteData, null, unspawnNotes[i].isSustainNote, unspawnNotes[i].character, 
-						unspawnNotes[i].arrow_Type, PlayState.SONG, unspawnNotes[i].characters, unspawnNotes[i].mustPress, unspawnNotes[i].inEditor);
+						unspawnNotes[i].arrow_Type, PlayState.SONG, unspawnNotes[i].characters, unspawnNotes[i].checkPlayerMustPress(), unspawnNotes[i].inEditor);
 				}
 				#if linc_luajit
 				for (i in 0...strumLineNotes.length) {
@@ -5109,10 +5105,10 @@ class PlayState extends MusicBeatState {
 						}
 					}
 				for (note in unspawnNotes) {
-					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
 				}
 				for (note in notes.members) {
-					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.mustPress, note.inEditor);
+					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
 				}
 		}
 
