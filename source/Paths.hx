@@ -49,6 +49,9 @@ class Paths {
 	inline static public function hx(key:String, ?library:String):String
 		return getPath('$key.hx', TEXT, library);
 
+	inline static public function wren(key:String, ?library:String):String
+		return getPath('$key.wren', TEXT, library);
+
 	inline static public function html(key:String, ?library:String):String
 		return getPath('$key.html', TEXT, library);
 

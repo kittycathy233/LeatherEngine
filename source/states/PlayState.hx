@@ -1,5 +1,6 @@
 package states;
 
+import modding.scripts.languages.WrenScript;
 import haxe.io.Path;
 import modding.ModList;
 import flixel.group.FlxSpriteGroup;
@@ -407,6 +408,13 @@ class PlayState extends MusicBeatState {
 		The current lua modchart.
 	**/
 	public static var luaModchart:ModchartUtilities = null;
+	#end
+
+	#if WREN_ALLOWED
+	/**
+		The current wren modchart.
+	**/
+	public static var wrenScript:WrenScript = null;
 	#end
 
 	/**
@@ -989,6 +997,8 @@ class PlayState extends MusicBeatState {
 
 		if (Options.getData("downscroll"))
 			healthBarPosY = 60;
+
+		wrenScript = new WrenScript(Paths.wren("data/scripts/wren_script"));
 
 		#if linc_luajit
 		executeModchart = !(PlayState.SONG.modchartPath == '' || PlayState.SONG.modchartPath == null);

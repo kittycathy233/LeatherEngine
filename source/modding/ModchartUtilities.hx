@@ -218,8 +218,8 @@ class ModchartUtilities {
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 
-		trace("lua version: " + Lua.version());
-		trace("LuaJIT version: " + Lua.versionJIT());
+		//trace("lua version: " + Lua.version());
+		//trace("LuaJIT version: " + Lua.versionJIT());
 
 		Lua.init_callbacks(lua);
 
@@ -257,7 +257,7 @@ class ModchartUtilities {
 		setVar("shaders", Options.getData("shaders"));
 
 		setVar("animatedBackgrounds", Options.getData("animatedBGs"));
-    setVar("charsAndBGs", Options.getData("charsAndBGs"));
+    	setVar("charsAndBGs", Options.getData("charsAndBGs"));
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
@@ -294,15 +294,15 @@ class ModchartUtilities {
 		setVar("inReplay", PlayState.playingReplay);
 
 		setVar("player1", PlayState.SONG.player1);
-    setVar("player2", PlayState.SONG.player2);
+		setVar("player2", PlayState.SONG.player2);
 
-    setVar("curStage", PlayState.SONG.stage);
+		setVar("curStage", PlayState.SONG.stage);
 
-	#if mobile
-    setVar("mobile", true);
-    #else 
-    setVar("mobile", false);
-    #end
+		#if mobile
+		setVar("mobile", true);
+		#else 
+		setVar("mobile", false);
+		#end
 
 		// other globals
 
