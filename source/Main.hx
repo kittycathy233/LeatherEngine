@@ -1,6 +1,5 @@
 package;
 
-
 import lime.app.Application;
 import haxe.io.Path;
 import haxe.CallStack;
