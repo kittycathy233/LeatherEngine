@@ -2687,8 +2687,26 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorCustomShader", function(id:String, actor:String){
-			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			getActorByName(actor).shader = funnyCustomShader;
+			if (!Options.getData("shaders"))
+                return;
+
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(shaderName);
+            if(getCharacterByName(actorStr) != null)
+            {
+                var character = getCharacterByName(actorStr);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    for (c in 0...character.otherCharacters.length)
+                    {
+                        character.otherCharacters[c].shader = funnyCustomShader;
+                    }
+                    return;
+                }                    
+            }
+            var actor = getActorByName(actorStr);
+            
+
+            if(actor != null && funnyCustomShader != null) actor.shader = funnyCustomShader;
 		});
 
 		setLuaFunction("setActorNoCustomShader", function(actor:String){
@@ -2698,15 +2716,27 @@ class ModchartUtilities {
 		setLuaFunction("setCameraCustomShader", function(id:String, camera:String){
 			if (!Options.getData("shaders"))
                 return;
+
+			var cam = lua_Cameras.get(camera);
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			cameraFromString(camera).filters = [new ShaderFilter(funnyCustomShader)];
+			if(cam != null && funnyCustomShader != null){
+				cam.shaders.push(new ShaderFilter(funnyCustomShader));
+                cam.shaderNames.push(id);
+                cam.cam.filters = cam.shaders;
+			}
 		});
 
 		setLuaFunction("pushShaderToCamera", function(id:String, camera:String){
 			if (!Options.getData("shaders"))
                 return;
+
+			var cam = lua_Cameras.get(camera);
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			cameraFromString(camera).filters.push(new ShaderFilter(funnyCustomShader));
+			if(cam != null && funnyCustomShader != null){
+				cam.shaders.push(new ShaderFilter(funnyCustomShader));
+                cam.shaderNames.push(id);
+                cam.cam.filters = cam.shaders;
+			}
 		});
 
 		setLuaFunction("setCameraNoCustomShader", function(camera:String){
