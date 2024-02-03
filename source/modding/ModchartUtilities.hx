@@ -2690,10 +2690,10 @@ class ModchartUtilities {
 			if (!Options.getData("shaders"))
                 return;
 
-			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(shaderName);
-            if(getCharacterByName(actorStr) != null)
+			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
+            if(getCharacterByName(actor) != null)
             {
-                var character = getCharacterByName(actorStr);
+                var character = getCharacterByName(actor);
                 if (character.otherCharacters != null && character.otherCharacters.length > 0)
                 {
                     for (c in 0...character.otherCharacters.length)
@@ -2703,7 +2703,7 @@ class ModchartUtilities {
                     return;
                 }                    
             }
-            var actor = getActorByName(actorStr);
+            var actor = getActorByName(actor);
             
 
             if(actor != null && funnyCustomShader != null) actor.shader = funnyCustomShader;
