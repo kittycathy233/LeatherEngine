@@ -44,7 +44,7 @@ jobs:
           haxelib install away3d
           haxelib install systools
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-          haxelib install hxCodec
+          haxelib install hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/EdwhakKB/FNF-Modcharting-Tools
@@ -140,7 +140,7 @@ jobs:
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install away3d
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+          haxelib git hxvlc https://github.com/polybiusproxy/hxvlc
           haxelib git openfl https://github.com/openfl/openfl
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
@@ -189,7 +189,7 @@ jobs:
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
+          haxelib git hxvlc https://github.com/polybiusproxy/hxvlc
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib git openfl https://github.com/openfl/openfl
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc

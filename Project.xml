@@ -110,11 +110,10 @@
 	<haxelib name="flxanimate" />
 	<haxelib name="flixelTextureAtlas" />
 	<haxelib name="discord_rpc" if="desktop" />
-	<haxelib name="cocktail4X" if="DOCS_ALLOWED" rename="cocktail" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" />
 	<haxelib name="flixel-screenshot-plugin" if="SCREENSHOTS_ALLOWED"/>
 	<haxelib name="away3d" if="THREE_D_ALLOWED" />
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED" />
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="hxNoise"/>
 	<haxelib name="systools" if="cpp" />
 	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" />
@@ -132,8 +131,10 @@
 	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />
 	<define name="LEATHER" if="MODCHARTING_TOOLS" />
 
-	<!-- Show debug traces for hxCodec -->
-	<define name="HXC_DEBUG_TRACE" if="debug" />
+	<!-- Show debug traces for hxvlc -->
+	<!--These defines are mostly for testing (aren't required to be used)-->
+	<haxedef name="HXVLC_VERBOSE" value="2" />
+	<haxedef name="HXVLC_LOGGING" />
 
 	<!-- Akways enable Null Object Reference check for crash dialog -->
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />

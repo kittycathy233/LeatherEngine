@@ -13,7 +13,7 @@ import utilities.Discord.DiscordClient;
 import polymod.backends.PolymodAssets;
 #end
 #if VIDEOS_ALLOWED
-import hxcodec.flixel.FlxVideo;
+import hxvlc.flixel.FlxVideo;
 #end
 #if MODCHARTING_TOOLS
 import modcharting.ModchartFuncs;
@@ -1582,7 +1582,8 @@ class PlayState extends MusicBeatState {
 		video_handler.onEndReached.add(video_handler.dispose);
 
 
-		video_handler.play(PolymodAssets.getPath(Paths.video(name, ext)));
+		video_handler.load(PolymodAssets.getPath(Paths.video(name, ext)));
+		video_handler.play();
 		#else
 		bruhDialogue(endSongVar);
 		#end
