@@ -1,3 +1,4 @@
+#if THREE_D_ALLOWED
 package models;
 import away3d.entities.Mesh;
 import away3d.events.Asset3DEvent;
@@ -78,3 +79,4 @@ class Model extends FlxView3D {
 		super.destroy();
 	}
 }
+#end

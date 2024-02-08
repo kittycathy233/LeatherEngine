@@ -1,42 +1,46 @@
 -D openfl
--D flixel=5.5.0
+-D flixel
 -D lime
--D hscript-improved
+-D hscript
 -D flixel-addons
 -D flixel-ui
+-D hscript-improved
 -D tjson
--D scriptless-polymod
+-D hxNoise
 -D flxanimate
 -D flixelTextureAtlas
--D discord_rpc
--D linc_luajit
--D flixel-screenshot-plugin
--D away3d
--D hxvlc
+-D scriptless-polymod
 -D HxWebView
--D hxNoise
+-D hxcpp-debug-server
+-D hxcpp
+-D away3d
+-D linc_luajit
+-D hxvlc
 -D systools
 -D fnf-modcharting-tools
+
+
+
 
 -L lime
 -L openfl
 -L flixel
 -L hscript-improved
+-L flixel-addons
+-L hxNoise
 -L tjson
--L scriptless-polymod
+-L flixel-ui
 -L flxanimate
 -L flixelTextureAtlas
--L discord_rpc
--L linc_luajit
--L flixel-screenshot-plugin
--L away3d
--L hxvlc
+-L scriptless-polymod 
 -L HxWebView
--L hxNoise
+-L hxcpp-debug-server
+-L hxcpp
+-L away3d
+-L linc_luajit
+-L hxvlc
 -L systools
 -L fnf-modcharting-tools
-
-
 
 
 
@@ -47,17 +51,26 @@
 
 -cp source
 
---macro include('flx3D')
+--define polymod
+--define THREE_D_ALLOWED
+--define LUA_ALLOWED
+--define VIDEOS_ALLOWED
+--define LEATHER
+
+
+--macro include('external')
 --macro include('game')
 --macro include('modding')
---macro include('models')
 --macro include('shaders')
 --macro include('states')
 --macro include('substates')
---macro include('tools')
 --macro include('ui')
 --macro include('utilities')
---macro keep('main')
+--macro include('toolbox')
+--macro include('models')
+
+
+--macro keep('Main')
 
 --no-output
 

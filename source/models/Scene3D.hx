@@ -1,3 +1,4 @@
+#if THREE_D_ALLOWED
 package models;
 
 import away3d.core.base.Geometry;
@@ -316,3 +317,4 @@ class Scene3D extends FlxView3D
         return spr3D;
     }
 }
+#end

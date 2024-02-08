@@ -1,4 +1,4 @@
-package tools;
+package toolbox;
 
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;

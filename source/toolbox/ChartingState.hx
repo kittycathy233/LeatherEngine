@@ -1,4 +1,4 @@
-package tools;
+package toolbox;
 
 import flixel.util.FlxTimer;
 import flixel.FlxObject;

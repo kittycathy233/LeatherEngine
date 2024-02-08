@@ -200,7 +200,7 @@ class GameStateOption extends Option {
 		super(_Option_Name, null, _Option_Row);
 
 		// SETTING VALUES //
-		tools.CharacterCreator.lastState = "OptionsMenu";
+		toolbox.CharacterCreator.lastState = "OptionsMenu";
 		this.Game_State = _Game_State;
 	}
 

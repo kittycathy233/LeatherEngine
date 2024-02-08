@@ -1,4 +1,4 @@
-package tools.toolbox;
+package toolbox;
 
 import states.MainMenuState;
 import states.MusicBeatState;
@@ -12,10 +12,10 @@ import utilities.MusicUtilities;
 import ui.Option;
 import ui.Checkbox;
 import flixel.group.FlxGroup;
-import tools.ChartingState;
-import tools.StageMakingState;
+import toolbox.ChartingState;
+import toolbox.StageMakingState;
 import flixel.sound.FlxSound;
-import tools.CharacterCreator;
+import toolbox.CharacterCreator;
 import utilities.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -29,10 +29,9 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 import ui.Alphabet;
 import game.Song;
-import tools.StageMakingState;
+import toolbox.StageMakingState;
 import game.Highscore;
 import openfl.utils.Assets as OpenFLAssets;
-import tools.ChartingStateDev;
 
 class ToolboxPlaceholder extends states.MusicBeatState {
 	var curSelected:Int = 0;

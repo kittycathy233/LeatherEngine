@@ -1,4 +1,4 @@
-package tools;
+package toolbox;
 
 #if discord_rpc
 import utilities.Discord.DiscordClient;

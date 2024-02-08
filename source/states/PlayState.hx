@@ -27,7 +27,6 @@ import flixel.util.FlxStringUtil;
 import openfl.display.BitmapData;
 import flixel.graphics.FlxGraphic;
 import flixel.system.FlxAssets.FlxShader;
-import flixel.addons.display.FlxShaderMaskCamera;
 import substates.ResultsScreenSubstate;
 import haxe.Json;
 import game.Replay;
@@ -43,7 +42,7 @@ import utilities.NoteVariables;
 import flixel.input.FlxInput.FlxInputState;
 import flixel.group.FlxGroup;
 import utilities.Ratings;
-import tools.ChartingState;
+import toolbox.ChartingState;
 import game.Section.SwagSection;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -2942,9 +2941,9 @@ class PlayState extends MusicBeatState {
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
 
-				FlxG.switchState(new tools.CharacterCreator(SONG.player2, curStage));
+				FlxG.switchState(new toolbox.CharacterCreator(SONG.player2, curStage));
 
-				tools.CharacterCreator.lastState = "PlayState";
+				toolbox.CharacterCreator.lastState = "PlayState";
 
 				#if discord_rpc
 				DiscordClient.changePresence("Creating A Character", null, null, true);

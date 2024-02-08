@@ -2,7 +2,6 @@ package states;
 
 import modding.scripts.languages.HScript;
 import flixel.system.debug.interaction.tools.Tool;
-import tools.toolbox.Toolbox;
 import utilities.Options;
 import flixel.util.FlxTimer;
 import game.Replay;
@@ -297,7 +296,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.switchState(new ReplaySelectorState());
 			#end
 			case 'toolbox':
-				FlxG.switchState(new tools.toolbox.ToolboxPlaceholder());
+				FlxG.switchState(new toolbox.ToolboxPlaceholder());
 		}
 		allScriptCall("changeState");
 	}

@@ -12,10 +12,10 @@ import utilities.MusicUtilities;
 import ui.Option;
 import ui.Checkbox;
 import flixel.group.FlxGroup;
-import tools.ChartingState;
-import tools.StageMakingState;
+import toolbox.ChartingState;
+import toolbox.StageMakingState;
 import flixel.sound.FlxSound;
-import tools.CharacterCreator;
+import toolbox.CharacterCreator;
 import utilities.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
@@ -29,7 +29,7 @@ import flixel.util.FlxColor;
 import lime.utils.Assets;
 import ui.Alphabet;
 import game.Song;
-import tools.StageMakingState;
+import toolbox.StageMakingState;
 import game.Highscore;
 
 class ModsMenu extends MusicBeatState
