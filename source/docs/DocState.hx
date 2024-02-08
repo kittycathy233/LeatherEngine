@@ -1,5 +1,6 @@
 package docs;
 
+#if cpp
 import states.LoadingState;
 import states.MainMenuState;
 import flixel.FlxG;
@@ -27,3 +28,4 @@ class DocState extends MusicBeatState {
         super.update(elapsed);
     }
 }
+#end
