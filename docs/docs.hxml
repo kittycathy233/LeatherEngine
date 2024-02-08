@@ -45,7 +45,7 @@
 --remap flash:openfl
 --macro flixel.system.macros.FlxDefines.run()
 
--cp src
+-cp source
 
 --macro include('flx3D')
 --macro include('game')
