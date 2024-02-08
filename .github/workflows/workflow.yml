@@ -50,6 +50,7 @@ jobs:
           haxelib git fnf-modcharting-tools https://github.com/EdwhakKB/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
+          haxelib git HxWebView https://github.com/Vortex2Oblivion/HxWebView
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
           haxelib list
@@ -95,6 +96,7 @@ jobs:
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git openfl https://github.com/openfl/openfl
+          haxelib git HxWebView https://github.com/Vortex2Oblivion/HxWebView
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/EdwhakKB/FNF-Modcharting-Tools
           haxelib install flixel-screenshot-plugin
@@ -137,6 +139,7 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+          haxelib git HxWebView https://github.com/Vortex2Oblivion/HxWebView
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install away3d
           haxelib git hxNoise https://github.com/whuop/hxNoise
@@ -188,6 +191,7 @@ jobs:
           haxelib install systools
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+          haxelib git HxWebView https://github.com/Vortex2Oblivion/HxWebView
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install hxvlc
           haxelib git hxNoise https://github.com/whuop/hxNoise
