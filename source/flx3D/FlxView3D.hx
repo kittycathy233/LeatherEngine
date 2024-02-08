@@ -79,7 +79,12 @@ class FlxView3D extends FlxSprite
 
 		if (view != null) 
 		{
-			view.dispose();
+			try{
+				view.dispose();
+			}
+			catch(e){
+				trace(e,ERROR);
+			}
 			view = null;
 		}
 	

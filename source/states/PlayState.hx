@@ -2758,7 +2758,7 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if (SONG.needsVoices)
+					if (SONG.needsVoices && vocals != null && SONG != null)
 						vocals.volume = 1;
 
 					allScriptCall("enemyNoteHit", [daNote]);
@@ -2861,11 +2861,11 @@ class PlayState extends MusicBeatState {
 						}
 				}
 
-				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime) {
+				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime && !Options.getData("botplay")) {
 					if (daNote.checkPlayerMustPress()
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
-						&& !daNote.wasGoodHit && daNote != null) {
+						&& !daNote.wasGoodHit && daNote != null && daNote.animation != null && daNote.animation.curAnim != null) {
 						vocals.volume = 0;
 						noteMiss(daNote.noteData, daNote);
 					}

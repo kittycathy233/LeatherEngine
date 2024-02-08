@@ -133,8 +133,8 @@
 
 	<!-- Show debug traces for hxvlc -->
 	<!--These defines are mostly for testing (aren't required to be used)-->
-	<haxedef name="HXVLC_VERBOSE" value="2" />
-	<haxedef name="HXVLC_LOGGING" />
+	<haxedef name="HXVLC_VERBOSE" value="2" if="debug" />
+	<haxedef name="HXVLC_LOGGING" if="debug" />
 
 	<!-- Akways enable Null Object Reference check for crash dialog -->
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />

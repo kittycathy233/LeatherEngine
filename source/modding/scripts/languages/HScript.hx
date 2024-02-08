@@ -149,7 +149,17 @@ class HScript
         interp.variables.set('ControllerBase', away3d.controllers.ControllerBase);
         interp.variables.set('FirstPersonController', away3d.controllers.FirstPersonController);
         interp.variables.set('HoverController', away3d.controllers.HoverController);
+		interp.variables.set('MotionBlurFilter3D', away3d.filters.MotionBlurFilter3D);
+		interp.variables.set('BloomFilter3D', away3d.filters.BloomFilter3D);
+		interp.variables.set('DepthOfFieldFilter3D', away3d.filters.DepthOfFieldFilter3D);
+		interp.variables.set('TorusGeometry', away3d.primitives.TorusGeometry);
+		interp.variables.set('CubeGeometry', away3d.primitives.CubeGeometry);
 		interp.variables.set('ObjectContainer3D', away3d.containers.ObjectContainer3D);
+		interp.variables.set('ControllerBase', away3d.controllers.ControllerBase);
+		interp.variables.set('FirstPersonController', away3d.controllers.FirstPersonController);
+		interp.variables.set('HoverController', away3d.controllers.HoverController);
+		interp.variables.set('Mesh', away3d.entities.Mesh);
+		interp.variables.set('Scene3D', models.Scene3D);
 		#end
 
 		//modchart tools stuff
@@ -188,7 +198,11 @@ class HScript
 
 		interp.variables.set("trace", function(value:Dynamic)
 		{
+			#if sys
+			Sys.println(value);
+			#else
 			trace(value);
+			#end
 		});
 
 		interp.variables.set("load", function(script_path:String)
