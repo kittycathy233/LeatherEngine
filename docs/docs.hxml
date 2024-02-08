@@ -1,0 +1,67 @@
+-D openfl
+-D flixel=5.5.0
+-D lime
+-D hscript-improved
+-D flixel-addons
+-D flixel-ui
+-D tjson
+-D scriptless-polymod
+-D flxanimate
+-D flixelTextureAtlas
+-D discord_rpc
+-D linc_luajit
+-D flixel-screenshot-plugin
+-D away3d
+-D hxvlc
+-D HxWebView
+-D hxNoise
+-D systools
+-D fnf-modcharting-tools
+
+-L lime
+-L openfl
+-L flixel
+-L hscript-improved
+-L tjson
+-L scriptless-polymod
+-L flxanimate
+-L flixelTextureAtlas
+-L discord_rpc
+-L linc_luajit
+-L flixel-screenshot-plugin
+-L away3d
+-L hxvlc
+-L HxWebView
+-L hxNoise
+-L systools
+-L fnf-modcharting-tools
+
+
+
+
+
+--macro lime._internal.macros.DefineMacro.run()
+--macro openfl.utils._internal.ExtraParamsMacro.include()
+--remap flash:openfl
+--macro flixel.system.macros.FlxDefines.run()
+
+-cp src
+
+--macro include('flx3D')
+--macro include('game')
+--macro include('modding')
+--macro include('models')
+--macro include('shaders')
+--macro include('states')
+--macro include('substates')
+--macro include('tools')
+--macro include('ui')
+--macro include('utilities')
+--macro keep('main')
+
+--no-output
+
+-D doc-gen
+
+-xml docs/doc.xml
+--cpp docs-bin/
