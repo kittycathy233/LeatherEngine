@@ -35,7 +35,7 @@ jobs:
       - name: Install Haxe Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib git hxcpp https://github.com/Vortex2Oblivion/hxcpp-compiled
+          haxelib install hxcpp
           haxelib install lime
           haxelib install openfl
           haxelib --never install flixel 5.5.0 
