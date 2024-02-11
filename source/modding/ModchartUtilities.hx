@@ -2631,6 +2631,35 @@ class ModchartUtilities {
 			return id;
 		});
 
+		setLuaFunction("tweenStageColorSwap", function(prop:String, value:Dynamic, time:Float, easeStr:String = "linear") {
+            @:privateAccess
+            var actor = PlayState.instance.stage.colorSwap;
+            var ease = easeFromString(easeStr);
+
+            if(actor != null)
+            {
+                var startVal = Reflect.getProperty(actor, prop);
+
+                PlayState.instance.tweenManager.num(startVal, value, time, {onUpdate: function(tween:FlxTween){
+					var ting = FlxMath.lerp(startVal,value, ease(tween.percent));
+                    Reflect.setProperty(actor, prop, ting);
+				}, ease: ease, onComplete: function(tween:FlxTween) {
+					Reflect.setProperty(actor, prop, value);
+				}});
+            }
+        });
+
+        
+        setLuaFunction("setStageColorSwap", function(prop:String, value:Dynamic) {
+            @:privateAccess
+            var actor = PlayState.instance.stage.colorSwap;
+
+            if(actor != null)
+            {
+                Reflect.setProperty(actor, prop, value);
+            }
+        });
+
 		setLuaFunction("getStrumTimeFromStep", function(step:Float) {
             var beat = step*0.25;
             var totalTime:Float = 0;
@@ -2853,6 +2882,8 @@ class ModchartUtilities {
         });
 
 		setLuaFunction("setShaderProperty", function(id:String, property:String, value:Dynamic) {
+			if (!Options.getData("shaders"))
+                return;
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			if(Std.isOfType(value, Float)){
 				funnyCustomShader.setFloat(property, Std.parseFloat(value));
@@ -2866,6 +2897,8 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("tweenShaderProperty", function(id:String, property:String, value:Float, duration:Float, ?ease:String = "linear", ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
+			if (!Options.getData("shaders"))
+                return;
 			var shader:CustomShader = lua_Custom_Shaders.get(id);
 			if (shader != null) {
 				shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);

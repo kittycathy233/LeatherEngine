@@ -2860,7 +2860,7 @@ class PlayState extends MusicBeatState {
 						}
 				}
 
-				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime && !Options.getData("botplay")) {
+				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime) {
 					if (daNote.checkPlayerMustPress()
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
@@ -3097,6 +3097,8 @@ class PlayState extends MusicBeatState {
 		}
 
 	function endSong():Void {
+		allScriptCall("endSong");
+		executeALuaState("endSong", []);
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;

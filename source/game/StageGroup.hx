@@ -1,5 +1,6 @@
 package game;
 
+import shaders.ColorSwapHSV;
 import modding.scripts.languages.HScript;
 #if polymod
 import polymod.backends.PolymodAssets;
@@ -75,6 +76,8 @@ class StageGroup extends FlxGroup {
 	#if linc_luajit
 	public var stageScript:ModchartUtilities = null;
 	#end
+
+	public var colorSwap:ColorSwapHSV;
 
 	public function updateStage(?newStage:String) {
 		if (newStage != null)
@@ -282,6 +285,8 @@ class StageGroup extends FlxGroup {
 							for (Object in stage_Data.objects) {
 								var Sprite = new FlxSprite(Object.position[0], Object.position[1]);
 
+								Sprite.shader = colorSwap.shader;
+
 								if (Object.color != null && Object.color != [])
 									Sprite.color = FlxColor.fromRGB(Object.color[0], Object.color[1], Object.color[2]);
 
@@ -439,7 +444,7 @@ class StageGroup extends FlxGroup {
 
 	override public function new(?stageName:String) {
 		super();
-
+		colorSwap = new ColorSwapHSV();
 		stage = stageName;
 		updateStage();
 	}
