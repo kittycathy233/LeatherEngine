@@ -2857,8 +2857,11 @@ class ModchartUtilities {
 			if(Std.isOfType(value, Float)){
 				funnyCustomShader.setFloat(property, Std.parseFloat(value));
 			}
-			else{
+			else if(Std.isOfType(value, Bool)){
 				funnyCustomShader.setBool(property, value);
+			}
+			else{
+				funnyCustomShader.setFloatArray(property, value);
 			}
 		});
 

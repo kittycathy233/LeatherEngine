@@ -1,6 +1,6 @@
 package docs;
 
-#if cpp
+#if windows
 import states.LoadingState;
 import states.MainMenuState;
 import flixel.FlxG;
