@@ -14,12 +14,10 @@ Set Camera Zoom~Game Camera Zoom (default is defaultCameraZoom)~Hud Camera Zoom 
 Add Camera Zoom~Game Camera Add (default = 0.015)~Hud Camera Add (default = 0.03)
 Screen Shake~Camera Shake (duration, intensity)~Hud Shake (duration, intensity)
 Camera Flash~Color (example: 'red')~Duration
-3D Shader~Character (BF, Dad, GF)~Properties formated like: '3,10,0.25' (speed, frequency, amplitude)
-No Shader~Character (BF, Dad, GF)~Nothing
-Create Custom Shader~Id~Filename
-Set Actor Custom Shader~Id~Actor
-Set Actor No Custom Shader~Actor~Nothing
-Set Camera Custom Shader~Id~Camera - "game" for camGame, "hud" for camHUD, anything else for both.
-Set Camera No Custom Shader~Camera - "game" for camGame, "hud" for camHUD, anything else for both.~Nothing
 Add Trail~Object Name (dad, boyfriend, girlfriend, etc)~Properties, formatted like: '10,3,0.4,0.05' (sprite count, frame delay, alpha, alpha diff)
 Remove Trail~Object Name (dad, boyfriend, girlfriend, etc)~Nothing
+3D Shader~Character (BF, Dad, GF)~Properties formated like: '3,10,0.25' (speed, frequency, amplitude)
+No Shader~Character (BF, Dad, GF)~Nothing
+Init Shader~Id~Filename                                                        Shaders must be created before using in other events and scripts
+Set Camera Shader~Id~Camera (hud, game, or both)                                                        Adds a shader to a camera.
+Remove Camera Shader~Id~Camera (hud, game, or both)                                                        Removes a shader fro, a camera.

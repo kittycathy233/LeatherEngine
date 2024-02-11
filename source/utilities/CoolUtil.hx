@@ -14,6 +14,8 @@ import lime.utils.Assets;
 
 using StringTools;
 
+
+
 class CoolUtil {
 	public static function boundTo(value:Float, min:Float, max:Float):Float {
 		var newValue:Float = value;
@@ -302,9 +304,7 @@ class CoolUtil {
 	}
 
 
-	public static function changeWindowIcon(path:String){
-		if(#if sys sys.FileSystem.exists(path) || #end Assets.exists(path)) FlxG.stage.window.setIcon(Image.fromBitmapData(path));
-	}
+
 
 
 	/**

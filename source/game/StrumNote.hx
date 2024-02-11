@@ -57,7 +57,7 @@ class StrumNote extends FlxSkewedSprite
 
 		noteData = leData;
 
-		var localKeyCount = (isPlayer == 1) ? PlayState.SONG.playerKeyCount : keyCount;
+		var localKeyCount = (isPlayer == 1) ? (FlxG.state == PlayState.instance ? PlayState.SONG.playerKeyCount : keyCount) : keyCount;
 
 		this.ui_Skin = ui_Skin;
 		this.ui_settings = ui_settings;
@@ -79,7 +79,7 @@ class StrumNote extends FlxSkewedSprite
 
 		var charColors;
 
-		if(affectedbycolor){
+		if(affectedbycolor && FlxG.state == PlayState.instance){
 			if(Options.getData("middlescroll")){
 				charColors = (isPlayer == 1) ? PlayState.dad : PlayState.boyfriend;
 			}
@@ -98,7 +98,7 @@ class StrumNote extends FlxSkewedSprite
 			colorSwap.r = noteColor[0];
 			colorSwap.g = noteColor[1];
 			colorSwap.b = noteColor[2];
-	}
+		}
 	}
 
 	override function update(elapsed:Float)

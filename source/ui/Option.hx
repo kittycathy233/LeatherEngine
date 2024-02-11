@@ -323,7 +323,9 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				FlxG.resetState();
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
-				CoolUtil.changeWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+				#if windows
+				//utilities.Windows.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+				#end
 			}
 		}else {
 			Alphabet_Text.alpha = 0.6;
