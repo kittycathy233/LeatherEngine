@@ -1,5 +1,9 @@
 package;
 
+#if SCREENSHOTS_ALLOWED
+import screenshotplugin.ScreenShotPlugin;
+#end
+import flixel.FlxG;
 import lime.app.Application;
 import haxe.io.Path;
 import haxe.CallStack;
@@ -27,8 +31,9 @@ class Main extends Sprite {
 		addChild(new FlxGame(0, 0, states.TitleState, 60, 60, true));
 
 		#if SCREENSHOTS_ALLOWED
-		flixel.FlxG.plugins.add(new screenshotplugin.ScreenShotPlugin());
-		plugins.ScreenshotPluginConfig.setScreenshotConfig(PNG, F2);
+		flixel.FlxG.plugins.add(new ScreenShotPlugin());
+		ScreenShotPlugin.screenshotKey = F2;
+        ScreenShotPlugin.saveFormat = PNG;
 		#end
 
 		#if !mobile
@@ -36,7 +41,28 @@ class Main extends Sprite {
 		addChild(display);
 		#end
 
+		// shader coords fix
+		// stolen from psych engine lol
+		FlxG.signals.gameResized.add(function (w, h) {
+		     if (FlxG.cameras != null) {
+			   for (cam in FlxG.cameras.list) {
+				if (cam != null && cam.filters != null)
+					resetSpriteCache(cam.flashSprite);
+			   }
+			}
 
+			if (FlxG.game != null)
+			resetSpriteCache(FlxG.game);
+		});
+
+
+	}
+
+	static function resetSpriteCache(sprite:Sprite):Void {
+		@:privateAccess {
+		        sprite.__cacheBitmap = null;
+			sprite.__cacheBitmapData = null;
+		}
 	}
 
 	public static var display:SimpleInfoDisplay;
