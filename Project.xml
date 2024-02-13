@@ -127,6 +127,11 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
 	<haxeflag name="-dce" value="no" />
+	<!-- Stuff totally not stolen from codename engine -->
+	<haxeflag name="--macro" value="include('flixel')" />
+	<haxeflag name="--macro" value="include('away3d')" />
+	<haxeflag name="--macro" value="include('flx3d')" />
+	<haxeflag name="--macro" value="include('sys')" unless="web"/>
 
 	<define name="hscriptPos" />
 
