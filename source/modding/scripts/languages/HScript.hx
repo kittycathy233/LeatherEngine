@@ -128,6 +128,7 @@ class HScript
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		interp.variables.set('FlxAnimate', flxanimate.FlxAnimate);
 		interp.variables.set('Json', haxe.Json);
+		interp.variables.set("FlxEmitter", flixel.effects.particles.FlxEmitter);
 
 		// game classes
 		interp.variables.set("PlayState", states.PlayState);

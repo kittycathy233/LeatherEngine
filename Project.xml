@@ -126,12 +126,37 @@
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
+	<!-- HSCRIPT GO BRRRRRRR -->
 	<haxeflag name="-dce" value="no" />
-	<!-- Stuff totally not stolen from codename engine -->
-	<haxeflag name="--macro" value="include('flixel')" />
-	<haxeflag name="--macro" value="include('away3d')" />
-	<haxeflag name="--macro" value="include('flx3d')" />
-	<haxeflag name="--macro" value="include('sys')" unless="web"/>
+	<haxeflag name="--macro" value="include('flixel.addons.api')" />
+	<haxeflag name="--macro" value="include('flixel.addons.display')" />
+	<haxeflag name="--macro" value="include('flixel.addons.editors.ogmo')" />
+	<haxeflag name="--macro" value="include('flixel.addons.editors.pex')" />
+	<haxeflag name="--macro" value="include('flixel.addons.editors.tiled')" />
+	<haxeflag name="--macro" value="include('flixel.addons.effects')" />
+	<haxeflag name="--macro" value="include('flixel.addons.plugin')" />
+	<haxeflag name="--macro" value="include('flixel.addons.text')" />
+	<haxeflag name="--macro" value="include('flixel.addons.tile')" />
+	<haxeflag name="--macro" value="include('flixel.addons.transition')" />
+	<haxeflag name="--macro" value="include('flixel.addons.ui')" />
+	<haxeflag name="--macro" value="include('flixel.addons.weapon')" />
+	<haxeflag name="--macro" value="include('flixel.animation')" />
+	<haxeflag name="--macro" value="include('flixel.effects')" />
+	<haxeflag name="--macro" value="include('flixel.graphics')" />
+	<haxeflag name="--macro" value="include('flixel.group')" />
+	<haxeflag name="--macro" value="include('flixel.input')" />
+	<haxeflag name="--macro" value="include('flixel.math')" />
+	<haxeflag name="--macro" value="include('flixel.path')" />
+	<haxeflag name="--macro" value="include('flixel.sound')" />
+	<haxeflag name="--macro" value="include('flixel.text')" />
+	<haxeflag name="--macro" value="include('flixel.tile')" />
+	<haxeflag name="--macro" value="include('flixel.tweens')" />
+	<haxeflag name="--macro" value="include('flixel.ui')" />
+	<haxeflag name="--macro" value="include('flixel.util')" />
+	<haxeflag name="--macro" value="include('flx3D')" if="THREE_D_ALLOWED" />
+	<haxeflag name="--macro" value="include('sys')" if="sys" unless="web" />
+
+
 
 	<define name="hscriptPos" />
 
