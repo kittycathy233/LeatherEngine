@@ -1399,6 +1399,28 @@ class PlayState extends MusicBeatState {
 			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
 
+		//@see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
+		if(Options.getData('colorQuantization')){
+			for(note in unspawnNotes){
+				if(note.affectedbycolor){
+					var quantStrumTime = note.isSustainNote ? note.prevNote.strumTime : note.strumTime;
+					var currentStepCrochet = Conductor.stepCrochet;
+					var noteBeat = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48)+0.5);
+					var col:Array<Int> = [142,142,142];
+					for (beat in 0...note.beats.length-1){
+						if ((noteBeat % (192 / note.beats[beat]) == 0)){
+							noteBeat = note.beats[beat];
+							col = note.quantColors[beat];
+							break;
+						}
+					}
+					note.colorSwap.r = col[0];
+					note.colorSwap.g = col[1];
+					note.colorSwap.b = col[2];
+				}
+			}
+		}
+
 		super.create();
 
 		for (script_funny in scripts) {
@@ -1954,6 +1976,7 @@ class PlayState extends MusicBeatState {
 		unspawnNotes.sort(sortByShit);
 		generatedMusic = true;
 		SONG.validScore = SONG.validScore == true ? songMultiplier >= 1 : false;
+
 
 	}
 

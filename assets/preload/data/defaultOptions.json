@@ -294,7 +294,7 @@
       "value": false
     },
     {
-      "option": "colorQuant",
+      "option": "colorQuantization",
       "value": false
     },
     {

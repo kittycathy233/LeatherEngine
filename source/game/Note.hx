@@ -75,29 +75,26 @@ class Note extends FlxSkewedSprite {
 	 * @see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
 	 * @see https://step-mania.fandom.com/wiki/Notes
 	 */
-	public static var quantColors:Array<FlxColor> = [
-		0xff230f, 
-		0x134fff,
-		0x8a07e0,
-		0x47fa16,
-		0xd600d3,
-		0xf67904,
-		0x00c8ac,
-		0x26a829,
-		0xbbbbbb,
-		0xA7C7E7,
-		0x808000,
+	public var quantColors:Array<Array<Int>> = [
+		[255,35,15], 
+		[19,75,255],
+		[138,7,224],
+		[71,250,22],
+		[214,0,211],
+		[246,121,4],
+		[0,200,172],
+		[38,168,41],
+		[187,187,187],
+		[167,199,231],
+		[128,128,0],
 	];
 
-	public static var ratingColors:Array<FlxColor> = [
-
-	];
 
 	/**
 	 * @see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
 	 * @see https://step-mania.fandom.com/wiki/Notes
 	 */
-	public static var beats:Array<Int> = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192];
+	public var beats:Array<Int> = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 			?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
