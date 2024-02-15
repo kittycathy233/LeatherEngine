@@ -33,7 +33,7 @@ jobs:
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel 5.5.0
+          haxelib --never install flixel
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -88,7 +88,7 @@ jobs:
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel 5.5.0
+          haxelib --never install flixel
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -133,7 +133,7 @@ jobs:
           haxelib git hxcpp https://github.com/Vortex2Oblivion/hxcpp-compiled
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel 5.5.0 
+          haxelib --never install flixel 
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -184,7 +184,7 @@ jobs:
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel 5.5.0
+          haxelib --never install flixel
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
