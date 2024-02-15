@@ -91,6 +91,8 @@
 
 	<assets path="CHANGELOG.md" rename='changelog.txt' />
 
+	<assets path="console.bat" if="windows" unless="web" />
+
 	<assets path="version.txt" />
 
 	<assets path="Crash.exe" if="windows" />
