@@ -97,8 +97,7 @@ class TitleState extends MusicBeatState {
 			#if FLX_NO_DEBUG
 			if (Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
 				doneFlixelSplash = true;
-				flixel.system.FlxSplash.nextState = states.TitleState;
-				FlxG.switchState(new flixel.system.FlxSplash());
+				FlxG.switchState(() -> new flixel.system.FlxSplash(new states.TitleState()));
 				return;
 			}
 			#end
