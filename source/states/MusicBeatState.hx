@@ -29,6 +29,8 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 	override public function new() {
 		if (!Options.getData('memoryLeaks')) {
+			lime.utils.Assets.cache.clear();
+			openfl.utils.Assets.cache.clear();
 			#if polymod
 			polymod.Polymod.clearCache();
 			#end
