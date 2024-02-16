@@ -30,7 +30,7 @@ class StrumNote extends FlxSkewedSprite
 	public var mania_size:Array<String>;
 	public var keyCount:Int;
 
-	public var colorSwap:ColorSwap;
+	public var colorSwap:ColorSwap = new ColorSwap();
 	public var noteColor:Array<Int> = [255,0,0];
 	public var affectedbycolor:Bool = false;
 
@@ -74,12 +74,11 @@ class StrumNote extends FlxSkewedSprite
 
 		super(x, y);
 
-		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 
 		var charColors;
 
-		if(affectedbycolor && FlxG.state == PlayState.instance){
+		if(affectedbycolor && PlayState.instance != null && colorSwap != null){
 			if(Options.getData("middlescroll")){
 				charColors = (isPlayer == 1) ? PlayState.dad : PlayState.boyfriend;
 			}
