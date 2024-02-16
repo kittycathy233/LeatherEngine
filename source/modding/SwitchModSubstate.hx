@@ -19,7 +19,7 @@ import toolbox.StageMakingState;
 import flixel.sound.FlxSound;
 import toolbox.CharacterCreator;
 import utilities.Controls.Control;
-import flash.text.TextField;
+import openfl.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
