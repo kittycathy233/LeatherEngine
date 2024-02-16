@@ -566,7 +566,7 @@ class FreeplayState extends MusicBeatState {
 					iconArray[i].animation.curAnim.curFrame = 0;
 			}
 
-			if (curSelected >= 0 && (curSelected <= iconArray.length)){
+			if (curSelected >= 0 && (curSelected <= iconArray.length) && iconArray.length != 0 && iconArray != null){
 				iconArray[curSelected].alpha = 1;
 			}
 
