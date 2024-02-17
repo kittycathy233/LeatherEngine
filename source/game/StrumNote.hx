@@ -85,12 +85,8 @@ class StrumNote extends FlxSkewedSprite
 			else{
 				charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
 			}
-			if (!customColors) 
-				noteColor = charColors.noteColors[localKeyCount - 1][noteData]; 
-			else 
-				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
+			noteColor = !customColors ? charColors.noteColors[localKeyCount - 1][noteData] : NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]); 
 
-			//idk why || doesnt work??
 			if(Options.getData("customNoteColors"))
 				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 
