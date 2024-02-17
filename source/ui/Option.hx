@@ -1,7 +1,6 @@
 package ui;
 
 import lime.app.Application;
-import webview.WebView;
 import lime.graphics.Image;
 import utilities.CoolUtil;
 import states.TitleState;
