@@ -40,6 +40,12 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 	public static var inMenu = false;
 
 	public var pages:Map<String, Array<Dynamic>> = [
+		"Categories" => [
+			new ToolboxPageOption("Tools", 0, "Tools",),
+			#if windows
+			new ToolboxPageOption("Documentation", 1, "Documentation")
+			#end
+		],
 		"Tools" => [
 			new GameStateOption("Charter", 0, new ChartingState()),
 			new CharacterCreatorOption("Character Creator", 1, new CharacterCreator("dad", "stage")),
@@ -48,6 +54,12 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 			new GameStateOption("Modchart Editor", 3, new modcharting.ModchartEditorState()),
 			#end
 			new GameSubstateOption("Import Old Scores", 4, substates.ImportHighscoresSubstate)
+		],
+		"Documentation" => [
+			new WebViewOption("Wiki", 0, "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),
+			new WebViewOption("HScript Api", 1, "HScript Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
+			new WebViewOption("Lua Api", 2, "Lua Api", "https://github.com/Leather128/LeatherEngine/wiki/Lua-API#lua-api-documentation"),
+			new WebViewOption("Polymod Docs", 3, "Polymod Docs", "https://polymod.io/docs/")
 		]
 	];
 
@@ -85,7 +97,7 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 
 		add(page);
 
-		LoadPage("Tools");
+		LoadPage("Categories");
 
 		if (FlxG.sound.music == null)
 			FlxG.sound.playMusic(MusicUtilities.GetOptionsMenuMusic(), 0.7, true);
@@ -161,5 +173,26 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 				}
 			}
 		}
+	}
+}
+/**
+ * Very simple option that transfers you to a different page when selecting it.
+ */
+ class ToolboxPageOption extends ui.Option {
+	// OPTIONS //
+	public var Page_Name:String = "Categories";
+
+	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories", _Description:String = "Test Description") {
+		super(_Option_Name, _Page_Name, _Option_Row);
+
+		// SETTING VALUES //
+		this.Page_Name = _Page_Name;
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !ToolboxPlaceholder.inMenu)
+			ToolboxPlaceholder.LoadPage(Page_Name);
 	}
 }

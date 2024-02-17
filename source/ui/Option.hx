@@ -1,5 +1,7 @@
 package ui;
 
+import lime.app.Application;
+import webview.WebView;
 import lime.graphics.Image;
 import utilities.CoolUtil;
 import states.TitleState;
@@ -411,3 +413,43 @@ class DisplayFontOption extends StringSaveOption {
 	}
 }
 
+/**
+ * Very simple option that renders a webpage when selected
+ */
+ class WebViewOption extends Option {
+	// OPTIONS //
+	public var Title:String;
+	public var Url:String;
+
+	public function new(_Option_Name:String = "", _Option_Row:Int = 0, Title:String, Url:String) {
+		super(_Option_Name, null, _Option_Row);
+
+		// SETTING VALUES //
+		this.Url = Url;
+		this.Title = Title;
+	}
+
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+
+		
+		#if windows
+		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
+			sys.thread.Thread.createWithEventLoop(() ->
+		{
+            var w:webview.WebView = new webview.WebView(#if debug true #else false #end);
+
+			w.setTitle(Title);
+			w.setSize(FlxG.width, FlxG.height, NONE);
+			w.navigate(Url);
+
+			Application.current.onExit.add((_) ->
+			{
+				w.terminate();
+				w.destroy();
+			});
+			w.run();
+		});   
+		#end 
+	}
+}
