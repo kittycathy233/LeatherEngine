@@ -3401,6 +3401,7 @@ class PlayState extends MusicBeatState {
 		rating.alpha = 1;
 		rating.loadGraphic(uiMap.get(daRating), false, 0, 0, true, daRating);
 
+		rating.screenCenter();
 		rating.x = Options.getData("ratingsSettings")[0];
 		rating.x -= (Options.getData("middlescroll") ? 350 : (characterPlayingAs == 0 ? 0 : -150));
 		rating.y = Options.getData("ratingsSettings")[1];
@@ -3416,7 +3417,7 @@ class PlayState extends MusicBeatState {
 
 			if (Math.abs(noteMath) == noteMath)
 				accuracyText.color = FlxColor.CYAN;
-			else
+			else	
 				accuracyText.color = FlxColor.ORANGE;
 
 			accuracyText.borderStyle = FlxTextBorderStyle.OUTLINE;

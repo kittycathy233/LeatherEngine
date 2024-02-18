@@ -151,8 +151,9 @@ class HUDAdjustment extends MusicBeatState{
         reset = new FlxButton(0, FlxG.height, "RESET", function() {
 			combo_Pos.screenCenter();
 			rating_Pos.screenCenter();
+			rating.screenCenter();
 			Options.setData([combo_Pos.x, combo_Pos.y, 1, 1], "comboSettings");
-			Options.setData([rating_Pos.x, rating_Pos.y, 1, 1], "ratingsSettings");
+			Options.setData([rating.x, rating.y, 1, 1], "ratingsSettings");
 			trace("reset");
 		});
 		reset.cameras = [camHUD];
