@@ -598,8 +598,6 @@ class PlayState extends MusicBeatState {
 	**/
 	public var splash_group:FlxTypedSpriteGroup<NoteSplash> = new FlxTypedSpriteGroup<NoteSplash>();
 
-	// unused for now ;)
-	// public var scripts:Array<HScript> = [];
 	public var ratingsGroup:FlxSpriteGroup = new FlxSpriteGroup();
 
 	/**
@@ -794,11 +792,11 @@ class PlayState extends MusicBeatState {
 		type_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("arrow types/default")));
 
 		// preload ratings
-		uiMap.set("marvelous", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "marvelous")));
-		uiMap.set("sick", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "sick")));
-		uiMap.set("good", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "good")));
-		uiMap.set("bad", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "bad")));
-		uiMap.set("shit", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "shit")));
+		uiMap.set("marvelous", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/marvelous")));
+		uiMap.set("sick", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/sick")));
+		uiMap.set("good", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/good")));
+		uiMap.set("bad", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/bad")));
+		uiMap.set("shit", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/shit")));
 
 		// preload numbers
 		for (i in 0...10)
@@ -3403,8 +3401,9 @@ class PlayState extends MusicBeatState {
 		rating.alpha = 1;
 		rating.loadGraphic(uiMap.get(daRating), false, 0, 0, true, daRating);
 
-		rating.screenCenter();
+		rating.x = Options.getData("ratingsSettings")[0];
 		rating.x -= (Options.getData("middlescroll") ? 350 : (characterPlayingAs == 0 ? 0 : -150));
+		rating.y = Options.getData("ratingsSettings")[1];
 		rating.y -= 60;
 		rating.velocity.y = FlxG.random.int(30, 60);
 		rating.velocity.x = FlxG.random.int(-10, 10);
@@ -3450,7 +3449,8 @@ class PlayState extends MusicBeatState {
 
 			numScore.loadGraphic(uiMap.get(Std.string(i)), false, 0, 0, true, Std.string(i));
 
-			numScore.screenCenter();
+			numScore.x = Options.getData("comboSettings")[0];
+			numScore.y = Options.getData("comboSettings")[1];
 			numScore.x -= (Options.getData("middlescroll") ? 350 : (characterPlayingAs == 0 ? 0 : -150));
 
 			numScore.x += (43 * daLoop) - 90;
@@ -4605,32 +4605,34 @@ class PlayState extends MusicBeatState {
 					bar.createFilledBar(dad.barColor, boyfriend.barColor);
 					bar.updateFilledBar();
 				}
-				for (note in notes.members){
-					if(note.affectedbycolor){
-						var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
-						var noteColor;
-						if (!Options.getData("customNoteColors"))
-							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-						else
-							noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
-						note.colorSwap.r = noteColor[0];
-						note.colorSwap.g = noteColor[1];
-						note.colorSwap.b = noteColor[2];
-					}
-				}
-				for (note in unspawnNotes){
-					if(note.affectedbycolor){
-						var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
-						var noteColor;
-						if (!Options.getData("customNoteColors"))
-							noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-						else
-							noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+				if(!Options.getData("colorQuantization")){
+					for (note in notes.members){
+						if(note.affectedbycolor){
+							var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
+							var noteColor;
+							if (!Options.getData("customNoteColors"))
+								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+							else
+								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
 							note.colorSwap.r = noteColor[0];
 							note.colorSwap.g = noteColor[1];
 							note.colorSwap.b = noteColor[2];
 						}
 					}
+					for (note in unspawnNotes){
+						if(note.affectedbycolor){
+							var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
+							var noteColor;
+							if (!Options.getData("customNoteColors"))
+								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
+							else
+								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+								note.colorSwap.r = noteColor[0];
+								note.colorSwap.g = noteColor[1];
+								note.colorSwap.b = noteColor[2];
+							}
+						}
+				}
 				//the strums need to be cleared for the note colors to change when switching characters, oof.
 				playerStrums.clear();
 				enemyStrums.clear();
@@ -5088,11 +5090,11 @@ class PlayState extends MusicBeatState {
 				type_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("arrow types/default")));
 
 				// preload ratings
-				uiMap.set("marvelous", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "marvelous")));
-				uiMap.set("sick", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "sick")));
-				uiMap.set("good", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "good")));
-				uiMap.set("bad", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "bad")));
-				uiMap.set("shit", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/" + "shit")));
+				uiMap.set("marvelous", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/marvelous")));
+				uiMap.set("sick", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/sick")));
+				uiMap.set("good", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/good")));
+				uiMap.set("bad", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/bad")));
+				uiMap.set("shit", FlxGraphic.fromAssetKey(Paths.image("ui skins/" + SONG.ui_Skin + "/ratings/shit")));
 
 				// preload numbers
 				for (i in 0...10)

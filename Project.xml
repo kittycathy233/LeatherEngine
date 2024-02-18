@@ -161,6 +161,7 @@
 
 
 	<define name="hscriptPos" />
+	<define name="no-deprecation-warnings" />
 	<define name="CUSTOM_CLASSES" />
 
 	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />

@@ -460,6 +460,10 @@ class ModchartUtilities {
             return Reflect.getProperty(FlxG.keys.pressed, key);
         });
 
+		setLuaFunction("justReleased", function(key:String = "SPACE") {
+            return Reflect.getProperty(FlxG.keys.justReleased, key);
+        });
+
 		setLuaFunction("setGraphicSize", function(id:String, width:Int = 0, height:Int = 0) {
 			var actor:FlxSprite = getActorByName(id);
 

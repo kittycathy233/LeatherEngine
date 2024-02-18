@@ -68,17 +68,8 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Bigger Score Text", "biggerScoreInfo", 5),
 			new BoolOption("Bigger Info Text", "biggerInfoText", 6),
 			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], 7, "timeBarStyle"),
-			new PageOption("Screen Effects", 8, "Screen Effects")
-		],
-		"Tools" => [
-			new PageOption("Back", 0, "Categories"),
-			new GameStateOption("Charter", 1, new ChartingState()),
-			new CharacterCreatorOption("Character Creator", 2, new CharacterCreator("dad", "stage")),
-			new GameStateOption("Stage Editor", 3, new StageMakingState("stage")),
-			#if MODCHARTING_TOOLS
-			new GameStateOption("Modchart Editor", 4, new modcharting.ModchartEditorState()),
-			#end
-			new GameSubstateOption("Import Old Scores", 5, substates.ImportHighscoresSubstate)
+			new PageOption("Screen Effects", 8, "Screen Effects"),
+			new GameStateOption("Change Hud Settings", 9, new ui.HUDAdjustment())
 		],
 		"Misc" => [
 			new PageOption("Back", 0, "Categories"),
@@ -179,13 +170,6 @@ class OptionsMenu extends MusicBeatState {
 	override function create():Void {
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
-
-		if (PlayState.instance == null) {
-			pages["Tools"][1] = null;
-			#if debug
-			pages["Tools"][2] = null;
-			#end
-		}
 
 		MusicBeatState.windowNameSuffix = "";
 		instance = this;

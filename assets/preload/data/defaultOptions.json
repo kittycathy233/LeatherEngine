@@ -316,6 +316,18 @@
     {
       "option": "optimizedModcharts",
       "value": false
+    },
+    {
+      "option": "ratingsSettings",
+      "value": [517, 310, 1, 1]
+    },
+    {
+      "option": "comboSettings",
+      "value": [300, 600, 1, 1]
+    },
+    {
+      "option": "msSettings",
+      "value": [0, 0, 1, 1]
     }
   ]
 }
