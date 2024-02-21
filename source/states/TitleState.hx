@@ -327,11 +327,6 @@ class TitleState extends MusicBeatState {
 		}
 		#end
 
-		#if windows
-		if(FlxG.keys.justPressed.P){
-			FlxG.switchState(new docs.DocState());
-		}
-		#end
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
