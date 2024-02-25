@@ -2634,17 +2634,18 @@ class PlayState extends MusicBeatState {
 					if (daNote.singAnimPrefix != 'sing'){
 						singAnim = singAnim.replace('sing', daNote.singAnimPrefix);
 					}
+					
 
 					if (characterPlayingAs == 0) {
 						if (dad.otherCharacters == null || dad.otherCharacters.length - 1 < daNote.character)
 							dad.playAnim(singAnim, true);
 						else {
 							if (daNote.characters.length <= 1)
-								dad.otherCharacters[daNote.character].playAnim(singAnim);
+								dad.otherCharacters[daNote.character].playAnim(singAnim, true);
 							else {
 								for (character in daNote.characters) {
 									if (dad.otherCharacters.length - 1 >= character)
-										dad.otherCharacters[character].playAnim(singAnim);
+										dad.otherCharacters[character].playAnim(singAnim, true);
 								}
 							}
 						}
@@ -2685,13 +2686,11 @@ class PlayState extends MusicBeatState {
 						if (boyfriend.otherCharacters == null || boyfriend.otherCharacters.length - 1 < daNote.character)
 							boyfriend.playAnim(singAnim, true);
 						else if (daNote.characters.length <= 1)
-							boyfriend.otherCharacters[daNote.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))],
-								true);
+							boyfriend.otherCharacters[daNote.character].playAnim(singAnim,true);
 						else {
 							for (character in daNote.characters) {
 								if (boyfriend.otherCharacters.length - 1 >= character)
-									boyfriend.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.keyCount - 1][Std.int(Math.abs(daNote.noteData))],
-										true);
+									boyfriend.otherCharacters[character].playAnim(singAnim,true);
 							}
 						}
 
@@ -4056,20 +4055,18 @@ class PlayState extends MusicBeatState {
 			if (note.singAnimPrefix != 'sing'){
 				singAnim = singAnim.replace('sing', note.singAnimPrefix);
 			}
-
 			if (characterPlayingAs == 0) {
 				if (boyfriend.otherCharacters != null && !(boyfriend.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)
-						boyfriend.otherCharacters[note.character].playAnim(singAnim);
+						boyfriend.otherCharacters[note.character].playAnim(singAnim, true);
 					else {
 						for (character in note.characters) {
 							if (boyfriend.otherCharacters.length - 1 >= character)
-								boyfriend.otherCharacters[character].playAnim(singAnim);
+								boyfriend.otherCharacters[character].playAnim(singAnim, true);
 						}
 					}
 				else
-					boyfriend.playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))],
-						true);
+					boyfriend.playAnim(singAnim);
 
 				if (note.isSustainNote){
 					executeALuaState("playerOneSingHeld", lua_Data);
@@ -4082,21 +4079,15 @@ class PlayState extends MusicBeatState {
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)
-						dad.otherCharacters[note.character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))]
-							+ altAnim,
-							true);
+						dad.otherCharacters[note.character].playAnim(singAnim,true);
 					else {
 						for (character in note.characters) {
 							if (dad.otherCharacters.length - 1 >= character)
-								dad.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))]
-									+ altAnim,
-									true);
+								dad.otherCharacters[character].playAnim(singAnim,true);
 						}
 					}
 				else
-					dad.playAnim(NoteVariables.Character_Animation_Arrays[SONG.playerKeyCount - 1][Std.int(Math.abs(note.noteData % SONG.playerKeyCount))]
-						+ altAnim,
-						true);
+					dad.playAnim(singAnim,true);
 
 				if (note.isSustainNote){
 					executeALuaState("playerTwoSingHeld", lua_Data);

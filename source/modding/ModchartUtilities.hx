@@ -218,7 +218,7 @@ class ModchartUtilities {
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 
-		trace('Loaded script at $path');
+		trace('Loading script at path \'${path}\'', DEBUG);
 		//trace("lua version: " + Lua.version());
 		//trace("LuaJIT version: " + Lua.versionJIT());
 
