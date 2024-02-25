@@ -282,10 +282,10 @@ class ControlMenuSubstate extends MusicBeatSubstate
             if(!selectingStuff && (leftP || rightP))
             {
                 if(leftP)
-                    key_Count -= 1;
+                    key_Count --;
     
                 if(rightP)
-                    key_Count += 1;
+                    key_Count ++;
     
                 if(key_Count < 1)
                     key_Count = 1;

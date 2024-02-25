@@ -193,16 +193,16 @@ class Note extends FlxSkewedSprite {
 				prevNoteStrumtime = prevNote.strumTime;
 				prevNoteIsSustainNote = prevNote.isSustainNote;
 	
-				if (song.ui_Skin != 'pixel')
+				if (!song.ui_Skin.contains("pixel"))
 					x += width / 2;
 	
 				animation.play("holdend");
 				updateHitbox();
 	
-				if (song.ui_Skin != 'pixel')
+				if (!song.ui_Skin.contains("pixel"))
 					x -= width / 2;
 	
-				if (song.ui_Skin == 'pixel')
+				if (song.ui_Skin.contains("pixel"))
 					x += 30;
 	
 				if (prevNote.isSustainNote) {

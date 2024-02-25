@@ -91,8 +91,8 @@ class HScript
 			}
 			catch (e)
 			{
-				trace(e.details());
-				trace("ERROR Caused in " + func + " with " + Std.string(args) + " args");
+				trace(e.details(), ERROR);
+				trace("ERROR Caused in " + func + " with " + Std.string(args) + " args", ERROR);
 			}
 		}
 
@@ -199,11 +199,7 @@ class HScript
 
 		interp.variables.set("trace", function(value:Dynamic)
 		{
-			#if sys
-			Sys.println(value);
-			#else
 			trace(value);
-			#end
 		});
 
 		interp.variables.set("load", function(script_path:String)

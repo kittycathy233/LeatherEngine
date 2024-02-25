@@ -1642,8 +1642,8 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	var startTimer:FlxTimer;
-
+	var startTimer:FlxTimer = new FlxTimer();
+	public static var startOnTime:Float = 0;
 	function startCountdown():Void {
 
 		allScriptCall("generateStaticArrows");
@@ -1675,6 +1675,11 @@ class PlayState extends MusicBeatState {
 		Conductor.songPosition -= Conductor.crochet * 5;
 
 		var swagCounter:Int = 0;
+		if (startOnTime > 0) {
+			clearNotesBefore(startOnTime);
+			setSongTime(startOnTime - 350);
+			return;
+		}
 
 		allScriptCall("startCountdown", [-1]);
 		executeALuaState("startCountdown", [-1]);
@@ -1735,7 +1740,7 @@ class PlayState extends MusicBeatState {
 		#end
 		allScriptCall("start", [SONG.song.toLowerCase()]);
 
-		startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
+		startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
 			allScriptCall("startCountdown", [swagCounter]);
 			dad.dance(altAnim);
 			gf.dance();
@@ -1807,7 +1812,7 @@ class PlayState extends MusicBeatState {
 				case 4:
 			}
 
-			swagCounter += 1;
+			swagCounter ++;
 		}, 5);
 	}
 
@@ -1816,6 +1821,64 @@ class PlayState extends MusicBeatState {
 	var songTime:Float = 0;
 
 	var invincible:Bool = false;
+
+	public function clearNotesBefore(time:Float)
+		{
+			var i:Int = unspawnNotes.length - 1;
+			while (i >= 0) {
+				var daNote:Note = unspawnNotes[i];
+				if(daNote.strumTime - 350 < time)
+				{
+					daNote.active = false;
+					daNote.visible = false;
+	
+					daNote.kill();
+					unspawnNotes.remove(daNote);
+					daNote.destroy();
+				}
+				--i;
+			}
+	
+			i = notes.length - 1;
+			while (i >= 0) {
+				var daNote:Note = notes.members[i];
+				if(daNote.strumTime - 350 < time)
+				{
+					daNote.active = false;
+					daNote.visible = false;
+					invalidateNote(daNote);
+				}
+				--i;
+			}
+		}
+
+	inline function invalidateNote(note:Note):Void {
+		note.kill();
+		notes.remove(note, true);
+		note.destroy();
+	}
+
+	public function setSongTime(time:Float)
+		{
+			if(time < 0) time = 0;
+	
+			FlxG.sound.music.pause();
+			vocals.pause();
+	
+			FlxG.sound.music.time = time;
+			#if FLX_PITCH FlxG.sound.music.pitch = songMultiplier; #end
+			FlxG.sound.music.play();
+	
+			if (Conductor.songPosition <= vocals.length)
+			{
+				vocals.time = time;
+				#if FLX_PITCH
+				vocals.pitch = songMultiplier;
+				#end
+			}
+			vocals.play();
+			Conductor.songPosition = time;
+		}
 
 	function startSong():Void {
 		startingSong = false;
@@ -1827,6 +1890,9 @@ class PlayState extends MusicBeatState {
 			FlxG.sound.music.play();
 
 		vocals.play();
+
+		if(startOnTime > 0) setSongTime(startOnTime - 500);
+		startOnTime = 0;
 
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
@@ -2108,8 +2174,8 @@ class PlayState extends MusicBeatState {
 			if (vocals != null)
 				vocals.pause();
 
-			if (!startTimer.finished)
-				startTimer.active = false;
+			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = false);
+			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = false);
 
 		}
 
@@ -2122,7 +2188,7 @@ class PlayState extends MusicBeatState {
 			if (FlxG.sound.music != null && !startingSong)
 				resyncVocals();
 
-			if (!startTimer.finished)
+			if (!startTimer.finished && startTimer != null)
 				startTimer.active = true;
 
 			paused = false;
@@ -3354,7 +3420,7 @@ class PlayState extends MusicBeatState {
 					health -= 0.075; // yes its more than a miss so that spamming with ghost tapping on is bad
 
 				if (Options.getData("missOnShit"))
-					misses += 1;
+					misses ++;
 
 				combo = 0;
 		}
@@ -4026,7 +4092,7 @@ class PlayState extends MusicBeatState {
 	function goodNoteHit(note:Note, ?setNoteDiff:Float):Void {
 		if (!note.wasGoodHit) {
 			if (note.shouldHit && !note.isSustainNote) {
-				combo += 1;
+				combo ++;
 				popUpScore(note.strumTime, note.noteData % SONG.playerKeyCount, setNoteDiff);
 
 				if (hitSoundString != "none")

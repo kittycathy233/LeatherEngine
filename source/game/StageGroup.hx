@@ -479,7 +479,7 @@ class StageGroup extends FlxGroup {
 
 			if (phillyTrain.x < -2000 && !trainFinishing) {
 				phillyTrain.x = -1150;
-				trainCars -= 1;
+				trainCars --;
 
 				if (trainCars <= 0)
 					trainFinishing = true;

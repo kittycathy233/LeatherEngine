@@ -111,10 +111,10 @@ class Alphabet extends FlxSpriteGroup {
 			new FlxTimer().start(0.05 + (0.05 * loopNum), function(tmr:FlxTimer) {
 				if (this != null && this.active && this.visible && this.alpha != 0) {
 					if (_finalText.charCodeAt(loopNum) == "\n".code) {
-						yMulti += 1;
+						yMulti ++;
 						xPosResetted = true;
 						xPos = 0;
-						curRow += 1;
+						curRow ++;
 					}
 
 					if (splitWords[loopNum - 1] == " ")

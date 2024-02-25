@@ -125,10 +125,10 @@ class NoteColorSubstate extends MusicBeatSubstate
             if(!selectingStuff && (upP || downP))
             {
                 if(downP)
-                    key_Count -= 1;
+                    key_Count --;
     
                 if(upP)
-                    key_Count += 1;
+                    key_Count ++;
     
                 if(key_Count < 1)
                     key_Count = 1;
@@ -142,10 +142,10 @@ class NoteColorSubstate extends MusicBeatSubstate
             if(selectingStuff && (upP || downP))
             {
                 if(downP)
-                    current_ColorVals[selectedValue] -= 1;
+                    current_ColorVals[selectedValue] --;
     
                 if(upP)
-                    current_ColorVals[selectedValue] += 1;
+                    current_ColorVals[selectedValue] ++;
     
                 if(current_ColorVals[selectedValue] < colorMins[selectedValue])
                     current_ColorVals[selectedValue] = colorMins[selectedValue];
@@ -169,10 +169,10 @@ class NoteColorSubstate extends MusicBeatSubstate
             if(!selectingStuff && (leftP || rightP))
             {
                 if(leftP)
-                    selectedControl -= 1;
+                    selectedControl --;
 
                 if(rightP)
-                    selectedControl += 1;
+                    selectedControl ++;
 
                 if(selectedControl < 0)
                     selectedControl = key_Count - 1;
@@ -186,10 +186,10 @@ class NoteColorSubstate extends MusicBeatSubstate
             if(selectingStuff && (leftP || rightP))
             {
                 if(leftP)
-                    selectedValue -= 1;
+                    selectedValue --;
 
                 if(rightP)
-                    selectedValue += 1;
+                    selectedValue ++;
 
                 if(selectedValue < 0)
                     selectedValue = 2;

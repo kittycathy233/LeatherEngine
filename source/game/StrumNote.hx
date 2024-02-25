@@ -134,7 +134,7 @@ class StrumNote extends FlxSkewedSprite
 			colorSwap.b = noteColor[2];
 		}
 
-		if (ui_Skin != "pixel")
+		if (!ui_Skin.contains("pixel"))
 		{
 			offset.x = frameWidth / 2;
 			offset.y = frameHeight / 2;

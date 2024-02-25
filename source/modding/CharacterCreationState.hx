@@ -228,9 +228,9 @@ class CharacterCreationState extends MusicBeatState
 			character.playAnim(animations[curAnimation % animations.length], true);
 
 		if (FlxG.keys.justPressed.W)
-			curAnimation -= 1;
+			curAnimation --;
 		if (FlxG.keys.justPressed.S)
-			curAnimation += 1;
+			curAnimation ++;
 
 		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W)
 		{

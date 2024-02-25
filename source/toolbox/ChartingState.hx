@@ -1436,11 +1436,11 @@ class ChartingState extends MusicBeatState {
 
 			if (FlxG.keys.justPressed.TAB) {
 				if (FlxG.keys.pressed.SHIFT) {
-					UI_box.selected_tab -= 1;
+					UI_box.selected_tab --;
 					if (UI_box.selected_tab < 0)
 						UI_box.selected_tab = 2;
 				} else {
-					UI_box.selected_tab += 1;
+					UI_box.selected_tab ++;
 					if (UI_box.selected_tab >= 3)
 						UI_box.selected_tab = 0;
 				}
@@ -1977,7 +1977,7 @@ class ChartingState extends MusicBeatState {
 				curSelectedNote = _song.notes[curSection].sectionNotes[swagNum];
 			}
 
-			swagNum += 1;
+			swagNum ++;
 		}
 
 		updateGrid();
@@ -2021,7 +2021,7 @@ class ChartingState extends MusicBeatState {
 				eventName = curSelectedEvent[0];
 			}
 
-			swagNum += 1;
+			swagNum ++;
 		}
 
 		updateGrid();

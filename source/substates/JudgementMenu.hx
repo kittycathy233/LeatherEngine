@@ -63,9 +63,9 @@ class JudgementMenu extends MusicBeatSubstate
         if(downP || upP)
         {
             if(downP)
-                selected += 1;
+                selected ++;
             if(upP)
-                selected -= 1;
+                selected --;
 
             if(selected < 0)
                 selected = 3;
@@ -78,9 +78,9 @@ class JudgementMenu extends MusicBeatSubstate
             if(selected == 0)
             {
                 if(leftP)
-                    preset_Selected -= 1;
+                    preset_Selected --;
                 if(rightP)
-                    preset_Selected += 1;
+                    preset_Selected ++;
 
                 if(preset_Selected < 0)
                     preset_Selected = presets.length - 1;
@@ -96,9 +96,9 @@ class JudgementMenu extends MusicBeatSubstate
                 var ms_Select = selected - 1;
 
                 if(leftP)
-                    judgements[ms_Select] -= 1;
+                    judgements[ms_Select] --;
                 if(rightP)
-                    judgements[ms_Select] += 1;
+                    judgements[ms_Select] ++;
 
                 if(ms_Select > 0)
                 {

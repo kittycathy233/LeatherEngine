@@ -52,14 +52,14 @@ class MaxFPSMenu extends MusicBeatSubstate
         }
 
         if(left && !FlxG.keys.pressed.SHIFT)
-            fps -= 1;
+            fps --;
         if(right && !FlxG.keys.pressed.SHIFT)
-            fps += 1;
+            fps ++;
 
         if(leftP && FlxG.keys.pressed.SHIFT)
-            fps -= 1;
+            fps --;
         if(rightP && FlxG.keys.pressed.SHIFT)
-            fps += 1;
+            fps ++;
 
         if(accept)
             fps = Application.current.window.displayMode.refreshRate;
