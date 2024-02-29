@@ -41,7 +41,7 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
-			new ToolboxPageOption("Tools", 0, "Tools",),
+			new ToolboxPageOption("Tools", 0, "Tools"),
 			#if windows
 			new ToolboxPageOption("Documentation", 1, "Documentation")
 			#end
