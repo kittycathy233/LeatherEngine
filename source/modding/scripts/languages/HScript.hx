@@ -140,6 +140,7 @@ class HScript
 		interp.variables.set('Alphabet', ui.Alphabet);
 		interp.variables.set('ModList', modding.ModList);
 		interp.variables.set('CustomState', modding.custom.CustomState);
+		interp.variables.set('CustomSubstate', modding.custom.CustomSubstate);
 		#if discord_rpc
 		interp.variables.set('Discord', utilities.Discord.DiscordClient);
 		#end

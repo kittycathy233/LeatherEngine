@@ -156,6 +156,7 @@
 	<haxeflag name="--macro" value="include('flixel.ui')" />
 	<haxeflag name="--macro" value="include('flixel.util')" />
 	<haxeflag name="--macro" value="include('flx3D')" if="THREE_D_ALLOWED" />
+	<haxeflag name="--macro" value="include('hxvlc')" if="VIDEOS_ALLOWED" />
 	<haxeflag name="--macro" value="include('sys')" if="sys" unless="web" />
 
 

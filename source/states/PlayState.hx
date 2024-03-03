@@ -1860,6 +1860,7 @@ class PlayState extends MusicBeatState {
 
 	public function setSongTime(time:Float)
 		{
+			invincible = true;
 			if(time < 0) time = 0;
 	
 			FlxG.sound.music.pause();
@@ -1878,6 +1879,7 @@ class PlayState extends MusicBeatState {
 			}
 			vocals.play();
 			Conductor.songPosition = time;
+			invincible = false;
 		}
 
 	function startSong():Void {
@@ -2084,7 +2086,7 @@ class PlayState extends MusicBeatState {
 				+ Std.parseFloat(mania_offset[usedKeyCount - 1]);
 			babyArrow.y = strumLine.y - (babyArrow.height / 2);
 
-			if (isStoryMode) {
+			if (isStoryMode && showReminders) {
 				babyArrow.y -= 10;
 				babyArrow.alpha = 0;
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
@@ -2794,10 +2796,17 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if(daNote.isSustainNote)
+					/*if(daNote.isSustainNote){
 						executeALuaState(getSingLuaFuncName(false)+'SingHeld', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
-					else
+						allScriptCall(getSingLuaFuncName(false)+'SingHeld', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
+					}
+					else{
 						executeALuaState(getSingLuaFuncName(false)+'Sing', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
+						allScriptCall(getSingLuaFuncName(false)+'Sing', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
+					}*/
+
+					executeALuaState(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
+					allScriptCall(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
 
 					if (Options.getData("enemyStrumsGlow") && enemyStrums.members.length - 1 == SONG.keyCount - 1) {
 						enemyStrums.forEach(function(spr:StrumNote) {
@@ -4116,6 +4125,7 @@ class PlayState extends MusicBeatState {
 			calculateAccuracy();
 
 			var lua_Data:Array<Dynamic> = [note.noteData, Conductor.songPosition, note.arrow_Type, note.strumTime, note.character];
+			
 
 			var singAnim:String = NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][Std.int(Math.abs(note.noteData % getCorrectKeyCount(true)))] + (characterPlayingAs == 1 ? altAnim : "") + note.singAnimSuffix;
 			if (note.singAnimPrefix != 'sing'){

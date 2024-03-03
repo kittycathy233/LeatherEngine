@@ -1,31 +1,25 @@
 package modding.custom;
 
 import openfl.utils.Assets;
-import flixel.FlxG;
 import modding.scripts.languages.HScript;
-import states.MusicBeatState;
-import flixel.FlxObject;
-import states.TitleState;
+import substates.MusicBeatSubstate;
 import flixel.FlxObject;
 
-
-class CustomState extends MusicBeatState {
+class CustomSubstate extends MusicBeatSubstate {
     public var script:HScript;
-    public static var instance:CustomState = null;
+    public static var instance:CustomSubstate = null;
     override function new(script:String){
         if(Assets.exists(Paths.hx("classes/states/" + script))){
             instance = this;
             this.script = new HScript(Paths.hx("classes/states/" + script));
             this.script.start();
             this.script.interp.variables.set("add", function(obj:FlxObject)
-            {
-                add(obj);
-            });
+                {
+                    add(obj);
+                });
         }
-        else{
+        else
             trace('Could not find script at path ${script}', ERROR);
-            FlxG.switchState(new TitleState());
-        }
         super();
     }
     override function create(){
