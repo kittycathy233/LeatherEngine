@@ -443,6 +443,7 @@ class PauseSubState extends MusicBeatSubstate {
 		for (i in 0...menus.get(menu).length) {
 			if(menus.get(menu)[i].toLowerCase().contains('skip time'))
 				{
+
 					var songText:Alphabet = new Alphabet(0, (70 * i) + 30, "Skip Time " + FlxStringUtil.formatTime(Math.max(0, Math.floor(curTime / 1000)), false) + ' / ' + FlxStringUtil.formatTime(Math.max(0, Math.floor(FlxG.sound.music.length / 1000)), false), true);
 					songText.isMenuItem = true;
 					songText.targetY = i;

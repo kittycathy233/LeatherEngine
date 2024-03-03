@@ -38,6 +38,7 @@ import llua.Lua.Lua_helper;
 import flixel.FlxG;
 import game.Conductor;
 import lime.app.Application;
+import modding.helpers.FlxTextFix;
 #if MODCHARTING_TOOLS
 import modcharting.ModchartFuncs;
 #end
@@ -749,14 +750,20 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("makeText", function(id:String, text:String, x:Float, y:Float, size:Int = 32, font:String = "vcr.ttf", fieldWidth:Float = 0) {
-			if (!lua_Sprites.exists(id)) {
-				var Sprite:FlxText = new FlxText(x, y, fieldWidth, text, size);
-				Sprite.font = Paths.font(font);
-
-				lua_Sprites.set(id, Sprite);
-
-				PlayState.instance.add(Sprite);
-			} else
+			if(!lua_Sprites.exists(id))
+				{
+					var Sprite:FlxTextFix = new FlxTextFix(x, y, fieldWidth, text, size);
+					Sprite.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.TRANSPARENT);
+					//Sprite.setFormat(Paths.font(font), size);
+					Sprite.font = Paths.font(font);
+					Sprite.antialiasing = true;
+	
+		
+					lua_Sprites.set(id, Sprite);
+		
+					PlayState.instance.add(Sprite);
+				}
+			else
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
 
@@ -1629,9 +1636,18 @@ class ModchartUtilities {
         });
 
 		setLuaFunction("playCharacterDance", function(id:String, ?altAnim:String) {
-			if (getActorByName(id) != null) {
-				getActorByName(id).dance(altAnim);
+			if(getCharacterByName(id) != null)
+			{
+				var character = getCharacterByName(id);
+				if (character.otherCharacters != null && character.otherCharacters.length > 0)
+				{
+					character.otherCharacters[0].dance(altAnim);
+					return;
+				}
+						
 			}
+			if(getActorByName(id) != null)
+				getActorByName(id).dance(altAnim);
 		});
 
 		setLuaFunction("getPlayingActorAnimation", function(id:String) {

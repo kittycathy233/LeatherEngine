@@ -1924,6 +1924,9 @@ class ChartingState extends MusicBeatState {
 					colorSwap.g = note.colorSwap.g;
 					colorSwap.b = note.colorSwap.b;
 				}
+				else{
+					sustainVis.color = CoolUtil.dominantColorFrame(note);
+				}
 				curRenderedSustains.add(sustainVis);
 			}
 		}

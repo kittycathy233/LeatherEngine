@@ -418,10 +418,9 @@ class Character extends FlxSprite {
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
-		if (playFullAnim)
+		if (playFullAnim || !animation.exists(AnimName))
 			return;
-		if (!animation.exists(AnimName))
-			return;
+
 
 		
 		if (singAnimPrefix != 'sing' && AnimName.contains('sing')){
