@@ -4723,6 +4723,35 @@ class PlayState extends MusicBeatState {
 							generateStaticArrows(0, true, false);
 						}
 					}
+				#if linc_luajit
+				for (i in 0...strumLineNotes.length) {
+					var member = strumLineNotes.members[i];
+		
+					setLuaVar("defaultStrum" + i + "X", member.x);
+					setLuaVar("defaultStrum" + i + "Y", member.y);
+					setLuaVar("defaultStrum" + i + "Angle", member.angle);
+		
+					setLuaVar("defaultStrum" + i, {
+						x: member.x,
+						y: member.y,
+						angle: member.angle,
+					});
+		
+					if (enemyStrums.members.contains(member)) {
+						setLuaVar("enemyStrum" + i % SONG.keyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					} else {
+						setLuaVar("playerStrum" + i % SONG.playerKeyCount, {
+							x: member.x,
+							y: member.y,
+							angle: member.angle,
+						});
+					}
+				}
+				#end
 			}
 		} else
 			CoolUtil.coolError("The character " + event[3] + " isn't in any character cache!\nHow did this happen? ¯|_(ツ)_|¯",

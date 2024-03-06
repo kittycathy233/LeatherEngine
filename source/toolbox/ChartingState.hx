@@ -538,6 +538,10 @@ class ChartingState extends MusicBeatState {
 			updateGrid();
 		});
 
+		var newCharterButton:FlxButton = new FlxButton(10, 520, "New Charter", function() {
+			FlxG.switchState(()-> new ChartingStateDev());
+		});
+
 		// labels
 
 		var songNameLabel = new FlxText(UI_songTitle.x + UI_songTitle.width + 1, UI_songTitle.y, 0, "Song Name", 9);
@@ -594,6 +598,8 @@ class ChartingState extends MusicBeatState {
 
 		tab_group_song.add(compatibilityLabel);
 		tab_group_song.add(finalDestinationButton);
+
+		add(newCharterButton);
 
 		//tab_group_song.add(lilBuddiesBox);
 
