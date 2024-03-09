@@ -365,6 +365,10 @@ class ModchartUtilities {
 
 		// callbacks
 
+		setLuaFunction("lerp", function(a:Float, b:Float, ratio:Float) {
+			return FlxMath.lerp(a, b, ratio);
+		});
+
 		setLuaFunction("perlin", function(x:Float, y:Float, z:Float) {
             return perlin.perlin(x,y,z);
         });

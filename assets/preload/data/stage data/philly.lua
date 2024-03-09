@@ -11,12 +11,20 @@ local trainCars = 0
 
 local time = 0
 
+local lightColors = {
+	0x31A2FD,
+	0x31FD8C,
+	0xFB33F5,
+	0xFD4531,
+	0xFBA633
+}
+
 -- when the stage lua is created
 function create(stage)
 	print(stage .. " is our stage!")
 
-	hideLights()
 	createSound("trainSound", "train_passes", "shared")
+	set("light.color", lightColors[randomInt(1, 5)])
 end
 
 -- called each frame with elapsed being the seconds between the last frame
@@ -39,10 +47,8 @@ function beatHit(curBeat)
 	end
 
 	if curBeat % 4 == 0 then
-		hideLights()
-
-		local lightSelected = randomInt(1, 5)
-		set("light" .. tostring(lightSelected) .. ".visible", true)
+		set('light.alpha', 1)
+		set("light.color", lightColors[randomInt(1, 5)])
 	end
 
 	if curBeat % 8 == 4 and randomBool(30) and not trainMoving and trainCooldown > 8 then
@@ -51,11 +57,7 @@ function beatHit(curBeat)
 	end
 end
 
-function hideLights()
-	for i = 1, 5, 1 do -- loop 5 times
-		set("light" .. tostring(i) .. ".visible", false) -- set light[insert loop num here] to not be visible
-	end
-end
+
 
 function startDaTrain()
 	trainMoving = true
@@ -94,4 +96,9 @@ function trainReset()
 	trainCars = 8
 	trainFinishing = false
 	startedMoving = false
+end
+
+function updatePost(elapsed)
+	set("timeBar.color", get("light.color"))
+	set('light.alpha', lerp(1, 0, ((Conductor.songPosition / Conductor.crochet / 4) % 1)))
 end
