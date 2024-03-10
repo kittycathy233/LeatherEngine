@@ -225,12 +225,7 @@ class PauseSubState extends MusicBeatSubstate {
 					PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 					PlayState.playCutscenes = true;
 
-					#if linc_luajit
-					if (PlayState.luaModchart != null) {
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
+					PlayState.instance.closeLua();
 
 					PlayState.SONG.keyCount = PlayState.instance.ogKeyCount;
 					PlayState.SONG.playerKeyCount = PlayState.instance.ogPlayerKeyCount;
@@ -244,12 +239,8 @@ class PauseSubState extends MusicBeatSubstate {
 				case "with cutscenes":
 					PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 
-					#if linc_luajit
-					if (PlayState.luaModchart != null) {
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
+					PlayState.instance.closeLua();
+
 
 					PlayState.SONG.keyCount = PlayState.instance.ogKeyCount;
 					PlayState.SONG.playerKeyCount = PlayState.instance.ogPlayerKeyCount;
@@ -304,12 +295,8 @@ class PauseSubState extends MusicBeatSubstate {
 							PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 							PlayState.playCutscenes = true;
 
-							#if linc_luajit
-							if (PlayState.luaModchart != null) {
-								PlayState.luaModchart.die();
-								PlayState.luaModchart = null;
-							}
-							#end
+							PlayState.instance.closeLua();
+
 
 							PlayState.SONG.keyCount = PlayState.instance.ogKeyCount;
 							PlayState.SONG.playerKeyCount = PlayState.instance.ogPlayerKeyCount;
@@ -336,12 +323,8 @@ class PauseSubState extends MusicBeatSubstate {
 					menu = "default";
 					updateAlphabets();
 				case "exit to menu":
-					#if linc_luajit
-					if (PlayState.luaModchart != null) {
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
+					PlayState.instance.closeLua();
+
 
 					pauseMusic.stop();
 					pauseMusic.destroy();

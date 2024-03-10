@@ -589,7 +589,7 @@ class PlayState extends MusicBeatState {
 	/**
 		Array of Lua scripts in the "scripts/global" folder
 	**/
-	public var globalLuaScripts:Array<ModchartUtilities> = [];
+	public var luaScriptArray:Array<ModchartUtilities> = [];
 	#end
 
 	/**
@@ -1054,7 +1054,7 @@ class PlayState extends MusicBeatState {
 									
 									globalLuaScript = (new ModchartUtilities("mods/" + mod + "/data/scripts/global/" + file));
 
-									globalLuaScripts.push(globalLuaScript);
+									luaScriptArray.push(globalLuaScript);
 
 								}
 							#end
@@ -1085,7 +1085,7 @@ class PlayState extends MusicBeatState {
 							
 									globalLuaScript = (new ModchartUtilities("assets/data/scripts/global/" + file));
 
-									globalLuaScripts.push(globalLuaScript);
+									luaScriptArray.push(globalLuaScript);
 
 								}
 							#end
@@ -1107,7 +1107,7 @@ class PlayState extends MusicBeatState {
 				#if linc_luajit
 				if(file.endsWith('.lua')){
 					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
-					globalLuaScripts.push(globalLuaScript);
+					luaScriptArray.push(globalLuaScript);
 					}
 				#end
 				}
@@ -1127,7 +1127,7 @@ class PlayState extends MusicBeatState {
 				#if linc_luajit
 				if(file.endsWith('.lua')){
 					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
-					globalLuaScripts.push(globalLuaScript);
+					luaScriptArray.push(globalLuaScript);
 					}
 				#end
 				}
@@ -1163,7 +1163,7 @@ class PlayState extends MusicBeatState {
 		splash_group.add(cache_splash);
 
 		#if (MODCHARTING_TOOLS && linc_luajit)
-		if (SONG.modchartingTools || Assets.exists(Paths.json("song data/" + SONG.song + "/modchart")) || Assets.exists(Paths.json("song data/" + SONG.song + "/modchart" + storyDifficultyStr.toLowerCase())))
+		if (SONG.modchartingTools || Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart")) || Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase()  + "/modchart" + storyDifficultyStr.toLowerCase())))
 		{
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
 			playfieldRenderer.cameras = [camHUD];
@@ -1702,8 +1702,8 @@ class PlayState extends MusicBeatState {
 			}
 		}
 		
-		if (globalLuaScripts.length != 0){
-			for (i in globalLuaScripts) {
+		if (luaScriptArray.length != 0){
+			for (i in luaScriptArray) {
 				i.setupTheShitCuzPullRequestsSuck();
 			}
 		}
@@ -3001,12 +3001,7 @@ class PlayState extends MusicBeatState {
 
 		if (!Options.getData("disableDebugMenus")) {
 			if (FlxG.keys.justPressed.SEVEN && !switchedStates && !inCutscene) {
-				#if linc_luajit
-				if (executeModchart && luaModchart != null) {
-					luaModchart.die();
-					luaModchart = null;
-				}
-				#end
+				closeLua();
 
 				switchedStates = true;
 
@@ -3024,12 +3019,8 @@ class PlayState extends MusicBeatState {
 
 			// #if debug
 			if (FlxG.keys.justPressed.EIGHT && !switchedStates && !inCutscene) {
-				#if linc_luajit
-				if (executeModchart && luaModchart != null) {
-					luaModchart.die();
-					luaModchart = null;
-				}
-				#end
+				closeLua();
+
 
 				switchedStates = true;
 
@@ -3049,12 +3040,8 @@ class PlayState extends MusicBeatState {
 
 			#if MODCHARTING_TOOLS
 			if (FlxG.keys.justPressed.NINE && !switchedStates && !inCutscene) {
-				#if linc_luajit
-				if (executeModchart && luaModchart != null) {
-					luaModchart.die();
-					luaModchart = null;
-				}
-				#end
+				closeLua();
+
 
 				switchedStates = true;
 
@@ -3095,7 +3082,7 @@ class PlayState extends MusicBeatState {
 		});
 
 		#if linc_luajit
-		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || globalLuaScripts.length != 0)
+		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || luaScriptArray.length != 0)
 			&& generatedMusic
 			&& !switchedStates
 			&& startedCountdown) {
@@ -3209,10 +3196,8 @@ class PlayState extends MusicBeatState {
 					sound.kill();
 					sound.destroy();
 				}
-
-				luaModchart.die();
-				luaModchart = null;
 			}
+			closeLua();
 			#end
 
 			if (SONG.validScore) {
@@ -4042,42 +4027,39 @@ class PlayState extends MusicBeatState {
 
 			
 			
-			var singAnim:String = NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][Std.int(Math.abs(note.noteData % getCorrectKeyCount(true)))] + (characterPlayingAs == 1 ? altAnim : "") + note.singAnimSuffix;
-				if (note.singAnimPrefix != 'sing'){
-					singAnim = singAnim.replace('sing', note.singAnimPrefix);
-				}
+
 
 			if (note != null) {
 				if (characterPlayingAs == 0) {
 					if (boyfriend.otherCharacters != null && !(boyfriend.otherCharacters.length - 1 < note.character)) {
 						if (note.characters.length <= 1)
-							boyfriend.otherCharacters[note.character].playAnim(singAnim + "miss", true);
+							boyfriend.otherCharacters[note.character].playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 						else {
 							for (character in note.characters) {
 								if (boyfriend.otherCharacters.length - 1 >= character)
-									boyfriend.otherCharacters[character].playAnim(singAnim + "miss", true);
+									boyfriend.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 							}
 						}
 					} else
-						boyfriend.playAnim(singAnim + "miss", true);
+						boyfriend.playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 				} else {
 					if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
 						if (note.characters.length <= 1)
-							dad.otherCharacters[note.character].playAnim(singAnim + "miss", true);
+							dad.otherCharacters[note.character].playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 						else {
 							for (character in note.characters) {
 								if (dad.otherCharacters.length - 1 >= character)
-									dad.otherCharacters[character].playAnim(singAnim + "miss", true);
+									dad.otherCharacters[character].playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 							}
 						}
 					else
-						dad.playAnim(singAnim + "miss", true);
+						dad.playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 				}
 			} else {
 				if (characterPlayingAs == 0)
-					boyfriend.playAnim(singAnim + "miss", true);
+					boyfriend.playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 				else
-					dad.playAnim(singAnim + "miss", true);
+					dad.playAnim(NoteVariables.Character_Animation_Arrays[getCorrectKeyCount(true) - 1][direction] + "miss", true);
 			}
 
 			calculateAccuracy();
@@ -4107,7 +4089,7 @@ class PlayState extends MusicBeatState {
 		if (!note.wasGoodHit) {
 			if (note.shouldHit && !note.isSustainNote) {
 				combo ++;
-				popUpScore(note.strumTime, note.noteData % SONG.playerKeyCount, setNoteDiff);
+				popUpScore(note.strumTime, note.noteData % getCorrectKeyCount(true), setNoteDiff);
 
 				if (hitSoundString != "none")
 					hitsound.play(true);
@@ -4117,7 +4099,7 @@ class PlayState extends MusicBeatState {
 				missSounds[FlxG.random.int(0, missSounds.length - 1)].play(true);
 
 				if (!playingReplay)
-					replay.recordKeyHit(note.noteData % SONG.playerKeyCount, note.strumTime,
+					replay.recordKeyHit(note.noteData % getCorrectKeyCount(true), note.strumTime,
 						(setNoteDiff != null ? setNoteDiff : note.strumTime - Conductor.songPosition));
 			}
 
@@ -4563,8 +4545,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if(globalLuaScripts.length != 0){
-					for (i in globalLuaScripts) {
+					if(luaScriptArray.length != 0){
+					for (i in luaScriptArray) {
 						i.setupTheShitCuzPullRequestsSuck();
 					}
 					}
@@ -4605,8 +4587,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if(globalLuaScripts.length != 0){
-						for (i in globalLuaScripts) {
+					if(luaScriptArray.length != 0){
+						for (i in luaScriptArray) {
 							i.setupTheShitCuzPullRequestsSuck();
 						}
 					}
@@ -4659,8 +4641,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if(globalLuaScripts.length != 0){
-						for (i in globalLuaScripts) {
+					if(luaScriptArray.length != 0){
+						for (i in luaScriptArray) {
 							i.setupTheShitCuzPullRequestsSuck();
 						}
 					}
@@ -4781,8 +4763,8 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if(globalLuaScripts.length != 0){
-			for (i in globalLuaScripts) {
+		if(luaScriptArray.length != 0){
+			for (i in luaScriptArray) {
 				i.executeState(name, arguments);
 			}
 		}
@@ -4798,8 +4780,8 @@ class PlayState extends MusicBeatState {
 			luaModchart.setVar(name, data);
 		}
 
-		if(globalLuaScripts.length != 0){
-			for (i in globalLuaScripts) {
+		if(luaScriptArray.length != 0){
+			for (i in luaScriptArray) {
 				i.setVar(name, data);
 			}
 		}
@@ -4847,8 +4829,8 @@ class PlayState extends MusicBeatState {
 				luaVar = newLuaVar;
 		}
 
-		if(globalLuaScripts.length != 0){
-			for (i in globalLuaScripts) {
+		if(luaScriptArray.length != 0){
+			for (i in luaScriptArray) {
 
 				var newLuaVar = i.getVar(name, type);
 				
@@ -4861,6 +4843,39 @@ class PlayState extends MusicBeatState {
 		#end
 
 		return null;
+	}
+
+	public function closeLua(){
+		#if linc_luajit
+		if (executeModchart && luaModchart != null) {
+			luaModchart.die();
+			luaModchart = null;
+		}
+		if (stage.stageScript != null){
+			stage.stageScript.die();
+			stage.stageScript = null;
+		}
+
+		/*if (generatedSomeDumbEventLuas) {
+			for (key in event_luas.keys()) {
+				var event_lua:ModchartUtilities = event_luas.get(key);
+				if(event_lua != null){
+					event_lua.die();
+					event_lua = null;
+				}
+			}
+		}*/
+		
+		if (luaScriptArray.length != 0){
+			for (i in luaScriptArray) {
+				if(i != null){
+					i.die();
+					i = null;
+				}
+			}
+		}
+		luaScriptArray = [];
+		#end
 	}
 
 	public function processEvent(event:Array<Dynamic>) {
