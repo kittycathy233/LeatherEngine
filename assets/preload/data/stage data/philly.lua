@@ -24,6 +24,9 @@ function create(stage)
 	print(stage .. " is our stage!")
 
 	createSound("trainSound", "train_passes", "shared")
+end
+
+function createPost()
 	set("light.color", lightColors[randomInt(1, 5)])
 end
 

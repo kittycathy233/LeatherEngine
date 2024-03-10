@@ -12,6 +12,7 @@ class Paths {
 
 	static var currentLevel:String = "preload";
 
+
 	inline static public function setCurrentLevel(name:String):Void
 		currentLevel = name.toLowerCase();
 

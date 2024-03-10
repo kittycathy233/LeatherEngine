@@ -1,5 +1,6 @@
 package;
 
+import utilities.FunkinGame;
 #if SCREENSHOTS_ALLOWED
 import screenshotplugin.ScreenShotPlugin;
 #end
@@ -13,7 +14,6 @@ import openfl.display.Sprite;
 import openfl.text.TextFormat;
 import utilities.CoolUtil;
 import ui.SimpleInfoDisplay;
-import flixel.FlxGame;
 
 class Main extends Sprite {
 
@@ -28,10 +28,10 @@ class Main extends Sprite {
 		CoolUtil.haxe_trace = haxe.Log.trace;
 		haxe.Log.trace = CoolUtil.haxe_print;
 
-		addChild(new FlxGame(0, 0, states.TitleState, 60, 60, true));
+		addChild(new FunkinGame());
 
 		#if SCREENSHOTS_ALLOWED
-		flixel.FlxG.plugins.add(new ScreenShotPlugin());
+		FlxG.plugins.add(new ScreenShotPlugin());
 		ScreenShotPlugin.screenshotKey = F2;
         ScreenShotPlugin.saveFormat = PNG;
 		#end

@@ -269,6 +269,9 @@ class PauseSubState extends MusicBeatSubstate {
 					FlxTween.tween(scoreWarning, {alpha: 1, y: scoreWarning.y + 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 					FlxTween.tween(scoreWarning, {alpha: 0, y: scoreWarning.y - 10}, 0.4, {ease: FlxEase.quartInOut, startDelay: 4});
 
+					@:privateAccess
+					PlayState.instance.setLuaVar("bot", Options.getData("botplay"));
+
 					warningAmountLols ++;
 				case "auto restart":
 					Options.setData(!Options.getData("quickRestart"), "quickRestart");
