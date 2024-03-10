@@ -53,5 +53,6 @@ sudo pacman -S vlc
 sudo pacman -S luajit
 ``` (Pacman Example)
 
+```
 Step 5. Run `lime test [platform]` in the project directory while replacing '[platform]' with your build target (usually `html5`, `windows`, `linux`, `mac`, or whatever platform you are building for).
-````
+```
