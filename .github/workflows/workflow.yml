@@ -46,7 +46,7 @@ jobs:
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install dox
+          
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
@@ -98,7 +98,7 @@ jobs:
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git openfl https://github.com/openfl/openfl
           haxelib install HxWebView
-          haxelib install dox
+          
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib install flixel-screenshot-plugin
@@ -147,7 +147,7 @@ jobs:
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib install hxvlc
           haxelib install openfl
-          haxelib install dox
+          
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
@@ -191,15 +191,12 @@ jobs:
           haxelib install away3d
           haxelib install flixel-ui
           haxelib install flixel-addons
-          haxelib install systools
-          haxelib install dox
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib install HxWebView
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install hxvlc
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib git openfl https://github.com/openfl/openfl
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools

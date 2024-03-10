@@ -117,7 +117,6 @@
 	<haxelib name="away3d" if="THREE_D_ALLOWED" />
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="HxWebView" if="windows" unless="linux || mac" />
-	<haxelib name="dox"/>
 	<haxelib name="hxNoise"/>
 	<haxelib name="systools" if="sys" />
 	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" />

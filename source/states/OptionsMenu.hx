@@ -90,6 +90,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Skip Results", "skipResultsScreen", 15),
 			new BoolOption("Show Score", "showScore", 16),
 			new BoolOption("Dinnerbone Mode", "dinnerbone", 17),
+			new GameSubstateOption("Import Old Scores", 18, substates.ImportHighscoresSubstate)
 		],
 		"Optimizations" => [
 			new PageOption("Back", 0, "Graphics"),

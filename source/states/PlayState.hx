@@ -3341,6 +3341,7 @@ class PlayState extends MusicBeatState {
 			trace('WENT BACK TO FREEPLAY??');
 			switchedStates = true;
 
+
 			if (vocals != null && vocals.active)
 				vocals.stop();
 			if (FlxG.sound.music != null && FlxG.sound.music.active)
@@ -3349,7 +3350,7 @@ class PlayState extends MusicBeatState {
 			SONG.keyCount = ogKeyCount;
 			SONG.playerKeyCount = ogPlayerKeyCount;
 
-			FlxG.switchState(new FreeplayState());
+			FlxG.switchState(() -> new FreeplayState());
 		} else {
 			trace('WENT BACK TO REPLAY SELECTOR??');
 			switchedStates = true;
@@ -3362,7 +3363,7 @@ class PlayState extends MusicBeatState {
 			SONG.keyCount = ogKeyCount;
 			SONG.playerKeyCount = ogPlayerKeyCount;
 
-			FlxG.switchState(new ReplaySelectorState());
+			FlxG.switchState(() -> new ReplaySelectorState());
 		}
 
 		playingReplay = false;

@@ -4,34 +4,17 @@ import states.MainMenuState;
 import states.MusicBeatState;
 import states.PlayState;
 import utilities.Options;
-import utilities.CoolUtil;
-import substates.UISkinSelect;
-import substates.ControlMenuSubstate;
-import modding.CharacterCreationState;
 import utilities.MusicUtilities;
 import ui.Option;
-import ui.Checkbox;
-import flixel.group.FlxGroup;
 import toolbox.ChartingState;
-import toolbox.StageMakingState;
-import flixel.sound.FlxSound;
 import toolbox.CharacterCreator;
-import utilities.Controls.Control;
-import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.input.keyboard.FlxKey;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
-import ui.Alphabet;
-import game.Song;
 import toolbox.StageMakingState;
-import game.Highscore;
-import openfl.utils.Assets as OpenFLAssets;
+import toolbox.util.NewModState;
 
 class ToolboxPlaceholder extends states.MusicBeatState {
 	var curSelected:Int = 0;
@@ -41,19 +24,17 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
-			new ToolboxPageOption("Tools", 0, "Tools",),
-			#if windows
-			new ToolboxPageOption("Documentation", 1, "Documentation")
-			#end
+			new GameStateOption("New Mod", 0, new NewModState()),
+			new ToolboxPageOption("Tools", 1, "Tools",),
+			new ToolboxPageOption("Documentation", 2, "Documentation")
 		],
 		"Tools" => [
 			new GameStateOption("Charter", 0, new ChartingState()),
 			new CharacterCreatorOption("Character Creator", 1, new CharacterCreator("dad", "stage")),
 			new GameStateOption("Stage Editor", 2, new StageMakingState("stage")),
 			#if MODCHARTING_TOOLS
-			new GameStateOption("Modchart Editor", 3, new modcharting.ModchartEditorState()),
+			new GameStateOption("Modchart Editor", 3, new modcharting.ModchartEditorState())
 			#end
-			new GameSubstateOption("Import Old Scores", 4, substates.ImportHighscoresSubstate)
 		],
 		"Documentation" => [
 			new WebViewOption("Wiki", 0, "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),

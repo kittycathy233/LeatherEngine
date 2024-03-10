@@ -448,7 +448,11 @@ class DisplayFontOption extends StringSaveOption {
 				w.destroy();
 			});
 			w.run();
-		});   
+		});  
+		#else
+			if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
+				CoolUtil.openURL(Url);
+			}
 		#end 
 	}
 }
