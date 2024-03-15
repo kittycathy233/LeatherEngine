@@ -18,6 +18,7 @@ import flixel.util.FlxTimer;
 import states.LoadingState;
 
 class GameOverSubstate extends MusicBeatSubstate {
+	
 	var bf:Character;
 	var camFollow:FlxObject;
 
@@ -84,12 +85,12 @@ class GameOverSubstate extends MusicBeatSubstate {
 					Options.setData(PlayState.instance.ogGhostTapping, "ghostTapping");
 				}
 
-				FlxG.switchState(new ReplaySelectorState());
+				FlxG.switchState(() -> new ReplaySelectorState());
 			} else {
 				if (PlayState.isStoryMode)
-					FlxG.switchState(new StoryMenuState());
+					FlxG.switchState(() -> new StoryMenuState());
 				else
-					FlxG.switchState(new FreeplayState());
+					FlxG.switchState(() -> new FreeplayState());
 			}
 
 			PlayState.playingReplay = false;

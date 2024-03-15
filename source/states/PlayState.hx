@@ -2178,8 +2178,8 @@ class PlayState extends MusicBeatState {
 			if (vocals != null)
 				vocals.pause();
 
-			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = false);
-			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = false);
+			if (!startTimer.finished)
+				startTimer.active = false;
 
 		}
 
@@ -2318,8 +2318,6 @@ class PlayState extends MusicBeatState {
 
 
 	override public function update(elapsed:Float) {
-		if (script != null)
-			script.update(elapsed);
 
 		super.update(elapsed);
 
