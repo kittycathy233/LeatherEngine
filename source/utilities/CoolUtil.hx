@@ -1,6 +1,7 @@
 package utilities;
 
 
+import ui.logs.Logs;
 import lime.graphics.Image;
 import flixel.math.FlxMath;
 import openfl.utils.Function;
@@ -323,12 +324,16 @@ class CoolUtil {
 		switch (type) {
 			case LOG:
 				haxe_trace('${ascii_colors["default"]}[LOG] $message', pos_infos);
+				Logs.log(message);
 			case DEBUG:
 				haxe_trace('${ascii_colors["green"]}[DEBUG] ${ascii_colors["default"]}$message', pos_infos);
+				Logs.debug(message);
 			case WARNING:
 				haxe_trace('${ascii_colors["yellow"]}[WARNING] ${ascii_colors["default"]}$message', pos_infos);
+				Logs.warn(message);
 			case ERROR:
 				haxe_trace('${ascii_colors["red"]}[ERROR] ${ascii_colors["default"]}$message', pos_infos);
+				Logs.error(message);
 			// if you really want null, then here have it >:(
 			default:
 				haxe_trace(message, pos_infos);

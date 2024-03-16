@@ -1,5 +1,8 @@
 package;
 
+import flixel.util.FlxColor;
+import haxe.Log;
+import ui.logs.Logs;
 import utilities.FunkinGame;
 #if SCREENSHOTS_ALLOWED
 import screenshotplugin.ScreenShotPlugin;
@@ -14,10 +17,14 @@ import openfl.display.Sprite;
 import openfl.text.TextFormat;
 import utilities.CoolUtil;
 import ui.SimpleInfoDisplay;
+import utilities.frontend.FunkinFrontEnd;
+import flixel.system.debug.log.LogStyle;
 
 class Main extends Sprite {
 
 	public static var instance:Main = null;
+
+	static var logsOverlay:Logs;
 	
 	public function new() {
 		super();
@@ -25,8 +32,16 @@ class Main extends Sprite {
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
-		CoolUtil.haxe_trace = haxe.Log.trace;
-		haxe.Log.trace = CoolUtil.haxe_print;
+		CoolUtil.haxe_trace = Log.trace;
+		Log.trace = CoolUtil.haxe_print;
+		untyped FlxG.log = new FunkinFrontEnd();
+
+		FunkinFrontEnd.onLogs = function(Data, Style, FireOnce){
+			if (Style == LogStyle.CONSOLE || Style == LogStyle.NORMAL) Logs.debug(Data);
+			if (Style == LogStyle.ERROR) Logs.error(Data);
+			if (Style == LogStyle.NOTICE) Logs.log(Data);
+			if (Style == LogStyle.WARNING) Logs.warn(Data);
+		}
 
 		addChild(new FunkinGame());
 
@@ -35,6 +50,12 @@ class Main extends Sprite {
 		ScreenShotPlugin.screenshotKey = F2;
         ScreenShotPlugin.saveFormat = PNG;
 		#end
+
+		#if !mobile
+		logsOverlay = new Logs();
+		logsOverlay.visible = false;
+		addChild(logsOverlay);
+		#end	
 
 		#if !mobile
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");
@@ -75,6 +96,9 @@ class Main extends Sprite {
 
 	public static function toggleVers(versEnabled:Bool):Void
 		display.infoDisplayed[2] = versEnabled;
+
+	public static function toggleLogs(logsEnabled:Bool):Void
+		display.infoDisplayed[3] = logsEnabled;
 
 
 	public static function changeFont(font:String):Void

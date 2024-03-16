@@ -1,5 +1,7 @@
 package ui;
 
+import ui.logs.Logs;
+import openfl.utils.Assets;
 import utilities.CoolUtil;
 import flixel.FlxG;
 import lime.app.Application;
@@ -12,7 +14,7 @@ import external.memory.Memory;
  */
 class SimpleInfoDisplay extends TextField {
 	//                                       fps    mem  version
-	public var infoDisplayed:Array<Bool> = [false, false, false];
+	public var infoDisplayed:Array<Bool> = [false, false, false, false];
 
 	public var currentFPS:Int = 0;
     private var _calculatedFPS:Int = 0;
@@ -25,7 +27,7 @@ class SimpleInfoDisplay extends TextField {
 		this.x = x;
 		this.y = y;
 		selectable = false;
-		defaultTextFormat = new TextFormat(font != null ? font : openfl.utils.Assets.getFont(Paths.font("vcr.ttf")).fontName, (font == "_sans" ? 12 : 14),
+		defaultTextFormat = new TextFormat(font != null ? font : Assets.getFont(Paths.font("vcr.ttf")).fontName, (font == "_sans" ? 12 : 14),
         color);
 
         FlxG.signals.postDraw.add(update);
@@ -47,6 +49,7 @@ class SimpleInfoDisplay extends TextField {
             _calculatedFPS++;
         }
 
+		@:privateAccess
 		if (visible) {
 			for (i in 0...infoDisplayed.length) {
 				if (infoDisplayed[i]) {
@@ -57,6 +60,8 @@ class SimpleInfoDisplay extends TextField {
 							text += '${CoolUtil.formatBytes(Memory.getCurrentUsage())} / ${CoolUtil.formatBytes(Memory.getPeakUsage())}';
 						case 2: // Version
 							text += 'v${Application.current.meta.get('version')}';
+						case 3: // Console
+							text += '${Main.logsOverlay.logs.length} traced lines. F5 to view.';
 					}
 
 					text += "\n";
