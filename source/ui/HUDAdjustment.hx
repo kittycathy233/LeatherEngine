@@ -152,6 +152,8 @@ class HUDAdjustment extends MusicBeatState{
 			combo_Pos.screenCenter();
 			rating_Pos.screenCenter();
 			rating.screenCenter();
+			trace(rating.x);
+			trace(rating.y);
 			Options.setData([combo_Pos.x, combo_Pos.y, 1, 1], "comboSettings");
 			Options.setData([rating.x, rating.y, 1, 1], "ratingsSettings");
 			trace("reset");
