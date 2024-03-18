@@ -1,5 +1,6 @@
 package states;
 
+import flixel.math.FlxMath;
 import flixel.input.FlxInput.FlxInputState;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
@@ -29,16 +30,6 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 	override public function new() {
 		if (!Options.getData('memoryLeaks')) {
-			lime.utils.Assets.cache.clear();
-			openfl.utils.Assets.cache.clear();
-			#if polymod
-			polymod.Polymod.clearCache();
-			#end
-
-			#if cpp
-			cpp.vm.Gc.enable(true);
-			#end
-
 			clear_memory();
 		}
 
@@ -50,6 +41,12 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 	 */
 	 public static function clear_memory():Void {
 		// Remove cached assets (prevents memory leaks that i can prevent)
+		lime.utils.Assets.cache.clear();
+		openfl.utils.Assets.cache.clear();
+		#if polymod
+		polymod.Polymod.clearCache();
+		#end
+
 
 		// Remove lingering sounds from the sound list
 		FlxG.sound.list.forEachAlive(function(sound:flixel.sound.FlxSound):Void {
@@ -86,6 +83,9 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			lime_cache.audio.remove(key);
 		};
 
+		#if cpp
+		cpp.vm.Gc.enable(true);
+		#end
 		// Run built-in garbage collector
 		#if sys
 		openfl.system.System.gc();
@@ -104,7 +104,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		super.update(elapsed);
 
 		if (FlxG.stage != null)
-			FlxG.stage.frameRate = flixel.math.FlxMath.bound(Options.getData("maxFPS"), 0.1, 1000);
+			FlxG.stage.frameRate = FlxMath.bound(Options.getData("maxFPS"), 0.1, 1000);
 
 		if (!Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {

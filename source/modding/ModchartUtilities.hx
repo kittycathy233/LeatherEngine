@@ -281,8 +281,8 @@ class ModchartUtilities {
 		setVar("strumLine1Visible", true);
 		setVar("strumLine2Visible", true);
 
-		setVar("screenWidth", lime.app.Application.current.window.display.currentMode.width);
-		setVar("screenHeight", lime.app.Application.current.window.display.currentMode.height);
+		setVar("screenWidth", Application.current.window.display.currentMode.width);
+		setVar("screenHeight", Application.current.window.display.currentMode.height);
 		setVar("windowWidth", FlxG.width);
 		setVar("windowHeight", FlxG.height);
 
@@ -356,12 +356,10 @@ class ModchartUtilities {
 		setVar("SONG", PlayState.SONG);
 
 		setVar("leatherEngine", {
-			version: lime.app.Application.current.meta.get('version'),
+			version: Application.current.meta.get('version'),
 		});
 
-		setVar("version", {
-			version: lime.app.Application.current.meta.get('version'),
-		});
+		setVar("version", Application.current.meta.get('version'));
 
 		// callbacks
 
