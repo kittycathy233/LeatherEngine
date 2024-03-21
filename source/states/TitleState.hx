@@ -30,6 +30,7 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import shaders.TitleEffect;
+import utilities.SaveData;
 
 using StringTools;
 
@@ -86,7 +87,7 @@ class TitleState extends MusicBeatState {
 
 			FlxG.fixedTimestep = false;
 
-			utilities.SaveData.init();
+			SaveData.init();
 
 			#if polymod
 			PolymodHandler.loadMods();

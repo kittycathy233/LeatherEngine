@@ -32,6 +32,7 @@ using StringTools;
  */
 class CharacterCreator extends MusicBeatState {
 	var char:Character;
+	var charGhost:Character;
 	var animText:FlxText;
 	var moveText:FlxText;
 	var animList:Array<String> = [];
@@ -57,6 +58,7 @@ class CharacterCreator extends MusicBeatState {
 	var offset_Button:FlxButton;
 	var charDropDown:FlxUIDropDownMenuCustom;
 	var modDropDown:FlxUIDropDownMenuCustom;
+	var ghostAnimDropDown:FlxUIDropDownMenuCustom;
 
 	var gridBG:FlxSprite;
 
@@ -117,6 +119,12 @@ class CharacterCreator extends MusicBeatState {
 		stagePosition = new FlxSprite().makeGraphic(32, 32, 0xFFFF0000);
 		add(stagePosition);
 
+		charGhost = new Character(0, 0, daAnim);
+		charGhost.debugMode = true;
+		charGhost.color = FlxColor.BLACK;
+		charGhost.alpha = 0.5;
+		add(charGhost);
+
 		char = new Character(0, 0, daAnim);
 		char.debugMode = true;
 		add(char);
@@ -156,6 +164,7 @@ class CharacterCreator extends MusicBeatState {
 		var characterData:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 		char.setPosition(position[0], position[1]);
+		charGhost.setPosition(position[0], position[1]);
 
 		if (char.isPlayer)
 			stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
@@ -186,13 +195,25 @@ class CharacterCreator extends MusicBeatState {
 			char.kill();
 			char.destroy();
 
+			remove(charGhost);
+			charGhost.kill();
+			charGhost.destroy();
+
 			daAnim = curCharList[Std.parseInt(character)];
+			
+			charGhost = new Character(0, 0, daAnim);
+			charGhost.debugMode = true;
+			charGhost.color = FlxColor.BLACK;
+			charGhost.alpha = 0.5;
+			add(charGhost);
+
 			char = new Character(0, 0, daAnim);
 			char.debugMode = true;
 			add(char);
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 			char.setPosition(position[0], position[1]);
+			charGhost.setPosition(position[0], position[1]);
 
 			if (char.isPlayer)
 				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
@@ -201,6 +222,28 @@ class CharacterCreator extends MusicBeatState {
 
 			animList = [];
 			genBoyOffsets(true);
+			remove(ghostAnimDropDown);
+					ghostAnimDropDown.kill();
+					ghostAnimDropDown.destroy();
+					ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+					function(animName:String) {
+
+						charGhost.playAnim(animList[Std.parseInt(animName)], true);
+						
+						var position = stage.getCharacterPos(charGhost.isPlayer ? 0 : 1, charGhost);
+						charGhost.setPosition(position[0], position[1]);
+				
+						if (charGhost.isPlayer)
+							stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+						else
+							stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
+						genBoyOffsets(false);
+					});
+
+					ghostAnimDropDown.scrollFactor.set();
+					ghostAnimDropDown.cameras = [camHUD];
+					add(ghostAnimDropDown);
 		});
 
 		charDropDown.selectedLabel = daAnim;
@@ -221,10 +264,21 @@ class CharacterCreator extends MusicBeatState {
 					char.kill();
 					char.destroy();
 
+					remove(charGhost);
+					charGhost.kill();
+					charGhost.destroy();
+
 					daAnim = curCharList[0];
+					charGhost = new Character(0, 0, daAnim);
+					charGhost.debugMode = true;
+					charGhost.alpha = 0.5;
+					charGhost.color = FlxColor.BLACK;
+					add(charGhost);
+
 					char = new Character(0, 0, daAnim);
 					char.debugMode = true;
 					add(char);
+
 					
 					var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 					char.setPosition(position[0], position[1]);
@@ -236,6 +290,29 @@ class CharacterCreator extends MusicBeatState {
 
 					animList = [];
 					genBoyOffsets(true);
+
+					remove(ghostAnimDropDown);
+					ghostAnimDropDown.kill();
+					ghostAnimDropDown.destroy();
+					ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+					function(animName:String) {
+
+						charGhost.playAnim(animList[Std.parseInt(animName)], true);
+						
+						var position = stage.getCharacterPos(charGhost.isPlayer ? 0 : 1, charGhost);
+						charGhost.setPosition(position[0], position[1]);
+				
+						if (charGhost.isPlayer)
+							stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+						else
+							stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
+						genBoyOffsets(false);
+					});
+
+					ghostAnimDropDown.scrollFactor.set();
+					ghostAnimDropDown.cameras = [camHUD];
+					add(ghostAnimDropDown);
 				}
 		});
 
@@ -251,11 +328,20 @@ class CharacterCreator extends MusicBeatState {
 			
 			stage_Name = stages[Std.parseInt(stageName)];
 			reloadStage();
+			remove(charGhost);
+			charGhost.kill();
+			charGhost.destroy();
 			remove(char);
 			char.kill();
 			char.destroy();
-
 			daAnim = curCharList[0];
+			
+			charGhost = new Character(0, 0, daAnim);
+			charGhost.debugMode = true;
+			charGhost.color = FlxColor.BLACK;
+			charGhost.alpha = 0.5;
+			add(charGhost);
+
 			char = new Character(0, 0, daAnim);
 			char.debugMode = true;
 			add(char);
@@ -276,6 +362,26 @@ class CharacterCreator extends MusicBeatState {
 		stage_Dropdown.scrollFactor.set();
 		stage_Dropdown.cameras = [camHUD];
 		add(stage_Dropdown);
+
+		ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+		function(animName:String) {
+
+			charGhost.playAnim(animList[Std.parseInt(animName)], true);
+			
+			var position = stage.getCharacterPos(charGhost.isPlayer ? 0 : 1, charGhost);
+			charGhost.setPosition(position[0], position[1]);
+	
+			if (charGhost.isPlayer)
+				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
+			else
+				stagePosition.setPosition(stage.player_2_Point.x, stage.player_2_Point.y);
+
+			genBoyOffsets(false);
+		});
+
+		ghostAnimDropDown.scrollFactor.set();
+		ghostAnimDropDown.cameras = [camHUD];
+		add(ghostAnimDropDown);
 
 
 		offset_Button = new FlxButton(charDropDown.x, charDropDown.y - 30, "Save Offsets", function() {
@@ -316,8 +422,12 @@ class CharacterCreator extends MusicBeatState {
 			char.isPlayer = !char.isPlayer;
 			char.flipX = !char.flipX;
 
+			charGhost.isPlayer = !charGhost.isPlayer;
+			charGhost.flipX = !charGhost.flipX;
+
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 			char.setPosition(position[0], position[1]);
+			charGhost.setPosition(position[0], position[1]);
 	
 			if (char.isPlayer)
 				stagePosition.setPosition(stage.player_1_Point.x, stage.player_1_Point.y);
@@ -398,14 +508,22 @@ class CharacterCreator extends MusicBeatState {
 			multiplier = 10;
 
 		if (upP || rightP || downP || leftP) {
-			if (upP)
+			if (upP){
 				char.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
-			if (downP)
+				charGhost.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
+			}
+			if (downP){
 				char.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
-			if (leftP)
+				charGhost.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
+			}
+			if (leftP){
 				char.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
-			if (rightP)
+				charGhost.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
+			}
+			if (rightP){
 				char.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
+				charGhost.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
+			}
 
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim], true);
@@ -489,6 +607,7 @@ class CharacterCreator extends MusicBeatState {
 
 		add(stagePosition);
 
+		add(charGhost);
 		add(char);
 
 		add(animText);
@@ -499,6 +618,7 @@ class CharacterCreator extends MusicBeatState {
 		add(modDropDown);
 		add(charDropDown);
 		add(stage_Dropdown);
+		add(ghostAnimDropDown);
 
 		add(offset_Button);
 	}
