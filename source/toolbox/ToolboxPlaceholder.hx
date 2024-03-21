@@ -24,7 +24,9 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
+			#if sys
 			new GameStateOption("New Mod", 0, new NewModState()),
+			#end
 			new ToolboxPageOption("Tools", 1, "Tools",),
 			new ToolboxPageOption("Documentation", 2, "Documentation")
 		],
