@@ -40,7 +40,6 @@ import openfl.net.FileReference;
 using StringTools;
 
 class ChartingState extends MusicBeatState {
-	public var animOffsets:Map<String, Array<Dynamic>>;
 
 	var _file:FileReference;
 
@@ -1321,18 +1320,10 @@ class ChartingState extends MusicBeatState {
 						if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
 							&& _song.notes[curSection].mustHitSection
 							|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection){
-							/*var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
-							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
-								lilBf.offset.set(daOffset[0], daOffset[1]);*/
 							lilBf.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
-							//lilBf.updateHitbox();
 						}
 						else{
-							/*var daOffset = animOffsets.get(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]);
-							if (animOffsets.exists(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData]))
-								lilOpp.offset.set(daOffset[0], daOffset[1]);*/
 							lilOpp.animation.play(NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData], true);
-							//lilOpp.updateHitbox();
 						}
 				});
 			}
@@ -2286,8 +2277,5 @@ class ChartingState extends MusicBeatState {
 		FlxG.log.error("Problem saving Level data");
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-		{
-			animOffsets[name] = [x, y];
-		}
+
 }
