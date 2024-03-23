@@ -1,17 +1,6 @@
 package modding;
 
-import hxnoise.Perlin;
-import utilities.NoteVariables;
-import flixel.input.gamepad.FlxGamepad;
-import flixel.input.FlxInput.FlxInputState;
-import game.Note;
-import flixel.math.FlxMath;
-import openfl.filters.BitmapFilter;
-import openfl.display.ShaderParameter;
-import shaders.custom.CustomShader;
-import openfl.filters.ShaderFilter;
-import flixel.addons.display.FlxRuntimeShader;
-import flixel.util.FlxTimer;
+
 #if linc_luajit
 import flixel.addons.effects.FlxTrail;
 import flixel.text.FlxText;
@@ -20,6 +9,20 @@ import flixel.FlxCamera;
 import game.DancingSprite;
 import game.Boyfriend;
 import ui.HealthIcon;
+import ui.logs.Logs;
+import hxnoise.Perlin;
+import utilities.NoteVariables;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.FlxInput.FlxInputState;
+import game.Note;
+import flixel.math.FlxMath;
+import openfl.filters.BitmapFilter;
+import flixel.math.FlxPoint;
+import openfl.display.ShaderParameter;
+import shaders.custom.CustomShader;
+import openfl.filters.ShaderFilter;
+import flixel.addons.display.FlxRuntimeShader;
+import flixel.util.FlxTimer;
 import game.Character;
 import flixel.util.FlxColor;
 import llua.Convert;
@@ -348,6 +351,22 @@ class ModchartUtilities {
 			elapsed: FlxG.elapsed,
 		});
 
+		setVar("FlxMath", {
+			EPSILON: FlxMath.EPSILON,
+			MAX_VALUE_FLOAT: FlxMath.MAX_VALUE_FLOAT,
+			MAX_VALUE_INT: FlxMath.MAX_VALUE_INT,
+			MIN_VALUE_FLOAT: FlxMath.MIN_VALUE_FLOAT,
+			MIN_VALUE_INT: FlxMath.MIN_VALUE_INT,
+			SQUARE_ROOT_OF_TWO: FlxMath.SQUARE_ROOT_OF_TWO,
+		});
+
+		setVar("Math", {
+			NEGATIVE_INFINITY: Math.NEGATIVE_INFINITY,
+			NaN: Math.NaN,
+			PI: Math.PI,
+			POSITIVE_INFINITY: Math.NEGATIVE_INFINITY,
+		});
+
 		setVar("lua", {
 			version: Lua.version(),
 			versionJIT: Lua.versionJIT(),
@@ -362,17 +381,12 @@ class ModchartUtilities {
 		setVar("version", Application.current.meta.get('version'));
 
 		// callbacks
-
-		setLuaFunction("lerp", function(a:Float, b:Float, ratio:Float) {
-			return FlxMath.lerp(a, b, ratio);
-		});
-
-		setLuaFunction("perlin", function(x:Float, y:Float, z:Float) {
-            return perlin.perlin(x,y,z);
-        });
-
 		setLuaFunction("trace", function(str:Dynamic = "") {
             trace(str);
+        });
+
+		setLuaFunction("print", function(str:Dynamic = "") {
+            Logs.debug(str);
         });
 
 		setLuaFunction("flashCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, force:Bool = false) {
@@ -583,17 +597,6 @@ class ModchartUtilities {
 			return false;
 		});
 
-		setLuaFunction("randomBool", function(chance:Float):Bool {
-			return FlxG.random.bool(chance);
-		});
-
-		setLuaFunction("randomFloat", function(min:Float, max:Float):Float {
-			return FlxG.random.float(min, max);
-		});
-
-		setLuaFunction("randomInt", function(min:Int, max:Int):Int {
-			return FlxG.random.int(min, max);
-		});
 
 		setLuaFunction("loadScript", function(script:String) {
 			var modchart:ModchartUtilities = null;
@@ -2936,6 +2939,188 @@ class ModchartUtilities {
 
 		setLuaFunction("getOption", function(saveStr:String) {
 			return Options.getData(saveStr);
+		});
+
+		// math
+		setLuaFunction("bound", function(value:Float, ?Min:Float, ?Max:Float) {
+			return FlxMath.bound(value, Min, Max);
+		});
+
+		setLuaFunction("boundTo", function(value:Float, Min:Float, Max:Float):Float {
+			return CoolUtil.boundTo(value, Min, Max);
+		});
+
+		setLuaFunction("distanceBetween", function(SpriteA:String, SpriteB:String) {
+            if(getActorByName(SpriteA) != null && getActorByName(SpriteB) != null)
+                return FlxMath.distanceBetween(getActorByName(SpriteA), getActorByName(SpriteB));
+            else
+                return 0;
+		});
+
+		setLuaFunction("distanceToMouse", function(sprite:String) {
+            if(getActorByName(sprite) != null)
+                return FlxMath.distanceToMouse(getActorByName(sprite));
+            else
+                return 0;
+		});
+
+		setLuaFunction("distanceToPoint", function(sprite:String, x:Float, y:Float) {
+			var point:FlxPoint = new FlxPoint(x, y);
+            if(getActorByName(sprite) != null)
+                return FlxMath.distanceToPoint(getActorByName(sprite), point);
+            else
+                return 0;
+		});
+
+		setLuaFunction("dotProduct", function(ax:Float, ay:Float, bx:Float, by:Float) {
+            return FlxMath.dotProduct(ax, ay, bx, by);
+		});
+
+		setLuaFunction("equal", function(aValueA:Float, aValueB:Float, aDiff:Float = FlxMath.EPSILON) {
+            return FlxMath.equal(aValueA, aValueB, aDiff);
+		});
+
+		setLuaFunction("fastCos", function(n:Float) {
+            return FlxMath.fastCos(n);
+		});
+
+
+		setLuaFunction("fastSin", function(n:Float) {
+            return FlxMath.fastSin(n);
+		});
+
+		setLuaFunction("fceil", function(n:Float) {
+            return Math.fceil(n);
+		});
+
+		setLuaFunction("ffloor", function(n:Float) {
+            return Math.ffloor(n);
+		});
+
+		setLuaFunction("fround", function(n:Float) {
+            return Math.fround(n);
+		});
+
+		setLuaFunction("isFinite", function(n:Float) {
+            return Math.isFinite(n);
+		});
+
+		setLuaFunction("isNaN", function(n:Float) {
+            return Math.isNaN(n);
+		});
+
+		setLuaFunction("getDecimals", function(n:Float) {
+            return FlxMath.getDecimals(n);
+		});
+
+		setLuaFunction("inBounds", function(value:Float, min:Null<Float>, max:Null<Float>) {
+            return FlxMath.inBounds(value, min, max);
+		});
+
+		setLuaFunction("isDistanceToMouseWithin", function(sprite:String, distance:Float, includeEqual:Bool = false) {
+            if(getActorByName(sprite) != null)
+                return FlxMath.isDistanceToMouseWithin(getActorByName(sprite), distance, includeEqual);
+            else
+                return false;
+		});
+
+		setLuaFunction("isDistanceToPointWithin", function(sprite:String, x:Float, y:Float, distance:Float, includeEqual:Bool = false) {
+			var point:FlxPoint = new FlxPoint(x, y);
+            if(getActorByName(sprite) != null)
+                return FlxMath.isDistanceToPointWithin(getActorByName(sprite), point, distance, includeEqual);
+            else
+                return false;
+		});
+
+		setLuaFunction("isDistanceWithin", function(SpriteA:String, SpriteB:String, distance:Float, includeEqual:Bool = false) {
+            if(getActorByName(SpriteA) != null && getActorByName(SpriteB) != null)
+                return FlxMath.isDistanceWithin(getActorByName(SpriteA), getActorByName(SpriteB), distance, includeEqual);
+            else
+                return false;
+		});
+
+		setLuaFunction("isEven", function(n:Float) {
+			return FlxMath.isEven(n);
+		});
+
+		setLuaFunction("isOdd", function(n:Float) {
+			return FlxMath.isOdd(n);
+		});
+
+		setLuaFunction("lerp", function(a:Float, b:Float, ratio:Float) {
+			return FlxMath.lerp(a, b, ratio);
+		});
+
+		setLuaFunction("maxAdd", function(value:Int, amount:Int, max:Int, min:Int = 1) {
+			return FlxMath.maxAdd(value, amount, max, min);
+		});
+
+		setLuaFunction("maxInt", function(a:Int, b:Int) {
+			return FlxMath.maxInt(a, b);
+		});
+
+		setLuaFunction("minInt", function(a:Int, b:Int) {
+			return FlxMath.minInt(a, b);
+		});
+
+		setLuaFunction("numericComparison", function(a:Float, b:Float) {
+			return FlxMath.numericComparison(a, b);
+		});
+
+		setLuaFunction("perlin", function(x:Float, y:Float, z:Float) {
+            return perlin.perlin(x,y,z);
+        });
+
+		setLuaFunction("pointInCoordinates", function(pointX:Float, pointY:Float, rectX:Float, rectY:Float, rectWidth:Float, rectHeight:Float) {
+			return FlxMath.pointInCoordinates(pointX, pointX, rectX, rectY, rectWidth, rectHeight);
+		});
+
+		setLuaFunction("random", function() {
+			return Math.random();
+		});
+
+		setLuaFunction("randomBool", function(chance:Float):Bool {
+			return FlxG.random.bool(chance);
+		});
+
+		setLuaFunction("randomFloat", function(min:Float, max:Float):Float {
+			return FlxG.random.float(min, max);
+		});
+
+		setLuaFunction("randomInt", function(min:Int, max:Int):Int {
+			return FlxG.random.int(min, max);
+		});
+
+		setLuaFunction("remapToRange", function(value:Float, start1:Float, stop1:Float, start2:Float, stop2:Float) {
+			return FlxMath.remapToRange(value, start1, stop1, start2, stop2);
+		});
+
+		setLuaFunction("round", function(v:Float) {
+			return Math.round(v);
+		});
+
+		setLuaFunction("roundDecimal", function(value:Float, percision:Int) {
+			return FlxMath.roundDecimal(value, percision);
+		});
+
+		setLuaFunction("sameSign", function(a:Float, b:Float) {
+			return FlxMath.sameSign(a, b);
+		});
+
+		setLuaFunction("signOf", function(n:Float) {
+			return FlxMath.signOf(n);
+		});
+
+		setLuaFunction("sinh", function(n:Float) {
+			return FlxMath.sinh(n);
+		});
+
+		setLuaFunction("vectorLength", function(dx:Float, dy:Float) {
+			return FlxMath.vectorLength(dx, dy);
+		});
+
+		setLuaFunction("wrap", function(value:Int, min:Int, max:Int) {
+			return FlxMath.wrap(value, min, max);
 		});
 
 		#if MODCHARTING_TOOLS
