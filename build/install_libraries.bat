@@ -19,4 +19,5 @@ haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
 haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
 haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
 haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
 echo done

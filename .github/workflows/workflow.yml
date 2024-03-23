@@ -41,7 +41,7 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-          haxelib install away3d
+          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib install systools
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install hxvlc
@@ -104,7 +104,7 @@ jobs:
           haxelib install flixel-screenshot-plugin
           haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib install away3d
+          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -143,7 +143,7 @@ jobs:
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib install HxWebView
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-          haxelib install away3d
+          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib install hxvlc
           haxelib install openfl
@@ -188,7 +188,7 @@ jobs:
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib install away3d
+          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib install flixel-ui
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git

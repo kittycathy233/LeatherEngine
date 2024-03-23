@@ -386,6 +386,7 @@ class ModchartUtilities {
         });
 
 		setLuaFunction("print", function(str:Dynamic = "") {
+			Sys.println(str);
             Logs.debug(str);
         });
 

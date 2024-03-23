@@ -2244,7 +2244,9 @@ class PlayState extends MusicBeatState {
 
 		if (!switchedStates) {
 			if (!(Conductor.songPosition > 20 && FlxG.sound.music.time < 20)) {
+				#if debug
 				trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
+				#end
 
 				vocals.pause();
 				FlxG.sound.music.pause();
@@ -2260,7 +2262,9 @@ class PlayState extends MusicBeatState {
 				vocals.play();
 			} else {
 				while (Conductor.songPosition > 20 && FlxG.sound.music.time < 20) {
+					#if debug
 					trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
+					#end
 
 					FlxG.sound.music.time = Conductor.songPosition;
 					vocals.time = Conductor.songPosition;
@@ -2470,7 +2474,7 @@ class PlayState extends MusicBeatState {
 			{
 				var midPos = dad.getMainCharacter().getMidpoint();
 
-				if(utilities.Options.getData("cameraTracksDirections") && dad.animation.curAnim != null)
+				if(Options.getData("cameraTracksDirections") && dad.animation.curAnim != null)
 				{
 					switch(dad.animation.curAnim.name.toLowerCase())
 					{

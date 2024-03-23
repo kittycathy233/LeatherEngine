@@ -195,7 +195,7 @@ class HScript
 				interp.variables.set(classes[classes.length - 1], enum_new);
 			}
 			else
-				trace(class_name + " isn't a valid class or enum!");
+				trace(class_name + " isn't a valid class or enum!", WARNING);
 		});
 
 		interp.variables.set("trace", function(value:Dynamic)
