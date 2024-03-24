@@ -221,6 +221,7 @@ class ModchartUtilities {
 
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
+		
 
 		trace('Loading script at path \'${path}\'', DEBUG);
 		//trace("lua version: " + Lua.version());
@@ -230,8 +231,6 @@ class ModchartUtilities {
 
 		if (path == null)
 			path = PolymodAssets.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath));
-
-		//trace('Loaded script file at: $path');
 
 		var result = LuaL.dofile(lua, path); // execute le file
 
@@ -262,7 +261,7 @@ class ModchartUtilities {
 		setVar("shaders", Options.getData("shaders"));
 
 		setVar("animatedBackgrounds", Options.getData("animatedBGs"));
-    setVar("charsAndBGs", Options.getData("charsAndBGs"));
+    	setVar("charsAndBGs", Options.getData("charsAndBGs"));
 
 		setVar("curStep", 0);
 		setVar("curBeat", 0);
@@ -299,15 +298,19 @@ class ModchartUtilities {
 		setVar("inReplay", PlayState.playingReplay);
 
 		setVar("player1", PlayState.SONG.player1);
-    setVar("player2", PlayState.SONG.player2);
+		setVar("player2", PlayState.SONG.player2);
 
-    setVar("curStage", PlayState.SONG.stage);
+		setVar("curStage", PlayState.SONG.stage);
 
-	#if mobile
-    setVar("mobile", true);
-    #else 
-    setVar("mobile", false);
-    #end
+		#if mobile
+		setVar("mobile", true);
+		#else 
+		setVar("mobile", false);
+		#end
+
+		setVar("curMod", Options.getData("curMod"));
+		setVar("developer", Options.getData("developer"));
+
 
 		// other globals
 
@@ -376,6 +379,8 @@ class ModchartUtilities {
 
 		setVar("leatherEngine", {
 			version: Application.current.meta.get('version'),
+			path: Sys.programPath(),
+			cwd: Sys.getCwd(),
 		});
 
 		setVar("version", Application.current.meta.get('version'));
@@ -663,6 +668,22 @@ class ModchartUtilities {
 
 		setLuaFunction("colorRGBA", function(r:Int, g:Int, b:Int, a:Int):Int {
 			return FlxColor.fromRGB(r, g, b, a);
+		});
+
+		setLuaFunction("rgbToHsv", function(r:Int, g:Int, b:Int):Array<Int> {
+			return CoolUtil.rgbToHsv(r, g, b);
+		});
+
+		setLuaFunction("dominantColor", function(id:String):Int {
+			if (getActorByName(id) != null)
+				return CoolUtil.dominantColor(getActorByName(id));
+			return 0;
+		});
+
+		setLuaFunction("dominantColorFrame", function(id:String):Int {
+			if (getActorByName(id) != null)
+				return CoolUtil.dominantColorFrame(getActorByName(id));
+			return 0;
 		});
 
 		// sprite functions
@@ -2938,10 +2959,30 @@ class ModchartUtilities {
 			PlayState.instance.updateRating();
 		});
 
+		//utilities
 		setLuaFunction("getOption", function(saveStr:String) {
 			return Options.getData(saveStr);
 		});
 
+		setLuaFunction("getCurrentMod", function(saveStr:String) {
+			return Options.getData("curMod");
+		});
+
+		setLuaFunction("assetExists", function(path:String) {
+			return Assets.exists(path);
+		});
+
+		setLuaFunction("fileSystemExists", function(path:String) {
+			return sys.FileSystem.exists(path);
+		});
+
+		setLuaFunction("getText", function(path:String) {
+			return Assets.getText(path);
+		});
+
+		setLuaFunction("getContent", function(path:String) {
+			return sys.io.File.getContent(path);
+		});
 		// math
 		setLuaFunction("bound", function(value:Float, ?Min:Float, ?Max:Float) {
 			return FlxMath.bound(value, Min, Max);
