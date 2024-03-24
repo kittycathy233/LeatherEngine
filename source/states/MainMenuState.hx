@@ -23,10 +23,11 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
 import modding.PolymodHandler;
+import modding.scripts.languages.HScript.IHScriptable;
 
 using StringTools;
 
-class MainMenuState extends MusicBeatState
+class MainMenuState extends MusicBeatState implements IHScriptable
 {
 	/**
 		Current instance of `MainMenuState`.
@@ -42,31 +43,21 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var ui_Skin:Null<String>;
-	public var scripts:Array<HScript> = [];
-	var script:HScript;
+	public var script:HScript;
 
-	function allScriptCall(func:String, ?args:Array<Dynamic>) {
-		for (cool_script in scripts) {
-			cool_script.call(func, args);
-		}
+	public inline function call(func:String, ?args:Array<Dynamic>) {
+		if(script != null) script.call(func, args);
 	}
 
-	function loadScripts(){
+	override function create()
+	{
+		instance = this;
 		#if sys
 		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx")){
 			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx", true);
 			script.start();		
-			scripts.push(script);
 		}
-		#end
-	}
-
-
-	override function create()
-	{
-		loadScripts();
-		instance = this;
-	
+		#end	
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 		
@@ -79,7 +70,7 @@ class MainMenuState extends MusicBeatState
 		if(Options.getData("developer"))
 			optionShit.push('toolbox');
 
-		allScriptCall("buttonsAdded");
+		call("buttonsAdded");
 		
 		#if !web
 		//optionShit.push('multiplayer');
@@ -181,7 +172,7 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 
-		allScriptCall("createPost");
+		call("createPost");
 	}
 
 	var selectedSomethin:Bool = false;
@@ -256,11 +247,11 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 
-		allScriptCall("update", [elapsed]);
+		call("update", [elapsed]);
 
 		super.update(elapsed);
 
-		allScriptCall("updatePost", [elapsed]);
+		call("updatePost", [elapsed]);
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -298,7 +289,7 @@ class MainMenuState extends MusicBeatState
 			case 'toolbox':
 				FlxG.switchState(new toolbox.ToolboxPlaceholder());
 		}
-		allScriptCall("changeState");
+		call("changeState");
 	}
 
 	function changeItem(itemChange:Int = 0)
@@ -322,6 +313,6 @@ class MainMenuState extends MusicBeatState
 
 			spr.updateHitbox();
 		});
-		allScriptCall("changeItem", [itemChange]);
+		call("changeItem", [itemChange]);
 	}
 }

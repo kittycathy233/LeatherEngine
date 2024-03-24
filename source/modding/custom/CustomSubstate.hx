@@ -5,7 +5,7 @@ import modding.scripts.languages.HScript;
 import substates.MusicBeatSubstate;
 import flixel.FlxObject;
 
-class CustomSubstate extends MusicBeatSubstate {
+class CustomSubstate extends MusicBeatSubstate implements IHScriptable{
     public var script:HScript;
     public static var instance:CustomSubstate = null;
     override function new(script:String){
@@ -24,24 +24,24 @@ class CustomSubstate extends MusicBeatSubstate {
     }
     override function create(){
         super.create();
-        allScriptCall("createPost");
+        call("createPost");
     }
     override function update(elapsed:Float){
-        allScriptCall("update", [elapsed]);
+        call("update", [elapsed]);
 		super.update(elapsed);
-		allScriptCall("updatePost", [elapsed]);
+		call("updatePost", [elapsed]);
     }
     override function beatHit(){
-        allScriptCall("beatHit");
+        call("beatHit");
 		super.beatHit();
-		allScriptCall("beatHitPost");
+		call("beatHitPost");
     }
     override function stepHit(){
-        allScriptCall("stepHit");
+        call("stepHit");
 		super.stepHit();
-		allScriptCall("stepHitPost");
+		call("stepHitPost");
     }
-    private inline function allScriptCall(func:String, ?args:Array<Dynamic>) {
+    public inline function call(func:String, ?args:Array<Dynamic>) {
 		script.call(func, args);
 	}
 }

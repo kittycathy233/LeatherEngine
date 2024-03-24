@@ -1,5 +1,6 @@
 package states;
 
+import modding.scripts.languages.HScript;
 import modding.ModList;
 import game.Conductor;
 #if sys
@@ -27,10 +28,11 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import flixel.tweens.FlxEase;
+import modding.scripts.languages.HScript.IHScriptable;
 
 using StringTools;
 
-class FreeplayState extends MusicBeatState {
+class FreeplayState extends MusicBeatState implements IHScriptable{
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
@@ -86,8 +88,30 @@ class FreeplayState extends MusicBeatState {
 
 	var ui_Skin:Null<String>;
 	var lastSelectedSong:Int = -1;
+	public var script:HScript;
+
+	/**
+		Current instance of `FreeplayState`.
+	**/
+	public static var instance:FreeplayState = null;
+	public inline function call(func:String, ?args:Array<Dynamic>) {
+		if (script != null ) script.call(func, args);
+	}
+	
 
 	override function create() {
+		instance = this;
+		#if sys
+		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/FreeplayState.hx")){
+			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/FreeplayState.hx", true);
+			script.start();		
+		}
+		#else
+		if (Assets.exists("assets/classes/states/FreeplayState.hx")){
+			script = new HScript("assets/classes/states/FreeplayState.hx");
+			script.start();		
+		}
+		#end
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 
@@ -283,28 +307,18 @@ class FreeplayState extends MusicBeatState {
 		add(text);
 
 		super.create();
+		call("createPost");
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String) {
+		call("addSong", [songName, weekNum, songCharacter]);
 		songs.push(new SongMetadata(songName, weekNum, songCharacter));
+		call("addSongPost", [songName, weekNum, songCharacter]);
 	}
 
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>) {
-		if (songCharacters == null)
-			songCharacters = ['bf'];
-
-		var num:Int = 0;
-
-		for (song in songs) {
-			addSong(song, weekNum, songCharacters[num]);
-
-			if (songCharacters.length != 1)
-				num++;
-		}
-	}
 
 	override function update(elapsed:Float) {
-		
+		call("update", [elapsed]);
 		#if sys
 		if(FlxG.keys.justPressed.TAB){
 			openSubState(new modding.SwitchModSubstate());
@@ -502,6 +516,7 @@ class FreeplayState extends MusicBeatState {
 						"Leather Engine's No Crash, We Help Fix Stuff Tool");
 			}
 		}
+		call("updatePost", [elapsed]);
 	}
 
 	override function closeSubState() {
@@ -511,6 +526,7 @@ class FreeplayState extends MusicBeatState {
 	}
 
 	function changeDiff(change:Int = 0) {
+		call("changeDiff", [change]);
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, curDiffArray.length - 1);
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
@@ -525,9 +541,11 @@ class FreeplayState extends MusicBeatState {
 			diffText.text = "< " + curDiffString + " ~ " + curRank + " >";
 		else
 			diffText.text = curDiffString + " ~ " + curRank + "  ";
+		call("changeDiffPost", [change]);
 	}
 
 	function changeSelection(change:Int = 0) {
+		call("changeSelection", [change]);
 		if(grpSongs.length != 0 || curSelected != 0)
 		curSelected = FlxMath.wrap(curSelected + change, 0, grpSongs.length - 1);
 
@@ -610,9 +628,11 @@ class FreeplayState extends MusicBeatState {
 				bg.color = songs[curSelected].color;
 			}
 		}
+		call("changeSelectionPost", [change]);
 	}
 
 	public function destroyFreeplayVocals(?destroyInst:Bool = true) {
+		call("destroyFreeplayVocals", [destroyInst]);
 		if (vocals != null) {
 			vocals.stop();
 			vocals.destroy();
@@ -629,13 +649,16 @@ class FreeplayState extends MusicBeatState {
 		}
 
 		FlxG.sound.music = null;
+		call("destroyFreeplayVocalsPost", [destroyInst]);
 	}
 
 	override function beatHit() {
+		call("beatHit");
 		super.beatHit();
 
 		if (lastSelectedSong != -1 && iconArray[lastSelectedSong] != null)
 			iconArray[lastSelectedSong].scale.add(0.2, 0.2);
+		call("beatHitPost");
 	}
 }
 

@@ -82,7 +82,7 @@ using StringTools;
 /**
 	The main gameplay state.
 **/
-class PlayState extends MusicBeatState {
+class PlayState extends MusicBeatState{
 	/**
 		Current instance of `PlayState`.
 	**/
@@ -987,42 +987,6 @@ class PlayState extends MusicBeatState {
 		if (Options.getData("downscroll"))
 			healthBarPosY = 60;
 
-		#if linc_luajit
-		executeModchart = !(PlayState.SONG.modchartPath == '' || PlayState.SONG.modchartPath == null);
-
-		if (executeModchart) {
-			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
-				luaModchart = new ModchartUtilities();
-				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
-			} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
-				luaModchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
-				executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
-			}
-		}
-
-
-		if (luaModchart == null && generatedSomeDumbEventLuas)
-			executeALuaState("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
-
-
-		
-
-
-		stage.createLuaStuff();
-
-		executeALuaState("create", [stage.stage], STAGE);
-		#end
-		allScriptCall("create", [stage.stage]);
-
-		if (gf.script != null)
-			scripts.push(gf.script);
-		if (dad.script != null)
-			scripts.push(dad.script);
-		if (boyfriend.script != null)
-			scripts.push(boyfriend.script);
-
-	
-
 		//global scripts yay.
 		#if sys
 		var modList = modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays);
@@ -1041,10 +1005,10 @@ class PlayState extends MusicBeatState {
 						{
 							if(file.endsWith('.hx'))
 								{
-									globalScript = new HScript("mods/" + mod + "/data/scripts/global/" + file, true);
-									globalScript.start();
+									var script = new HScript("mods/" + mod + "/data/scripts/global/" + file, true);
+									script.start();
 								
-									scripts.push(globalScript);
+									scripts.push(script);
 								}
 							#if linc_luajit
 							if(file.endsWith('.lua'))
@@ -1052,9 +1016,9 @@ class PlayState extends MusicBeatState {
 
 
 									
-									globalLuaScript = (new ModchartUtilities("mods/" + mod + "/data/scripts/global/" + file));
+									var script = (new ModchartUtilities("mods/" + mod + "/data/scripts/global/" + file));
 
-									luaScriptArray.push(globalLuaScript);
+									luaScriptArray.push(script);
 
 								}
 							#end
@@ -1073,19 +1037,19 @@ class PlayState extends MusicBeatState {
 						{
 							if(file.endsWith('.hx'))
 								{
-									globalScript = new HScript("assets/data/scripts/global/" + file, true);
-									globalScript.start();
+									var script = new HScript("assets/data/scripts/global/" + file, true);
+									script.start();
 								
-									scripts.push(globalScript);
+									scripts.push(script);
 								}
 							#if linc_luajit
 							if(file.endsWith('.lua'))
 								{
 
 							
-									globalLuaScript = (new ModchartUtilities("assets/data/scripts/global/" + file));
+									var script = (new ModchartUtilities("assets/data/scripts/global/" + file));
 
-									luaScriptArray.push(globalLuaScript);
+									luaScriptArray.push(script);
 
 								}
 							#end
@@ -1099,15 +1063,15 @@ class PlayState extends MusicBeatState {
 			if (localScripts.length > 0){
 				for (file in localScripts){
 					if(file.endsWith('.hx')){
-					localScript = new HScript("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file, true);
-					localScript.start();
+					var script = new HScript("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file, true);
+					script.start();
 									
-					scripts.push(localScript);
+					scripts.push(script);
 				}
 				#if linc_luajit
 				if(file.endsWith('.lua')){
-					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
-					luaScriptArray.push(globalLuaScript);
+					var script = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
+					luaScriptArray.push(script);
 					}
 				#end
 				}
@@ -1119,21 +1083,48 @@ class PlayState extends MusicBeatState {
 			if (songScripts.length > 0){
 				for (file in songScripts){
 					if(file.endsWith('.hx')){
-					songScript = new HScript("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file, true);
-					songScript.start();
-									
-					scripts.push(songScript);
+						var script = new HScript("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file, true);
+						script.start();
+										
+						scripts.push(script);
 				}
 				#if linc_luajit
 				if(file.endsWith('.lua')){
-					globalLuaScript = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
-					luaScriptArray.push(globalLuaScript);
+						var script = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
+						luaScriptArray.push(script);
 					}
 				#end
 				}
 			}
 		}
 		#end
+
+		#if linc_luajit
+		executeModchart = !(PlayState.SONG.modchartPath == '' || PlayState.SONG.modchartPath == null);
+
+		if (executeModchart) {
+			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
+				luaModchart = new ModchartUtilities();
+			} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
+				luaModchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
+			}
+		}
+
+		call("create", [PlayState.SONG.song.toLowerCase()], MODCHART);
+
+		stage.createLuaStuff();
+
+		call("create", [stage.stage], STAGE);
+		#end
+
+		if (gf.script != null)
+			scripts.push(gf.script);
+		if (dad.script != null)
+			scripts.push(dad.script);
+		if (boyfriend.script != null)
+			scripts.push(boyfriend.script);
+
+	
 
 
 
@@ -1143,8 +1134,7 @@ class PlayState extends MusicBeatState {
 			stage_script.interp.variables.set("dad", dad);
 		}
 
-		allScriptCall("createStage");
-		executeALuaState("createStage", []);
+		call("createStage", []);
 
 		if (gf.script != null)
 			gf.script.start();
@@ -1393,8 +1383,7 @@ class PlayState extends MusicBeatState {
 			startCountdown();
 
 		for (event in events){
-			executeALuaState("onEventLoaded", [event[0], event[1], event[2], event[3]]);
-			allScriptCall("onEventLoaded", [event[0], event[1], event[2], event[3]]);
+			call("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
 
 		//@see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
@@ -1425,8 +1414,7 @@ class PlayState extends MusicBeatState {
 			script_funny.create_post = true;
 		}
 
-		allScriptCall("createPost");
-		executeALuaState("createPost", []);
+		call("createPost", []);
 
 		calculateAccuracy();
 		updateSongInfoText();
@@ -1434,20 +1422,6 @@ class PlayState extends MusicBeatState {
 
 	public var scripts:Array<HScript> = [];
 
-	var script:HScript;
-	var noteScript:HScript;
-	var globalScript:HScript;
-	var localScript:HScript;
-	var songScript:HScript;
-	#if linc_luajit
-	var globalLuaScript:ModchartUtilities;
-	#end
-
-	function allScriptCall(func:String, ?args:Array<Dynamic>) {
-		for (cool_script in scripts) {
-			cool_script.call(func, args);
-		}
-	}
 
 	public function reorderCameras(?newCam:FlxCamera = null){
 		var cameras = FlxG.cameras.list.copy();
@@ -1646,8 +1620,7 @@ class PlayState extends MusicBeatState {
 	public static var startOnTime:Float = 0;
 	function startCountdown():Void {
 
-		allScriptCall("generateStaticArrows");
-		executeALuaState("generateStaticArrows", []);
+		call("generateStaticArrows", []);
 		
 		inCutscene = false;
 		paused = false;
@@ -1680,9 +1653,6 @@ class PlayState extends MusicBeatState {
 			setSongTime(startOnTime - 350);
 			return;
 		}
-
-		allScriptCall("startCountdown", [-1]);
-		executeALuaState("startCountdown", [-1]);
 
 
 		#if linc_luajit
@@ -1736,12 +1706,11 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		executeALuaState("start", [SONG.song.toLowerCase()], BOTH, [stage.stage]);
+		call("start", [SONG.song.toLowerCase()], BOTH, [stage.stage]);
 		#end
-		allScriptCall("start", [SONG.song.toLowerCase()]);
 
 		startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
-			allScriptCall("startCountdown", [swagCounter]);
+			call("startCountdown", [swagCounter]);
 			dad.dance(altAnim);
 			gf.dance();
 			boyfriend.dance();
@@ -1909,10 +1878,8 @@ class PlayState extends MusicBeatState {
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength / songMultiplier);
 		#end
 		#end
-		executeALuaState("startSong", []);
-		allScriptCall("startSong");
-		executeALuaState("songStart", []);
-		allScriptCall("songStart");
+		call("startSong", []);
+		call("songStart", []);
 
 		resyncVocals();
 	}
@@ -2302,9 +2269,6 @@ class PlayState extends MusicBeatState {
 
 	function fixedUpdate() {
 
-		if (script != null)
-			script.call("fixedUpdate", [1 / 120]);
-
 		if (gf.script != null)
 			gf.script.call("fixedUpdate", [1 / 120]);
 		if (dad.script != null)
@@ -2312,10 +2276,7 @@ class PlayState extends MusicBeatState {
 		if (boyfriend.script != null)
 			boyfriend.script.call("fixedUpdate", [1 / 120]);
 
-		#if linc_luajit
-		executeALuaState("fixedUpdate", [1 / 120]);
-		#end
-		allScriptCall("fixedUpdate", [1 / 120]);
+		call("fixedUpdate", [1 / 120]);
 	}
 
 	var fixedUpdateTime:Float = 0.0;
@@ -2508,10 +2469,8 @@ class PlayState extends MusicBeatState {
 							camFollow.x = midPos.x - 100;
 					}
 
-					executeALuaState("playerTwoTurn", []);
-					executeALuaState("turnChange", ['dad']);
-					allScriptCall("playerTwoTurn");
-					allScriptCall("turnChange", ['dad']);
+					call("playerTwoTurn", []);
+					call("turnChange", ['dad']);
 				//}
 			}
 
@@ -2549,10 +2508,8 @@ class PlayState extends MusicBeatState {
 							camFollow.y = midPos.y - 200;
 					}
 
-					executeALuaState("playerOneTurn", []);
-					executeALuaState("turnChange", ['bf']);
-					allScriptCall("playerOneTurn");
-					allScriptCall("turnChange", ['bf']);
+					call("playerOneTurn", []);
+					call("turnChange", ['bf']);
 				//}
 			}
 
@@ -2631,8 +2588,7 @@ class PlayState extends MusicBeatState {
 			#end
 
 
-			executeALuaState("onDeath", [Conductor.songPosition]);
-			allScriptCall("onDeath", [Conductor.songPosition]);
+			call("onDeath", [Conductor.songPosition]);
 		}
 
 		if (health < minHealth)
@@ -2723,14 +2679,7 @@ class PlayState extends MusicBeatState {
 						}
 
 						if (daNote.isSustainNote){
-							executeALuaState('playerTwoSingHeld', [
-								Math.abs(daNote.noteData),
-								Conductor.songPosition,
-								daNote.arrow_Type,
-								daNote.strumTime,
-								daNote.character
-							]);
-							allScriptCall('playerTwoSingHeld', [
+							call('playerTwoSingHeld', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
@@ -2739,14 +2688,7 @@ class PlayState extends MusicBeatState {
 							]);
 						}
 						else{
-							executeALuaState('playerTwoSing', [
-								Math.abs(daNote.noteData),
-								Conductor.songPosition,
-								daNote.arrow_Type,
-								daNote.strumTime,
-								daNote.character
-							]);
-							allScriptCall('playerTwoSing', [
+							call('playerTwoSing', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
@@ -2767,14 +2709,7 @@ class PlayState extends MusicBeatState {
 						}
 
 						if (daNote.isSustainNote){
-							executeALuaState('playerOneSingHeld', [
-								Math.abs(daNote.noteData),
-								Conductor.songPosition,
-								daNote.arrow_Type,
-								daNote.strumTime,
-								daNote.character
-							]);
-							allScriptCall("playerOneSingHeld", [
+							call('playerOneSingHeld', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
@@ -2783,14 +2718,7 @@ class PlayState extends MusicBeatState {
 							]);
 						}
 						else{
-							executeALuaState('playerOneSing', [
-								Math.abs(daNote.noteData),
-								Conductor.songPosition,
-								daNote.arrow_Type,
-								daNote.strumTime,
-								daNote.character
-							]);
-							allScriptCall("playerOneSing", [
+							call('playerOneSing', [
 								Math.abs(daNote.noteData),
 								Conductor.songPosition,
 								daNote.arrow_Type,
@@ -2800,17 +2728,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					/*if(daNote.isSustainNote){
-						executeALuaState(getSingLuaFuncName(false)+'SingHeld', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
-						allScriptCall(getSingLuaFuncName(false)+'SingHeld', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
-					}
-					else{
-						executeALuaState(getSingLuaFuncName(false)+'Sing', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
-						allScriptCall(getSingLuaFuncName(false)+'Sing', [Math.abs(daNote.noteData), Conductor.songPosition, daNote.arrow_Type, daNote.strumTime]);
-					}*/
 
-					executeALuaState(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
-					allScriptCall(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
+					call(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
 
 					if (Options.getData("enemyStrumsGlow") && enemyStrums.members.length - 1 == SONG.keyCount - 1) {
 						enemyStrums.forEach(function(spr:StrumNote) {
@@ -2859,7 +2778,6 @@ class PlayState extends MusicBeatState {
 					if (SONG.needsVoices && vocals != null && SONG != null)
 						vocals.volume = 1;
 
-					allScriptCall("enemyNoteHit", [daNote]);
 
 					daNote.active = false;
 					daNote.visible = false;
@@ -2971,7 +2889,6 @@ class PlayState extends MusicBeatState {
 					daNote.active = false;
 					daNote.visible = false;
 
-					allScriptCall("playerNoteMiss", [daNote.noteData]);
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -3124,8 +3041,7 @@ class PlayState extends MusicBeatState {
 				height: FlxG.height,
 				elapsed: FlxG.elapsed,
 			});
-			executeALuaState("update", [elapsed]);
-			allScriptCall("update", [elapsed]);
+			call("update", [elapsed]);
 			if (getLuaVar("showOnlyStrums", "bool")) {
 				healthBarBG.visible = false;
 				infoTxt.visible = false;
@@ -3170,8 +3086,7 @@ class PlayState extends MusicBeatState {
 				FlxG.fullscreen = false;
 		}
 		#end
-		allScriptCall("updatePost", [elapsed]);
-		executeALuaState("updatePost", [elapsed]);
+		call("updatePost", [elapsed]);
 	}
 
 	override function destroy()
@@ -3183,8 +3098,7 @@ class PlayState extends MusicBeatState {
 		}
 
 	function endSong():Void {
-		allScriptCall("endSong");
-		executeALuaState("endSong", []);
+		call("endSong", []);
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
@@ -3424,8 +3338,7 @@ class PlayState extends MusicBeatState {
 				combo = 0;
 		}
 
-		executeALuaState("popUpScore", [daRating, combo]);
-		allScriptCall("popUpScore", [daRating, combo]);
+		call("popUpScore", [daRating, combo]);
 
 		if (ratings.exists(daRating))
 			ratings.set(daRating, ratings.get(daRating) + 1);
@@ -3699,15 +3612,13 @@ class PlayState extends MusicBeatState {
 
 				for (i in 0...justPressedArray.length) {
 					if (justPressedArray[i]){
-						executeALuaState("keyPressed", [i]);
-						allScriptCall("keyPressed", [i]);
+						call("keyPressed", [i]);
 					}
 				};
 
 				for (i in 0...releasedArray.length) {
 					if (releasedArray[i]){
-						executeALuaState("keyReleased", [i]);
-						allScriptCall("keyReleased", [i]);
+						call("keyReleased", [i]);
 					}
 				};
 
@@ -4067,13 +3978,7 @@ class PlayState extends MusicBeatState {
 
 			calculateAccuracy();
 
-			executeALuaState("playerOneMiss", [
-				direction,
-				Conductor.songPosition,
-				(note != null ? note.arrow_Type : "default"),
-				(note != null ? note.isSustainNote : false)
-			]);
-			allScriptCall("playerOneMiss", [
+			call("playerOneMiss", [
 				direction,
 				Conductor.songPosition,
 				(note != null ? note.arrow_Type : "default"),
@@ -4135,12 +4040,10 @@ class PlayState extends MusicBeatState {
 					boyfriend.playAnim(singAnim, true);
 
 				if (note.isSustainNote){
-					executeALuaState("playerOneSingHeld", lua_Data);
-					allScriptCall("playerOneSingHeld", lua_Data);
+					call("playerOneSingHeld", lua_Data);
 				}
 				else{
-					executeALuaState("playerOneSing", lua_Data);
-					allScriptCall("playerOneSing", lua_Data);
+					call("playerOneSing", lua_Data);
 				}
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
@@ -4156,12 +4059,10 @@ class PlayState extends MusicBeatState {
 					dad.playAnim(singAnim,true);
 
 				if (note.isSustainNote){
-					executeALuaState("playerTwoSingHeld", lua_Data);
-					allScriptCall("playerTwoSingHeld", lua_Data);
+					call("playerTwoSingHeld", lua_Data);
 				}
 				else{
-					executeALuaState("playerTwoSing", lua_Data);
-					allScriptCall("playerTwoSing", lua_Data);
+					call("playerTwoSing", lua_Data);
 				}
 			}
 
@@ -4198,8 +4099,7 @@ class PlayState extends MusicBeatState {
 			resyncVocals();
 
 		setLuaVar("curStep", curStep);
-		executeALuaState("stepHit", [curStep]);
-		allScriptCall("stepHit", [curStep]);
+		call("stepHit", [curStep]);
 	}
 
 	override function beatHit() {
@@ -4317,8 +4217,7 @@ class PlayState extends MusicBeatState {
 
 		stage.beatHit();
 
-		executeALuaState("beatHit", [curBeat]);
-		allScriptCall("beatHit", [curBeat]);
+		call("beatHit", [curBeat]);
 	}
 
 	function updateRatingText() {
@@ -4747,6 +4646,21 @@ class PlayState extends MusicBeatState {
 
 
 
+	public inline function call(func:String, ?args:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>){
+		hscriptCall(func, (args == []) ? null : args, execute_on);
+		#if linc_luajit
+		executeALuaState(func, args, execute_on, stage_arguments);
+		#end
+	}
+
+	public function hscriptCall(func:String, ?args:Array<Dynamic>, ?execute_on:Execute_On = BOTH) {
+		if(scripts.length != 0 && execute_on != STAGE){
+			for (cool_script in scripts) {
+				cool_script.call(func, args);
+			}
+		}
+	}
+
 
 	public function executeALuaState(name:String, arguments:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>) {
 		if (stage_arguments == null)
@@ -4766,9 +4680,9 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if(luaScriptArray.length != 0){
-			for (i in luaScriptArray) {
-				i.executeState(name, arguments);
+		if(luaScriptArray.length != 0 && execute_on != STAGE){
+			for (script in luaScriptArray) {
+				script.executeState(name, arguments);
 			}
 		}
 		#end
@@ -4783,7 +4697,7 @@ class PlayState extends MusicBeatState {
 			luaModchart.setVar(name, data);
 		}
 
-		if(luaScriptArray.length != 0){
+		if(luaScriptArray.length != 0 && execute_on != STAGE){
 			for (i in luaScriptArray) {
 				i.setVar(name, data);
 			}
@@ -5075,19 +4989,19 @@ class PlayState extends MusicBeatState {
 
 					defaultCamZoom = stage.camZoom;
 
-					allScriptCall("create", [stage.stage]);
 
 					#if linc_luajit
 					stage.createLuaStuff();
+					#end
 
-					executeALuaState("create", [stage.stage], STAGE);
+					call("create", [stage.stage], STAGE);
 
+					#if linc_luajit
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
-
-					executeALuaState("start", [stage.stage], STAGE);
 					#end
-					allScriptCall("start", [stage.stage]);
+
+					call("start", [stage.stage], STAGE);
 
 					addBgStuff();
 				}
@@ -5231,8 +5145,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		//                            name       pos      param 1   param 2
-		executeALuaState("onEvent", [event[0], event[1], event[2], event[3]]);
-		allScriptCall("onEvent", [event[0], event[1], event[2], event[3]]);
+		call("onEvent", [event[0], event[1], event[2], event[3]]);
 	}
 
 	public function calculateAccuracy() {
@@ -5343,10 +5256,10 @@ class PlayState extends MusicBeatState {
 				}
 				#end	
 				if (Assets.exists(Paths.hx("data/arrow types/" + noteType))) {
-					noteScript = new HScript(Paths.hx("data/arrow types/" + noteType));
-					noteScript.start();
+					var script = new HScript(Paths.hx("data/arrow types/" + noteType));
+					script.start();
 		
-					scripts.push(noteScript);
+					scripts.push(script);
 				}
 		}
 	function getCorrectKeyCount(player:Bool)

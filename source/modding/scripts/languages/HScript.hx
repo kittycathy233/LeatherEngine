@@ -51,6 +51,7 @@ class HScript
 
 	public function new(hscript_path:String, ?global:Bool = false)
 	{
+		trace('Loading script at path \'${hscript_path}\'', DEBUG);
 		// parser settings
 		parser.allowJSON = true;
 		parser.allowTypes = true;
@@ -58,7 +59,6 @@ class HScript
 		
 		// load text
 		#if sys
-		//Shoutout to @sword_352 on discord for helping my dumbass brain with this
 		if(global)
 			program = parser.parseString(sys.io.File.getContent(hscript_path));
 		else
@@ -238,4 +238,8 @@ class HScript
 			states.PlayState.instance.stage.clear();
 		});
 	}
+}
+interface IHScriptable{
+	function call(func:String, ?args:Array<Dynamic>):Void;
+	var script:HScript;
 }
