@@ -317,7 +317,7 @@ class PauseSubState extends MusicBeatSubstate {
 							close();
 						};
 				case "options":
-					menu = "options";
+					FlxG.switchState(new states.OptionsMenu());
 					updateAlphabets();
 				case "back":
 					menu = "default";
