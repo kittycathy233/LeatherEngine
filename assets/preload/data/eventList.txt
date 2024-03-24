@@ -20,4 +20,5 @@ Remove Trail~Object Name (dad, boyfriend, girlfriend, etc)~Nothing
 No Shader~Character (BF, Dad, GF)~Nothing
 Init Shader~Id~Filename                                                        Shaders must be created before using in other events and scripts
 Set Camera Shader~Id~Camera (hud, game, or both)                                                        Adds a shader to a camera.
-Remove Camera Shader~Id~Camera (hud, game, or both)                                                        Removes a shader fro, a camera.
+Remove Camera Shader~Id~Camera (hud, game, or both)
+Set Property~actor.property~value                                                               ex: boyfriend.x, 300
