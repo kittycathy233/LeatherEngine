@@ -617,6 +617,8 @@ class PlayState extends MusicBeatState{
 		// set instance because duh
 		instance = this;
 
+		FlxG.mouse.visible = false;
+
 		// preload pause music
 		new FlxSound().loadEmbedded(Paths.music('breakfast'));
 
