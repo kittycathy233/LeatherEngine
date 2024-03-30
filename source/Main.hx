@@ -4,9 +4,6 @@ import flixel.util.FlxColor;
 import haxe.Log;
 import ui.logs.Logs;
 import utilities.FunkinGame;
-#if SCREENSHOTS_ALLOWED
-import screenshotplugin.ScreenShotPlugin;
-#end
 import flixel.FlxG;
 import lime.app.Application;
 import haxe.io.Path;
@@ -44,12 +41,6 @@ class Main extends Sprite {
 		}
 
 		addChild(new FunkinGame());
-
-		#if SCREENSHOTS_ALLOWED
-		FlxG.plugins.add(new ScreenShotPlugin());
-		ScreenShotPlugin.screenshotKey = F2;
-        ScreenShotPlugin.saveFormat = PNG;
-		#end
 
 		#if !mobile
 		logsOverlay = new Logs();

@@ -222,6 +222,10 @@ class OptionsMenu extends MusicBeatState {
 		}
 	}
 
+	function goBack(){
+		FlxG.switchState(new MainMenuState());
+	}
+
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
@@ -242,7 +246,7 @@ class OptionsMenu extends MusicBeatState {
 			}
 
 			if (controls.BACK)
-				FlxG.switchState(new MainMenuState());
+				goBack();
 		} else {
 			if (controls.BACK)
 				inMenu = false;

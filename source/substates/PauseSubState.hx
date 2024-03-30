@@ -1,5 +1,6 @@
 package substates;
 
+import states.OptionsMenu;
 import flixel.util.FlxStringUtil;
 import flixel.FlxCamera;
 import game.Conductor;
@@ -317,7 +318,7 @@ class PauseSubState extends MusicBeatSubstate {
 							close();
 						};
 				case "options":
-					FlxG.switchState(new states.OptionsMenu());
+					FlxG.switchState(new PauseOptions());
 					updateAlphabets();
 				case "back":
 					menu = "default";
@@ -475,5 +476,10 @@ class PauseSubState extends MusicBeatSubstate {
 			if (item.targetY == 0)
 				item.alpha = 1;
 		}
+	}
+}
+class PauseOptions extends OptionsMenu{
+	override inline function goBack(){
+		FlxG.switchState(new PlayState());
 	}
 }

@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxState;
 import flixel.math.FlxMath;
 import flixel.input.FlxInput.FlxInputState;
 import flixel.FlxSprite;

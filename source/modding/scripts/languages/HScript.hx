@@ -126,7 +126,6 @@ class HScript
 		interp.variables.set("CustomShader", shaders.custom.CustomShader);
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
-		interp.variables.set('FlxAnimate', flxanimate.FlxAnimate);
 		interp.variables.set('Json', haxe.Json);
 		interp.variables.set("FlxEmitter", flixel.effects.particles.FlxEmitter);
 
@@ -142,7 +141,7 @@ class HScript
 		interp.variables.set('CustomState', modding.custom.CustomState);
 		interp.variables.set('CustomSubstate', modding.custom.CustomSubstate);
 		#if discord_rpc
-		interp.variables.set('Discord', utilities.Discord.DiscordClient);
+		interp.variables.set('DiscordClient', utilities.Discord.DiscordClient);
 		#end
 		#if THREE_D_ALLOWED
 		interp.variables.set('Model', models.Model);

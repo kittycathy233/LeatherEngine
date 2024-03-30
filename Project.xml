@@ -85,10 +85,6 @@
 
 	<assets path="assets/preload/fonts" rename="assets/fonts" library="fonts" />
 
-
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
-	<assets path='art/manual.txt' rename='manual.txt' />
-
 	<assets path="CHANGELOG.md" rename='changelog.txt' />
 
 	<assets path="console.bat" if="windows" unless="web" />
@@ -109,11 +105,9 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="hscript-improved"/>
 	<haxelib name="scriptless-polymod" />
-	<haxelib name="flxanimate" />
 	<haxelib name="flixelTextureAtlas" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" version="git" url="https://github.com/Leather128/linc_luajit.git" />
-	<haxelib name="flixel-screenshot-plugin" if="SCREENSHOTS_ALLOWED"/>
 	<haxelib name="away3d" if="THREE_D_ALLOWED" version="git" url="https://github.com/FNF-CNE-Devs/away3d" />
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="HxWebView" if="windows" unless="linux || mac" />
@@ -157,7 +151,7 @@
 	<haxeflag name="--macro" value="include('flx3D')" if="THREE_D_ALLOWED" />
 	<haxeflag name="--macro" value="include('away3d')" if="THREE_D_ALLOWED" />
 	<haxeflag name="--macro" value="include('hxvlc')" if="VIDEOS_ALLOWED" />
-	<haxeflag name="--macro" value="include('sys')" if="sys" unless="web" />
+	<haxeflag name="--macro" value="include('sys')" if="sys" />
 
 
 

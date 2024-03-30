@@ -26,6 +26,7 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.util.FlxStringUtil;
 import openfl.display.BitmapData;
 import flixel.graphics.FlxGraphic;
+import shaders.NoteColors;
 import flixel.system.FlxAssets.FlxShader;
 import substates.ResultsScreenSubstate;
 import haxe.Json;
@@ -1392,7 +1393,7 @@ class PlayState extends MusicBeatState{
 		if(Options.getData('colorQuantization')){
 			for(note in unspawnNotes){
 				if(note.affectedbycolor){
-					var quantStrumTime = note.isSustainNote ? note.prevNote.strumTime : note.strumTime;
+					var quantStrumTime = note.isSustainNote ? note.prevNote.prevNoteStrumtime : note.strumTime;
 					var currentStepCrochet = Conductor.stepCrochet;
 					var noteBeat = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48)+0.5);
 					var col:Array<Int> = [142,142,142];
@@ -2820,20 +2821,45 @@ class PlayState extends MusicBeatState{
 							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
 								daNote.modAngle = coolStrum.angle;
 							
-							if(coolStrum.alpha != 1 && coolStrum != null && daNote != null)
-								daNote.alpha = coolStrum.alpha;
+							if(coolStrum.alpha != 1 && coolStrum != null && daNote != null){
+								try { 
+									daNote.alpha = coolStrum.alpha;
+								}
+								catch(e)
+									trace(e, ERROR);
+							}
 		
-							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
-								daNote.modAngle = coolStrum.angle;
+							if (!daNote.isSustainNote && coolStrum != null && daNote != null){
+								try { 
+									daNote.modAngle = coolStrum.angle;
+								}
+								catch(e)
+									trace(e, ERROR);
+							}
 
-							if(coolStrum != null && daNote != null)
-								daNote.flipX = coolStrum.flipX;
+							if(coolStrum != null && daNote != null){
+								try { 
+									daNote.flipX = coolStrum.flipX;
+								}
+								catch(e)
+									trace(e, ERROR);
+							}
 	
-							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
-								daNote.flipY = coolStrum.flipY;
+							if (!daNote.isSustainNote && coolStrum != null && daNote != null){
+								try { 
+									daNote.flipY = coolStrum.flipY;
+								}
+								catch(e)
+									trace(e, ERROR);
+							}
 	
-							if(coolStrum != null && daNote != null)
-								daNote.color = coolStrum.color;
+							if(coolStrum != null && daNote != null){
+								try { 
+									daNote.color = coolStrum.color;
+								}
+								catch(e)
+									trace(e, ERROR);
+							}
 		
 						}
 						else if (!daNote.wasGoodHit && daNote != null)
@@ -4450,9 +4476,9 @@ class PlayState extends MusicBeatState{
 					}
 
 					if(luaScriptArray.length != 0){
-					for (i in luaScriptArray) {
-						i.setupTheShitCuzPullRequestsSuck();
-					}
+						for (i in luaScriptArray) {
+							i.setupTheShitCuzPullRequestsSuck();
+						}
 					}
 
 					#end
@@ -4572,7 +4598,7 @@ class PlayState extends MusicBeatState{
 							if (!Options.getData("customNoteColors"))
 								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
 							else
-								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+								noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
 							note.colorSwap.r = noteColor[0];
 							note.colorSwap.g = noteColor[1];
 							note.colorSwap.b = noteColor[2];
@@ -4585,7 +4611,7 @@ class PlayState extends MusicBeatState{
 							if (!Options.getData("customNoteColors"))
 								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
 							else
-								noteColor = shaders.NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
+								noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
 								note.colorSwap.r = noteColor[0];
 								note.colorSwap.g = noteColor[1];
 								note.colorSwap.b = noteColor[2];

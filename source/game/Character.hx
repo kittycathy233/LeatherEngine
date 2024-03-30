@@ -1,6 +1,5 @@
 package game;
 
-import flxanimate.FlxAnimate;
 import shaders.NoteColors;
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
