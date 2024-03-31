@@ -165,6 +165,15 @@ class CoolUtil {
 	}
 
 	/**
+	 * Sets the window icon
+	 * @author Vortex
+	 * @param path 
+	 */
+	public static inline function setWindowIcon(path:String){
+		Application.current.window.setIcon(Image.fromFile(path));
+	}
+
+	/**
 	 * Gets the highest number from a list.
 	 * Shoutout to @crinfarr on Discord.
 	 * https://discord.com/channels/162395145352904705/162395145352904705/1157847259858354236

@@ -1,5 +1,6 @@
 package;
 
+import flixel.system.frontEnds.LogFrontEnd;
 import flixel.util.FlxColor;
 import haxe.Log;
 import ui.logs.Logs;
@@ -31,13 +32,15 @@ class Main extends Sprite {
 
 		CoolUtil.haxe_trace = Log.trace;
 		Log.trace = CoolUtil.haxe_print;
-		untyped FlxG.log = new FunkinFrontEnd();
+		//untyped FlxG.log = new FunkinFrontEnd();
 
-		FunkinFrontEnd.onLogs = function(Data, Style, FireOnce){
-			if (Style == LogStyle.CONSOLE || Style == LogStyle.NORMAL) Logs.debug(Data);
-			if (Style == LogStyle.ERROR) Logs.error(Data);
-			if (Style == LogStyle.NOTICE) Logs.log(Data);
-			if (Style == LogStyle.WARNING) Logs.warn(Data);
+		LogFrontEnd.onLogs = function(Data, Style, FireOnce){
+			if(Options.getData("developer")){
+				if (Style == LogStyle.CONSOLE || Style == LogStyle.NORMAL) Logs.debug(Data);
+				if (Style == LogStyle.ERROR) Logs.error(Data);
+				if (Style == LogStyle.NOTICE) Logs.log(Data);
+				if (Style == LogStyle.WARNING) Logs.warn(Data);
+			}
 		}
 
 		addChild(new FunkinGame());

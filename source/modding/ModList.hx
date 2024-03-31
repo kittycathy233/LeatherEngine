@@ -31,7 +31,7 @@ class ModList {
 		return activeMods;
 	}
 
-	public static function load():Void {
+	public static inline function load():Void {
 		if (Options.getData("modlist", "modlist") != null && Options.getData("modlist", "modlist") != [])
 			modList = Options.getData("modlist", "modlist");
 	}

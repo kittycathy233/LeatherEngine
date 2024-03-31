@@ -63,12 +63,8 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 	override public function create():Void {
 		instance = this;
-		
 		MusicBeatState.windowNameSuffix = "";
-
-
 		swagShader = new TitleEffect();
-
 		if (!firstTimeStarting) {
 			persistentUpdate = true;
 			persistentDraw = true;
@@ -80,6 +76,8 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			#if polymod
 			PolymodHandler.loadMods();
 			#end
+
+			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
@@ -250,6 +248,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		titleText.antialiasing = true;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
+		titleText.shader = swagShader.shader;
 
 		if (!Options.getData("oldTitle")) {
 			add(logoBl);
