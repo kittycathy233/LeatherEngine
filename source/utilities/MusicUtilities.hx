@@ -20,7 +20,7 @@ class MusicUtilities
 	/**
 	 * This function returns the string path of the current options menu music.
 	 */
-	public static function GetOptionsMenuMusic():String
+	public static inline function GetOptionsMenuMusic():String
 	{
 		return Paths.music('optionsMenu');
 	}

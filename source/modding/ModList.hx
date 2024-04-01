@@ -24,10 +24,11 @@ class ModList {
 		var activeMods:Array<String> = [];
 
 		for (modName in modsToCheck) {
-			if (getModEnabled(modName))
+			if (getModEnabled(modName) && modName != Options.getData("curMod") && modName != "Friday Night Funkin'")
 				activeMods.push(modName);
 		}
-
+		activeMods.push("Friday Night Funkin'");
+		activeMods.push(Options.getData("curMod"));
 		return activeMods;
 	}
 

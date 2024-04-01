@@ -1,5 +1,6 @@
 package ui;
 
+import modding.PolymodHandler;
 import lime.app.Application;
 import lime.graphics.Image;
 import utilities.CoolUtil;
@@ -327,6 +328,9 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
 				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+				PolymodHandler.loadMods();
+				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
+					TitleState.playTitleMusic();
 			}
 		}else {
 			Alphabet_Text.alpha = 0.6;

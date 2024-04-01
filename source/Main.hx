@@ -32,7 +32,7 @@ class Main extends Sprite {
 
 		CoolUtil.haxe_trace = Log.trace;
 		Log.trace = CoolUtil.haxe_print;
-		//untyped FlxG.log = new FunkinFrontEnd();
+		/*untyped FlxG.log = new FunkinFrontEnd();
 
 		LogFrontEnd.onLogs = function(Data, Style, FireOnce){
 			if(Options.getData("developer")){
@@ -41,7 +41,7 @@ class Main extends Sprite {
 				if (Style == LogStyle.NOTICE) Logs.log(Data);
 				if (Style == LogStyle.WARNING) Logs.warn(Data);
 			}
-		}
+		}*/
 
 		addChild(new FunkinGame());
 
@@ -49,9 +49,7 @@ class Main extends Sprite {
 		logsOverlay = new Logs();
 		logsOverlay.visible = false;
 		addChild(logsOverlay);
-		#end	
-
-		#if !mobile
+	
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");
 		addChild(display);
 		#end

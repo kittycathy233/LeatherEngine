@@ -48,9 +48,9 @@ class Logs extends Sprite{
     }
 
     private function onFrameUpdate(_):Void{
-        if (FlxG.keys.justPressed.F5 && Options.getData("developer"))
+        if (FlxG.keys.justPressed.F3 && Options.getData("developer"))
             visible = !visible;
-        else if (FlxG.keys.justPressed.F6 && Options.getData("developer")){
+        else if (FlxG.keys.justPressed.F4 && Options.getData("developer")){
             logs = [];
             logText.text = '';
         }

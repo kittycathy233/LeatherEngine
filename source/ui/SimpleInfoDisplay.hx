@@ -61,7 +61,7 @@ class SimpleInfoDisplay extends TextField {
 						case 2: // Version
 							text += 'v${Application.current.meta.get('version')}';
 						case 3: // Console
-							text += '${Main.logsOverlay.logs.length} traced lines. F5 to view.';
+							text += '${Main.logsOverlay.logs.length} traced lines. F3 to view.';
 					}
 
 					text += "\n";
