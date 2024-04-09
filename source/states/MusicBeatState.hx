@@ -33,10 +33,15 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		if (!Options.getData('memoryLeaks')) {
 			clear_memory();
 		}
-
 		super();
 	}
 
+	override function destroy():Void {
+		super.destroy();
+		if (!Options.getData('memoryLeaks')) {
+			clear_memory();
+		}
+	}
 	/**
 	 * Clears all assets and other objects from the game's memory.
 	 */
