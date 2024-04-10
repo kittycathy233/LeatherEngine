@@ -72,7 +72,7 @@ class CoolUtil {
 		return dumbArray;
 	}
 
-	public static function openURL(url:String) {
+	public static inline function openURL(url:String) {
 		#if linux
 		Sys.command('/usr/bin/xdg-open', [url, "&"]);
 		#else
