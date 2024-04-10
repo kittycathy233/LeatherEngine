@@ -381,6 +381,7 @@ class ModchartUtilities {
 			version: Application.current.meta.get('version'),
 			path: Sys.programPath(),
 			cwd: Sys.getCwd(),
+			systemName: Sys.systemName(),
 		});
 
 		setVar("version", Application.current.meta.get('version'));
