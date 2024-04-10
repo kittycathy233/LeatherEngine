@@ -302,11 +302,7 @@ class ModchartUtilities {
 
 		setVar("curStage", PlayState.SONG.stage);
 
-		#if mobile
-		setVar("mobile", true);
-		#else 
-		setVar("mobile", false);
-		#end
+		setVar("mobile", FlxG.onMobile);
 
 		setVar("curMod", Options.getData("curMod"));
 		setVar("developer", Options.getData("developer"));
