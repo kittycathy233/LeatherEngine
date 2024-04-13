@@ -1,5 +1,6 @@
 package states;
 
+//import haxe.ui.Toolkit;
 import modding.scripts.languages.HScript;
 import modding.scripts.languages.HScript.IHScriptable;
 #if discord_rpc
@@ -32,6 +33,8 @@ import lime.app.Application;
 import openfl.Assets;
 import shaders.TitleEffect;
 import utilities.SaveData;
+import flixel.system.FlxSplash;
+//import systools.Registry;
 
 using StringTools;
 
@@ -72,6 +75,9 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			FlxG.fixedTimestep = false;
 
 			SaveData.init();
+			//Toolkit.theme = "dark";
+        	//Toolkit.init();
+			//trace(Registry.getValue(Registry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme"));
 
 			#if polymod
 			PolymodHandler.loadMods();
@@ -84,7 +90,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			#if FLX_NO_DEBUG
 			if (Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
 				doneFlixelSplash = true;
-				FlxG.switchState(() -> new flixel.system.FlxSplash(new states.TitleState()));
+				FlxG.switchState(() -> new FlxSplash(new TitleState()));
 				return;
 			}
 			#end

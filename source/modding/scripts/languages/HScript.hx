@@ -70,10 +70,10 @@ class HScript
 		interp.execute(program);
 	}
 
-	public function start()
+	public inline function start()
 		call("create");
 
-	public function update(elapsed:Float)
+	public inline function update(elapsed:Float)
 		call("update", [elapsed]);
 
 	public function call(func:String, ?args:Array<Dynamic>)

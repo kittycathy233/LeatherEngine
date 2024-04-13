@@ -132,6 +132,7 @@ class CoolUtil {
 
 		return maxKey;
 	}
+	
 	public static function dominantColorFrame(sprite:flixel.FlxSprite):Int {
 		var countByColor:Map<Int, Int> = [];
 

@@ -110,10 +110,10 @@
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" version="git" url="https://github.com/Leather128/linc_luajit.git" />
 	<haxelib name="away3d" if="THREE_D_ALLOWED" version="git" url="https://github.com/FNF-CNE-Devs/away3d" />
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
-	<haxelib name="HxWebView" if="windows" unless="linux || mac" />
+	<haxelib name="HxWebView" if="windows" />
 	<haxelib name="hxNoise"/>
-	<haxelib name="systools" if="sys" />
 	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" />
+
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

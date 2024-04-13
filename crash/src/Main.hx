@@ -15,13 +15,6 @@ import sys.io.Process;
 */
 class Main
 {
-	static final engines:Array<String> = [
-		"Psych",
-		"Kade",
-		"Yoshi",
-		"Codename",
-		"Forever"
-	];
 	static final quotes:Array<String> = [
 		"Skill Issue",
 		"Shaggy was too strong",

@@ -191,6 +191,7 @@ class NewModState extends MusicBeatState{
         add(rpc_idText);
 
         checkAutoEnable = new FlxUICheckBox(rpc_idText.x, modVersion.y + 60, null, null, "Auto Enable", 100);
+        checkAutoEnable.checked = true;
         add(checkAutoEnable);
 
         checkHideModSwitch = new FlxUICheckBox(checkAutoEnable.x, checkAutoEnable.y + checkAutoEnable.height + 2, null, null, "Hide Mod Switch Menu", 100);
@@ -222,7 +223,7 @@ class NewModState extends MusicBeatState{
                 mod_version: modVersion.text,
                 metadata: {
                     auto_enable: Std.string(checkAutoEnable.checked),
-                    canBeSwitchedTo: Std.string(checkHideModSwitch.checked)
+                    canBeSwitchedTo: Std.string(!checkHideModSwitch.checked)
                 }
             }, null, "\t");
             File.saveContent('./mods/${modName.text}/_polymod_meta.json', data);

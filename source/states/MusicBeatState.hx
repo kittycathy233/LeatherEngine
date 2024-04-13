@@ -11,6 +11,7 @@ import utilities.PlayerSettings;
 import game.Conductor.BPMChangeEvent;
 import utilities.Controls;
 import flixel.FlxG;
+import flixel.sound.FlxSound;
 
 class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeatState #else flixel.addons.ui.FlxUIState #end {
 	public var lastBeat:Float = 0;
@@ -53,9 +54,8 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		polymod.Polymod.clearCache();
 		#end
 
-
 		// Remove lingering sounds from the sound list
-		FlxG.sound.list.forEachAlive(function(sound:flixel.sound.FlxSound):Void {
+		FlxG.sound.list.forEachAlive(function(sound:FlxSound):Void {
 			FlxG.sound.list.remove(sound, true);
 			sound.stop();
 			sound.destroy();

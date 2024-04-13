@@ -41,7 +41,7 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 		"Documentation" => [
 			new WebViewOption("Wiki", 0, "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),
 			new WebViewOption("HScript Api", 1, "HScript Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
-			new WebViewOption("Lua Api", 2, "Lua Api", "https://github.com/Leather128/LeatherEngine/wiki/Lua-API#lua-api-documentation"),
+			new WebViewOption("Lua Api", 2, "Lua Api", "https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/wiki/Lua-api-documentation-(WIP)"),
 			new WebViewOption("Polymod Docs", 3, "Polymod Docs", "https://polymod.io/docs/")
 		]
 	];

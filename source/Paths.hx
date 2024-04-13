@@ -71,13 +71,16 @@ class Paths {
 	inline static public function xml(key:String, ?library:String):String
 		return getPath('data/$key.xml', TEXT, library);
 
+	inline static public function ui(key:String, ?library:String):String
+		return getPath('ui/$key.xml', TEXT, library);
+
 	inline static public function json(key:String, ?library:String):String
 		return getPath('data/$key.json', TEXT, library);
 
-	static public function video(key:String, ?ext:String = VIDEO_EXT):String
+	inline static public function video(key:String, ?ext:String = VIDEO_EXT):String
 		return 'assets/videos/$key.$ext';
 
-	static public function sound(key:String, ?library:String):String
+	inline static public function sound(key:String, ?library:String):String
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String):String
@@ -100,6 +103,9 @@ class Paths {
 
 	inline static public function texture(key:String, ?library:String):String
 		return getPath('models/$key.png', IMAGE, library);
+
+	inline static public function ndll(key:String, ?library:String):String
+		return getPath('ndlls/$key.ndll', TEXT, library);
 
 	static public function voices(song:String, ?difficulty:String):String {
 		if (difficulty != null) {

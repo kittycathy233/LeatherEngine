@@ -292,6 +292,7 @@ class ModchartUtilities {
 		setVar("hudHeight", PlayState.instance.camHUD.height);
 
 		setVar("mustHit", false);
+		setVar("strumLineX", PlayState.instance.strumLine.x);
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 
 		setVar("characterPlayingAs", PlayState.characterPlayingAs);
@@ -516,11 +517,6 @@ class ModchartUtilities {
 
 		// stage
 
-		setLuaFunction("makeGraphic", function(id:String, width:Int, height:Int, color:String) {
-			if (getActorByName(id) != null)
-				getActorByName(id).makeGraphic(width, height, FlxColor.fromString(color));
-		});
-
 		setLuaFunction("makeStageSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
 			if (!lua_Sprites.exists(id)) {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
@@ -538,18 +534,6 @@ class ModchartUtilities {
 				PlayState.instance.stage.add(Sprite);
 			} else
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
-		});
-
-		setLuaFunction("makeGraphicRGB", function(id:String, width:Int, height:Int, color:String) {
-            if(getActorByName(id) != null)
-            {
-                getActorByName(id).visible = true;
-                var colors = color.split(',');
-                var red = Std.parseInt(colors[0]);
-                var green = Std.parseInt(colors[1]);
-                var blue = Std.parseInt(colors[2]);
-                getActorByName(id).makeGraphic(width, height, FlxColor.fromRGB(red,green,blue));
-            }      
 		});
 
 		setLuaFunction("makeStageAnimatedSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
@@ -593,6 +577,23 @@ class ModchartUtilities {
 
 		// regular
 
+		setLuaFunction("makeGraphic", function(id:String, width:Int, height:Int, color:String) {
+			if (getActorByName(id) != null)
+				getActorByName(id).makeGraphic(width, height, FlxColor.fromString(color));
+		});
+
+		setLuaFunction("makeGraphicRGB", function(id:String, width:Int, height:Int, color:String) {
+            if(getActorByName(id) != null)
+            {
+                getActorByName(id).visible = true;
+                var colors = color.split(',');
+                var red = Std.parseInt(colors[0]);
+                var green = Std.parseInt(colors[1]);
+                var blue = Std.parseInt(colors[2]);
+                getActorByName(id).makeGraphic(width, height, FlxColor.fromRGB(red,green,blue));
+            }      
+		});
+
 		setLuaFunction("exists", function(id:String):Bool {
 			if (getActorByName(id) != null)
 				return Reflect.getProperty(getActorByName(id), 'exists') != true ? false : true;
@@ -600,56 +601,6 @@ class ModchartUtilities {
 			return false;
 		});
 
-
-		setLuaFunction("loadScript", function(script:String) {
-			var modchart:ModchartUtilities = null;
-
-			if (Assets.exists(Paths.lua("modcharts/" + script)))
-				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + script)));
-			else if (Assets.exists(Paths.lua("scripts/" + script)))
-				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + script)));
-
-			if (modchart == null) {
-				trace('Couldn\'t find script at either ${Paths.lua("modcharts/" + script)} OR ${Paths.lua("scripts/" + script)}!', WARNING);
-				return;
-			}
-
-			modchart.setupTheShitCuzPullRequestsSuck();
-
-			if (functions_called.contains("create"))
-				modchart.executeState("create", [PlayState.SONG.song.toLowerCase()]);
-			if (functions_called.contains("createPost"))
-				modchart.executeState("createPost", [PlayState.SONG.song.toLowerCase()]);
-			if (functions_called.contains("start"))
-				modchart.executeState("start", [PlayState.SONG.song.toLowerCase()]);
-
-			extra_scripts.push(modchart);
-		});
-
-		setLuaFunction("tween", function(obj:String, properties:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
-			var spr:Dynamic = getActorByName(obj);
-
-			if (spr != null) {
-				FlxTween.tween(spr, properties, duration, {
-					ease: easeFromString(ease),
-					onComplete: function(twn) {
-						if (onComplete != null)
-							onComplete();
-					},
-					startDelay: startDelay,
-				});
-			} else {
-				trace('Object named $obj doesn\'t exist!', ERROR);
-			}
-		});
-
-		setLuaFunction("printIP", function():Void {
-			trace('${FlxG.random.int(100, 999)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}');
-		});
-
-		setLuaFunction("getIP", function():String {
-			return '${FlxG.random.int(100, 999)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}';
-		});
 
 		setLuaFunction("color", function(r:Int, g:Int, b:Int, a:Int = 255):Int {
 			return FlxColor.fromRGB(r, g, b, a);
@@ -816,6 +767,43 @@ class ModchartUtilities {
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
 
+		setLuaFunction("newSpriteCopy", function(id:String, targetID:String) {
+            var actor:FlxSprite = null;
+            if(getCharacterByName(targetID) != null)
+            {
+                var character = getCharacterByName(targetID);
+                if (character.otherCharacters != null && character.otherCharacters.length > 0)
+                {
+                    actor = character.otherCharacters[0];
+                }                    
+            }
+            if(getActorByName(targetID) != null && actor == null)
+                actor = getActorByName(targetID);
+
+            if(!lua_Sprites.exists(id) && actor != null)
+            {
+                var Sprite:FlxSprite = new FlxSprite(actor.x, actor.y);
+
+                Sprite.loadGraphicFromSprite(actor);
+
+                Sprite.alpha = actor.alpha;
+                Sprite.angle = actor.angle;
+                Sprite.offset.x = actor.offset.x;
+                Sprite.offset.y = actor.offset.y;
+                Sprite.origin.x = actor.origin.x;
+                Sprite.origin.y = actor.origin.y;
+                Sprite.scale.x = actor.scale.x;
+                Sprite.scale.y = actor.scale.y;
+                Sprite.active = false;
+                Sprite.animation.frameIndex = actor.animation.frameIndex;
+                Sprite.flipX = actor.flipX;
+                Sprite.flipY = actor.flipY;
+                Sprite.animation.curAnim = actor.animation.curAnim;
+                //trace('made sprite copy');
+                lua_Sprites.set(id, Sprite);
+            }
+        });
+
 		setLuaFunction("newAnimatedSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
 			if (!lua_Sprites.exists(id)) {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
@@ -920,8 +908,7 @@ class ModchartUtilities {
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
 		});
 
-		setLuaFunction("makeDancingSprite",
-			function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?oneDanceAnimation:Bool, ?antialiasing:Bool, ?sizeY:Float = null) {
+		setLuaFunction("makeDancingSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?oneDanceAnimation:Bool, ?antialiasing:Bool, ?sizeY:Float = null) {
 				if (!lua_Sprites.exists(id)) {
 					var Sprite:DancingSprite = new DancingSprite(x, y, oneDanceAnimation, antialiasing);
 
@@ -1062,8 +1049,8 @@ class ModchartUtilities {
 
 		// hud/camera
 
-		setLuaFunction("setHudAngle", function(x:Float) {
-			PlayState.instance.camHUD.angle = x;
+		setLuaFunction("setHudAngle", function(angle:Float) {
+			PlayState.instance.camHUD.angle = angle;
 		});
 
 		setLuaFunction("setHudPosition", function(x:Int, y:Int) {
@@ -1175,6 +1162,16 @@ class ModchartUtilities {
 
 		// strumline
 
+		setLuaFunction("setStrumlineX", function(x:Float, ?dontMove:Bool = false) {
+			PlayState.instance.strumLine.x = x;
+
+			if (!dontMove) {
+				for (note in PlayState.strumLineNotes) {
+					note.x = x;
+				}
+			}
+		});
+
 		setLuaFunction("setStrumlineY", function(y:Float, ?dontMove:Bool = false) {
 			PlayState.instance.strumLine.y = y;
 
@@ -1244,6 +1241,18 @@ class ModchartUtilities {
 
         setLuaFunction("getUnspawnedNoteScaleX", function(id:Int) {
             return PlayState.instance.unspawnNotes[id].scale.x;
+        });
+
+		setLuaFunction("getUnspawnedNoteScaleY", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].scale.y;
+        });
+
+		setLuaFunction("getUnspawnedNoteSingAnimPrefix", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].singAnimPrefix;
+        });
+
+		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
+            PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
         });
 		
 		setLuaFunction("setUnspawnedNoteXOffset", function(id:Int, offset:Float) {
@@ -1391,14 +1400,6 @@ class ModchartUtilities {
 		setLuaFunction("setRenderedNoteAngle", function(angle:Float, id:Int) {
 			PlayState.instance.notes.members[id].modAngle = angle;
 		});
-
-		setLuaFunction("getUnspawnedNoteSingAnimPrefix", function(id:Int) {
-            return PlayState.instance.unspawnNotes[id].singAnimPrefix;
-        });
-
-		setLuaFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
-            PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
-        });
 
 		setLuaFunction("isSustain", function(id:Int) {
 			return PlayState.instance.notes.members[id].isSustainNote;
@@ -2214,6 +2215,23 @@ class ModchartUtilities {
 
 		// tweens
 
+		setLuaFunction("tween", function(obj:String, properties:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
+			var spr:Dynamic = getActorByName(obj);
+
+			if (spr != null) {
+				FlxTween.tween(spr, properties, duration, {
+					ease: easeFromString(ease),
+					onComplete: function(twn) {
+						if (onComplete != null)
+							onComplete();
+					},
+					startDelay: startDelay,
+				});
+			} else {
+				trace('Object named $obj doesn\'t exist!', ERROR);
+			}
+		});
+
 		setLuaFunction("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String = "") {
             PlayState.instance.tweenManager.tween(FlxG.camera, {x: toX, y: toY}, time, {ease: FlxEase.linear, onComplete: function(flxTween:FlxTween) { if (onComplete != '' && onComplete != null) {executeState(onComplete,["camera"]);}}});
         });
@@ -2957,6 +2975,14 @@ class ModchartUtilities {
 		});
 
 		//utilities
+		setLuaFunction("printIP", function():Void {
+			trace('${FlxG.random.int(100, 999)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}');
+		});
+
+		setLuaFunction("getIP", function():String {
+			return '${FlxG.random.int(100, 999)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}';
+		});
+
 		setLuaFunction("getOption", function(saveStr:String) {
 			return Options.getData(saveStr);
 		});
@@ -2980,6 +3006,32 @@ class ModchartUtilities {
 		setLuaFunction("getContent", function(path:String) {
 			return sys.io.File.getContent(path);
 		});
+
+		setLuaFunction("loadScript", function(script:String) {
+			var modchart:ModchartUtilities = null;
+
+			if (Assets.exists(Paths.lua("modcharts/" + script)))
+				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + script)));
+			else if (Assets.exists(Paths.lua("scripts/" + script)))
+				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + script)));
+
+			if (modchart == null) {
+				trace('Couldn\'t find script at either ${Paths.lua("modcharts/" + script)} OR ${Paths.lua("scripts/" + script)}!', WARNING);
+				return;
+			}
+
+			modchart.setupTheShitCuzPullRequestsSuck();
+
+			if (functions_called.contains("create"))
+				modchart.executeState("create", [PlayState.SONG.song.toLowerCase()]);
+			if (functions_called.contains("createPost"))
+				modchart.executeState("createPost", [PlayState.SONG.song.toLowerCase()]);
+			if (functions_called.contains("start"))
+				modchart.executeState("start", [PlayState.SONG.song.toLowerCase()]);
+
+			extra_scripts.push(modchart);
+		});
+
 		// math
 		setLuaFunction("bound", function(value:Float, ?Min:Float, ?Max:Float) {
 			return FlxMath.bound(value, Min, Max);
