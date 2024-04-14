@@ -36,6 +36,7 @@ class ColorSwap {
 	}
 }
 
+//modified from yoshicrafterengine
 class ColorSwapShader extends FlxShader {
 	@:glFragmentSource('
 	#pragma header

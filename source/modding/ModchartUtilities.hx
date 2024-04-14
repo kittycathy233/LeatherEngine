@@ -192,7 +192,7 @@ class ModchartUtilities {
 	 * @param name Function name
 	 * @param func Function to use
 	 */
-	function setLuaFunction(name:String, func:Dynamic):Void {
+	@:inline function setLuaFunction(name:String, func:Dynamic):Void {
 		Lua_helper.add_callback(lua, name, func);
 	}
 
@@ -1223,6 +1223,10 @@ class ModchartUtilities {
             return PlayState.instance.unspawnNotes[id].arrow_Type;
         });
 
+		setLuaFunction("getUnspawnedNoteArrowType", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].arrow_Type;
+        });
+
         setLuaFunction("getUnspawnedNoteStrumtime", function(id:Int) {
             return PlayState.instance.unspawnNotes[id].strumTime;
         });
@@ -1236,6 +1240,10 @@ class ModchartUtilities {
         });
 
         setLuaFunction("getUnspawnedNoteNoteData", function(id:Int) {
+            return PlayState.instance.unspawnNotes[id].noteData;
+        });
+
+		setLuaFunction("getUnspawnedNoteData", function(id:Int) {
             return PlayState.instance.unspawnNotes[id].noteData;
         });
 
@@ -1282,6 +1290,10 @@ class ModchartUtilities {
 		setLuaFunction("getRenderedNoteType", function(id:Int) {
 			return PlayState.instance.notes.members[id].noteData;
 		});
+
+		setLuaFunction("getRenderedNoteData", function(id:Int) {
+            return PlayState.instance.notes.members[id].noteData;
+        });
 
 		setLuaFunction("getRenderedNoteArrowType", function(id:Int) {
             return PlayState.instance.notes.members[id].arrow_Type;

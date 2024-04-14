@@ -78,13 +78,10 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			//Toolkit.theme = "dark";
         	//Toolkit.init();
 			//trace(Registry.getValue(Registry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme"));
-
 			#if polymod
 			PolymodHandler.loadMods();
 			#end
-
 			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
-
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
 			#if FLX_NO_DEBUG
@@ -147,7 +144,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 	public static var version_New:String = "v0.3";
 
-	public static function playTitleMusic() {
+	public static inline function playTitleMusic() {
 		FlxG.sound.playMusic(MusicUtilities.GetTitleMusicPath(), 0);
 	}
 
