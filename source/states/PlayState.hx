@@ -5127,6 +5127,46 @@ class PlayState extends MusicBeatState{
 					}
 				}
 				#end
+				if(Options.getData('colorQuantization')){
+					for(note in notes.members){
+						if(note.affectedbycolor){
+							var quantStrumTime = note.isSustainNote ? note.prevNote.prevNoteStrumtime : note.strumTime;
+							var currentStepCrochet = Conductor.stepCrochet;
+							var noteBeat = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48)+0.5);
+							var col:Array<Int> = [142,142,142];
+							for (beat in 0...note.beats.length-1){
+								if ((noteBeat % (192 / note.beats[beat]) == 0)){
+									noteBeat = note.beats[beat];
+									col = note.quantColors[beat];
+									break;
+								}
+							}
+							note.colorSwap.r = col[0];
+							note.colorSwap.g = col[1];
+							note.colorSwap.b = col[2];
+						}
+					}
+				}
+				if(Options.getData('colorQuantization')){
+					for(note in unspawnNotes){
+						if(note.affectedbycolor){
+							var quantStrumTime = note.isSustainNote ? note.prevNote.prevNoteStrumtime : note.strumTime;
+							var currentStepCrochet = Conductor.stepCrochet;
+							var noteBeat = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48)+0.5);
+							var col:Array<Int> = [142,142,142];
+							for (beat in 0...note.beats.length-1){
+								if ((noteBeat % (192 / note.beats[beat]) == 0)){
+									noteBeat = note.beats[beat];
+									col = note.quantColors[beat];
+									break;
+								}
+							}
+							note.colorSwap.r = col[0];
+							note.colorSwap.g = col[1];
+							note.colorSwap.b = col[2];
+						}
+					}
+				}
 			case "change ui skin":
 				var noteskin:String = Std.string(event[2]);
 				SONG.ui_Skin = noteskin;
