@@ -384,13 +384,12 @@ class ModchartUtilities {
 		setVar("version", Application.current.meta.get('version'));
 
 		// callbacks
-		setLuaFunction("trace", function(str:Dynamic = "") {
-            trace(str);
+		setLuaFunction("trace", function(str:Dynamic = "", ?printType:String = "DEBUG") {
+            trace(str, Logs.printTypeFromSting(printType));
         });
 
-		setLuaFunction("print", function(str:Dynamic = "") {
-			Sys.println(str);
-            Logs.debug(str);
+		setLuaFunction("print", function(str:Dynamic = "", ?printType:String = "DEBUG") {
+			trace(str, Logs.printTypeFromSting(printType));
         });
 
 		setLuaFunction("flashCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, force:Bool = false) {

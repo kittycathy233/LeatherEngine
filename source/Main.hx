@@ -15,7 +15,6 @@ import openfl.display.Sprite;
 import openfl.text.TextFormat;
 import utilities.CoolUtil;
 import ui.SimpleInfoDisplay;
-import utilities.frontend.FunkinFrontEnd;
 import flixel.system.debug.log.LogStyle;
 
 class Main extends Sprite {

@@ -2608,7 +2608,7 @@ class PlayState extends MusicBeatState{
 		}
 
 		if (generatedMusic && !switchedStates && startedCountdown && notes != null && playerStrums.members.length != 0 && enemyStrums.members.length != 0) {
-			notes.forEachAlive(function(daNote:Note) {
+			notes?.forEachAlive(function(daNote:Note) {
 				var coolStrum = (daNote.checkPlayerMustPress() ? playerStrums.members[Math.floor(Math.abs(daNote.noteData))%playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData))%enemyStrums.members.length]);
 				var strumY = coolStrum.y;
 				daNote.visible = true;
@@ -2815,13 +2815,14 @@ class PlayState extends MusicBeatState{
 								prevPlayerXVals.set(arrayVal, tempShit);
 							}
 							else{
-								if(coolStrum != null) daNote.x = coolStrum.x + prevPlayerXVals.get(arrayVal) - daNote.xOffset;
+								if(coolStrum != null) 
+									daNote.x = coolStrum.x + prevPlayerXVals.get(arrayVal) - daNote.xOffset;
 							}
 		
-							if (!daNote.isSustainNote && coolStrum != null && daNote != null)
+							if (coolStrum != null && !daNote.isSustainNote && daNote != null)
 								daNote.modAngle = coolStrum.angle;
 							
-							if(coolStrum.alpha != 1 && coolStrum != null && daNote != null){
+							if(coolStrum != null && coolStrum.alpha != 1 && daNote != null){
 								try { 
 									daNote.alpha = coolStrum.alpha;
 								}
@@ -2862,14 +2863,14 @@ class PlayState extends MusicBeatState{
 							}
 		
 						}
-						else if (!daNote.wasGoodHit && daNote != null)
+						else if (!daNote?.wasGoodHit)
 						{
 							var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
 							var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 	
 							if(coolStrum != null && daNote != null) daNote.visible = coolStrum.visible;
 	
-							if(!prevEnemyXVals.exists(arrayVal))
+							if(!prevEnemyXVals.exists(arrayVal) && coolStrum != null)
 							{
 								var tempShit:Float = 0.0;
 		
@@ -2887,29 +2888,32 @@ class PlayState extends MusicBeatState{
 								if(coolStrum != null) daNote.x = coolStrum.x + prevEnemyXVals.get(arrayVal) - daNote.xOffset;
 							}
 		
-							if (!daNote.isSustainNote && coolStrum != null)
+							if (coolStrum != null && !daNote.isSustainNote && daNote != null)
 								daNote.modAngle = coolStrum.angle;
 							
-							if(coolStrum.alpha != 1 && coolStrum != null)
+							if (coolStrum != null && coolStrum.alpha != 1 && daNote != null)
 								daNote.alpha = coolStrum.alpha;
 		
-							if (!daNote.isSustainNote && coolStrum != null)
+							if (coolStrum != null && !daNote.isSustainNote && daNote != null)
 								daNote.modAngle = coolStrum.angle;
-							daNote.flipX = coolStrum.flipX;
+
+							if (coolStrum != null && !daNote.isSustainNote && daNote != null)
+								daNote.flipX = coolStrum.flipX;
 	
-							if (!daNote.isSustainNote && coolStrum != null)
+							if (coolStrum != null && !daNote.isSustainNote && daNote != null)
 								daNote.flipY = coolStrum.flipY;
 	
-							if(coolStrum != null) daNote.color = coolStrum.color;
+							if(coolStrum != null && daNote != null) 
+								daNote.color = coolStrum.color;
 
 						}
 				}
 
 				if (Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime) {
-					if (daNote.checkPlayerMustPress()
+					if (daNote != null && daNote.animation != null && daNote.animation.curAnim != null && daNote.checkPlayerMustPress()
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
-						&& !daNote.wasGoodHit && daNote != null && daNote.animation != null && daNote.animation.curAnim != null) {
+						&& !daNote.wasGoodHit) {
 						vocals.volume = 0;
 						noteMiss(daNote.noteData, daNote);
 					}
@@ -5067,13 +5071,32 @@ class PlayState extends MusicBeatState{
 							generateStaticArrows(0, true);
 						}
 					}
-				notes.forEachAlive(function(note:Note)
-				{
-					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
-				});
-				for (i in 0...unspawnNotes.length) {
-					unspawnNotes[i].reloadNotes(unspawnNotes[i].strumTime, unspawnNotes[i].noteData, null, unspawnNotes[i].isSustainNote, unspawnNotes[i].character, 
-						unspawnNotes[i].arrow_Type, PlayState.SONG, unspawnNotes[i].characters, unspawnNotes[i].checkPlayerMustPress(), unspawnNotes[i].inEditor);
+				for (note in notes.members)
+					if(note != null){
+						note.reloadNotes(note.strumTime, 
+						note.noteData, 
+						note.prevNote, 
+						note.isSustainNote, 
+						note.character, 
+						note.arrow_Type, 
+						PlayState.SONG, 
+						note.characters, 
+						note.checkPlayerMustPress(), 
+						note.inEditor);
+					}
+				for(note in unspawnNotes){
+					if(note != null){
+						note.reloadNotes(note.strumTime, 
+						note.noteData, 
+						null, 
+						note.isSustainNote, 
+						note.character, 
+						note.arrow_Type, 
+						PlayState.SONG, 
+						note.characters, 
+						note.checkPlayerMustPress(), 
+						note.inEditor);
+					}
 				}
 				#if linc_luajit
 				for (i in 0...strumLineNotes.length) {
@@ -5228,7 +5251,11 @@ class PlayState extends MusicBeatState{
 			// cache shit
 			if (Options.getData("charsAndBGs")) {
 				if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
+					#if sys
+					var tmr:Dynamic = Sys.time();
+					#end
 					var funnyCharacter:Character;
+					trace('Caching ${event[3]}');
 
 					if (map == bfMap)
 						funnyCharacter = new Boyfriend(100, 100, event[3]);
@@ -5247,8 +5274,9 @@ class PlayState extends MusicBeatState{
 						}
 					}
 
-					trace(funnyCharacter.curCharacter);
-					trace(event[3]);
+					#if sys
+					trace('Cached ${event[3]} in ${FlxMath.roundDecimal(Sys.time() - tmr, 2)} seconds');
+					#end
 				}
 
 				if (event[0].toLowerCase() == "change stage"
