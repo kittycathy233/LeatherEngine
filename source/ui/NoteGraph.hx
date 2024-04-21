@@ -47,7 +47,7 @@ class NoteGraph extends FlxGroup {
 		add(dots);
 	}
 
-	function rgbToInt(r:Int, g:Int, b:Int):Int {
+	inline function rgbToInt(r:Int, g:Int, b:Int):Int {
 		return (255 << 24) | (r << 16) | (g << 8) | b;
 	}
 }

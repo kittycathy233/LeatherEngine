@@ -4077,6 +4077,7 @@ class PlayState extends MusicBeatState{
 				else{
 					call("playerOneSing", lua_Data);
 				}
+				executeALuaState('playerOneSingExtra', [Math.abs(note.noteData), notes.members.indexOf(note), note.arrow_Type, note.isSustainNote]);
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)

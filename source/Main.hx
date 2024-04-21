@@ -1,7 +1,5 @@
 package;
 
-import flixel.system.frontEnds.LogFrontEnd;
-import flixel.util.FlxColor;
 import haxe.Log;
 import ui.logs.Logs;
 import utilities.FunkinGame;
@@ -41,6 +39,7 @@ class Main extends Sprite {
 				if (Style == LogStyle.WARNING) Logs.warn(Data);
 			}
 		}*/
+
 
 		addChild(new FunkinGame());
 

@@ -525,6 +525,7 @@ class ModchartUtilities {
 					Sprite.loadGraphic(Paths.image(PlayState.instance.stage.stage + "/" + filename, "stages"));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -544,6 +545,7 @@ class ModchartUtilities {
 					Sprite.frames = Paths.getSparrowAtlas(PlayState.instance.stage.stage + "/" + filename, "stages");
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -564,6 +566,7 @@ class ModchartUtilities {
 						Sprite.frames = Paths.getSparrowAtlas(PlayState.instance.stage.stage + "/" + filename, "stages");
 
 					Sprite.scale.set(size, sizeY == null ? size : sizeY);
+					Sprite.antialiasing = Options.getData("antialiasing");
 					Sprite.updateHitbox();
 
 					lua_Sprites.set(id, Sprite);
@@ -759,6 +762,7 @@ class ModchartUtilities {
 					Sprite.loadGraphic(Paths.image(filename));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -811,6 +815,7 @@ class ModchartUtilities {
 					Sprite.frames = Paths.getSparrowAtlas(filename);
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -827,6 +832,7 @@ class ModchartUtilities {
 						Sprite.frames = Paths.getSparrowAtlas(filename);
 
 					Sprite.scale.set(size, sizeY == null ? size : sizeY);
+					Sprite.antialiasing = Options.getData("antialiasing");
 					Sprite.updateHitbox();
 
 					lua_Sprites.set(id, Sprite);
@@ -842,6 +848,7 @@ class ModchartUtilities {
 					Sprite.loadGraphic(Paths.image(filename));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -898,6 +905,7 @@ class ModchartUtilities {
 					Sprite.frames = Paths.getSparrowAtlas(filename);
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
+				Sprite.antialiasing = Options.getData("antialiasing");
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
@@ -915,6 +923,7 @@ class ModchartUtilities {
 						Sprite.frames = Paths.getSparrowAtlas(filename);
 
 					Sprite.scale.set(size, sizeY == null ? size : sizeY);
+					Sprite.antialiasing = Options.getData("antialiasing");
 					Sprite.updateHitbox();
 
 					lua_Sprites.set(id, Sprite);
@@ -3303,6 +3312,8 @@ class ModchartUtilities {
 		}
 
 		if (PlayState.boyfriend.otherCharacters != null) {
+			lua_Sprites.set('boyfriend', PlayState.boyfriend.otherCharacters[0]);
+            lua_Characters.set('boyfriend', PlayState.boyfriend.otherCharacters[0]);
 			for (char in 0...PlayState.boyfriend.otherCharacters.length) {
 				lua_Sprites.set("bfCharacter" + char, PlayState.boyfriend.otherCharacters[char]);
 				lua_Characters.set("bfCharacter" + char, PlayState.boyfriend.otherCharacters[char]);
@@ -3310,6 +3321,8 @@ class ModchartUtilities {
 		}
 
 		if (PlayState.gf.otherCharacters != null) {
+			lua_Sprites.set('girlfriend', PlayState.gf.otherCharacters[0]);
+            lua_Characters.set('girlfriend', PlayState.gf.otherCharacters[0]);
 			for (char in 0...PlayState.gf.otherCharacters.length) {
 				lua_Sprites.set("gfCharacter" + char, PlayState.gf.otherCharacters[char]);
 				lua_Characters.set("gfCharacter" + char, PlayState.gf.otherCharacters[char]);
