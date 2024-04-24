@@ -31,7 +31,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
-import shaders.TitleEffect;
+import shaders.ColorSwapHSV;
 import utilities.SaveData;
 import flixel.system.FlxSplash;
 //import systools.Registry;
@@ -53,7 +53,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	static var firstTimeStarting:Bool = false;
 	static var doneFlixelSplash:Bool = false;
 
-	var swagShader:TitleEffect;
+	var swagShader:ColorSwapHSV;
 
 	public static var instance:TitleState = null;
 
@@ -67,7 +67,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	override public function create():Void {
 		instance = this;
 		MusicBeatState.windowNameSuffix = "";
-		swagShader = new TitleEffect();
+		swagShader = new ColorSwapHSV();
 		if (!firstTimeStarting) {
 			persistentUpdate = true;
 			persistentDraw = true;
@@ -312,10 +312,10 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	override function update(elapsed:Float) {
 
 		if (controls.LEFT)
-			swagShader.update(-elapsed * 0.1);
+			swagShader.hue -= elapsed * 0.1;
 
 		if (controls.RIGHT)
-			swagShader.update(elapsed * 0.1);
+			swagShader.hue += elapsed * 0.1;
 
 		#if sys
 		if(FlxG.keys.justPressed.TAB){

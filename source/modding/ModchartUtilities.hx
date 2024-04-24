@@ -196,7 +196,7 @@ class ModchartUtilities {
 		Lua_helper.add_callback(lua, name, func);
 	}
 
-	public function new(?path:Null<String>) {
+	public function new(path:String) {
 
 		instance = this;
 

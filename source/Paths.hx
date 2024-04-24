@@ -95,15 +95,6 @@ class Paths {
 	inline static public function font(key:String):String
 		return 'assets/fonts/$key';
 
-	inline static public function obj(key:String, ?library:String):String
-		return getPath('models/$key.obj', IMAGE, library);
-
-	inline static public function mtl(key:String, ?library:String):String
-		return getPath('models/$key.mtl', IMAGE, library);
-
-	inline static public function texture(key:String, ?library:String):String
-		return getPath('models/$key.png', IMAGE, library);
-
 	inline static public function ndll(key:String, ?library:String):String
 		return getPath('ndlls/$key.ndll', TEXT, library);
 

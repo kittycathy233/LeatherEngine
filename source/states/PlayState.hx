@@ -1107,7 +1107,7 @@ class PlayState extends MusicBeatState{
 
 		if (executeModchart) {
 			if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
-				luaModchart = new ModchartUtilities();
+				luaModchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath)));
 			} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
 				luaModchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath)));
 			}
@@ -5359,7 +5359,6 @@ class PlayState extends MusicBeatState{
 				if (Assets.exists(Paths.hx("data/arrow types/" + noteType))) {
 					var script = new HScript(Paths.hx("data/arrow types/" + noteType));
 					script.start();
-		
 					scripts.push(script);
 				}
 		}
@@ -5381,6 +5380,10 @@ class PlayState extends MusicBeatState{
 			}
 			return name;
 		}
+	public inline function addBehind(behind:FlxBasic, obj:FlxBasic)
+	{
+		insert(members.indexOf(behind), obj);
+	}
 }
 
 enum Execute_On {

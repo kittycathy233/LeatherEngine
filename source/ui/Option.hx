@@ -315,15 +315,15 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 			Alphabet_Text.alpha = 1;
 			Mod_Icon.alpha = 1;
 			if (FlxG.keys.justPressed.ENTER) {
+				Options.setData(Option_Value, "curMod");
 				Mod_Enabled = !Mod_Enabled;
 				@:privateAccess
-				if (Std.isOfType(FlxG.state, TitleState)) TitleState.initialized = false;
+				if (FlxG.state is TitleState) TitleState.initialized = false;
 				if (FlxG.sound.music != null) {
 					FlxG.sound.music.fadeOut(0.25, 0);
 					FlxG.sound.music.persist = false;
 				}
 				FlxG.sound.play(Paths.sound('confirmMenu'), 1);
-				Options.setData(Option_Value, "curMod");
 				FlxG.resetState();
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
@@ -417,9 +417,9 @@ class DisplayFontOption extends StringSaveOption {
 }
 
 /**
- * Very simple option that renders a webpage when selected
+ * Very simple option that opens a webpage when selected
  */
- class WebViewOption extends Option {
+ class OpenUrlOption extends Option {
 	// OPTIONS //
 	public var Title:String;
 	public var Url:String;
@@ -434,29 +434,8 @@ class DisplayFontOption extends StringSaveOption {
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-
-		
-		#if windows
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-			sys.thread.Thread.createWithEventLoop(() ->
-		{
-            var w:webview.WebView = new webview.WebView(#if debug true #else false #end);
-
-			w.setTitle(Title);
-			w.setSize(FlxG.width, FlxG.height, NONE);
-			w.navigate(Url);
-
-			Application.current.onExit.add((_) ->
-			{
-				w.terminate();
-				w.destroy();
-			});
-			w.run();
-		});  
-		#else
-			if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
-				CoolUtil.openURL(Url);
-			}
-		#end 
+		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
+			CoolUtil.openURL(Url);
+		}
 	}
 }
