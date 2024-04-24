@@ -114,6 +114,7 @@ class HScript
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
 		interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+		interp.variables.set("FlxText", modding.helpers.FlxTextFix);
 		interp.variables.set('FlxColor', modding.helpers.FlxColorHelper);
 		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
 		interp.variables.set("Polymod", polymod.Polymod);
@@ -128,6 +129,7 @@ class HScript
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		interp.variables.set('Json', haxe.Json);
 		interp.variables.set("FlxEmitter", flixel.effects.particles.FlxEmitter);
+		interp.variables.set("FlxSpriteGroup", flixel.effects.particles.FlxEmitter);
 
 		// game classes
 		interp.variables.set("PlayState", states.PlayState);
@@ -143,26 +145,6 @@ class HScript
 		#if discord_rpc
 		interp.variables.set('DiscordClient', utilities.Discord.DiscordClient);
 		#end
-		#if THREE_D_ALLOWED
-		interp.variables.set('Model', models.Model);
-		interp.variables.set('FlxView3D', flx3D.FlxView3D);
-        interp.variables.set('Mesh', away3d.entities.Mesh);
-        interp.variables.set('ControllerBase', away3d.controllers.ControllerBase);
-        interp.variables.set('FirstPersonController', away3d.controllers.FirstPersonController);
-        interp.variables.set('HoverController', away3d.controllers.HoverController);
-		interp.variables.set('MotionBlurFilter3D', away3d.filters.MotionBlurFilter3D);
-		interp.variables.set('BloomFilter3D', away3d.filters.BloomFilter3D);
-		interp.variables.set('DepthOfFieldFilter3D', away3d.filters.DepthOfFieldFilter3D);
-		interp.variables.set('TorusGeometry', away3d.primitives.TorusGeometry);
-		interp.variables.set('CubeGeometry', away3d.primitives.CubeGeometry);
-		interp.variables.set('ObjectContainer3D', away3d.containers.ObjectContainer3D);
-		interp.variables.set('ControllerBase', away3d.controllers.ControllerBase);
-		interp.variables.set('FirstPersonController', away3d.controllers.FirstPersonController);
-		interp.variables.set('HoverController', away3d.controllers.HoverController);
-		interp.variables.set('Mesh', away3d.entities.Mesh);
-		interp.variables.set('Scene3D', models.Scene3D);
-		#end
-
 		//modchart tools stuff
 		#if MODCHARTING_TOOLS
 		if (FlxG.state == PlayState.instance){

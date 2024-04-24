@@ -1155,7 +1155,7 @@ class PlayState extends MusicBeatState{
 
 		splash_group.add(cache_splash);
 
-		#if (MODCHARTING_TOOLS && linc_luajit)
+		#if (MODCHARTING_TOOLS)
 		if (SONG.modchartingTools || Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart")) || Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase()  + "/modchart" + storyDifficultyStr.toLowerCase())))
 		{
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
@@ -1363,6 +1363,10 @@ class PlayState extends MusicBeatState{
 				cutscene = CutsceneUtil.loadFromJson(SONG.cutscene);
 
 				switch (cutscene.type.toLowerCase()) {
+					case "script":
+						//nothing yet lol
+						trace("scripted cutscenes are not yet implimented!", WARNING);
+						startCountdown();
 					case "video":
 						startVideo(cutscene.videoPath, cutscene.videoExt, false);
 

@@ -42,8 +42,6 @@
 	<!-- LEATHER ENGINE CUSTOMIZATION -->
 	<define name="VIDEOS_ALLOWED" if="windows || mac || android" />
 	<define name="LUA_ALLOWED" if="desktop" />
-	<define name="SCREENSHOTS_ALLOWED" if="desktop"/>
-	<define name="THREE_D_ALLOWED"/>
 
 
 	<assets path="mods" embed="false" exclude="*.ogg" if="web" />
@@ -108,7 +106,6 @@
 	<haxelib name="flixelTextureAtlas" />
 	<haxelib name="discord_rpc" if="desktop" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" version="git" url="https://github.com/Leather128/linc_luajit.git" />
-	<haxelib name="away3d" if="THREE_D_ALLOWED" version="git" url="https://github.com/FNF-CNE-Devs/away3d" />
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="HxWebView" if="windows" />
 	<haxelib name="hxNoise"/>
@@ -150,11 +147,7 @@
 	<haxeflag name="--macro" value="include('flixel.tweens')" />
 	<haxeflag name="--macro" value="include('flixel.ui')" />
 	<haxeflag name="--macro" value="include('flixel.util')" />
-	<haxeflag name="--macro" value="include('flx3D')" if="THREE_D_ALLOWED" />
-	<haxeflag name="--macro" value="include('away3d')" if="THREE_D_ALLOWED" />
 	<haxeflag name="--macro" value="include('hxvlc')" if="VIDEOS_ALLOWED" />
-	<haxeflag name="--macro" value="include('sys')" if="sys" />
-
 
 
 	<define name="hscriptPos" />
