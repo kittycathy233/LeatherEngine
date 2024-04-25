@@ -508,6 +508,11 @@ class PlayState extends MusicBeatState{
 	 */
 	public var usedLuaCameras:Bool = false;
 
+	/**
+	 * Is the player charting?
+	 */
+	public static var chartingMode:Bool = false;
+
 	public function new(?_replay:Replay) {
 		super();
 
@@ -665,7 +670,7 @@ class PlayState extends MusicBeatState{
 		}
 
 		// check for invalid settings
-		if (Options.getData("botplay") || Options.getData("noDeath") || characterPlayingAs != 0 || playingReplay)
+		if (Options.getData("botplay") || Options.getData("noDeath") || characterPlayingAs != 0 || playingReplay || PlayState.chartingMode)
 			SONG.validScore = false;
 
 		// make things as accurate to the og replay as we can
@@ -2957,6 +2962,8 @@ class PlayState extends MusicBeatState{
 		if (!Options.getData("disableDebugMenus")) {
 			if (FlxG.keys.justPressed.SEVEN && !switchedStates && !inCutscene) {
 				closeLua();
+
+				PlayState.chartingMode = true;
 
 				switchedStates = true;
 

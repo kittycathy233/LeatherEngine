@@ -1404,6 +1404,7 @@ class ChartingState extends MusicBeatState {
 				PlayState.playCutscenes = true;
 				PlayState.loadChartEvents = false;
 				LoadingState.loadAndSwitchState(new PlayState());
+				PlayState.chartingMode = true;
 			}
 
 			if (FlxG.keys.justPressed.E)
