@@ -217,9 +217,17 @@ class PauseSubState extends MusicBeatSubstate {
 								PlayState.instance.clearNotesBefore(curTime);
 								PlayState.instance.setSongTime(curTime);
 							}
+							pauseMusic.stop();
+							pauseMusic.destroy();
+							FlxG.sound.list.remove(pauseMusic);
+							FlxG.cameras.remove(pauseCamera);
 							close();
 						};
 				case "options":{
+					pauseMusic.stop();
+					pauseMusic.destroy();
+					FlxG.sound.list.remove(pauseMusic);
+					FlxG.cameras.remove(pauseCamera);
 					FlxG.switchState(new PauseOptions());
 					PlayState.chartingMode = false;
 				}
