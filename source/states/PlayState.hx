@@ -5093,7 +5093,7 @@ class PlayState extends MusicBeatState{
 					if(note != null){
 						note.reloadNotes(note.strumTime, 
 						note.noteData, 
-						null, 
+						note.prevNote, 
 						note.isSustainNote, 
 						note.character, 
 						note.arrow_Type, 
@@ -5232,12 +5232,39 @@ class PlayState extends MusicBeatState{
 							generateStaticArrows(0, true, false);
 						}
 					}
-				for (note in unspawnNotes) {
-					note.reloadNotes(note.strumTime, note.noteData, note.prevNote, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
-				}
-				for (note in notes.members) {
-					note.reloadNotes(note.strumTime, note.noteData, null, note.isSustainNote, note.character, note.arrow_Type, PlayState.SONG, note.characters, note.checkPlayerMustPress(), note.inEditor);
-				}
+					for (note in notes.members)
+						if(note != null){
+							note.reloadNotes(note.strumTime, 
+							note.noteData, 
+							note.prevNote, 
+							note.isSustainNote, 
+							note.character, 
+							note.arrow_Type, 
+							PlayState.SONG, 
+							note.characters, 
+							note.checkPlayerMustPress(), 
+							note.inEditor);
+							if(!note.affectedbycolor){
+								note.shader = null;
+							}
+						}
+					for(note in unspawnNotes){
+						if(note != null){
+							note.reloadNotes(note.strumTime, 
+							note.noteData, 
+							note.prevNote, 
+							note.isSustainNote, 
+							note.character, 
+							note.arrow_Type, 
+							PlayState.SONG, 
+							note.characters, 
+							note.checkPlayerMustPress(), 
+							note.inEditor);
+							if(!note.affectedbycolor){
+								note.shader = null;
+							}
+						}
+					}
 		}
 
 		//                            name       pos      param 1   param 2
@@ -5297,7 +5324,7 @@ class PlayState extends MusicBeatState{
 			if (Options.getData("charsAndBGs")) {
 				if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
 					#if sys
-					var tmr:Dynamic = Sys.time();
+					var tmr:Float = Sys.time();
 					#end
 					var funnyCharacter:Character;
 					trace('Caching ${event[3]}');
