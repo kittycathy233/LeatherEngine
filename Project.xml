@@ -121,6 +121,7 @@
 	<haxedef name="message.reporting" value="pretty" />
 
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+	<haxedef name="FLX_NO_PONT_POOL" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 

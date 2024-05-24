@@ -105,7 +105,7 @@ class Note extends FlxSkewedSprite {
 		reloadNotes(strumTime,noteData,prevNote,sustainNote,character,arrowType,song,characters,mustPress,inEditor);
 	}
 
-	public function reloadNotes(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
+	public inline function reloadNotes(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 		?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
 
 			if (prevNote == null)
@@ -279,7 +279,7 @@ class Note extends FlxSkewedSprite {
 
 	public inline function checkPlayerMustPress() //flips must press for opponent mode
 	{
-			return (PlayState.characterPlayingAs == 1 ? !mustPress : mustPress);
+		return (/*PlayState.characterPlayingAs == 1 ? !mustPress :*/ mustPress);
 	}
 
 	public function calculateCanBeHit() {
