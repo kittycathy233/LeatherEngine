@@ -49,7 +49,7 @@ function createPost(){
     character.x += 20;
     character.y += 5;
 }
-function update() {
+function updatePost(elapsed:Float) {
     // Set the visibility of ABot to match Nene's.
     abot.visible = character.visible;
     pupil.visible = character.visible;
