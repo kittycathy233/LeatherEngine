@@ -171,7 +171,9 @@ class CoolUtil {
 	 * @param path 
 	 */
 	public static inline function setWindowIcon(path:String){
+		#if desktop
 		Application.current.window.setIcon(Image.fromFile(path));
+		#end
 	}
 
 	/**

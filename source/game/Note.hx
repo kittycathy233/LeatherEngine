@@ -1,5 +1,6 @@
 package game;
 
+import openfl.utils.Assets;
 import flixel.util.FlxColor;
 import utilities.Options;
 import shaders.NoteColors;
@@ -96,6 +97,8 @@ class Note extends FlxSkewedSprite {
 	 */
 	public var beats:Array<Int> = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192];
 
+	public var canGlow:Bool = Options.getData("playerStrumsGlowWhenCanBeHit");
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 			?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
 		super();
@@ -129,8 +132,14 @@ class Note extends FlxSkewedSprite {
 			// MAKE SURE ITS DEFINITELY OFF SCREEN?
 			y = -2000;
 	
-			if (PlayState.instance.types.contains(arrow_Type))
-				frames = Paths.getSparrowAtlas('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared');
+			if (PlayState.instance.types.contains(arrow_Type)){
+				if(Assets.exists(Paths.image('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared'))){
+					frames = Paths.getSparrowAtlas('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared');
+				}
+				else{
+					frames = Paths.getSparrowAtlas('ui skins/default/arrows/default', 'shared');
+				}
+			}
 			else
 				frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
 	
@@ -263,7 +272,7 @@ class Note extends FlxSkewedSprite {
 					alpha = 0.3;
 			}
 		}
-		if (canBeHit && Options.getData("playerStrumsGlowWhenCanBeHit") && !isSustainNote && !inEditor && animation.curAnim.name.contains("default") && animation != null){
+		if (canBeHit && canGlow && !isSustainNote && !inEditor && animation.curAnim.name.contains("default") && animation != null){
 			animation.play("glow");
 		}
 	}

@@ -197,7 +197,9 @@ class ModchartUtilities {
 	}
 
 	public function new(path:String) {
-
+		lua = LuaL.newstate();
+		LuaL.openlibs(lua);
+		
 		instance = this;
 
 		oldMultiplier = PlayState.songMultiplier;
@@ -218,9 +220,6 @@ class ModchartUtilities {
 		lua_Sounds.set("Inst", FlxG.sound.music);
 		@:privateAccess
 		lua_Sounds.set("Voices", PlayState.instance.vocals);
-
-		lua = LuaL.newstate();
-		LuaL.openlibs(lua);
 		
 
 		trace('Loading script at path \'${path}\'', DEBUG);
@@ -1433,21 +1432,6 @@ class ModchartUtilities {
 			return PlayState.instance.notes.members.length != 0;
 		});
 
-		setLuaFunction("setActorX", function(x:Float, id:String) {
-			if(getCharacterByName(id) != null)
-				{
-					var character = getCharacterByName(id);
-					if (character.otherCharacters != null && character.otherCharacters.length > 0)
-					{
-						character.otherCharacters[0].x = x;
-						return;
-					}
-						
-				}
-				if(getActorByName(id) != null)
-					getActorByName(id).x = x;
-		});
-
 		setLuaFunction("setActorPos", function(x:Float, y:Float, id:String) {
 			if(getCharacterByName(id) != null)
 				{
@@ -1482,6 +1466,21 @@ class ModchartUtilities {
 			if(getActorByName(id) != null){
 				actor.scrollFactor.set(x,y);
 			}
+		});
+
+		setLuaFunction("setActorX", function(x:Float, id:String) {
+			if(getCharacterByName(id) != null)
+				{
+					var character = getCharacterByName(id);
+					if (character.otherCharacters != null && character.otherCharacters.length > 0)
+					{
+						character.otherCharacters[0].x = x;
+						return;
+					}
+						
+				}
+				if(getActorByName(id) != null)
+					getActorByName(id).x = x;
 		});
 
 		setLuaFunction("getOriginalCharX", function(character:Int) {
@@ -3094,7 +3093,6 @@ class ModchartUtilities {
 		setLuaFunction("fastCos", function(n:Float) {
             return FlxMath.fastCos(n);
 		});
-
 
 		setLuaFunction("fastSin", function(n:Float) {
             return FlxMath.fastSin(n);

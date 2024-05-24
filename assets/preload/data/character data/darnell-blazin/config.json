@@ -1,0 +1,18 @@
+{
+    "defaultFlipX": false,
+    "dancesLeftAndRight": false,
+    "imagePath": "darnellBlazin",
+    "barColor": [115, 94, 176],
+    "positionOffset": [200, 100],
+    "singDuration": 999.0,
+    "healthIcon": "darnell",
+    "animations": [
+      {
+        "name": "idle",
+        "animation_name": "Idle",
+        "fps": 24,
+        "looped": true
+      }
+    ]
+  }
+  

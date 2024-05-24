@@ -1,5 +1,6 @@
 package game;
 
+import flixel.FlxState;
 import shaders.NoteColors;
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
@@ -13,6 +14,7 @@ import states.PlayState;
 import flixel.FlxSprite;
 import modding.CharacterConfig;
 import flixel.util.FlxDestroyUtil;
+import flxanimate.FlxAnimate;
 
 using StringTools;
 
@@ -145,7 +147,7 @@ class Character extends FlxSprite {
 			visible = false;
 	}
 
-	function loadNamedConfiguration(characterName:String) {
+	public function loadNamedConfiguration(characterName:String) {
 		if (!Assets.exists(Paths.json("character data/" + characterName + "/config"))) {
 			characterName = "bf";
 			curCharacter = characterName;
@@ -155,8 +157,9 @@ class Character extends FlxSprite {
 				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
 	
 				script.interp.variables.set("character", this);
-	
 				script.call("createCharacter", [curCharacter]);
+				script.start();
+				PlayState.instance.scripts.push(script);
 			}
 
 		if (Options.getData("optimizedChars") && Assets.exists(Paths.json("character data/optimized_" + characterName + "/config")))
@@ -370,8 +373,6 @@ class Character extends FlxSprite {
 					playAnim('danceRight');
 			}
 		}
-		if(script != null)
-			script.update(elapsed);
 		super.update(elapsed);
 	}
 
@@ -445,7 +446,7 @@ class Character extends FlxSprite {
 			offset.set(0, 0);
 	}
 
-	public function addOffset(name:String, x:Float = 0, y:Float = 0) {
+	public inline function addOffset(name:String, x:Float = 0, y:Float = 0) {
 		animOffsets.set(name, [(isPlayer && offsetsFlipWhenPlayer) || (!isPlayer && offsetsFlipWhenEnemy) ? -x : x, y]);
 	}
 	public var followMainCharacter:Bool = false;

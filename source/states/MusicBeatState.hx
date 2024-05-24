@@ -89,9 +89,6 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			lime_cache.audio.remove(key);
 		};
 
-		#if cpp
-		cpp.vm.Gc.enable(true);
-		#end
 		// Run built-in garbage collector
 		#if sys
 		openfl.system.System.gc();

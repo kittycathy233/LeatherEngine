@@ -114,6 +114,7 @@ class HScript
 		interp.variables.set("FlxMath", flixel.math.FlxMath);
 		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
 		interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+		interp.variables.set("FlxTweenUtil", modding.helpers.FlxTweenUtil);
 		interp.variables.set("FlxText", modding.helpers.FlxTextFix);
 		interp.variables.set('FlxColor', modding.helpers.FlxColorHelper);
 		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
@@ -128,8 +129,9 @@ class HScript
 		interp.variables.set("FlxShader", flixel.system.FlxAssets.FlxShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		interp.variables.set('Json', haxe.Json);
-		interp.variables.set("FlxEmitter", flixel.effects.particles.FlxEmitter);
-		interp.variables.set("FlxSpriteGroup", flixel.effects.particles.FlxEmitter);
+		interp.variables.set("FlxSpriteGroup", flixel.group.FlxSpriteGroup);
+		interp.variables.set("FlxAnimate", flxanimate.FlxAnimate);
+		interp.variables.set("FlxAtlasSprite", game.graphics.FlxAtlasSprite);
 
 		// game classes
 		interp.variables.set("PlayState", states.PlayState);
@@ -218,6 +220,7 @@ class HScript
 			states.PlayState.instance.stage.foregroundSprites.clear();
 			states.PlayState.instance.stage.clear();
 		});
+
 	}
 }
 interface IHScriptable{

@@ -71,6 +71,18 @@
       "animation_name": "BF idle shaking",
       "fps": 24,
       "looped": true
+    },
+    {
+      "name": "dodge",
+      "animation_name": "boyfriend dodge",
+      "fps": 24,
+      "looped": false
+    },
+    {
+      "name": "hit",
+      "animation_name": "BF hit",
+      "fps": 24,
+      "looped": false
     }
   ]
 }

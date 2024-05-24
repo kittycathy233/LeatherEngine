@@ -4,6 +4,7 @@
   "imagePath": "picoSpeaker",
   "barColor": [205, 229, 112],
   "healthIcon": "pico",
+  "deathCharacterName": "pico-dead",
   "positionOffset": [235, 5],
   "noteColors": [
     [[253, 105, 34]],

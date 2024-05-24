@@ -158,7 +158,7 @@ class ChartingState extends MusicBeatState {
 		lilBf = new FlxSprite(185, 550);
 		lilBf.frames = Paths.getSparrowAtlas("charter/lil_bf", "shared");
 		lilBf.animation.addByPrefix("idle", "idle", 12, true);
-		lilBf.animation.play("idle");
+		lilBf.animation.play("idle", true);
 		lilBf.animation.finishCallback = function(name:String){
 			lilBf.animation.play(name, true, false, lilBf.animation.getByName(name).numFrames - 2);
 		}
@@ -168,7 +168,7 @@ class ChartingState extends MusicBeatState {
 		lilOpp = new FlxSprite(30, 545);
 		lilOpp.frames = Paths.getSparrowAtlas("charter/lil_opp", "shared");
 		lilOpp.animation.addByPrefix("idle", "idle", 12, true);
-		lilOpp.animation.play("idle");
+		lilOpp.animation.play("idle", true);
 		lilOpp.animation.finishCallback = function(name:String){
 			lilOpp.animation.play(name, true, false, lilOpp.animation.getByName(name).numFrames - 2);
 		}
@@ -1441,8 +1441,8 @@ class ChartingState extends MusicBeatState {
 			var control = FlxG.keys.pressed.CONTROL;
 
 			if (FlxG.keys.justPressed.SPACE) {
-				lilBf.animation.play("idle");
-				lilOpp.animation.play("idle");
+				lilBf.animation.play("idle", true);
+				lilOpp.animation.play("idle", true);
 				if (FlxG.sound.music.playing) {
 					FlxG.sound.music.pause();
 					vocals.pause();
@@ -1460,8 +1460,8 @@ class ChartingState extends MusicBeatState {
 			}
 
 			if (FlxG.mouse.wheel != 0 && !control) {
-				lilBf.animation.play("idle");
-				lilOpp.animation.play("idle");
+				lilBf.animation.play("idle", true);
+				lilOpp.animation.play("idle", true);
 				FlxG.sound.music.pause();
 				vocals.pause();
 
@@ -1479,8 +1479,8 @@ class ChartingState extends MusicBeatState {
 
 			if (!FlxG.keys.pressed.SHIFT) {
 				if (FlxG.keys.pressed.W || FlxG.keys.pressed.S) {
-					lilBf.animation.play("idle");
-					lilOpp.animation.play("idle");
+					lilBf.animation.play("idle", true);
+					lilOpp.animation.play("idle", true);
 					FlxG.sound.music.pause();
 					vocals.pause();
 
@@ -1495,8 +1495,8 @@ class ChartingState extends MusicBeatState {
 				}
 			} else {
 				if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
-					lilBf.animation.play("idle");
-					lilOpp.animation.play("idle");
+					lilBf.animation.play("idle", true);
+					lilOpp.animation.play("idle", true);
 					FlxG.sound.music.pause();
 					vocals.pause();
 
@@ -1611,8 +1611,8 @@ class ChartingState extends MusicBeatState {
 		FlxG.sound.music.pause();
 		vocals.pause();
 
-		lilBf.animation.play("idle");
-		lilOpp.animation.play("idle");
+		lilBf.animation.play("idle", true);
+		lilOpp.animation.play("idle", true);
 
 		// Basically old shit from changeSection???
 		FlxG.sound.music.time = sectionStartTime();
@@ -1641,8 +1641,8 @@ class ChartingState extends MusicBeatState {
 				FlxG.sound.music.pause();
 				vocals.pause();
 
-				lilBf.animation.play("idle");
-				lilOpp.animation.play("idle");
+				lilBf.animation.play("idle", true);
+				lilOpp.animation.play("idle", true);
 
 				FlxG.sound.music.time = sectionStartTime();
 				vocals.time = FlxG.sound.music.time;
@@ -1652,8 +1652,8 @@ class ChartingState extends MusicBeatState {
 			updateGrid();
 			updateSectionUI();
 		}
-		lilBf.animation.play("idle");
-		lilOpp.animation.play("idle");
+		lilBf.animation.play("idle", true);
+		lilOpp.animation.play("idle", true);
 	}
 
 	static var doFunnyNumbers:Bool = true;

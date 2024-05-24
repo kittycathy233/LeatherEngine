@@ -28,8 +28,6 @@ class StageGroup extends FlxGroup {
 	public var stage:String = "stage";
 	public var camZoom:Float = 1.05;
 
-	private var goodElapse:Float = 0;
-
 	public var player_1_Point:FlxPoint = new FlxPoint(1000, 800);
 	public var player_2_Point:FlxPoint = new FlxPoint(300, 800);
 	public var gf_Point:FlxPoint = new FlxPoint(600, 750);
@@ -255,13 +253,6 @@ class StageGroup extends FlxGroup {
 				// CUSTOM SHIT
 				default:
 					{
-						if (Assets.exists(Paths.hx('data/stage data/${stage}'))) {
-	
-							stage_script = new HScript(Paths.hx('data/stage data/${stage}'));
-							stage_script.start();
-	
-							PlayState.instance.scripts.push(stage_script);
-						}
 						if (stage_Data != null) {
 							camZoom = stage_Data.camera_Zoom;
 
@@ -347,6 +338,15 @@ class StageGroup extends FlxGroup {
 								} else
 									add(Sprite);
 							}
+						}
+					if (Assets.exists(Paths.hx('data/stage data/${stage}'))) {
+	
+						stage_script = new HScript(Paths.hx('data/stage data/${stage}'));
+						for (object in stage_Objects){
+							stage_script.interp.variables.set(object[0], object[1]);
+						}
+						stage_script.start();
+						PlayState.instance.scripts.push(stage_script);
 					}
 				}
 			}
@@ -460,51 +460,6 @@ class StageGroup extends FlxGroup {
 		}
 	}
 
-	override function update(elapsed:Float) {
-		super.update(elapsed);
-
-		goodElapse = elapsed;
-	}
-
-	// philly
-
-	function updateTrainPos() {
-		if (trainSound.time >= 4700) {
-			startedMoving = true;
-			PlayState.gf.playAnim('hairBlow');
-		}
-
-		if (startedMoving) {
-			phillyTrain.x -= 400;
-
-			if (phillyTrain.x < -2000 && !trainFinishing) {
-				phillyTrain.x = -1150;
-				trainCars --;
-
-				if (trainCars <= 0)
-					trainFinishing = true;
-			}
-
-			if (phillyTrain.x < -4000 && trainFinishing)
-				trainReset();
-		}
-	}
-
-	function trainReset() {
-		PlayState.gf.playAnim('hairFall');
-
-		phillyTrain.x = FlxG.width + 200;
-		trainMoving = false;
-		trainCars = 8;
-		trainFinishing = false;
-		startedMoving = false;
-	}
-
-	function trainStart():Void {
-		trainMoving = true;
-		if (!trainSound.playing)
-			trainSound.play(true);
-	}
 
 	// LUA SHIT LOL
 
@@ -518,6 +473,23 @@ class StageGroup extends FlxGroup {
 
 		super.destroy();
 	}
+
+	/**
+	 * Returns a named sprite from a string, if it exists. 
+	 * Otherwise, returns `null`.
+	 * @param prop 
+	 * @return FlxSprite
+	 */
+	function getNamedProp(prop:String):FlxSprite{
+		for (object in stage_Objects){
+			if(object[0] == prop){
+				return object[1];
+			}
+		}
+		return null;
+	}
+
+
 }
 
 typedef StageData = {

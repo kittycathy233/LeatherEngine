@@ -9,7 +9,7 @@ import flixel.ui.FlxButton;
 import openfl.events.IOErrorEvent;
 import openfl.events.Event;
 import openfl.net.FileReference;
-import ui.FlxUIDropDownMenuCustom;
+import ui.FlxScrollableDropDownMenu;
 import states.MusicBeatState;
 import states.MainMenuState;
 import states.PlayState;
@@ -56,9 +56,9 @@ class CharacterCreator extends MusicBeatState {
 	var curCharList:Array<String>;
 
 	var offset_Button:FlxButton;
-	var charDropDown:FlxUIDropDownMenuCustom;
-	var modDropDown:FlxUIDropDownMenuCustom;
-	var ghostAnimDropDown:FlxUIDropDownMenuCustom;
+	var charDropDown:FlxScrollableDropDownMenu;
+	var modDropDown:FlxScrollableDropDownMenu;
+	var ghostAnimDropDown:FlxScrollableDropDownMenu;
 
 	var gridBG:FlxSprite;
 
@@ -75,7 +75,7 @@ class CharacterCreator extends MusicBeatState {
 	public var stage_Name:String = 'stage';
 	public var stageData:StageData;
 	
-	private var stage_Dropdown:FlxUIDropDownMenuCustom;
+	private var stage_Dropdown:FlxScrollableDropDownMenu;
 	private var objects:Array<Array<Dynamic>> = [];
 
 	public static var lastState:String = "OptionsMenu";
@@ -190,7 +190,7 @@ class CharacterCreator extends MusicBeatState {
 
 		curCharList = characters.get("default");
 
-		charDropDown = new FlxUIDropDownMenuCustom(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
+		charDropDown = new FlxScrollableDropDownMenu(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
 			remove(char);
 			char.kill();
 			char.destroy();
@@ -225,7 +225,7 @@ class CharacterCreator extends MusicBeatState {
 			remove(ghostAnimDropDown);
 					ghostAnimDropDown.kill();
 					ghostAnimDropDown.destroy();
-					ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+					ghostAnimDropDown = new FlxScrollableDropDownMenu(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
 					function(animName:String) {
 
 						charGhost.playAnim(animList[Std.parseInt(animName)], true);
@@ -251,7 +251,7 @@ class CharacterCreator extends MusicBeatState {
 		charDropDown.cameras = [camHUD];
 		add(charDropDown);
 
-		modDropDown = new FlxUIDropDownMenuCustom(charDropDown.x + charDropDown.width + 1, charDropDown.y,
+		modDropDown = new FlxScrollableDropDownMenu(charDropDown.x + charDropDown.width + 1, charDropDown.y,
 			FlxUIDropDownMenu.makeStrIdLabelArray(modListLmao, true), function(modID:String) {
 				var mod:String = modListLmao[Std.parseInt(modID)];
 
@@ -294,7 +294,7 @@ class CharacterCreator extends MusicBeatState {
 					remove(ghostAnimDropDown);
 					ghostAnimDropDown.kill();
 					ghostAnimDropDown.destroy();
-					ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+					ghostAnimDropDown = new FlxScrollableDropDownMenu(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
 					function(animName:String) {
 
 						charGhost.playAnim(animList[Std.parseInt(animName)], true);
@@ -322,7 +322,7 @@ class CharacterCreator extends MusicBeatState {
 		add(modDropDown);
 
 
-		stage_Dropdown = new FlxUIDropDownMenuCustom(modDropDown.x + modDropDown.width + 1, modDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
+		stage_Dropdown = new FlxScrollableDropDownMenu(modDropDown.x + modDropDown.width + 1, modDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
 		function(stageName:String) {
 
 			
@@ -363,7 +363,7 @@ class CharacterCreator extends MusicBeatState {
 		stage_Dropdown.cameras = [camHUD];
 		add(stage_Dropdown);
 
-		ghostAnimDropDown = new FlxUIDropDownMenuCustom(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
+		ghostAnimDropDown = new FlxScrollableDropDownMenu(stage_Dropdown.x + stage_Dropdown.width + 1, stage_Dropdown.y, FlxUIDropDownMenu.makeStrIdLabelArray(animList, true),
 		function(animName:String) {
 
 			charGhost.playAnim(animList[Std.parseInt(animName)], true);

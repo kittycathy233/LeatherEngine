@@ -41,17 +41,13 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
-          haxelib install systools
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib install hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib install HxWebView
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
           haxelib list
@@ -97,14 +93,12 @@ jobs:
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git openfl https://github.com/openfl/openfl
-          haxelib install HxWebView
-          
+          haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib install flixel-screenshot-plugin
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -141,19 +135,14 @@ jobs:
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-          haxelib install HxWebView
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib install hxvlc
-          haxelib install openfl
-          
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
-          haxelib install systools
-          haxelib install flixel-screenshot-plugin
+          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib install hxcpp-debug-server
           haxelib list
         shell: cmd
@@ -188,7 +177,6 @@ jobs:
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib git away3d https://github.com/FNF-CNE-Devs/away3d
           haxelib install flixel-ui
           haxelib install flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
@@ -200,8 +188,8 @@ jobs:
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
-          haxelib install flixel-screenshot-plugin
+          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
@@ -217,3 +205,51 @@ jobs:
         with:
           name: macBuild
           path: export/release/macos/bin
+
+  buildHashlink:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@main
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+      # Runs a set of commands using the runners shell
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
+          haxelib install lime
+          haxelib install openfl
+          haxelib --never install flixel
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          haxelib install flixel-tools
+          haxelib install flixel-ui
+          haxelib install flixel-addons
+          haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+          haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
+          haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
+          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git hxNoise https://github.com/whuop/hxNoise
+          haxelib install hxcpp-debug-server
+          haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
+          haxelib list
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+      - name: Compile Linux
+        run: |
+          cd $(haxelib libpath hxcpp)/tools/hxcpp
+          haxe compile.hxml
+          cd -
+          haxelib --always run lime build Project.xml hl --app-version="4.0.0-${{ github.run_id}}"
+      - name: Publish Hashlink Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: hashlinkBuild
+          path: "export/release/hl/bin"
+

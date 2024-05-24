@@ -5,6 +5,7 @@
   "barColor": [205, 229, 112],
   "offsetsFlipWhenEnemy": false,
   "offsetsFlipWhenPlayer": true,
+  "deathCharacterName": "pico-dead",
   "cameraOffset": [-100, 0],
   "noteColors": [
     [[253, 105, 34]],

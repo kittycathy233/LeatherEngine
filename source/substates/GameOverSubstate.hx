@@ -19,20 +19,21 @@ import states.LoadingState;
 
 class GameOverSubstate extends MusicBeatSubstate {
 	
-	var bf:Character;
-	var camFollow:FlxObject;
+	public var bf:Character;
+	public var camFollow:FlxObject;
+	public static var instance:GameOverSubstate = null;
 
 	public function new(x:Float, y:Float) {
+		instance = this;
 		super();
-
 		PlayState.playCutscenes = true;
 
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
 		if (Options.getData("quickRestart")) {
+			PlayState.instance.call("onRetry", []);
 			PlayState.instance.closeLua();
-
 			PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 			FlxG.resetState();
 		}
@@ -106,6 +107,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 				soundPath = Paths.music("deaths/" + bf.curCharacter + "/loop");
 
 			FlxG.sound.playMusic(soundPath);
+			PlayState.instance.call("onDeathLoop", []);
 		}
 
 		if (FlxG.sound.music.playing) {
@@ -119,6 +121,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 
 	function endBullshit():Void {
 		if (!isEnding) {
+			PlayState.instance.call("onRetry", []);
 			isEnding = true;
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
@@ -129,7 +132,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 				soundPath = Paths.music("deaths/" + bf.curCharacter + "/retry");
 
 			FlxG.sound.play(soundPath);
-
 			new FlxTimer().start(0.7, function(tmr:FlxTimer) {
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function() {
 					PlayState.instance.closeLua();
@@ -144,8 +146,9 @@ class GameOverSubstate extends MusicBeatSubstate {
 							FlxG.switchState(new StoryMenuState());
 						else
 							FlxG.switchState(new FreeplayState());
-					} else
+					} else{
 						FlxG.resetState();
+					}
 
 					PlayState.playingReplay = false;
 				});

@@ -157,6 +157,7 @@ class PauseSubState extends MusicBeatSubstate {
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
 					FlxG.cameras.remove(pauseCamera);
+					PlayState.instance.call("onResume", []);
 					close();
 				case "restart song":
 					menu = "restart";

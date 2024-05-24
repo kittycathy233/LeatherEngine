@@ -279,31 +279,31 @@
   "animations": [
     {
       "name": "idle",
-      "animation_name": "Dad idle dance",
+      "animation_name": "idle",
       "fps": 24,
       "looped": false
     },
     {
       "name": "singLEFT",
-      "animation_name": "Dad Sing Note LEFT",
+      "animation_name": "singLEFT",
       "fps": 24,
       "looped": false
     },
     {
       "name": "singDOWN",
-      "animation_name": "Dad Sing Note DOWN",
+      "animation_name": "singDOWN",
       "fps": 24,
       "looped": false
     },
     {
       "name": "singUP",
-      "animation_name": "Dad Sing note UP",
+      "animation_name": "singUP",
       "fps": 24,
       "looped": false
     },
     {
       "name": "singRIGHT",
-      "animation_name": "Dad Sing Note RIGHT",
+      "animation_name": "singRIGHT",
       "fps": 24,
       "looped": false
     }

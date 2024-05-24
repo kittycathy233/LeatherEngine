@@ -9,6 +9,8 @@ typedef Cutscene = {
 	var type:String;
 	var cutsceneAfter:Null<String>;
 
+	/*SCRIPTED*/
+	var scriptPath:String;
 	/* VIDEO */
 	var videoPath:String;
 	var videoExt:String;

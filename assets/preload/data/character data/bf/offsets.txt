@@ -9,3 +9,5 @@ singLEFTmiss 12 24
 singDOWNmiss -11 -19
 hey 7 4
 scared -4 0
+hit 0 0
+dodge 0 0

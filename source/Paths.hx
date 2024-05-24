@@ -41,7 +41,7 @@ class Paths {
 	inline static function getLibraryPathForce(file:String, library:String):String
 		return '$library:assets/$library/$file';
 
-	inline static function getPreloadPath(file:String):String
+	inline static public function getPreloadPath(file:String):String
 		return 'assets/$file';
 
 	inline static public function lua(key:String, ?library:String):String
@@ -49,12 +49,6 @@ class Paths {
 
 	inline static public function hx(key:String, ?library:String):String
 		return getPath('$key.hx', TEXT, library);
-
-	inline static public function html(key:String, ?library:String):String
-		return getPath('$key.html', TEXT, library);
-
-	inline static public function css(key:String, ?library:String):String
-		return getPath('$key.css', TEXT, library);
 
 	inline static public function frag(key:String, ?library:String):String
 		return getPath('shaders/$key.frag', TEXT, library);
@@ -100,6 +94,10 @@ class Paths {
 
 	static public function voices(song:String, ?difficulty:String):String {
 		if (difficulty != null) {
+			if(difficulty.toLowerCase() == 'nightmare'){
+				if (Assets.exists('songs:assets/songs/${song.toLowerCase()}/Voices-erect.$SOUND_EXT'))
+					return 'songs:assets/songs/${song.toLowerCase()}/Voices-erect.$SOUND_EXT';
+			}
 			if (Assets.exists('songs:assets/songs/${song.toLowerCase()}/Voices-$difficulty.$SOUND_EXT'))
 				return 'songs:assets/songs/${song.toLowerCase()}/Voices-$difficulty.$SOUND_EXT';
 		}
@@ -109,6 +107,10 @@ class Paths {
 
 	static public function inst(song:String, ?difficulty:String):String {
 		if (difficulty != null) {
+			if(difficulty.toLowerCase() == 'nightmare'){
+				if (Assets.exists('songs:assets/songs/${song.toLowerCase()}/Inst-erect.$SOUND_EXT'))
+					return 'songs:assets/songs/${song.toLowerCase()}/Inst-erect.$SOUND_EXT';
+			}
 			if (Assets.exists('songs:assets/songs/${song.toLowerCase()}/Inst-$difficulty.$SOUND_EXT'))
 				return 'songs:assets/songs/${song.toLowerCase()}/Inst-$difficulty.$SOUND_EXT';
 		}
@@ -118,6 +120,10 @@ class Paths {
 
 	static public function songEvents(song:String, ?difficulty:String):String {
 		if (difficulty != null) {
+			if(difficulty.toLowerCase() == 'nightmare'){
+				if (Assets.exists(Paths.json("song data/" + song.toLowerCase() + '/events-erect')))
+					return Paths.json("song data/" + song.toLowerCase() + '/events-erect');
+			}
 			if (Assets.exists(Paths.json("song data/" + song.toLowerCase() + '/events-${difficulty.toLowerCase()}')))
 				return Paths.json("song data/" + song.toLowerCase() + '/events-${difficulty.toLowerCase()}');
 		}

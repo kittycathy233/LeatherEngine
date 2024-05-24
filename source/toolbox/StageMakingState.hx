@@ -12,7 +12,7 @@ import game.Conductor;
 import flixel.math.FlxMath;
 import states.OptionsMenu;
 import game.Character;
-import ui.FlxUIDropDownMenuCustom;
+import ui.FlxScrollableDropDownMenu;
 import states.MusicBeatState;
 import utilities.CoolUtil;
 import game.StageGroup;
@@ -60,8 +60,8 @@ class StageMakingState extends MusicBeatState {
 
 	/* UI */
 	private var json_Button:FlxButton;
-	private var stage_Dropdown:FlxUIDropDownMenuCustom;
-	private var object_Dropdown:FlxUIDropDownMenuCustom;
+	private var stage_Dropdown:FlxScrollableDropDownMenu;
+	private var object_Dropdown:FlxScrollableDropDownMenu;
 	private var cam_Zoom:FlxText;
 
 	private var stage_Label:FlxText;
@@ -73,7 +73,7 @@ class StageMakingState extends MusicBeatState {
 	private var yStepper:FlxUINumericStepper;
 	private var y_Label:FlxText;
 
-	private var charDropDown:FlxUIDropDownMenuCustom;
+	private var charDropDown:FlxScrollableDropDownMenu;
 
 	private var scaleStepper:FlxUINumericStepper;
 	private var scale_Label:FlxText;
@@ -97,6 +97,7 @@ class StageMakingState extends MusicBeatState {
 	private var camHUD:FlxCamera;
 
 	private var camFollow:FlxObject;
+	
 
 	public function new(selectedStage:String) {
 		super();
@@ -142,7 +143,7 @@ class StageMakingState extends MusicBeatState {
 		stage_Label.scrollFactor.set();
 		stage_Label.cameras = [camHUD];
 
-		stage_Dropdown = new FlxUIDropDownMenuCustom(20, stage_Label.y + stage_Label.height + 4, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
+		stage_Dropdown = new FlxScrollableDropDownMenu(20, stage_Label.y + stage_Label.height + 4, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
 			function(stageName:String) {
 				stage_Name = stages[Std.parseInt(stageName)];
 				reloadStage();
@@ -235,7 +236,7 @@ class StageMakingState extends MusicBeatState {
 			chars.push(charName);
 		}
 
-		charDropDown = new FlxUIDropDownMenuCustom(y_Label.x + y_Label.width + 2, yStepper.y - 2, FlxUIDropDownMenu.makeStrIdLabelArray(chars, true),
+		charDropDown = new FlxScrollableDropDownMenu(y_Label.x + y_Label.width + 2, yStepper.y - 2, FlxUIDropDownMenu.makeStrIdLabelArray(chars, true),
 			function(character:String) {
 				var daChar = chars[Std.parseInt(character)];
 

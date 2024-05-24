@@ -1,8 +1,9 @@
 package;
 
+import states.TitleState;
+import flixel.FlxGame;
 import haxe.Log;
 import ui.logs.Logs;
-import utilities.FunkinGame;
 import flixel.FlxG;
 import lime.app.Application;
 import haxe.io.Path;
@@ -40,8 +41,15 @@ class Main extends Sprite {
 			}
 		}*/
 
+		var game:FlxGame = new FlxGame(0, 0, TitleState, 60, 60, true);
 
-		addChild(new FunkinGame());
+		// FlxG.game._customSoundTray wants just the class, it calls new from
+		// create() in there, which gets called when it's added to stage
+		// which is why it needs to be added before addChild(game) here
+		@:privateAccess
+		game._customSoundTray = ui.FunkinSoundTray;
+
+		addChild(game);
 
 		#if !mobile
 		logsOverlay = new Logs();

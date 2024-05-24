@@ -62,7 +62,8 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		0xFFFF87FF,
 		0xFF8EE8FF,
 		0xFFFF8CCD,
-		0xFFFF9900
+		0xFFFF9900,
+		0x735EB0
 	];
 
 	private var bg:FlxSprite;
@@ -83,6 +84,9 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 
 	#if (cpp && sys)
 	public var loading_songs:Thread;
+	public var stop_loading_songs:Bool = false;
+	#else
+	public var loading_songs:Dynamic;
 	public var stop_loading_songs:Bool = false;
 	#end
 
@@ -584,7 +588,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 					iconArray[i].animation.curAnim.curFrame = 0;
 			}
 
-			if (curSelected >= 0 && (curSelected <= iconArray.length) && iconArray.length != 0 && iconArray != null){
+			if (iconArray != null && curSelected >= 0 && (curSelected <= iconArray.length) && iconArray.length != 0){
 				iconArray[curSelected].alpha = 1;
 			}
 

@@ -19,3 +19,6 @@ tankman:default
 gf-tankmen:default
 pico-speaker:default
 bf-holding-gf:default
+darnell:default
+nene:default
+darnell-blazin:default

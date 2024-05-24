@@ -1,6 +1,11 @@
 package states;
 
 //import haxe.ui.Toolkit;
+import utilities.PlayerSettings;
+import shaders.NoteColors;
+import modding.ModList;
+import game.Highscore;
+import utilities.PlayerSettings;
 import modding.scripts.languages.HScript;
 import modding.scripts.languages.HScript.IHScriptable;
 #if discord_rpc
@@ -10,7 +15,6 @@ import utilities.Options;
 import utilities.NoteVariables;
 import substates.OutdatedSubState;
 import modding.PolymodHandler;
-import utilities.SaveData;
 import utilities.MusicUtilities;
 import utilities.CoolUtil;
 import game.Conductor;
@@ -32,7 +36,6 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import shaders.ColorSwapHSV;
-import utilities.SaveData;
 import flixel.system.FlxSplash;
 //import systools.Registry;
 
@@ -74,7 +77,17 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 			FlxG.fixedTimestep = false;
 
-			SaveData.init();
+			NoteVariables.init();
+		
+			Options.init();
+			Options.fixBinds();
+
+			PlayerSettings.init();
+			PlayerSettings.player1.controls.loadKeyBinds();
+
+			Highscore.load();
+			ModList.load();
+			NoteColors.load();
 			//Toolkit.theme = "dark";
         	//Toolkit.init();
 			//trace(Registry.getValue(Registry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme"));
@@ -310,6 +323,12 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	var transitioning:Bool = false;
 
 	override function update(elapsed:Float) {
+
+		if (FlxG.keys.justPressed.Y)
+			{
+			  FlxTween.tween(FlxG.stage.window, {x: FlxG.stage.window.x + 300}, 1.4, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.35});
+			  FlxTween.tween(FlxG.stage.window, {y: FlxG.stage.window.y + 100}, 0.7, {ease: FlxEase.quadInOut, type: PINGPONG});
+			}
 
 		if (controls.LEFT)
 			swagShader.hue -= elapsed * 0.1;
