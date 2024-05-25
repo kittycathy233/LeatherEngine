@@ -12,36 +12,26 @@ import openfl.Lib;
 import openfl.events.UncaughtErrorEvent;
 import openfl.display.Sprite;
 import openfl.text.TextFormat;
-import utilities.CoolUtil;
 import ui.SimpleInfoDisplay;
 import flixel.system.debug.log.LogStyle;
 
 class Main extends Sprite {
-
 	public static var instance:Main = null;
-
-	static var logsOverlay:Logs;
+	public static var game:FlxGame;
+	public static var display:SimpleInfoDisplay;
+	public static var logsOverlay:Logs;
 	
 	public function new() {
 		super();
+
 		#if sys
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
 		CoolUtil.haxe_trace = Log.trace;
 		Log.trace = CoolUtil.haxe_print;
-		/*untyped FlxG.log = new FunkinFrontEnd();
 
-		LogFrontEnd.onLogs = function(Data, Style, FireOnce){
-			if(Options.getData("developer")){
-				if (Style == LogStyle.CONSOLE || Style == LogStyle.NORMAL) Logs.debug(Data);
-				if (Style == LogStyle.ERROR) Logs.error(Data);
-				if (Style == LogStyle.NOTICE) Logs.log(Data);
-				if (Style == LogStyle.WARNING) Logs.warn(Data);
-			}
-		}*/
-
-		var game:FlxGame = new FlxGame(0, 0, TitleState, 60, 60, true);
+		game = new FlxGame(0, 0, TitleState, 60, 60, true);
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from
 		// create() in there, which gets called when it's added to stage
@@ -55,52 +45,54 @@ class Main extends Sprite {
 		logsOverlay = new Logs();
 		logsOverlay.visible = false;
 		addChild(logsOverlay);
-	
+		#end
+
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");
 		addChild(display);
-		#end
 
 		// shader coords fix
 		// stolen from psych engine lol
 		FlxG.signals.gameResized.add(function (w, h) {
-		     if (FlxG.cameras != null) {
-			   for (cam in FlxG.cameras.list) {
-				if (cam != null && cam.filters != null)
-					resetSpriteCache(cam.flashSprite);
-			   }
+		    if (FlxG.cameras != null) {
+				for (cam in FlxG.cameras.list) {
+					if (cam != null && cam.filters != null) {
+						resetSpriteCache(cam.flashSprite);
+					}
+				}
 			}
 
-			if (FlxG.game != null)
-			resetSpriteCache(FlxG.game);
+			if (FlxG.game != null) {
+				resetSpriteCache(FlxG.game);
+			}
 		});
-
-
 	}
 
-	static function resetSpriteCache(sprite:Sprite):Void {
+	public static inline function resetSpriteCache(sprite:Sprite):Void {
 		@:privateAccess {
 		    sprite.__cacheBitmap = null;
 			sprite.__cacheBitmapData = null;
 		}
 	}
 
-	public static var display:SimpleInfoDisplay;
-
-	public static function toggleFPS(fpsEnabled:Bool):Void
+	public static inline function toggleFPS(fpsEnabled:Bool):Void {
 		display.infoDisplayed[0] = fpsEnabled;
+	}
 
-	public static function toggleMem(memEnabled:Bool):Void
+	public static inline function toggleMem(memEnabled:Bool):Void {
 		display.infoDisplayed[1] = memEnabled;
+	}
 
-	public static function toggleVers(versEnabled:Bool):Void
+	public static inline function toggleVers(versEnabled:Bool):Void {
 		display.infoDisplayed[2] = versEnabled;
+	}
 
-	public static function toggleLogs(logsEnabled:Bool):Void
+	public static inline function toggleLogs(logsEnabled:Bool):Void {
 		display.infoDisplayed[3] = logsEnabled;
+	}
 
-
-	public static function changeFont(font:String):Void
+	public static inline function changeFont(font:String):Void {
 		display.defaultTextFormat = new TextFormat(font, (font == "_sans" ? 12 : 14), display.textColor);
+	}
 
 	#if sys
 	/**
@@ -119,17 +111,20 @@ class Main extends Sprite {
 		date = StringTools.replace(date, ":", "'");
 
 		for (stackItem in callStack){
-			switch (stackItem){
+			switch (stackItem) {
 				case FilePos(s, file, line, column):
 					error += file + " (line " + line + ")\n";
 				default:
 					Sys.println(stackItem);
 			}
 		}
+
 		error += "\nUncaught Error: " + e.error;
 		path = "./crash/" + "crash-" + e.error + '-on-' + date + ".txt";
-		if (!sys.FileSystem.exists("./crash/"))
+
+		if (!sys.FileSystem.exists("./crash/")) {
 			sys.FileSystem.createDirectory("./crash/");
+		}
 
 		sys.io.File.saveContent(path, error + "\n");
 
@@ -138,7 +133,6 @@ class Main extends Sprite {
 
 		var crashPath:String = "Crash" #if windows + ".exe" #end;
 
-
 		if (sys.FileSystem.exists("./" + crashPath)){
 				Sys.println("Found crash dialog: " + crashPath);
 	
@@ -146,11 +140,11 @@ class Main extends Sprite {
 				crashPath = "./" + crashPath;
 				#end
 				new sys.io.Process(crashPath, [path]);
-		}
-		else{
+		} else {
 			Sys.println("No crash dialog found! Making a simple alert instead...");
 			Application.current.window.alert(error, "Error!");
 		}
+
 		Sys.exit(1);
 	}
 	#end
@@ -200,3 +194,5 @@ class Main extends Sprite {
                                                                                          .::^~!?JYY555YYYJJ7!.               
                                                                                                 ..:^~^^^~^.                 
 */
+
+// :3

@@ -4,32 +4,23 @@ import lime.app.Application;
 import openfl.events.Event;
 import flixel.util.FlxColor;
 import flixel.FlxG;
-import openfl.text.TextField;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.display.BitmapData;
 
-using StringTools;
-
-
-class Logs extends Sprite{
-
-    var logs:Array<String> = [];
-
+class Logs extends Sprite {
+    public var logs:Array<String> = [];
     var bg:Bitmap;
-
     var logText:LogText;
 
     public static var instance:Logs = null;    
 
     public var texts:Map<PrintType, LogPrint> = [
-		PrintType.LOG => new LogPrint("[LOG]", FlxColor.GRAY),
+		PrintType.LOG => new LogPrint("LOG", FlxColor.CYAN),
 		PrintType.WARNING => new LogPrint("WARNING", FlxColor.YELLOW),
 		PrintType.ERROR => new LogPrint("ERROR", FlxColor.RED),
 		PrintType.DEBUG => new LogPrint("DEBUG", FlxColor.WHITE),
 	];
-
-
 
     public function new(){
         super();

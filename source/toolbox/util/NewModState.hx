@@ -208,7 +208,7 @@ class NewModState extends MusicBeatState{
                 return;
             }
             FileSystem.createDirectory('./mods/${modName.text}');
-            File.saveBytes('./mods/${modName.text}/_polymod_icon.png', File.getBytes(modIconPath));
+            File.saveBytes('./mods/${modName.text}/_polymodIcon.png', File.getBytes(modIconPath));
             for (dir in dirs){
                 FileSystem.createDirectory('./mods/${modName.text}/${dir}');
             }
@@ -219,7 +219,7 @@ class NewModState extends MusicBeatState{
                 rpcText: rpc_id.text.length > 0 ? modName.text : "Leather Engine",
                 description: description.text,
                 author: author.text,
-                api_version: Application.current.meta.get('version'),
+                api_version: CoolUtil.getCurrentVersion().replace('v', ''),
                 mod_version: modVersion.text,
                 metadata: {
                     auto_enable: Std.string(checkAutoEnable.checked),

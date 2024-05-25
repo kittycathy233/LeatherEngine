@@ -1,6 +1,6 @@
 package modding;
 
-#if polymod
+#if MODDING_ALLOWED
 import polymod.Polymod;
 
 class ModList {

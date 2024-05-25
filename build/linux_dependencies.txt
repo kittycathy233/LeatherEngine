@@ -1,3 +1,7 @@
-Package Dependencies for Linux Users:
+Packages:
 
-- luajit (For Lua scripts obviously)
+luajit
+vlc
+
+The names of these will be different for different distros
+so check for yours specifically.

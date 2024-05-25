@@ -1,6 +1,11 @@
 package utilities;
 
 
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 import ui.logs.Logs;
 import lime.graphics.Image;
 import flixel.math.FlxMath;
@@ -14,8 +19,6 @@ import states.PlayState;
 import lime.utils.Assets;
 
 using StringTools;
-
-
 
 class CoolUtil {
 	public static function boundTo(value:Float, min:Float, max:Float):Float {
@@ -31,7 +34,7 @@ class CoolUtil {
 
 	#if sys
 	public static function coolTextFileSys(path:String):Array<String> {
-		var daList:Array<String> = sys.io.File.getContent(path).trim().split('\n');
+		var daList:Array<String> = File.getContent(path).trim().split('\n');
 
 		for (i in 0...daList.length) {
 			daList[i] = daList[i].trim();
@@ -172,6 +175,12 @@ class CoolUtil {
 	 */
 	public static inline function setWindowIcon(path:String){
 		#if desktop
+		#if sys
+		if (!FileSystem.exists(path)) {
+			return;
+		}
+		#end
+
 		Application.current.window.setIcon(Image.fromFile(path));
 		#end
 	}
@@ -287,22 +296,22 @@ class CoolUtil {
 	}
 
 	/**
-		Simple map that contains useful ascii color strings
+		Simple map that contains useful ansi color strings
 		that can be used when printing to console for nice colors.
 
-		@author martinwells (https://gist.github.com/martinwells/5980517)
+		@see https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
 	**/
-	public static var ascii_colors:Map<String, String> = [
-		'black' => '\033[0;30m',
-		'red' => '\033[31m',
-		'green' => '\033[32m',
-		'yellow' => '\033[33m',
-		'blue' => '\033[1;34m',
-		'magenta' => '\033[1;35m',
-		'cyan' => '\033[0;36m',
-		'grey' => '\033[0;37m',
-		'white' => '\033[1;37m',
-		'default' => '\033[0;37m' // grey apparently
+	public static var ansi_colors:Map<String, String> = [
+		'black' => '\033[40m',
+		'red' => '\033[41m',
+		'green' => '\033[42m',
+		'yellow' => '\033[43m',
+		'blue' => '\033[44m',
+		'magenta' => '\033[45m',
+		'cyan' => '\033[46m',
+		'grey' => '\033[47m',
+		'white' => '\033[101m',
+		'default' => '\033[0m' // grey apparently
 	];
 
 	/**
@@ -315,7 +324,7 @@ class CoolUtil {
 	**/
 	public static function haxe_print(value:Dynamic, ?pos_infos:haxe.PosInfos):Void {
 		if (pos_infos.customParams == null)
-			print(value, null, pos_infos);
+			print(value, LOG, pos_infos);
 		else {
 			var type:PrintType = pos_infos.customParams.copy()[0];
 			pos_infos.customParams = null; // so no stupid shit in the end of prints :D
@@ -335,26 +344,22 @@ class CoolUtil {
 	public static function print(message:String, ?type:PrintType = DEBUG, ?pos_infos:haxe.PosInfos):Void {
 		switch (type) {
 			case LOG:
-				haxe_trace('${ascii_colors["default"]}[LOG] $message', pos_infos);
+				haxe_trace('${ansi_colors["cyan"]} LOG ${ansi_colors["default"]} $message', pos_infos);
 				Logs.log(message);
 			case DEBUG:
-				haxe_trace('${ascii_colors["green"]}[DEBUG] ${ascii_colors["default"]}$message', pos_infos);
+				haxe_trace('${ansi_colors["green"]} DEBUG ${ansi_colors["default"]} $message', pos_infos);
 				Logs.debug(message);
 			case WARNING:
-				haxe_trace('${ascii_colors["yellow"]}[WARNING] ${ascii_colors["default"]}$message', pos_infos);
+				haxe_trace('${ansi_colors["yellow"]} WARNING ${ansi_colors["default"]} $message', pos_infos);
 				Logs.warn(message);
 			case ERROR:
-				haxe_trace('${ascii_colors["red"]}[ERROR] ${ascii_colors["default"]}$message', pos_infos);
+				haxe_trace('${ansi_colors["red"]} ERROR ${ansi_colors["default"]} $message', pos_infos);
 				Logs.error(message);
 			// if you really want null, then here have it >:(
 			default:
 				haxe_trace(message, pos_infos);
 		}
 	}
-
-
-
-
 
 	/**
 		Access to the old `haxe.Log.trace` function.
@@ -371,10 +376,10 @@ class CoolUtil {
 	 */
 	public static var byte_formats:Array<Array<Dynamic>> = [
 		["$bytes b", 1.0],
-		["$bytes kb", 1024.0],
-		["$bytes mb", 1048576.0],
-		["$bytes gb", 1073741824.0],
-		["$bytes tb", 1099511627776.0]
+		["$bytes kib", 1024.0],
+		["$bytes mib", 1048576.0],
+		["$bytes gib", 1073741824.0],
+		["$bytes tib", 1099511627776.0]
 	];
 
 	/**
@@ -383,13 +388,13 @@ class CoolUtil {
 	 * Examples (Input = Output)
 	 * 
 	 * ```
-	 * 1024 = '1 kb'
-	 * 1536 = '1.5 kb'
-	 * 1048576 = '2 mb'
+	 * 1024 = '1 kib'
+	 * 1536 = '1.5 kib'
+	 * 1048576 = '2 mib'
 	 * ```
 	 * 
 	 * @param bytes Amount of bytes to format and return.
-	 * @param onlyValue (Optional, Default = `false`) Whether or not to only format the value of bytes (ex: `'1.5 mb' -> '1.5'`).
+	 * @param onlyValue (Optional, Default = `false`) Whether or not to only format the value of bytes (ex: `'1.5 mib' -> '1.5'`).
 	 * @param precision (Optional, Default = `2`) The precision of the decimal value of bytes. (ex: `1 -> 1.5, 2 -> 1.53, etc`).
 	 * @return Formatted byte string.
 	 */
@@ -413,6 +418,10 @@ class CoolUtil {
 		}
 
 		return formatted_bytes;
+	}
+
+	public static inline function getCurrentVersion():String {
+		return 'v' + Application.current.meta.get('version');
 	}
 }
 

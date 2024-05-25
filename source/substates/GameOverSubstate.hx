@@ -1,8 +1,6 @@
 package substates;
 
 import lime.utils.Assets;
-import game.Replay;
-import states.ReplaySelectorState;
 import game.Character;
 import states.FreeplayState;
 import states.StoryMenuState;
@@ -75,26 +73,10 @@ class GameOverSubstate extends MusicBeatSubstate {
 			FlxG.sound.music.stop();
 
 			PlayState.instance.closeLua();
-
-
-			if (PlayState.playingReplay && Replay.getReplayList().length > 0) {
-				Conductor.offset = Options.getData("songOffset");
-
-				@:privateAccess
-				{
-					Options.setData(PlayState.instance.ogJudgementTimings, "judgementTimings");
-					Options.setData(PlayState.instance.ogGhostTapping, "ghostTapping");
-				}
-
-				FlxG.switchState(() -> new ReplaySelectorState());
-			} else {
-				if (PlayState.isStoryMode)
-					FlxG.switchState(() -> new StoryMenuState());
-				else
-					FlxG.switchState(() -> new FreeplayState());
-			}
-
-			PlayState.playingReplay = false;
+			if (PlayState.isStoryMode)
+				FlxG.switchState(() -> new StoryMenuState());
+			else
+				FlxG.switchState(() -> new FreeplayState());
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
@@ -135,22 +117,8 @@ class GameOverSubstate extends MusicBeatSubstate {
 			new FlxTimer().start(0.7, function(tmr:FlxTimer) {
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function() {
 					PlayState.instance.closeLua();
-
-
 					PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
-
-					if (PlayState.playingReplay && Replay.getReplayList().length > 0)
-						FlxG.switchState(new ReplaySelectorState());
-					else if (PlayState.playingReplay) {
-						if (PlayState.isStoryMode)
-							FlxG.switchState(new StoryMenuState());
-						else
-							FlxG.switchState(new FreeplayState());
-					} else{
-						FlxG.resetState();
-					}
-
-					PlayState.playingReplay = false;
+					FlxG.resetState();
 				});
 			});
 		}

@@ -3,7 +3,6 @@ package substates;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import flixel.text.FlxText;
-import utilities.CoolUtil;
 import game.Note;
 import flixel.tweens.FlxEase;
 import utilities.NoteVariables;

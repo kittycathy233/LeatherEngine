@@ -1,14 +1,16 @@
 package states;
 
-import modding.scripts.languages.HScript;
-import modding.ModList;
-import game.Conductor;
 #if sys
 import sys.thread.Thread;
 #end
-#if discord_rpc
+
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
+
+import modding.scripts.languages.HScript;
+import modding.ModList;
+import game.Conductor;
 import utilities.Options;
 import flixel.util.FlxTimer;
 import substates.ResetScoreSubstate;
@@ -17,7 +19,6 @@ import lime.app.Application;
 import flixel.tweens.FlxTween;
 import game.Song;
 import game.Highscore;
-import utilities.CoolUtil;
 import ui.HealthIcon;
 import ui.Alphabet;
 import flixel.FlxG;
@@ -82,7 +83,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 	// thx psych engine devs
 	var colorTween:FlxTween;
 
-	#if (cpp && sys)
+	#if cpp
 	public var loading_songs:Thread;
 	public var stop_loading_songs:Bool = false;
 	#else
@@ -108,7 +109,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		#if sys
 		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/FreeplayState.hx")){
 			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/FreeplayState.hx", true);
-			script.start();		
+			script.start();
 		}
 		#else
 		if (Assets.exists("assets/classes/states/FreeplayState.hx")){
@@ -214,7 +215,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 
 		scoreText = new FlxText(FlxG.width, 5, 0, "", 32);
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 1, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 1, FlxColor.BLACK);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -231,7 +232,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		speedText.alignment = RIGHT;
 		add(speedText);
 
-		#if sys
+		#if cpp
 		if (!Options.getData("loadAsynchronously") || !Options.getData("healthIcons")) {
 		#end
 			for (i in 0...songs.length) {
@@ -247,7 +248,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 					add(icon);
 				}
 			}
-		#if sys
+		#if cpp
 		}
 		else {
 			loading_songs = Thread.create(function() {
@@ -275,9 +276,9 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		selector.size = 40;
 		selector.text = "<";
 
-		if (!songsReady)
+		if (!songsReady) {
 			add(black);
-		else {
+		} else {
 			remove(black);
 			black.kill();
 			black.destroy();
@@ -287,22 +288,21 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 			new FlxTimer().start(1, function(_) songsReady = true);
 		}
 
-		if (songs.length != 0 && curSelected <= 0){
+		if (songs.length != 0 && curSelected >= 0){
 			selectedColor = songs[curSelected].color;
 			bg.color = selectedColor;
-		}
-		else{
+		} else {
 			bg.color = 0xFF7C689E;
 		}
 
-		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
+		var textBG:FlxSprite = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, FlxColor.BLACK);
 		textBG.alpha = 0.6;
 		add(textBG);
 
 		#if PRELOAD_ALL
 		var leText:String = "Press RESET to reset song score and rank ~ Press SPACE to play Song Audio ~ Shift + LEFT and RIGHT to change song speed";
 		#else
-		var leText:String = "Press RESET to reset song score";
+		var leText:String = "Press RESET to reset song score ~ Shift + LEFT and RIGHT to change song speed";
 		#end
 
 		var text:FlxText = new FlxText(textBG.x - 1, textBG.y + 4, FlxG.width, leText, 18);
@@ -371,19 +371,10 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 
 		curSpeed = FlxMath.roundDecimal(curSpeed, 2);
 
-		#if !sys
-		curSpeed = 1;
-		#end
-
 		if (curSpeed < 0.25)
 			curSpeed = 0.25;
 
-		#if sys
 		speedText.text = "Speed: " + curSpeed + " (R+SHIFT)";
-		#else
-		speedText.text = "";
-		#end
-
 		speedText.x = FlxG.width - speedText.width;
 
 		var leftP = controls.LEFT_P;
@@ -426,7 +417,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 				if (FlxG.sound.music.active && FlxG.sound.music.playing)
 					FlxG.sound.music.pitch = 1;
 
-				#if (cpp && sys)
+				#if cpp
 				stop_loading_songs = true;
 				#end
 
@@ -481,7 +472,6 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 
 			if (FlxG.keys.justPressed.ENTER && canEnterSong) {
 				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
-
 				trace(poop);
 
 				if (Assets.exists(Paths.json("song data/" + songs[curSelected].songName.toLowerCase() + "/" + poop))) {
@@ -494,7 +484,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 					trace('CUR WEEK' + PlayState.storyWeek);
 
 					if (Assets.exists(Paths.inst(PlayState.SONG.song, curDiffString.toLowerCase()))) {
-						#if sys
+						#if cpp
 						stop_loading_songs = true;
 						#end
 
@@ -534,12 +524,10 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, curDiffArray.length - 1);
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
-		#if !switch
-		if(songs.length != 0){
+		if (songs.length != 0){
 			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
 			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
 		}
-		#end
 
 		if (curDiffArray.length > 1)
 			diffText.text = "< " + curDiffString + " ~ " + curRank + " >";
@@ -550,7 +538,11 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 
 	function changeSelection(change:Int = 0) {
 		call("changeSelection", [change]);
-		if(grpSongs.length != 0 || curSelected != 0)
+		
+		if(grpSongs.length <= 0) {
+			return;
+		}
+
 		curSelected = FlxMath.wrap(curSelected + change, 0, grpSongs.length - 1);
 
 		// Sounds
@@ -566,12 +558,10 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 				destroyFreeplayVocals(false);
 		}
 
-		#if !switch
-		if(songs.length != 0){
+		if (songs.length != 0){
 			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
 			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
 		}
-		#end
 
 		if(songs.length != 0){
 			curDiffArray = songs[curSelected].difficulties;

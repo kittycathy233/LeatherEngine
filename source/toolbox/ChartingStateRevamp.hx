@@ -1,8 +1,9 @@
 package toolbox;
 
-#if discord_rpc
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
+
 import game.Section.SwagSection;
 import flixel.math.FlxMath;
 import game.Conductor;
@@ -13,7 +14,6 @@ import flixel.FlxObject;
 import flixel.util.FlxColor;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.FlxG;
-import utilities.CoolUtil;
 import lime.utils.Assets;
 import ui.HealthIcon;
 import flixel.sound.FlxSound;
@@ -24,7 +24,6 @@ import game.Song.SwagSong;
 import flixel.text.FlxText;
 import openfl.net.FileReference;
 import states.MusicBeatState;
-
 
 using StringTools;
 

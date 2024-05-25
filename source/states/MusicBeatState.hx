@@ -50,7 +50,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		// Remove cached assets (prevents memory leaks that i can prevent)
 		lime.utils.Assets.cache.clear();
 		openfl.utils.Assets.cache.clear();
-		#if polymod
+		#if MODDING_ALLOWED
 		polymod.Polymod.clearCache();
 		#end
 
@@ -111,22 +111,22 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 		if (!Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {
-				if (Std.isOfType(basic, FlxSprite))
-					Reflect.setProperty(basic, "antialiasing", false);
+				if (!(basic is FlxSprite)) {
+					return;
+				}
+
+				cast(basic, FlxSprite).antialiasing = false;
 			}, true);
 		}
 
 		if (FlxG.keys.checkStatus(FlxKey.fromString(Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		#if debug
 		if (FlxG.keys.justPressed.F5)
 			FlxG.resetState();
-		#end
 
 		FlxG.autoPause = Options.getData("autoPause");
-
-		Application.current.window.title = windowNamePrefix + windowNameSuffix;
+		Application.current.window.title = windowNamePrefix + windowNameSuffix #if debug + ' (DEBUG)' #end;
 	}
 
 	private function updateBeat():Void {

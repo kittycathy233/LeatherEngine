@@ -8,7 +8,6 @@ import modding.CharacterConfig;
 import ui.FlxUIDropDownMenuCustom;
 import game.Song;
 import states.LoadingState;
-import utilities.CoolUtil;
 import game.Conductor;
 import states.PlayState;
 import states.MusicBeatState;
@@ -40,7 +39,6 @@ import openfl.net.FileReference;
 using StringTools;
 
 class ChartingState extends MusicBeatState {
-
 	var _file:FileReference;
 
 	var UI_box:FlxUITabMenu;

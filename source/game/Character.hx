@@ -9,7 +9,6 @@ import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import haxe.Json;
-import utilities.CoolUtil;
 import states.PlayState;
 import flixel.FlxSprite;
 import modding.CharacterConfig;
@@ -281,9 +280,6 @@ class Character extends FlxSprite {
 		if (config.barColor == null)
 			config.barColor = [255, 0, 0];
 
-		if (config.notesMatchBar == null)
-			config.notesMatchBar = false;
-
 		barColor = FlxColor.fromRGB(config.barColor[0], config.barColor[1], config.barColor[2]);
 
 		var localKeyCount;
@@ -294,15 +290,7 @@ class Character extends FlxSprite {
 			localKeyCount = 4;
 		}
 
-		if (config.noteColors == null){
-			config.noteColors = NoteColors.defaultColors;
-		}
-		if(config.notesMatchBar){
-			config.noteColors[localKeyCount - 1][localKeyCount] = config.barColor;
-		}
-
-		noteColors = config.noteColors;
-
+		noteColors = NoteColors.defaultColors;
 
 		if (config.cameraOffset != null) {
 			if (flipX)
@@ -325,16 +313,18 @@ class Character extends FlxSprite {
 	public function loadOffsetFile(characterName:String) {
 		animOffsets = new Map<String, Array<Dynamic>>();
 
-		if (Assets.exists(Paths.txt("character data/" + characterName + "/" + "offsets"))) {
-			var offsets:Array<String> = CoolUtil.coolTextFile(Paths.txt("character data/" + characterName + "/" + "offsets"));
+		if (!Assets.exists(Paths.txt("character data/" + characterName + "/" + "offsets"))) {
+			return;
+		}
 
-			for (x in 0...offsets.length) {
-				var selectedOffset = offsets[x];
-				var arrayOffset:Array<String>;
-				arrayOffset = selectedOffset.split(" ");
+		var offsets:Array<String> = CoolUtil.coolTextFile(Paths.txt("character data/" + characterName + "/" + "offsets"));
 
-				addOffset(arrayOffset[0], Std.parseInt(arrayOffset[1]), Std.parseInt(arrayOffset[2]));
-			}
+		for (x in 0...offsets.length) {
+			var selectedOffset = offsets[x];
+			var arrayOffset:Array<String>;
+			arrayOffset = selectedOffset.split(" ");
+
+			addOffset(arrayOffset[0], Std.parseInt(arrayOffset[1]), Std.parseInt(arrayOffset[2]));
 		}
 	}
 

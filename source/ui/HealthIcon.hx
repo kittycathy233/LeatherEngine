@@ -30,7 +30,7 @@ class HealthIcon extends TrackerSprite {
 	}
 
 	public function changeIconSet(char:String = 'bf') {
-		antialiasing = true;
+		antialiasing = Options.getData("antialiasing");
 
 		if (Assets.exists(Paths.image('icons/' + char + '-icons').split(".png")[0] + ".xml")
 			|| Assets.exists(Paths.image('icons/icon-' + char).split(".png")[0] + ".xml")
@@ -64,14 +64,14 @@ class HealthIcon extends TrackerSprite {
 		} else {
 			if (Assets.exists(Paths.image('icons/' + char + '-icons'))) // LE ICONS
 				loadGraphic(Paths.image('icons/' + char + '-icons'));
-			else if (Assets.exists(Paths.image('icons/' + 'icon-' + char))) // PSYCH ICONS
+			else if (Assets.exists(Paths.image('icons/' + 'icon-' + char))) // BASE GAME ICONS
 				loadGraphic(Paths.image('icons/' + 'icon-' + char));
-			else if (Assets.exists(Paths.image('icons/' + char))) // lmao image file names i guess if you're really lazy
+			else if (Assets.exists(Paths.image('icons/' + char))) // just the name as file name
 				loadGraphic(Paths.image('icons/' + char));
 			else // UNKNOWN ICON
 				loadGraphic(Paths.image('icons/placeholder-icon'));
 
-			if (height != 150) // damn psych engine edge cases >:(
+			if (height != 150) // damn weird edge cases >:(
 				loadGraphic(graphic, true, Std.int(width / 2), Std.int(height));
 			else
 				loadGraphic(graphic, true, 150, 150);
@@ -84,8 +84,12 @@ class HealthIcon extends TrackerSprite {
 
 		// antialiasing override
 		switch (char) {
-			case 'bf-pixel' | 'senpai' | 'senpai-angry' | 'spirit':
+			case 'senpai' | 'senpai-angry' | 'spirit':
 				antialiasing = false;
+		}
+
+		if (char.endsWith('-pixel')) {
+			antialiasing = false;
 		}
 	}
 }

@@ -6,7 +6,6 @@ import utilities.Options;
 import shaders.NoteColors;
 import shaders.ColorSwap;
 import game.Song.SwagSong;
-import utilities.CoolUtil;
 import utilities.NoteVariables;
 import states.PlayState;
 import flixel.FlxG;

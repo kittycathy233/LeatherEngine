@@ -4,7 +4,6 @@ import flixel.addons.ui.FlxUIInputText;
 import ui.HealthIcon;
 import flixel.ui.FlxBar;
 import ui.FlxUIDropDownMenuCustom;
-import utilities.CoolUtil;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

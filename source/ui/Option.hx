@@ -1,13 +1,15 @@
 package ui;
 
-import modding.PolymodHandler;
-import lime.app.Application;
-import lime.graphics.Image;
-import utilities.CoolUtil;
-import states.TitleState;
-#if discord_rpc
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
+
+#if MODDING_ALLOWED
+import modding.PolymodHandler;
+#end
+
+import lime.app.Application;
+import states.TitleState;
 import modding.ModList;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -20,28 +22,23 @@ import flixel.group.FlxGroup;
  */
 class Option extends FlxTypedGroup<FlxSprite> {
 	// variables //
-	public var Alphabet_Text:Alphabet;
+	public var alphabetText:Alphabet;
 
 	// options //
-	public var Option_Row:Int = 0;
+	public var optionName:String = "";
+	public var optionValue:String = "downscroll";
 
-	public var Option_Name:String = "";
-	public var Option_Value:String = "downscroll";
-
-
-	public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0) {
+	public function new(_optionName:String = "", _optionValue:String = "downscroll") {
 		super();
 
 		// SETTING VALUES //
-		this.Option_Name = _Option_Name;
-		this.Option_Value = _Option_Value;
-		this.Option_Row = _Option_Row;
+		this.optionName = _optionName;
+		this.optionValue = _optionValue;
 
 		// CREATING OTHER OBJECTS //
-		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
-		Alphabet_Text.isMenuItem = true;
-		Alphabet_Text.targetY = Option_Row;
-		add(Alphabet_Text);
+		alphabetText = new Alphabet(20, 20, optionName, true);
+		alphabetText.isMenuItem = true;
+		add(alphabetText);
 	}
 }
 
@@ -50,99 +47,99 @@ class Option extends FlxTypedGroup<FlxSprite> {
  */
 class BoolOption extends Option {
 	// variables //
-	var Checkbox_Object:Checkbox;
+	var checkbox:Checkbox;
 
 	// options //
-	public var Option_Checked:Bool = false;
+	public var optionChecked:Bool = false;
 
-	override public function new(_Option_Name:String = "", _Option_Value:String = "downscroll", _Option_Row:Int = 0) {
-		super(_Option_Name, _Option_Value, _Option_Row);
+	override public function new(_optionName:String = "", _optionValue:String = "downscroll") {
+		super(_optionName, _optionValue);
 
 		// SETTING VALUES //
-		this.Option_Checked = GetObjectValue();
+		this.optionChecked = getObjectValue();
 
 		// CREATING OTHER OBJECTS //
-		Checkbox_Object = new Checkbox(Alphabet_Text);
-		Checkbox_Object.checked = GetObjectValue();
-		add(Checkbox_Object);
+		checkbox = new Checkbox(alphabetText);
+		checkbox.checked = getObjectValue();
+		add(checkbox);
 	}
 
-	public function GetObjectValue():Bool {
-		return Options.getData(Option_Value);
+	public inline function getObjectValue():Bool {
+		return Options.getData(optionValue);
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-			ChangeValue();
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0)
+			changeValue();
 	}
 
-	public function ChangeValue() {
-		Options.setData(!Option_Checked, Option_Value);
+	public function changeValue() {
+		Options.setData(!optionChecked, optionValue);
 
-		Option_Checked = !Option_Checked;
-		Checkbox_Object.checked = Option_Checked;
+		optionChecked = !optionChecked;
+		checkbox.checked = optionChecked;
 
-		switch (Option_Value) // extra special cases
+		switch (optionValue) // extra special cases
 		{
 			case "fpsCounter":
-				Main.toggleFPS(Option_Checked);
+				Main.toggleFPS(optionChecked);
 			case "memoryCounter":
-				Main.toggleMem(Option_Checked);
-			#if discord_rpc
+				Main.toggleMem(optionChecked);
+			#if DISCORD_ALLOWED
 			case "discordRPC":
-				if (Option_Checked && !DiscordClient.active)
+				if (optionChecked && !DiscordClient.active)
 					DiscordClient.initialize();
-				else if (!Option_Checked && DiscordClient.active)
+				else if (!optionChecked && DiscordClient.active)
 					DiscordClient.shutdown();
 			#end
 			case "versionDisplay":
-				Main.toggleVers(Option_Checked);
+				Main.toggleVers(optionChecked);
 			case "developer":
-				Main.toggleLogs(Option_Checked);
+				Main.toggleLogs(optionChecked);
 		}
 	}
 }
-
 
 /**
  * Very simple option that transfers you to a different page when selecting it.
  */
 class PageOption extends Option {
 	// OPTIONS //
-	public var Page_Name:String = "Categories";
+	public var pageName:String = "Categories";
 
-	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories", _Description:String = "Test Description") {
-		super(_Option_Name, _Page_Name, _Option_Row);
+	override public function new(_optionName:String = "", _pageName:String = "Categories", _Description:String = "Test Description") {
+		super(_optionName, _pageName);
 
 		// SETTING VALUES //
-		this.Page_Name = _Page_Name;
+		this.pageName = _pageName;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !OptionsMenu.inMenu)
-			OptionsMenu.LoadPage(Page_Name);
+		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
+			OptionsMenu.instance.loadPage(pageName);
+		}
 	}
 }
 
-class GameSubstateOption extends Option {
-	public var game_substate:Dynamic;
+class GameSubStateOption extends Option {
+	public var gameSubState:Dynamic;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _game_substate:Dynamic) {
-		super(_Option_Name, null, _Option_Row);
+	public function new(_optionName:String = "", _gameSubState:Dynamic) {
+		super(_optionName, null);
 
 		// SETTING VALUES //
-		this.game_substate = _game_substate;
+		this.gameSubState = _gameSubState;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-			FlxG.state.openSubState(Type.createInstance(this.game_substate, []));
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0)
+			FlxG.state.openSubState(Type.createInstance(this.gameSubState, []));
 	}
 }
 
@@ -151,44 +148,21 @@ class GameSubstateOption extends Option {
  */
 class GameStateOption extends Option {
 	// OPTIONS //
-	public var Game_State:FlxState;
+	public var gameState:FlxState;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
-		super(_Option_Name, null, _Option_Row);
+	public function new(_optionName:String = "", _gameState:Dynamic) {
+		super(_optionName, null);
 
 		// SETTING VALUES //
-		this.Game_State = _Game_State;
+		this.gameState = _gameState;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-			FlxG.switchState(Game_State);
-	}
-}
-
-/**
- * Stuff for toolbox.
- */
- class ToolboxOption extends Option {
-	// OPTIONS //
-	public var Game_State:FlxState;
-
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
-		super(_Option_Name, null, _Option_Row);
-
-		// SETTING VALUES //
-		this.Game_State = _Game_State;
-	}
-
-	override function update(elapsed:Float) {
-		super.update(elapsed);
-
-		if (!Options.getData("developer")) this.visible = false; else { this.visible = true;}
-
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0 && Options.getData("developer"))
-			FlxG.switchState(Game_State);
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
+			FlxG.switchState(gameState);
+		}
 	}
 }
 
@@ -198,21 +172,21 @@ class GameStateOption extends Option {
  class CharacterCreatorOption extends Option {
 	// OPTIONS //
 
-	public var Game_State:FlxState;
+	public var gameState:FlxState;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Game_State:Dynamic) {
-		super(_Option_Name, null, _Option_Row);
+	public function new(_optionName:String = "", _gameState:Dynamic) {
+		super(_optionName, null);
 
 		// SETTING VALUES //
 		toolbox.CharacterCreator.lastState = "OptionsMenu";
-		this.Game_State = _Game_State;
+		this.gameState = _gameState;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0)
-			FlxG.switchState(Game_State);
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0)
+			FlxG.switchState(gameState);
 	}
 }
 
@@ -222,101 +196,93 @@ class GameStateOption extends Option {
  */
 class ModOption extends FlxTypedGroup<FlxSprite> {
 	// variables //
-	public var Alphabet_Text:Alphabet;
-	public var Mod_Icon:ModIcon;
+	public var alphabetText:Alphabet;
+	public var modIcon:ModIcon;
 
-	public var Mod_Enabled:Bool = false;
+	public var modEnabled:Bool = false;
 
 	// options //
-	public var Option_Row:Int = 0;
+	public var optionName:String = "";
+	public var optionValue:String = "Template Mod";
 
-	public var Option_Name:String = "";
-	public var Option_Value:String = "Template Mod";
-
-	public function new(_Option_Name:String = "", _Option_Value:String = "Template Mod", _Option_Row:Int = 0) {
+	public function new(_optionName:String = "", _optionValue:String = "Template Mod") {
 		super();
 
 		// SETTING VALUES //
-		this.Option_Name = _Option_Name;
-		this.Option_Value = _Option_Value;
-		this.Option_Row = _Option_Row;
+		this.optionName = _optionName;
+		this.optionValue = _optionValue;
 
 		// CREATING OTHER OBJECTS //
-		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
-		Alphabet_Text.isMenuItem = true;
-		Alphabet_Text.targetY = Option_Row;
-		add(Alphabet_Text);
+		alphabetText = new Alphabet(20, 20 , optionName, true);
+		alphabetText.isMenuItem = true;
+		add(alphabetText);
 
-		Mod_Icon = new ModIcon(Option_Value);
-		Mod_Icon.sprTracker = Alphabet_Text;
-		add(Mod_Icon);
+		modIcon = new ModIcon(optionValue);
+		modIcon.sprTracker = alphabetText;
+		add(modIcon);
 
-		Mod_Enabled = ModList.modList.get(Option_Value);
+		modEnabled = ModList.modList.get(optionValue);
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
-			Mod_Enabled = !Mod_Enabled;
-			ModList.setModEnabled(Option_Value, Mod_Enabled);
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
+			modEnabled = !modEnabled;
+			ModList.setModEnabled(optionValue, modEnabled);
 		}
 
-		if (Mod_Enabled) {
-			Alphabet_Text.alpha = 1;
-			Mod_Icon.alpha = 1;
+		if (modEnabled) {
+			alphabetText.alpha = 1;
+			modIcon.alpha = 1;
 		} else {
-			Alphabet_Text.alpha = 0.6;
-			Mod_Icon.alpha = 0.6;
+			alphabetText.alpha = 0.6;
+			modIcon.alpha = 0.6;
 		}
 	}
 }
 
 class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 	// variables //
-	public var Alphabet_Text:Alphabet;
-	public var Mod_Icon:ModIcon;
+	public var alphabetText:Alphabet;
+	public var modIcon:ModIcon;
 
-	public var Mod_Enabled:Bool = false;
+	public var modEnabled:Bool = false;
 
 	// options //
-	public var Option_Row:Int = 0;
+	public var optionName:String = "";
+	public var optionValue:String = "Template Mod";
 
-	public var Option_Name:String = "";
-	public var Option_Value:String = "Template Mod";
-
-	public function new(_Option_Name:String = "", _Option_Value:String = "Friday Night Funkin'", _Option_Row:Int = 0) {
+	public function new(_optionName:String = "", _optionValue:String = "Friday Night Funkin'") {
 		super();
 
 		// SETTING VALUES //
-		this.Option_Name = _Option_Name;
-		this.Option_Value = _Option_Value;
-		this.Option_Row = _Option_Row;
+		this.optionName = _optionName;
+		this.optionValue = _optionValue;
 
 		// CREATING OTHER OBJECTS //
-		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
-		Alphabet_Text.isMenuItem = true;
-		Alphabet_Text.targetY = Option_Row;
-		Alphabet_Text.scrollFactor.set();
-		add(Alphabet_Text);
+		alphabetText = new Alphabet(20, 20, optionName, true);
+		alphabetText.isMenuItem = true;
+		alphabetText.scrollFactor.set();
+		add(alphabetText);
 
-		Mod_Icon = new ModIcon(Option_Value);
-		Mod_Icon.sprTracker = Alphabet_Text;
-		Mod_Icon.scrollFactor.set();
-		add(Mod_Icon);
+		modIcon = new ModIcon(optionValue);
+		modIcon.sprTracker = alphabetText;
+		modIcon.scrollFactor.set();
+		add(modIcon);
 
-		Mod_Enabled = ModList.modList.get(Option_Value);
+		modEnabled = ModList.modList.get(optionValue);
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if(Alphabet_Text.targetY == 0){
-			Alphabet_Text.alpha = 1;
-			Mod_Icon.alpha = 1;
+		if(alphabetText.targetY == 0){
+			alphabetText.alpha = 1;
+			modIcon.alpha = 1;
 			if (FlxG.keys.justPressed.ENTER) {
-				Options.setData(Option_Value, "curMod");
-				Mod_Enabled = !Mod_Enabled;
+				Options.setData(optionValue, "curMod");
+				modEnabled = !modEnabled;
 				@:privateAccess
 				if (FlxG.state is TitleState) TitleState.initialized = false;
 				if (FlxG.sound.music != null) {
@@ -327,18 +293,16 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				FlxG.resetState();
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
-				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymodIcon.png");
 				PolymodHandler.loadMods();
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();
 			}
 		}else {
-			Alphabet_Text.alpha = 0.6;
-			Mod_Icon.alpha = 0.6;
+			alphabetText.alpha = 0.6;
+			modIcon.alpha = 0.6;
 		}
 	}
-
-
 }
 #end
 
@@ -352,31 +316,30 @@ class StringSaveOption extends Option {
 	var Cool_Name:String;
 	var Save_Data_Name:String;
 
-	override public function new(_Option_Name:String = "String Switcher", _Modes:Array<String>, _Option_Row:Int = 0, _Save_Data_Name:String = "hitsound") {
-		super(_Option_Name, null, _Option_Row);
+	override public function new(_optionName:String = "String Switcher", _Modes:Array<String>, _Save_Data_Name:String = "hitsound") {
+		super(_optionName, null);
 
 		// SETTING VALUES //
 		this.Modes = _Modes;
 		this.Save_Data_Name = _Save_Data_Name;
 		this.Current_Mode = Options.getData(Save_Data_Name);
-		this.Cool_Name = _Option_Name;
-		this.Option_Name = Cool_Name + " " + Current_Mode;
+		this.Cool_Name = _optionName;
+		this.optionName = Cool_Name + " " + Current_Mode;
 
 		// CREATING OTHER OBJECTS //
-		remove(Alphabet_Text);
-		Alphabet_Text.kill();
-		Alphabet_Text.destroy();
+		remove(alphabetText);
+		alphabetText.kill();
+		alphabetText.destroy();
 
-		Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
-		Alphabet_Text.isMenuItem = true;
-		Alphabet_Text.targetY = Option_Row;
-		add(Alphabet_Text);
+		alphabetText = new Alphabet(20, 20, optionName, true);
+		alphabetText.isMenuItem = true;
+		add(alphabetText);
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !OptionsMenu.inMenu) {
+		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
 			var prevIndex = Modes.indexOf(Current_Mode);
 
 			if (prevIndex != -1) {
@@ -389,16 +352,15 @@ class StringSaveOption extends Option {
 
 			Current_Mode = Modes[prevIndex];
 
-			this.Option_Name = Cool_Name + " " + Current_Mode;
+			this.optionName = Cool_Name + " " + Current_Mode;
 
-			remove(Alphabet_Text);
-			Alphabet_Text.kill();
-			Alphabet_Text.destroy();
+			remove(alphabetText);
+			alphabetText.kill();
+			alphabetText.destroy();
 
-			Alphabet_Text = new Alphabet(20, 20 + (Option_Row * 100), Option_Name, true);
-			Alphabet_Text.isMenuItem = true;
-			Alphabet_Text.targetY = Option_Row;
-			add(Alphabet_Text);
+			alphabetText = new Alphabet(20, 20, optionName, true);
+			alphabetText.isMenuItem = true;
+			add(alphabetText);
 
 			SetDataIGuess();
 		}
@@ -424,8 +386,8 @@ class DisplayFontOption extends StringSaveOption {
 	public var Title:String;
 	public var Url:String;
 
-	public function new(_Option_Name:String = "", _Option_Row:Int = 0, Title:String, Url:String) {
-		super(_Option_Name, null, _Option_Row);
+	public function new(_optionName:String = "", Title:String, Url:String) {
+		super(_optionName, null);
 
 		// SETTING VALUES //
 		this.Url = Url;
@@ -434,7 +396,7 @@ class DisplayFontOption extends StringSaveOption {
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-		if (FlxG.keys.justPressed.ENTER && Alphabet_Text.targetY == 0) {
+		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
 			CoolUtil.openURL(Url);
 		}
 	}

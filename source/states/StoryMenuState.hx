@@ -1,11 +1,11 @@
 package states;
 
-#if discord_rpc
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
+
 import substates.ResetScoreSubstate;
 import lime.app.Application;
-import utilities.CoolUtil;
 import lime.utils.Assets;
 import haxe.Json;
 import ui.MenuCharacter;

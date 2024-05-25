@@ -16,7 +16,7 @@ import utilities.NoteVariables;
 import substates.OutdatedSubState;
 import modding.PolymodHandler;
 import utilities.MusicUtilities;
-import utilities.CoolUtil;
+
 import game.Conductor;
 import ui.Alphabet;
 import flixel.FlxG;
@@ -66,11 +66,11 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		if(script != null) script.call(func, args);
 	}
 
-
 	override public function create():Void {
-		instance = this;
 		MusicBeatState.windowNameSuffix = "";
+		instance = this;
 		swagShader = new ColorSwapHSV();
+
 		if (!firstTimeStarting) {
 			persistentUpdate = true;
 			persistentDraw = true;
@@ -88,13 +88,10 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			Highscore.load();
 			ModList.load();
 			NoteColors.load();
-			//Toolkit.theme = "dark";
-        	//Toolkit.init();
-			//trace(Registry.getValue(Registry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme"));
-			#if polymod
+			#if MODDING_ALLOWED
 			PolymodHandler.loadMods();
 			#end
-			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymodIcon.png");
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
 			#if FLX_NO_DEBUG
@@ -109,8 +106,6 @@ class TitleState extends MusicBeatState implements IHScriptable{
 				FlxG.switchState(new FlashingLightsMenu());
 
 			curWacky = FlxG.random.getObject(getIntroTextShit());
-
-
 
 			super.create();
 
@@ -128,10 +123,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			}, false, 100);
 			#end
 
-
-
 			firstTimeStarting = true;
-
 		}
 
 		#if sys
@@ -140,7 +132,6 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			script.start();		
 		}
 		#end
-
 
 		new FlxTimer().start(1, function(tmr:FlxTimer) startIntro());
 	}
@@ -153,9 +144,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
 
-	public static var version:String = "v0.3";
-
-	public static var version_New:String = "v0.3";
+	public static var version:String = "vnull";
 
 	public static inline function playTitleMusic() {
 		FlxG.sound.playMusic(MusicUtilities.GetTitleMusicPath(), 0);
@@ -163,7 +152,6 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 	function startIntro() {
 		if (!initialized) {
-
 			call("startIntro");
 
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
@@ -200,33 +188,31 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			Main.toggleMem(Options.getData("memoryCounter"));
 			Main.toggleVers(Options.getData("versionDisplay"));
 			Main.toggleLogs(Options.getData("developer"));
-
 			Main.changeFont(Options.getData("infoDisplayFont"));
 
 			call("startIntroPost");
 		}
 
-		version = '${MusicBeatState.windowNamePrefix}-git (v${Assets.getText("version.txt")})';
-
-		persistentUpdate = true;
+		version = '${MusicBeatState.windowNamePrefix} (${CoolUtil.getCurrentVersion()})';
 
 		var bg:FlxSprite = new FlxSprite();
 
 		if (Options.getData("oldTitle")) {
 			bg.loadGraphic(Paths.image("title/stageback"));
-			bg.antialiasing = true;
+			bg.antialiasing = Options.getData("antialiasing");
 			bg.setGraphicSize(Std.int(FlxG.width * 1.1));
 			bg.updateHitbox();
 			bg.screenCenter();
-		} else
+		} else {
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		}
 
 		add(bg);
 
 		if (Options.getData("oldTitle")) {
 			old_logo = new FlxSprite().loadGraphic(Paths.image('title/logo'));
 			old_logo.screenCenter();
-			old_logo.antialiasing = true;
+			old_logo.antialiasing = Options.getData("antialiasing");
 
 			old_logo_black = new FlxSprite().loadGraphicFromSprite(old_logo);
 			old_logo_black.screenCenter();
@@ -239,14 +225,12 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			else
 				logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
 
-			logoBl.antialiasing = true;
+			logoBl.antialiasing = Options.getData("antialiasing");
 			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 			logoBl.animation.play('bump');
 			logoBl.updateHitbox();
 			logoBl.shader = swagShader.shader;
 		}
-		
-		
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('title/gfDanceTitle');
@@ -255,13 +239,11 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		gfDance.antialiasing = true;
 		gfDance.shader = swagShader.shader;
 
-
-
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('title/titleEnter');
 		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		titleText.antialiasing = true;
+		titleText.antialiasing = Options.getData("antialiasing");
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		titleText.shader = swagShader.shader;
@@ -286,12 +268,12 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		credGroup.add(blackScreen);
 
 		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('title/polymod_logo'));
-		add(ngSpr);
-		ngSpr.visible = false;
 		ngSpr.setGraphicSize(290); // aprox what newgrounds_logo.width * 0.8 was (289.6), only used cuz polymod_logo is different size than it lol!!!
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = true;
+		ngSpr.antialiasing = Options.getData("antialiasing");
+		ngSpr.visible = false;
+		add(ngSpr);
 
 		FlxG.mouse.visible = false;
 
@@ -300,11 +282,11 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		else
 			titleTextData = CoolUtil.coolTextFile(Paths.txt("titleText", "preload"));
 
-		if (initialized)
+		if (initialized) {
 			skipIntro();
-		else
-			initialized = true;
-
+		}
+		
+		initialized = true;
 	}
 
 	function getIntroTextShit():Array<Array<String>> {
@@ -323,12 +305,10 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	var transitioning:Bool = false;
 
 	override function update(elapsed:Float) {
-
-		if (FlxG.keys.justPressed.Y)
-			{
-			  FlxTween.tween(FlxG.stage.window, {x: FlxG.stage.window.x + 300}, 1.4, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.35});
-			  FlxTween.tween(FlxG.stage.window, {y: FlxG.stage.window.y + 100}, 0.7, {ease: FlxEase.quadInOut, type: PINGPONG});
-			}
+		if (FlxG.keys.justPressed.Y) {
+			FlxTween.tween(FlxG.stage.window, {x: FlxG.stage.window.x + 300}, 1.4, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.35});
+			FlxTween.tween(FlxG.stage.window, {y: FlxG.stage.window.y + 100}, 0.7, {ease: FlxEase.quadInOut, type: PINGPONG});
+		}
 
 		if (controls.LEFT)
 			swagShader.hue -= elapsed * 0.1;
@@ -343,13 +323,11 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		}
 		#end
 
-
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
-
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
@@ -366,11 +344,6 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		if (gamepad != null) {
 			if (gamepad.justPressed.START)
 				pressedEnter = true;
-
-			#if switch
-			if (gamepad.justPressed.B)
-				pressedEnter = true;
-			#end
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro) {
@@ -392,13 +365,12 @@ class TitleState extends MusicBeatState implements IHScriptable{
 				var http = new haxe.Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
 
 				http.onData = function(data:String) {
+					data = 'v' + data;
 					trace(data, DEBUG);
 
-					if (Assets.getText("version.txt") != data) {
-						trace('Outdated Version Detected! ' + data + ' != ' + Assets.getText("version.txt"), WARNING);
-
-						version_New = "v" + data;
-						FlxG.switchState(new OutdatedSubState());
+					if (CoolUtil.getCurrentVersion() != data) {
+						trace('Outdated Version Detected! ' + data + ' != ' + CoolUtil.getCurrentVersion(), WARNING);
+						FlxG.switchState(new OutdatedSubState(data));
 					} else
 						FlxG.switchState(new MainMenuState());
 				}

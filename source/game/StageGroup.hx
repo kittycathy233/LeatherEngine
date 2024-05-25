@@ -1,14 +1,13 @@
 package game;
 
-import shaders.ColorSwapHSV;
-import modding.scripts.languages.HScript;
-#if polymod
+#if MODDING_ALLOWED
 import polymod.backends.PolymodAssets;
 #end
-#if linc_luajit
+#if LUA_ALLOWED
 import modding.ModchartUtilities;
 #end
-import utilities.CoolUtil;
+import shaders.ColorSwapHSV;
+import modding.scripts.languages.HScript;
 import lime.utils.Assets;
 import haxe.Json;
 import flixel.util.FlxColor;

@@ -1,7 +1,6 @@
 package states;
 
 import utilities.Options;
-import utilities.CoolUtil;
 import substates.UISkinSelect;
 import substates.ControlMenuSubstate;
 import modding.CharacterCreationState;
@@ -34,138 +33,137 @@ class OptionsMenu extends MusicBeatState {
 	var curSelected:Int = 0;
 	var ui_Skin:Null<String>;
 
-	public static var inMenu = false;
+	public var inMenu = false;
 
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
-			new PageOption("Gameplay", 0, "Gameplay", "Test Description"),
-			new PageOption("Graphics", 1, "Graphics"),
-			new PageOption("Misc", 2, "Misc"),
-			new PageOption("Developer Options", 3, "Developer Options")
+			new PageOption("Gameplay", "Gameplay", "Test Description"),
+			new PageOption("Graphics", "Graphics"),
+			new PageOption("Misc", "Misc"),
+			new PageOption("Developer Options", "Developer Options")
 		],
 		"Gameplay" => [
-			new PageOption("Back", 0, "Categories"),
-			new GameSubstateOption("Binds", 1, substates.ControlMenuSubstate),
-			new BoolOption("Key Bind Reminders", "extraKeyReminders", 2),
-			new GameSubstateOption("Song Offset", 2, substates.SongOffsetMenu),
-			new PageOption("Judgements", 3, "Judgements"),
-			new PageOption("Input Options", 4, "Input Options"),
-			new BoolOption("Downscroll", "downscroll", 4),
-			new BoolOption("Middlescroll", "middlescroll", 5),
-			new BoolOption("Bot", "botplay", 8),
-			new BoolOption("Quick Restart", "quickRestart", 9),
-			new BoolOption("No Death", "noDeath", 10),
-			new BoolOption("Use Custom Scrollspeed", "useCustomScrollSpeed", 11),
-			new GameSubstateOption("Custom Scroll Speed", 12, substates.ScrollSpeedMenu),
-			new StringSaveOption("Hitsound", CoolUtil.coolTextFile(Paths.txt("hitsoundList")), 13, "hitsound")
+			new PageOption("Back", "Categories"),
+			new GameSubStateOption("Binds", substates.ControlMenuSubstate),
+			new BoolOption("Key Bind Reminders", "extraKeyReminders"),
+			new GameSubStateOption("Song Offset", substates.SongOffsetMenu),
+			new PageOption("Judgements", "Judgements"),
+			new PageOption("Input Options", "Input Options"),
+			new BoolOption("Downscroll", "downscroll"),
+			new BoolOption("Middlescroll", "middlescroll"),
+			new BoolOption("Bot", "botplay"),
+			new BoolOption("Quick Restart", "quickRestart"),
+			new BoolOption("No Death", "noDeath"),
+			new BoolOption("Use Custom Scrollspeed", "useCustomScrollSpeed"),
+			new GameSubStateOption("Custom Scroll Speed", substates.ScrollSpeedMenu),
+			new StringSaveOption("Hitsound", CoolUtil.coolTextFile(Paths.txt("hitsoundList")), "hitsound")
 		],
 		"Graphics" => [
-			new PageOption("Back", 0, "Categories"),
-			new PageOption("Note Options", 1, "Note Options"),
-			new PageOption("Info Display", 2, "Info Display"),
-			new PageOption("Optimizations", 3, "Optimizations"),
-			new GameSubstateOption("Max FPS", 4, substates.MaxFPSMenu),
-			new BoolOption("Bigger Score Text", "biggerScoreInfo", 5),
-			new BoolOption("Bigger Info Text", "biggerInfoText", 6),
-			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], 7, "timeBarStyle"),
-			new PageOption("Screen Effects", 8, "Screen Effects"),
-			new GameStateOption("Change Hud Settings", 9, new ui.HUDAdjustment())
+			new PageOption("Back", "Categories"),
+			new PageOption("Note Options", "Note Options"),
+			new PageOption("Info Display", "Info Display"),
+			new PageOption("Optimizations", "Optimizations"),
+			new GameSubStateOption("Max FPS", substates.MaxFPSMenu),
+			new BoolOption("Bigger Score Text", "biggerScoreInfo"),
+			new BoolOption("Bigger Info Text", "biggerInfoText"),
+			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], "timeBarStyle"),
+			new PageOption("Screen Effects", "Screen Effects"),
+			new GameStateOption("Change Hud Settings", new ui.HUDAdjustment())
 		],
 		"Misc" => [
-			new PageOption("Back", 0, "Categories"),
-			new BoolOption("Prototype Title Screen", "oldTitle", 1),
-			new BoolOption("Friday Night Title Music", "nightMusic", 2),
-			new BoolOption("Watermarks", "watermarks", 3),
-			new BoolOption("Freeplay Music", "freeplayMusic", 4),
-			#if discord_rpc
-			new BoolOption("Discord RPC", "discordRPC", 5),
+			new PageOption("Back", "Categories"),
+			new BoolOption("Prototype Title Screen", "oldTitle"),
+			new BoolOption("Friday Night Title Music", "nightMusic"),
+			new BoolOption("Watermarks", "watermarks"),
+			new BoolOption("Freeplay Music", "freeplayMusic"),
+			#if DISCORD_ALLOWED
+			new BoolOption("Discord RPC", "discordRPC"),
 			#end
-			new StringSaveOption("Cutscenes Play On", ["story", "freeplay", "both"], 6, "cutscenePlaysOn"),
-			new StringSaveOption("Play As", ["bf", "opponent"], 7, "playAs"),
-			new BoolOption("Disable Debug Menus", "disableDebugMenus", 10),
-			new BoolOption("Invisible Notes", "invisibleNotes", 11),
-			new BoolOption("Auto Pause", "autoPause", 12),
-			new BoolOption("Load Asynchronously", "loadAsynchronously", 13),
-			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", 14),
-			new BoolOption("Skip Results", "skipResultsScreen", 15),
-			new BoolOption("Show Score", "showScore", 16),
-			new BoolOption("Dinnerbone Mode", "dinnerbone", 17),
-			new GameSubstateOption("Import Old Scores", 18, substates.ImportHighscoresSubstate)
+			new StringSaveOption("Cutscenes Play On", ["story", "freeplay", "both"], "cutscenePlaysOn"),
+			new StringSaveOption("Play As", ["bf", "opponent"], "playAs"),
+			new BoolOption("Disable Debug Menus", "disableDebugMenus"),
+			new BoolOption("Invisible Notes", "invisibleNotes"),
+			new BoolOption("Auto Pause", "autoPause"),
+			new BoolOption("Load Asynchronously", "loadAsynchronously"),
+			new BoolOption("Flixel Splash Screen", "flixelStartupScreen"),
+			new BoolOption("Show Score", "showScore"),
+			new BoolOption("Dinnerbone Mode", "dinnerbone"),
+			new GameSubStateOption("Import Old Scores", substates.ImportHighscoresSubstate)
 		],
 		"Optimizations" => [
-			new PageOption("Back", 0, "Graphics"),
-			new BoolOption("Antialiasing", "antialiasing", 1),
-			new BoolOption("Health Icons", "healthIcons", 2),
-			new BoolOption("Health Bar", "healthBar", 3),
-			new BoolOption("Ratings and Combo", "ratingsAndCombo", 3),
-			new BoolOption("Chars And BGs", "charsAndBGs", 3),
-			new BoolOption("Menu Backgrounds", "menuBGs", 4),
-			new BoolOption("Optimized Characters", "optimizedChars", 5),
-			new BoolOption("Animated Backgrounds", "animatedBGs", 6),
-			new BoolOption("Preload Stage Events", "preloadChangeBGs", 7),
-			new BoolOption("Persistent Cached Data", "memoryLeaks", 8),
+			new PageOption("Back", "Graphics"),
+			new BoolOption("Antialiasing", "antialiasing"),
+			new BoolOption("Health Icons", "healthIcons"),
+			new BoolOption("Health Bar", "healthBar"),
+			new BoolOption("Ratings and Combo", "ratingsAndCombo"),
+			new BoolOption("Chars And BGs", "charsAndBGs"),
+			new BoolOption("Menu Backgrounds", "menuBGs"),
+			new BoolOption("Optimized Characters", "optimizedChars"),
+			new BoolOption("Animated Backgrounds", "animatedBGs"),
+			new BoolOption("Preload Stage Events", "preloadChangeBGs"),
+			new BoolOption("Persistent Cached Data", "memoryLeaks"),
 			#if MODCHARTING_TOOLS
-			new BoolOption("Optimized Modcharts", "optimizedModcharts", 5),
+			new BoolOption("Optimized Modcharts", "optimizedModcharts"),
 			#end
 		],
 		"Info Display" => [
-			new PageOption("Back", 0, "Graphics"),
+			new PageOption("Back", "Graphics"),
 			new DisplayFontOption("Display Font", [
 				"_sans",
 				OpenFLAssets.getFont(Paths.font("vcr.ttf")).fontName,
 				OpenFLAssets.getFont(Paths.font("pixel.otf")).fontName
-			],
-				6, "infoDisplayFont"),
-			new BoolOption("FPS Counter", "fpsCounter", 3),
-			new BoolOption("Memory Counter", "memoryCounter", 4),
-			new BoolOption("Version Display", "versionDisplay", 4)
+			], "infoDisplayFont"),
+			new BoolOption("FPS Counter", "fpsCounter"),
+			new BoolOption("Memory Counter", "memoryCounter"),
+			new BoolOption("Version Display", "versionDisplay")
 		],
 		"Judgements" => [
-			new PageOption("Back", 0, "Gameplay"),
-			new GameSubstateOption("Timings", 1, substates.JudgementMenu),
-			new StringSaveOption("Rating Mode", ["psych", "simple", "complex"], 2, "ratingType"),
-			new BoolOption("Marvelous Ratings", "marvelousRatings", 3),
-			new BoolOption("Show Rating Count", "sideRatings", 4)
+			new PageOption("Back", "Gameplay"),
+			new GameSubStateOption("Timings", substates.JudgementMenu),
+			new StringSaveOption("Rating Mode", ["psych", "simple", "complex"], "ratingType"),
+			new BoolOption("Marvelous Ratings", "marvelousRatings"),
+			new BoolOption("Show Rating Count", "sideRatings")
 		],
 		"Input Options" => [
-			new PageOption("Back", 0, "Gameplay"),
-			new StringSaveOption("Input Mode", ["standard", "rhythm"], 3, "inputSystem"),
-			new BoolOption("Anti Mash", "antiMash", 4),
-			new BoolOption("Shit gives Miss", "missOnShit", 5),
-			new BoolOption("Ghost Tapping", "ghostTapping", 9),
-			new BoolOption("Gain Misses on Sustains", "missOnHeldNotes", 10),
-			new BoolOption("No Miss", "noHit", 6),
-			new BoolOption("Reset Button", "resetButton", 7)
+			new PageOption("Back", "Gameplay"),
+			new StringSaveOption("Input Mode", ["standard", "rhythm"], "inputSystem"),
+			new BoolOption("Anti Mash", "antiMash"),
+			new BoolOption("Shit gives Miss", "missOnShit"),
+			new BoolOption("Ghost Tapping", "ghostTapping"),
+			new BoolOption("Gain Misses on Sustains", "missOnHeldNotes"),
+			new BoolOption("No Miss", "noHit"),
+			new BoolOption("Reset Button", "resetButton")
 		],
 		"Note Options" => [
-			new PageOption("Back", 0, "Graphics"),
-			new GameSubstateOption("Note BG Alpha", 1, substates.NoteBGAlphaMenu),
-			new BoolOption("Player Note Glow When Hit", "playerStrumsGlow", 2),
-			new BoolOption("Enemy Note Glow When Hit", "enemyStrumsGlow", 3),
-			new BoolOption("Note Glow When Can Hit", "playerStrumsGlowWhenCanBeHit", 4),
-			new BoolOption("Player Note Splashes", "playerNoteSplashes", 5),
-			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes", 6),
-			new BoolOption("Note Accuracy Text", "displayMs", 7),
-			new GameSubstateOption("Note Colors", 8, substates.NoteColorSubstate),
-			new BoolOption("Color Quantization", "colorQuantization", 9),
-			new BoolOption("Use Custom Note Colors", "customNoteColors", 10),
-			new GameSubstateOption("UI Skin", 11, substates.UISkinSelect)
+			new PageOption("Back", "Graphics"),
+			new GameSubStateOption("Note BG Alpha", substates.NoteBGAlphaMenu),
+			new BoolOption("Player Note Glow When Hit", "playerStrumsGlow"),
+			new BoolOption("Enemy Note Glow When Hit", "enemyStrumsGlow"),
+			new BoolOption("Note Glow When Can Hit", "playerStrumsGlowWhenCanBeHit"),
+			new BoolOption("Player Note Splashes", "playerNoteSplashes"),
+			new BoolOption("Enemy Note Splashes", "opponentNoteSplashes"),
+			new BoolOption("Note Accuracy Text", "displayMs"),
+			new GameSubStateOption("Note Colors", substates.NoteColorSubstate),
+			new BoolOption("Color Quantization", "colorQuantization"),
+			new BoolOption("Use Custom Note Colors", "customNoteColors"),
+			new GameSubStateOption("UI Skin", substates.UISkinSelect)
 		],
 		"Screen Effects" => [
-			new PageOption("Back", 0, "Graphics"),
-			new BoolOption("Camera Tracks Direction", "cameraTracksDirections", 1),
-			new BoolOption("Camera Bounce", "cameraZooms", 2),
-			new BoolOption("Flashing Lights", "flashingLights", 3),
-			new BoolOption("Screen Shake", "screenShakes", 4),
-			new BoolOption("Shaders", "shaders", 5)
+			new PageOption("Back", "Graphics"),
+			new BoolOption("Camera Tracks Direction", "cameraTracksDirections"),
+			new BoolOption("Camera Bounce", "cameraZooms"),
+			new BoolOption("Flashing Lights", "flashingLights"),
+			new BoolOption("Screen Shake", "screenShakes"),
+			new BoolOption("Shaders", "shaders")
 		],
 		"Developer Options" => [
-			new PageOption("Back", 0, "Categories"),
-			new BoolOption("Developer Mode", "developer", 1)
+			new PageOption("Back", "Categories"),
+			new BoolOption("Developer Mode", "developer")
 		]
 	];
 
 	public var page:FlxTypedGroup<Option> = new FlxTypedGroup<Option>();
+	public var pageName:String = "Categories";
 	public static var instance:OptionsMenu;
 
 	override function create():Void {
@@ -183,7 +181,7 @@ class OptionsMenu extends MusicBeatState {
 			else
 				menuBG = new FlxSprite().loadGraphic(Paths.image('ui skins/' + ui_Skin + '/backgrounds' + '/menuDesat'));
 		else
-			menuBG = new FlxSprite().makeGraphic(1286, 730, FlxColor.fromString("#E1E1E1"), false, "optimizedMenuDesat");
+			menuBG = new FlxSprite().makeGraphic(128630, FlxColor.fromString("#E1E1E1"), false, "optimizedMenuDesat");
 
 		menuBG.color = 0xFFea71fd;
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
@@ -196,20 +194,22 @@ class OptionsMenu extends MusicBeatState {
 
 		add(page);
 
-		LoadPage("Categories");
+		loadPage("Categories");
 
 		if (FlxG.sound.music == null)
 			FlxG.sound.playMusic(MusicUtilities.GetOptionsMenuMusic(), 0.7, true);
 	}
 
-	public static function LoadPage(Page_Name:String):Void {
+	public function loadPage(loadedPageName:String):Void {
+		pageName = loadedPageName;
+
 		inMenu = true;
 		instance.curSelected = 0;
 
 		var curPage:FlxTypedGroup<Option> = instance.page;
 		curPage.clear();
 
-		for (x in instance.pages.get(Page_Name).copy()) {
+		for (x in instance.pages.get(loadedPageName).copy()) {
 			curPage.add(x);
 		}
 
@@ -217,12 +217,17 @@ class OptionsMenu extends MusicBeatState {
 		var bruh:Int = 0;
 
 		for (x in instance.page.members) {
-			x.Alphabet_Text.targetY = bruh - instance.curSelected;
+			x.alphabetText.targetY = bruh - instance.curSelected;
 			bruh++;
 		}
 	}
 
-	function goBack(){
+	function goBack() {
+		if (pageName != "Categories") {
+			loadPage(cast(page.members[0], PageOption).pageName);
+			return;
+		}
+
 		FlxG.switchState(new MainMenuState());
 	}
 
@@ -261,12 +266,12 @@ class OptionsMenu extends MusicBeatState {
 		var bruh = 0;
 
 		for (x in page.members) {
-			x.Alphabet_Text.targetY = bruh - curSelected;
+			x.alphabetText.targetY = bruh - curSelected;
 			bruh++;
 		}
 
 		for (x in page.members) {
-			if (x.Alphabet_Text.targetY != 0) {
+			if (x.alphabetText.targetY != 0) {
 				for (item in x.members) {
 					item.alpha = 0.6;
 				}

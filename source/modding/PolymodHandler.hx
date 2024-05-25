@@ -1,14 +1,12 @@
 package modding;
 
-#if polymod
+#if MODDING_ALLOWED
 import polymod.Polymod;
 
-class PolymodHandler
-{
+class PolymodHandler {
     public static var metadataArrays:Array<String> = [];
 
-    public static function loadMods()
-    {
+    public static function loadMods() {
         loadModMetadata();
 
 		Polymod.init({
@@ -26,15 +24,13 @@ class PolymodHandler
                     "songs" => "songs",
                     "stages" => "stages",
                     "shared" => "shared",
-                    "replays" => "replays",
                     "fonts" => "fonts"
                 ]
             }
 		});
     }
 
-    public static function loadModMetadata()
-    {
+    public static function loadModMetadata() {
         metadataArrays = [];
 
         var tempArray:Array<ModMetadata> = Polymod.scan({
@@ -42,13 +38,12 @@ class PolymodHandler
             apiVersionRule: "*.*.*",
             errorCallback: function(error:PolymodError) {
                 #if debug
-                trace(error.message);
+                trace(error.message, LOG);
                 #end
             },
         });
 
-        for(metadata in tempArray)
-        {
+        for(metadata in tempArray) {
             metadataArrays.push(metadata.id);
             ModList.modMetadatas.set(metadata.id, metadata);
         }

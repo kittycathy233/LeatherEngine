@@ -1,7 +1,10 @@
 package modding;
 
+#if LUA_ALLOWED
+#if MODCHARTING_TOOLS
+import modcharting.ModchartFuncs;
+#end
 
-#if linc_luajit
 import flixel.addons.effects.FlxTrail;
 import flixel.text.FlxText;
 import openfl.display.BlendMode;
@@ -33,7 +36,6 @@ import flixel.FlxSprite;
 import states.PlayState;
 import lime.utils.Assets;
 import flixel.sound.FlxSound;
-import utilities.CoolUtil;
 import polymod.backends.PolymodAssets;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -42,9 +44,6 @@ import flixel.FlxG;
 import game.Conductor;
 import lime.app.Application;
 import modding.helpers.FlxTextFix;
-#if MODCHARTING_TOOLS
-import modcharting.ModchartFuncs;
-#end
 
 using StringTools;
 
@@ -295,7 +294,7 @@ class ModchartUtilities {
 		setVar("strumLineY", PlayState.instance.strumLine.y);
 
 		setVar("characterPlayingAs", PlayState.characterPlayingAs);
-		setVar("inReplay", PlayState.playingReplay);
+		setVar("inReplay", false);
 
 		setVar("player1", PlayState.SONG.player1);
 		setVar("player2", PlayState.SONG.player2);
@@ -374,13 +373,13 @@ class ModchartUtilities {
 		setVar("SONG", PlayState.SONG);
 
 		setVar("leatherEngine", {
-			version: Application.current.meta.get('version'),
+			version: CoolUtil.getCurrentVersion().replace('v', ''),
 			path: Sys.programPath(),
 			cwd: Sys.getCwd(),
 			systemName: Sys.systemName(),
 		});
 
-		setVar("version", Application.current.meta.get('version'));
+		setVar("version", CoolUtil.getCurrentVersion().replace('v', ''));
 
 		// callbacks
 		setLuaFunction("trace", function(str:Dynamic = "", ?printType:String = "DEBUG") {

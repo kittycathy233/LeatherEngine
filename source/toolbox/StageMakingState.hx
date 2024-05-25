@@ -14,7 +14,6 @@ import states.OptionsMenu;
 import game.Character;
 import ui.FlxScrollableDropDownMenu;
 import states.MusicBeatState;
-import utilities.CoolUtil;
 import game.StageGroup;
 import flixel.util.FlxColor;
 import flixel.text.FlxText;

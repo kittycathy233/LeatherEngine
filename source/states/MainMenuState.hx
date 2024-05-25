@@ -1,15 +1,19 @@
 package states;
 
+#if DISCORD_ALLOWED
+import utilities.Discord.DiscordClient;
+#end
+
+#if MODDING_ALLOWED
+import modding.PolymodHandler;
+#end
+
 import modding.scripts.languages.HScript;
 import flixel.system.debug.interaction.tools.Tool;
 import utilities.Options;
 import flixel.util.FlxTimer;
-import game.Replay;
 import utilities.MusicUtilities;
 import lime.utils.Assets;
-#if discord_rpc
-import utilities.Discord.DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -22,13 +26,9 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
-import modding.PolymodHandler;
 import modding.scripts.languages.HScript.IHScriptable;
 
-using StringTools;
-
-class MainMenuState extends MusicBeatState implements IHScriptable
-{
+class MainMenuState extends MusicBeatState implements IHScriptable {
 	/**
 		Current instance of `MainMenuState`.
 	**/
@@ -46,35 +46,32 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 	public var script:HScript;
 
 	public inline function call(func:String, ?args:Array<Dynamic>) {
-		if(script != null) script.call(func, args);
+		if (script != null) {
+			script.call(func, args);
+		}
 	}
 
-	override function create()
-	{
+	override function create() {
 		instance = this;
 		#if sys
 		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx")){
 			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/MainMenuState.hx", true);
 			script.start();		
 		}
-		#end	
+		#end
+
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 		
-		if(PolymodHandler.metadataArrays.length > 0)
+		#if MODDING_ALLOWED
+		if (PolymodHandler.metadataArrays.length > 0)
 			optionShit.push('mods');
-
-		if(Replay.getReplayList().length > 0)
-			optionShit.push('replays');
+		#end
 
 		if(Options.getData("developer"))
 			optionShit.push('toolbox');
 
 		call("buttonsAdded");
-		
-		#if !web
-		//optionShit.push('multiplayer');
-		#end
 		
 		MusicBeatState.windowNameSuffix = "";
 		
@@ -133,40 +130,38 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		for (i in 0...optionShit.length)
-			{
-				var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-				if (!Assets.exists(Paths.image('ui skins/' + Options.getData("uiSkin") + '/' + 'buttons/'+ optionShit[i], 'preload')))
-					menuItem.frames = Paths.getSparrowAtlas('ui skins/' + 'default' + '/' + 'buttons/'+ optionShit[i], 'preload');
-				else
-					menuItem.frames = Paths.getSparrowAtlas('ui skins/' + Options.getData("uiSkin") + '/' + 'buttons/'+ optionShit[i], 'preload');
-				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-				menuItem.animation.play('idle');
-				menuItem.ID = i;
-				menuItem.screenCenter(X);
-				menuItems.add(menuItem);
-				menuItem.scrollFactor.set(0.5, 0.5);
-				menuItem.antialiasing = true;
-			}
+		for (i in 0...optionShit.length) {
+			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
+			if (!Assets.exists(Paths.image('ui skins/' + Options.getData("uiSkin") + '/' + 'buttons/'+ optionShit[i], 'preload')))
+				menuItem.frames = Paths.getSparrowAtlas('ui skins/' + 'default' + '/' + 'buttons/'+ optionShit[i], 'preload');
+			else
+				menuItem.frames = Paths.getSparrowAtlas('ui skins/' + Options.getData("uiSkin") + '/' + 'buttons/'+ optionShit[i], 'preload');
+			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.animation.play('idle');
+			menuItem.ID = i;
+			menuItem.screenCenter(X);
+			menuItems.add(menuItem);
+			menuItem.scrollFactor.set(0.5, 0.5);
+			menuItem.antialiasing = true;
+		}
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (Options.getData("watermarks") ? TitleState.version : "v0.2.8"), 16);
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, (Options.getData("watermarks") ? TitleState.version : "v0.3.3"), 16);
 		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		var switchInfo:FlxText = new FlxText(5, versionShit.y - versionShit.height, 0, 'Hit TAB to switch mods.', 16);
 		switchInfo.scrollFactor.set();
-		switchInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		switchInfo.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(switchInfo);
 
 		var modInfo:FlxText = new FlxText(5, switchInfo.y - switchInfo.height, 0, '${modding.PolymodHandler.metadataArrays.length} mods loaded, ${modding.ModList.getActiveMods(modding.PolymodHandler.metadataArrays).length} mods active.', 16);
 		modInfo.scrollFactor.set();
-		modInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		modInfo.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(modInfo);
-
 
 		changeItem();
 
@@ -177,10 +172,7 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 
 	var selectedSomethin:Bool = false;
 
-	override function update(elapsed:Float)
-	{
-
-
+	override function update(elapsed:Float) {
 		#if sys
 		if(FlxG.keys.justPressed.TAB){
 			openSubState(new modding.SwitchModSubstate());
@@ -194,54 +186,42 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 		if (FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 
-		if (!selectedSomethin)
-		{
-			if(-1 * Math.floor(FlxG.mouse.wheel) != 0)
-			{
+		if (!selectedSomethin) {
+			if(-1 * Math.floor(FlxG.mouse.wheel) != 0) {
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1 * Math.floor(FlxG.mouse.wheel));
 			}
 
-			if (controls.UP_P)
-			{
+			if (controls.UP_P) {
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.DOWN_P)
-			{
+			if (controls.DOWN_P) {
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
 
-			if (controls.ACCEPT)
-			{
+			if (controls.ACCEPT) {
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
-				if(Options.getData("flashingLights"))
+				if(Options.getData("flashingLights")) {
 					FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+				}
 
-				menuItems.forEach(function(spr:FlxSprite)
-				{
-					if (curSelected != spr.ID)
-					{
+				menuItems.forEach(function(spr:FlxSprite) {
+					if (curSelected != spr.ID) {
 						FlxTween.tween(spr, {alpha: 0}, 0.4, {
 							ease: FlxEase.quadOut,
-							onComplete: function(twn:FlxTween)
-							{
-								spr.kill();
-							}
+							onComplete: (_) -> spr.kill()
 						});
-					}
-					else
-					{
-						if(Options.getData("flashingLights"))
-						{
-							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(_) { changeState(); });
+					} else {
+						if(Options.getData("flashingLights")) {
+							FlxFlicker.flicker(spr, 1, 0.06, false, false, (_) -> selectCurrent());
+						} else {
+							new FlxTimer().start(1, (_) -> selectCurrent(), 1);
 						}
-						else
-							new FlxTimer().start(1, function(_) { changeState(); }, 1);
 					}
 				});
 			}
@@ -253,25 +233,21 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 
 		call("updatePost", [elapsed]);
 
-		menuItems.forEach(function(spr:FlxSprite)
-		{
+		menuItems.forEach((spr:FlxSprite) -> {
 			spr.screenCenter(X);
 		});
 	}
 
-	function changeState()
-	{
-		var daChoice:String = optionShit[curSelected];
+	function selectCurrent() {
+		var selectedButton:String = optionShit[curSelected];
 		
-		switch (daChoice)
-		{
+		switch (selectedButton) {
 			case 'story mode':
 				FlxG.switchState(new StoryMenuState());
 				trace("Story Menu Selected");
 
 			case 'freeplay':
 				FlxG.switchState(new FreeplayState());
-
 				trace("Freeplay Menu Selected");
 
 			case 'options':
@@ -279,13 +255,11 @@ class MainMenuState extends MusicBeatState implements IHScriptable
 				FlxTransitionableState.skipNextTransOut = true;
 				FlxG.switchState(new OptionsMenu());
 
-			#if sys
+			#if MODDING_ALLOWED
 			case 'mods':
 				FlxG.switchState(new ModsMenu());
-
-			case 'replays':
-				FlxG.switchState(new ReplaySelectorState());
 			#end
+
 			case 'toolbox':
 				FlxG.switchState(new toolbox.ToolboxPlaceholder());
 		}

@@ -4,8 +4,6 @@ import states.OptionsMenu;
 import flixel.util.FlxStringUtil;
 import flixel.FlxCamera;
 import game.Conductor;
-import game.Replay;
-import states.ReplaySelectorState;
 import states.FreeplayState;
 import states.StoryMenuState;
 import states.PlayState;
@@ -182,7 +180,6 @@ class PauseSubState extends MusicBeatSubstate {
 
 					PlayState.instance.closeLua();
 
-
 					PlayState.SONG.keyCount = PlayState.instance.ogKeyCount;
 					PlayState.SONG.playerKeyCount = PlayState.instance.ogPlayerKeyCount;
 
@@ -238,35 +235,17 @@ class PauseSubState extends MusicBeatSubstate {
 				case "exit to menu":
 					PlayState.instance.closeLua();
 
-
 					pauseMusic.stop();
 					pauseMusic.destroy();
 					FlxG.sound.list.remove(pauseMusic);
 					FlxG.cameras.remove(pauseCamera);
+					PlayState.chartingMode = false;
 
-					if (PlayState.playingReplay && Replay.getReplayList().length > 0) {
-						Conductor.offset = Options.getData("songOffset");
-
-						@:privateAccess
-						{
-							Options.setData(PlayState.instance.ogJudgementTimings, "judgementTimings");
-							Options.setData(PlayState.instance.ogGhostTapping, "ghostTapping");
-						}
-
-						FlxG.switchState(new ReplaySelectorState());
-						PlayState.chartingMode = false;
+					if (PlayState.isStoryMode) {
+						FlxG.switchState(new StoryMenuState());
 					} else {
-						if (PlayState.isStoryMode){
-							FlxG.switchState(new StoryMenuState());
-							PlayState.chartingMode = false;
-						}
-						else{
-							FlxG.switchState(new FreeplayState());
-							PlayState.chartingMode = false;
-						}
+						FlxG.switchState(new FreeplayState());
 					}
-
-					PlayState.playingReplay = false;
 			}
 		}
 	}

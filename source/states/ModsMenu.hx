@@ -32,8 +32,7 @@ import game.Song;
 import toolbox.StageMakingState;
 import game.Highscore;
 
-class ModsMenu extends MusicBeatState
-{
+class ModsMenu extends MusicBeatState {
 	var curSelected:Int = 0;
 	var ui_Skin:Null<String>;
 
@@ -44,8 +43,7 @@ class ModsMenu extends MusicBeatState
 	var descriptionText:FlxText;
 	var descBg:FlxSprite;
 
-	override function create()
-	{
+	override function create() {
 		if (ui_Skin == null || ui_Skin == "default")
 			ui_Skin = Options.getData("uiSkin");
 
@@ -105,10 +103,8 @@ class ModsMenu extends MusicBeatState
 		add(text);
 	}
 
-	function loadMods()
-	{
-		page.forEachExists(function(option:ModOption)
-		{
+	function loadMods() {
+		page.forEachExists(function(option:ModOption) {
 			page.remove(option);
 			option.kill();
 			option.destroy();
@@ -116,40 +112,34 @@ class ModsMenu extends MusicBeatState
 
 		var optionLoopNum:Int = 0;
 
-		for(modId in PolymodHandler.metadataArrays)
-		{
-			if(ModList.modMetadatas.get(modId).metadata.get('canBeDisabled') != 'false'){
-				var modOption = new ModOption(ModList.modMetadatas.get(modId).title, modId, optionLoopNum);
+		for(modId in PolymodHandler.metadataArrays) {
+			if(ModList.modMetadatas.get(modId).metadata.get('canBeDisabled') != 'false') {
+				var modOption = new ModOption(ModList.modMetadatas.get(modId).title, modId);
 				page.add(modOption);
 				optionLoopNum++;
 			}
 		}
 	}
 
-	override function update(elapsed:Float)
-	{
+	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if(-1 * Math.floor(FlxG.mouse.wheel) != 0)
-		{
+		if(-1 * Math.floor(FlxG.mouse.wheel) != 0) {
 			curSelected -= 1 * Math.floor(FlxG.mouse.wheel);
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		}
 
-		if (controls.UP_P)
-		{
+		if (controls.UP_P) {
 			curSelected --;
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		}
 
-		if (controls.DOWN_P)
-		{
+		if (controls.DOWN_P) {
 			curSelected ++;
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		}
 
-		if (controls.BACK)
-		{
+		if (controls.BACK) {
 			PolymodHandler.loadMods();
 			FlxG.switchState(new MainMenuState());
 		}
@@ -162,21 +152,19 @@ class ModsMenu extends MusicBeatState
 
 		var bruh = 0;
 
-		for (x in page.members)
-		{
-			x.Alphabet_Text.targetY = bruh - curSelected;
+		for (x in page.members) {
+			x.alphabetText.targetY = bruh - curSelected;
 
-			if(x.Alphabet_Text.targetY == 0)
-			{
+			if(x.alphabetText.targetY == 0) {
 				descriptionText.screenCenter(X);
 
 				@:privateAccess
 				descriptionText.text = 
-				ModList.modMetadatas.get(x.Option_Value).description 
-				+ "\nAuthor: " + ModList.modMetadatas.get(x.Option_Value)._author 
-				+ "\nLeather Engine Version: " + ModList.modMetadatas.get(x.Option_Value).apiVersion 
-				+ "\nMod Version: " + ModList.modMetadatas.get(x.Option_Value).modVersion 
-				+ "\n";
+					ModList.modMetadatas.get(x.optionValue).description 
+					+ "\nAuthor: " + ModList.modMetadatas.get(x.optionValue)._author 
+					+ "\nLeather Engine Version: " + ModList.modMetadatas.get(x.optionValue).apiVersion 
+					+ "\nMod Version: " + ModList.modMetadatas.get(x.optionValue).modVersion 
+					+ "\n";
 			}
 
 			bruh++;

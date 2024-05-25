@@ -1,6 +1,5 @@
 package game;
 
-import utilities.CoolUtil;
 import flixel.FlxSprite;
 
 class DancingSprite extends FlxSprite {

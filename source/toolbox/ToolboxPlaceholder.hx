@@ -25,24 +25,24 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
 			#if sys
-			new GameStateOption("New Mod", 0, new NewModState()),
+			new GameStateOption("New Mod", new NewModState()),
 			#end
-			new ToolboxPageOption("Tools", 1, "Tools",),
-			new ToolboxPageOption("Documentation", 2, "Documentation")
+			new ToolboxPageOption("Tools", "Tools",),
+			new ToolboxPageOption("Documentation", "Documentation")
 		],
 		"Tools" => [
-			new GameStateOption("Charter", 0, new ChartingState()),
-			new CharacterCreatorOption("Character Creator", 1, new CharacterCreator("dad", "stage")),
-			new GameStateOption("Stage Editor", 2, new StageMakingState("stage")),
+			new GameStateOption("Charter", new ChartingState()),
+			new CharacterCreatorOption("Character Creator", new CharacterCreator("dad", "stage")),
+			new GameStateOption("Stage Editor", new StageMakingState("stage")),
 			#if MODCHARTING_TOOLS
-			new GameStateOption("Modchart Editor", 3, new modcharting.ModchartEditorState())
+			new GameStateOption("Modchart Editor", new modcharting.ModchartEditorState())
 			#end
 		],
 		"Documentation" => [
-			new OpenUrlOption("Wiki", 0, "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),
-			new OpenUrlOption("HScript Api", 1, "HScript Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
-			new OpenUrlOption("Lua Api", 2, "Lua Api", "https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/wiki/Lua-api-documentation-(WIP)"),
-			new OpenUrlOption("Polymod Docs", 3, "Polymod Docs", "https://polymod.io/docs/")
+			new OpenUrlOption("Wiki", "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),
+			new OpenUrlOption("HScript Api", "HScript Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
+			new OpenUrlOption("Lua Api", "Lua Api", "https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/wiki/Lua-api-documentation-(WIP)"),
+			new OpenUrlOption("Polymod Docs", "Polymod Docs", "https://polymod.io/docs/")
 		]
 	];
 
@@ -86,14 +86,14 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 			FlxG.sound.playMusic(MusicUtilities.GetOptionsMenuMusic(), 0.7, true);
 	}
 
-	public static function LoadPage(Page_Name:String):Void {
+	public static function LoadPage(pageName:String):Void {
 		inMenu = true;
 		instance.curSelected = 0;
 
 		var curPage:FlxTypedGroup<Option> = instance.page;
 		curPage.clear();
 
-		for (x in instance.pages.get(Page_Name).copy()) {
+		for (x in instance.pages.get(pageName).copy()) {
 			curPage.add(x);
 		}
 
@@ -101,7 +101,7 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 		var bruh:Int = 0;
 
 		for (x in instance.page.members) {
-			x.Alphabet_Text.targetY = bruh - instance.curSelected;
+			x.alphabetText.targetY = bruh - instance.curSelected;
 			bruh++;
 		}
 	}
@@ -141,12 +141,12 @@ class ToolboxPlaceholder extends states.MusicBeatState {
 		var bruh = 0;
 
 		for (x in page.members) {
-			x.Alphabet_Text.targetY = bruh - curSelected;
+			x.alphabetText.targetY = bruh - curSelected;
 			bruh++;
 		}
 
 		for (x in page.members) {
-			if (x.Alphabet_Text.targetY != 0) {
+			if (x.alphabetText.targetY != 0) {
 				for (item in x.members) {
 					item.alpha = 0.6;
 				}
@@ -163,19 +163,19 @@ class ToolboxPlaceholder extends states.MusicBeatState {
  */
  class ToolboxPageOption extends ui.Option {
 	// OPTIONS //
-	public var Page_Name:String = "Categories";
+	public var pageName:String = "Categories";
 
-	override public function new(_Option_Name:String = "", _Option_Row:Int = 0, _Page_Name:String = "Categories", _Description:String = "Test Description") {
-		super(_Option_Name, _Page_Name, _Option_Row);
+	override public function new(_optionName:String = "", _pageName:String = "Categories", _Description:String = "Test Description") {
+		super(_optionName, _pageName);
 
 		// SETTING VALUES //
-		this.Page_Name = _Page_Name;
+		this.pageName = _pageName;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (FlxG.keys.justPressed.ENTER && Std.int(Alphabet_Text.targetY) == 0 && !ToolboxPlaceholder.inMenu)
-			ToolboxPlaceholder.LoadPage(Page_Name);
+		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !ToolboxPlaceholder.inMenu)
+			ToolboxPlaceholder.LoadPage(pageName);
 	}
 }

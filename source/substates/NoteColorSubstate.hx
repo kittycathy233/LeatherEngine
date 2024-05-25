@@ -4,7 +4,6 @@ import shaders.NoteColors;
 import game.StrumNote;
 import utilities.PlayerSettings;
 import flixel.text.FlxText;
-import utilities.CoolUtil;
 import flixel.tweens.FlxEase;
 import utilities.NoteVariables;
 import flixel.tweens.FlxTween;

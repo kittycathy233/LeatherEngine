@@ -13,7 +13,6 @@ import ui.FlxScrollableDropDownMenu;
 import states.MusicBeatState;
 import states.MainMenuState;
 import states.PlayState;
-import utilities.CoolUtil;
 import game.Character;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.FlxG;
