@@ -64,7 +64,7 @@ class FreeplayState extends MusicBeatState implements IHScriptable{
 		0xFF8EE8FF,
 		0xFFFF8CCD,
 		0xFFFF9900,
-		0x735EB0
+		0xFF735EB0
 	];
 
 	private var bg:FlxSprite;

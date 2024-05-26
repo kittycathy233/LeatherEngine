@@ -397,6 +397,11 @@ class ModchartUtilities {
 				cameraFromString(camera).flash(FlxColor.fromString(color), time, null, force);
 		});
 
+		setLuaFunction("fadeCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, fadeIn:Bool = false, force:Bool = false) {
+			if (Options.getData("flashingLights"))
+				cameraFromString(camera).fade(FlxColor.fromString(color), time, fadeIn, null, force);
+		});
+
 		setLuaFunction("triggerEvent", function(event_name:String, argument_1:Dynamic, argument_2:Dynamic) {
 			var string_arg_1:String = Std.string(argument_1);
 			var string_arg_2:String = Std.string(argument_2);

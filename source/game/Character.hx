@@ -108,7 +108,7 @@ class Character extends FlxSprite {
 			}
 
 			if (!debugMode) {
-				dance('', true);
+				dance('');
 
 				if (isPlayer) {
 					// Doesn't flip for BF, since his are already in the right place???
@@ -225,11 +225,23 @@ class Character extends FlxSprite {
 			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT))) {
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
 			} else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
-				// frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
-				// makeGraphic(1, 1);
 				atlasMode = true;
-				atlas = new FlxAnimate(0.0, 0.0, Paths.file("images/characters/" + config.imagePath, TEXT));
-			} else {
+				atlas = new FlxAnimate(0.0, 0.0, Paths.getTextureAtlas("characters/" + config.imagePath, "shared"));
+				atlas.showPivot = false;
+			}
+			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".json", TEXT))){
+				frames = Paths.getJsonAtlas('characters/' + config.imagePath);
+			}
+			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".plist", TEXT))){
+				frames = Paths.getCocos2DAtlas('characters/' + config.imagePath);
+			} 
+			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".eas", TEXT))){
+				frames = Paths.getEdgeAnimateAtlas('characters/' + config.imagePath);
+			} 
+			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".js", TEXT))){
+				frames = Paths.getEaselJSAtlas('characters/' + config.imagePath);
+			} 
+			else {
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
 			}
 
@@ -383,19 +395,19 @@ class Character extends FlxSprite {
 				else if (playFullAnim && curAnimFinished())
 				{
 					playFullAnim = false;
-					dance('', true);
+					dance('');
 				}
 				else if (preventDanceForAnim && curAnimFinished())
 				{
 					preventDanceForAnim = false;
-					dance('', true);
+					dance('');
 				}
 			if (!isPlayer) {
 				if (curAnimName().startsWith('sing'))
 					holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
 
 				if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001) {
-					dance(mostRecentAlt, true);
+					dance(mostRecentAlt);
 					holdTimer = 0;
 				}
 			}
@@ -406,6 +418,13 @@ class Character extends FlxSprite {
 					playAnim('danceRight');
 			}
 		}
+		
+		if (atlasMode && atlas != null) {
+			atlas.update(elapsed);
+		}
+
+		super.update(elapsed);
+
 	}
 
 	private var danced:Bool = false;

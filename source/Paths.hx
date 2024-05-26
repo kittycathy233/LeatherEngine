@@ -1,5 +1,6 @@
 package;
 
+import flxanimate.frames.FlxAnimateFrames;
 import lime.utils.Assets;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -145,6 +146,22 @@ class Paths {
 	}
 
 	inline static public function getTextureAtlas(key:String, ?library:String):String {
-		return getPath('images/$key', IMAGE, library);
+		return getPath('images/$key', TEXT, library);
+	}
+
+	inline static public function getJsonAtlas(key:String, ?library:String):FlxAtlasFrames {
+		return FlxAnimateFrames.fromJson(getPath('images/$key.json', TEXT, library));
+	}
+	
+	inline static public function getEdgeAnimateAtlas(key:String, ?library:String):FlxAtlasFrames {
+		return FlxAnimateFrames.fromEdgeAnimate(getPath('images/$key.eas', TEXT, library));
+	}
+
+	inline static public function getCocos2DAtlas(key:String, ?library:String):FlxAtlasFrames {
+		return FlxAnimateFrames.fromCocos2D(getPath('images/$key.plist', TEXT, library));
+	}
+
+	inline static public function getEaselJSAtlas(key:String, ?library:String):FlxAtlasFrames {
+		return FlxAnimateFrames.fromEaselJS(getPath('images/$key.js', TEXT, library));
 	}
 }
