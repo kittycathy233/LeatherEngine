@@ -341,7 +341,7 @@ class CoolUtil {
 
 		@author Leather128
 	**/
-	public static function print(message:String, ?type:PrintType = DEBUG, ?pos_infos:haxe.PosInfos):Void {
+	public static function print(message:String, ?type:PrintType = LOG, ?pos_infos:haxe.PosInfos):Void {
 		switch (type) {
 			case LOG:
 				haxe_trace('${ansi_colors["cyan"]} LOG ${ansi_colors["default"]} $message', pos_infos);

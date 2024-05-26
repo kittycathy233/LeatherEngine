@@ -16,6 +16,7 @@ import flixel.FlxState;
 import states.OptionsMenu;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
+import ui.ModIcon;
 
 /**
  * The base option class that all options inherit from.
