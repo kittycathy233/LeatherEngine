@@ -175,11 +175,11 @@ class CoolUtil {
 	 */
 	public static inline function setWindowIcon(path:String){
 		#if desktop
-		#if sys
-		if (!FileSystem.exists(path)) {
-			return;
-		}
-		#end
+		// #if sys
+		// if (!FileSystem.exists(path)) {
+		// 	return;
+		// }
+		// #end
 
 		Application.current.window.setIcon(Image.fromFile(path));
 		#end

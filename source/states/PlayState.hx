@@ -3377,6 +3377,7 @@ class PlayState extends MusicBeatState{
 			accuracyText.borderStyle = FlxTextBorderStyle.OUTLINE;
 			accuracyText.borderSize = 1;
 			accuracyText.font = Paths.font("vcr.ttf");
+			accuracyText.antialiasing = ui_settings[3] == "true";
 
 			ratingsGroup.add(accuracyText);
 		}
