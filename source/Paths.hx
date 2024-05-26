@@ -7,8 +7,7 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 
 class Paths {
-	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
-	inline public static var VIDEO_EXT = "mp4";
+	inline public static final SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String = "preload";
 
@@ -71,7 +70,7 @@ class Paths {
 	inline static public function json(key:String, ?library:String):String
 		return getPath('data/$key.json', TEXT, library);
 
-	inline static public function video(key:String, ?ext:String = VIDEO_EXT):String
+	inline static public function video(key:String, ext:String = "mp4"):String
 		return 'assets/videos/$key.$ext';
 
 	inline static public function sound(key:String, ?library:String):String
