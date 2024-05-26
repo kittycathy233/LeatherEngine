@@ -223,7 +223,7 @@ class ModchartUtilities {
 		lua_Sounds.set("Voices", PlayState.instance.vocals);
 		
 
-		trace('Loading script at path \'${path}\'', DEBUG);
+		trace('Loading script at path \'${path}\'');
 		//trace("lua version: " + Lua.version());
 		//trace("LuaJIT version: " + Lua.versionJIT());
 

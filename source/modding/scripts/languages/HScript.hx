@@ -51,7 +51,7 @@ class HScript
 
 	public function new(hscript_path:String, ?global:Bool = false)
 	{
-		trace('Loading script at path \'${hscript_path}\'', DEBUG);
+		trace('Loading script at path \'${hscript_path}\'');
 		// parser settings
 		parser.allowJSON = true;
 		parser.allowTypes = true;

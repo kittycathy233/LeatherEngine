@@ -187,11 +187,7 @@ class Character extends FlxSprite {
 			atlas.shader = shader;
 			atlas.antialiasing = antialiasing;
 			atlas.color = color;
-			// width = atlas.width;
-			// height = atlas.height;
-			// atlas.skew = skew;
-			// atlas.transformMatrix = transformMatrix;
-			// atlas.matrixExposed = matrixExposed;
+			atlas.colorTransform = colorTransform;
 			atlas.draw();
 		} else {
 			super.draw();
@@ -268,8 +264,10 @@ class Character extends FlxSprite {
 			else {
 				if (dancesLeftAndRight)
 					playAnim("danceRight");
-				else
+				else{
 					playAnim("idle");
+
+				}
 			}
 
 			if (debugMode)
@@ -385,19 +383,19 @@ class Character extends FlxSprite {
 				else if (playFullAnim && curAnimFinished())
 				{
 					playFullAnim = false;
-					dance();
+					dance('', true);
 				}
 				else if (preventDanceForAnim && curAnimFinished())
 				{
 					preventDanceForAnim = false;
-					dance();
+					dance('', true);
 				}
 			if (!isPlayer) {
 				if (curAnimName().startsWith('sing'))
 					holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
 
 				if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001) {
-					dance(mostRecentAlt);
+					dance(mostRecentAlt, true);
 					holdTimer = 0;
 				}
 			}
@@ -408,12 +406,6 @@ class Character extends FlxSprite {
 					playAnim('danceRight');
 			}
 		}
-
-		if (atlasMode && atlas != null) {
-			atlas.update(elapsed);
-		}
-
-		super.update(elapsed);
 	}
 
 	private var danced:Bool = false;

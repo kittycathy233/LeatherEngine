@@ -73,7 +73,7 @@ class FunkinSoundTray extends FlxSoundTray
     volumeDownSound = Paths.sound("soundtray/Voldown");
     volumeMaxSound = Paths.sound("soundtray/VolMAX");
 
-    trace("Custom tray added!");
+    //trace("Custom tray added!");
   }
 
   override public function update(MS:Float):Void

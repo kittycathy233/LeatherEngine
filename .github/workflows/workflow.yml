@@ -46,7 +46,7 @@ jobs:
           haxelib install hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib install flixel-screenshot-plugin
           haxelib install hxcpp-debug-server
@@ -96,7 +96,7 @@ jobs:
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib install flixel-screenshot-plugin
-          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib list
       - name: Create Version Tag
@@ -139,7 +139,7 @@ jobs:
           haxelib install hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib install hxcpp-debug-server
           haxelib list
@@ -185,7 +185,7 @@ jobs:
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib install hxcpp-debug-server
           haxelib list
@@ -229,9 +229,8 @@ jobs:
           haxelib install flixel-addons
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
           haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-          haxelib git flxanimate https://github.com/FunkinCrew/flxanimate
+          haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib install hxcpp-debug-server
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib list
       - name: Create Version Tag
