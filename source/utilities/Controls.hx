@@ -402,25 +402,15 @@ class Controls extends FlxActionSet {
 	public function addGamepad(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void {
 		gamepadsAdded.push(id);
 
-		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
 		inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	inline function addGamepadLiteral(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void {
 		gamepadsAdded.push(id);
 
-		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
 		inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void {
@@ -437,7 +427,6 @@ class Controls extends FlxActionSet {
 	}
 
 	public function addDefaultGamepad(id):Void {
-		#if !switch
 		addGamepadLiteral(id, [
 			Control.ACCEPT => [A],
 			Control.BACK => [B],
@@ -448,45 +437,22 @@ class Controls extends FlxActionSet {
 			Control.PAUSE => [START],
 			Control.RESET => [Y]
 		]);
-		#else
-		addGamepadLiteral(id, [
-			// Swap A and B for switch
-			Control.ACCEPT => [B],
-			Control.BACK => [A],
-			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			// Swap Y and X for switch
-			Control.RESET => [Y],
-			Control.CHEAT => [X]
-		]);
-		#end
 	}
 
 	/**
 	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
 	 * If binder is a literal you can inline this
 	 */
-	public function bindButtons(control:Control, id, buttons) {
-		#if (haxe >= "4.0.0")
+	public inline function bindButtons(control:Control, id, buttons) {
 		inline forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));
-		#else
-		forEachBound(control, function(action, state) addButtons(action, buttons, state, id));
-		#end
 	}
 
 	/**
 	 * Sets all actions that pertain to the binder to trigger when the supplied keys are used.
 	 * If binder is a literal you can inline this
 	 */
-	public function unbindButtons(control:Control, gamepadID:Int, buttons) {
-		#if (haxe >= "4.0.0")
+	public inline function unbindButtons(control:Control, gamepadID:Int, buttons) {
 		inline forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));
-		#else
-		forEachBound(control, function(action, _) removeButtons(action, gamepadID, buttons));
-		#end
 	}
 
 	inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id) {

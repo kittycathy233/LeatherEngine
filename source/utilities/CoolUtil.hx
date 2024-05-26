@@ -1,7 +1,7 @@
 package utilities;
 
 
-#if desktop
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -175,13 +175,7 @@ class CoolUtil {
 	 */
 	public static inline function setWindowIcon(path:String){
 		#if desktop
-		// #if sys
-		// if (!FileSystem.exists(path)) {
-		// 	return;
-		// }
-		// #end
-
-		Application.current.window.setIcon(Image.fromFile(path));
+		FlxG.stage.window.setIcon(Image.fromFile(path));
 		#end
 	}
 
