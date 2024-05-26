@@ -242,7 +242,7 @@ jobs:
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
-      - name: Compile Linux
+      - name: Compile Hashlink
         run:
           haxelib --always run lime build Project.xml hl --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Hashlink Artifact
