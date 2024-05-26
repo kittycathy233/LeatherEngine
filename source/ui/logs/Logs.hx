@@ -19,7 +19,7 @@ class Logs extends Sprite {
 		PrintType.LOG => new LogPrint("LOG", FlxColor.CYAN),
 		PrintType.WARNING => new LogPrint("WARNING", FlxColor.YELLOW),
 		PrintType.ERROR => new LogPrint("ERROR", FlxColor.RED),
-		PrintType.DEBUG => new LogPrint("DEBUG", FlxColor.GREEN),
+		PrintType.DEBUG => new LogPrint("DEBUG", FlxColor.LIME),
 	];
 
     public function new(){
