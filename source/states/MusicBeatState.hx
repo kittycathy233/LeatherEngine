@@ -114,7 +114,6 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 				if (!(basic is FlxSprite)) {
 					return;
 				}
-
 				cast(basic, FlxSprite).antialiasing = false;
 			}, true);
 		}

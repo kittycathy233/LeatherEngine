@@ -36,7 +36,9 @@ import flixel.FlxSprite;
 import states.PlayState;
 import lime.utils.Assets;
 import flixel.sound.FlxSound;
+#if MODDING_ALLOWED
 import polymod.backends.PolymodAssets;
+#end
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import llua.Lua.Lua_helper;
@@ -228,7 +230,7 @@ class ModchartUtilities {
 		Lua.init_callbacks(lua);
 
 		if (path == null)
-			path = PolymodAssets.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath));
+			path = #if MODDING_ALLOWED PolymodAssets#else Assets#end.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath));
 
 		var result = LuaL.dofile(lua, path); // execute le file
 
@@ -402,7 +404,7 @@ class ModchartUtilities {
 			if (!PlayState.instance.event_luas.exists(event_name.toLowerCase())
 				&& Assets.exists(Paths.lua("event data/" + event_name.toLowerCase()))) {
 				PlayState.instance.event_luas.set(event_name.toLowerCase(),
-					new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event_name.toLowerCase()))));
+					new ModchartUtilities(#if MODDING_ALLOWED PolymodAssets#else Assets#end.getPath(Paths.lua("event data/" + event_name.toLowerCase()))));
 				PlayState.instance.generatedSomeDumbEventLuas = true;
 			}
 
@@ -2768,20 +2770,6 @@ class ModchartUtilities {
 
 		// shader bullshit
 
-		setLuaFunction("setActor3DShader", function(id:String, ?speed:Float = 3, ?frequency:Float = 10, ?amplitude:Float = 0.25) {
-			var actor = getActorByName(id);
-
-			if (actor != null) {
-				var funnyShader:shaders.Shaders.ThreeDEffect = shaders.Shaders.newEffect("3d");
-				funnyShader.waveSpeed = speed;
-				funnyShader.waveFrequency = frequency;
-				funnyShader.waveAmplitude = amplitude;
-				lua_Shaders.set(id, funnyShader);
-
-				actor.shader = funnyShader.shader;
-			}
-		});
-
 		setLuaFunction("setActorNoShader", function(id:String) {
 			var actor = getActorByName(id);
 
@@ -3029,9 +3017,9 @@ class ModchartUtilities {
 			var modchart:ModchartUtilities = null;
 
 			if (Assets.exists(Paths.lua("modcharts/" + script)))
-				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + script)));
+				modchart = new ModchartUtilities(#if MODDING_ALLOWED PolymodAssets#else Assets#end.getPath(Paths.lua("modcharts/" + script)));
 			else if (Assets.exists(Paths.lua("scripts/" + script)))
-				modchart = new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + script)));
+				modchart = new ModchartUtilities(#if MODDING_ALLOWED PolymodAssets#else Assets#end.getPath(Paths.lua("scripts/" + script)));
 
 			if (modchart == null) {
 				trace('Couldn\'t find script at either ${Paths.lua("modcharts/" + script)} OR ${Paths.lua("scripts/" + script)}!', WARNING);
