@@ -294,7 +294,7 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				FlxG.resetState();
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
-				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymodIcon.png");
+				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 				PolymodHandler.loadMods();
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();

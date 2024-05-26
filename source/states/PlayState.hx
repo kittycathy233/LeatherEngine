@@ -405,7 +405,7 @@ class PlayState extends MusicBeatState{
 	**/
 	public var executeModchart:Bool = false;
 
-	#if linc_luajit
+	#if LUA_ALLOWED
 	/**
 		The current lua modchart.
 	**/

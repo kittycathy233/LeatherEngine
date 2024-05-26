@@ -9,7 +9,6 @@ import modding.ModList;
 import modding.PolymodHandler;
 import substates.UISkinSelect;
 import substates.ControlMenuSubstate;
-import modding.CharacterCreationState;
 import utilities.MusicUtilities;
 import ui.Option;
 import ui.Checkbox;

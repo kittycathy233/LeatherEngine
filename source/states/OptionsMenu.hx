@@ -3,7 +3,6 @@ package states;
 import utilities.Options;
 import substates.UISkinSelect;
 import substates.ControlMenuSubstate;
-import modding.CharacterCreationState;
 import utilities.MusicUtilities;
 import ui.Option;
 import ui.Checkbox;
