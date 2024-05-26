@@ -1,20 +1,17 @@
 package game;
 
+import flixel.FlxSprite;
 import flixel.FlxState;
 import modding.scripts.languages.HScript;
-import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import haxe.Json;
 import states.PlayState;
-import flixel.FlxSprite;
 import modding.CharacterConfig;
 import flixel.util.FlxDestroyUtil;
 import flxanimate.FlxAnimate;
-
-using StringTools;
 
 class Character extends FlxSprite {
 	public var animOffsets:Map<String, Array<Dynamic>>;
@@ -95,16 +92,23 @@ class Character extends FlxSprite {
 		if (icon == null)
 			icon = curCharacter;
 
-
 		// YOOOOOOOOOO POG MODDING STUFF
-		if (character != "")
+		if (character != '')
 			loadOffsetFile(curCharacter);
 
-		if (curCharacter != '' && otherCharacters == null && animation.curAnim != null) {
-			updateHitbox();
+		if (curCharacter != '' && otherCharacters == null && hasAnims()) {
+			if (atlasMode) {
+				atlas.updateHitbox();
+				width = atlas.width;
+				height = atlas.height;
+				offset = atlas.offset;
+				origin = atlas.origin;
+			} else {
+				updateHitbox();
+			}
 
 			if (!debugMode) {
-				dance();
+				dance('', true);
 
 				if (isPlayer) {
 					// Doesn't flip for BF, since his are already in the right place???
@@ -135,8 +139,9 @@ class Character extends FlxSprite {
 					}
 				}
 			}
-		} else
+		} else {
 			visible = false;
+		}
 	}
 
 	public function loadNamedConfiguration(characterName:String) {
@@ -158,10 +163,39 @@ class Character extends FlxSprite {
 			characterName = "optimized_" + characterName;
 
 		var rawJson = Assets.getText(Paths.json("character data/" + characterName + "/config")).trim();
-
 		this.config = cast Json.parse(rawJson);
-
 		loadCharacterConfiguration(this.config);
+	}
+
+	public var atlasMode:Bool = false;
+	public var atlas:FlxAnimate;
+
+	override public function draw():Void {
+		if (atlasMode && atlas != null && visible) {
+			// thanks cne for this shits lol
+			atlas.cameras = cameras;
+			atlas.scrollFactor = scrollFactor;
+			atlas.scale = scale;
+			atlas.offset = offset;
+			atlas.x = x;
+			atlas.y = y;
+			atlas.angle = angle;
+			atlas.alpha = alpha;
+			atlas.visible = visible;
+			atlas.flipX = flipX;
+			atlas.flipY = flipY;
+			atlas.shader = shader;
+			atlas.antialiasing = antialiasing;
+			atlas.color = color;
+			// width = atlas.width;
+			// height = atlas.height;
+			// atlas.skew = skew;
+			// atlas.transformMatrix = transformMatrix;
+			// atlas.matrixExposed = matrixExposed;
+			atlas.draw();
+		} else {
+			super.draw();
+		}
 	}
 
 	public function loadCharacterConfiguration(config:CharacterConfig) {
@@ -192,13 +226,16 @@ class Character extends FlxSprite {
 
 			dancesLeftAndRight = config.dancesLeftAndRight;
 
-			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT)))
+			if (Assets.exists(Paths.file("images/characters/" + config.imagePath + ".txt", TEXT))) {
 				frames = Paths.getPackerAtlas('characters/' + config.imagePath);
-			else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
-				frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
-			}
-			else
+			} else if (Assets.exists(Paths.file("images/characters/" + config.imagePath + "/Animation.json", TEXT))){
+				// frames = AtlasFrameMaker.construct("shared/images/characters/" + config.imagePath);
+				// makeGraphic(1, 1);
+				atlasMode = true;
+				atlas = new FlxAnimate(0.0, 0.0, Paths.file("images/characters/" + config.imagePath, TEXT));
+			} else {
 				frames = Paths.getSparrowAtlas('characters/' + config.imagePath);
+			}
 
 			var size:Null<Float> = config.graphicSize;
 
@@ -208,14 +245,23 @@ class Character extends FlxSprite {
 			if (size != null)
 				scale.set(size, size);
 
-			for (selected_animation in config.animations) {
-				if (selected_animation.indices != null && selected_animation.indices.length > 0) {
-					animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps, selected_animation.looped);
-				} else {
-					animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+			if (!atlasMode) {
+				for (selected_animation in config.animations) {
+					if (selected_animation.indices != null && selected_animation.indices.length > 0) {
+						animation.addByIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, "", selected_animation.fps, selected_animation.looped);
+					} else {
+						animation.addByPrefix(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+					}
+				}
+			} else {
+				for (selected_animation in config.animations) {
+					if (selected_animation.indices != null && selected_animation.indices.length > 0) {
+						atlas.anim.addBySymbolIndices(selected_animation.name, selected_animation.animation_name, selected_animation.indices, selected_animation.fps, selected_animation.looped);
+					} else {
+						atlas.anim.addBySymbol(selected_animation.name, selected_animation.animation_name, selected_animation.fps, selected_animation.looped);
+					}
 				}
 			}
-
 
 			if (isDeathCharacter)
 				playAnim("firstDeath");
@@ -234,7 +280,15 @@ class Character extends FlxSprite {
 			else if (config.antialiased != null)
 				antialiasing = config.antialiased;
 
-			updateHitbox();
+			if (atlasMode) {
+				atlas.updateHitbox();
+				width = atlas.width;
+				height = atlas.height;
+				offset = atlas.offset;
+				origin = atlas.origin;
+			} else {
+				updateHitbox();
+			}
 
 			if (config.positionOffset != null)
 				positioningOffset = config.positionOffset;
@@ -320,27 +374,26 @@ class Character extends FlxSprite {
 		}
 	}
 
-
 	public var shouldDance:Bool = true;
 
 	override function update(elapsed:Float) {
-		if (!debugMode && curCharacter != '' && animation.curAnim != null) {
-			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+		if (!debugMode && curCharacter != '' && hasAnims()) {
+			if(curAnimFinished() && hasAnim(curAnimName() + '-loop'))
 				{
-					playAnim(animation.curAnim.name + '-loop');
+					playAnim(curAnimName() + '-loop');
 				}
-				else if (playFullAnim && animation.curAnim.finished)
+				else if (playFullAnim && curAnimFinished())
 				{
 					playFullAnim = false;
 					dance();
 				}
-				else if (preventDanceForAnim && animation.curAnim.finished)
+				else if (preventDanceForAnim && curAnimFinished())
 				{
 					preventDanceForAnim = false;
 					dance();
 				}
 			if (!isPlayer) {
-				if (animation.curAnim.name.startsWith('sing'))
+				if (curAnimName().startsWith('sing'))
 					holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
 
 				if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001) {
@@ -350,40 +403,77 @@ class Character extends FlxSprite {
 			}
 
 			// fix for multi character stuff lmao
-			if (animation.curAnim != null) {
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			if (hasAnims()) {
+				if (curAnimName() == 'hairFall' && curAnimFinished())
 					playAnim('danceRight');
 			}
 		}
+
+		if (atlasMode && atlas != null) {
+			atlas.update(elapsed);
+		}
+
 		super.update(elapsed);
 	}
 
 	private var danced:Bool = false;
 
+	public var lastAnim:String = '';
 	var mostRecentAlt:String = "";
+
+	public inline function curAnimLooped():Bool {
+		@:privateAccess
+		return (!atlasMode && animation.curAnim != null && animation.curAnim.looped) || 
+				(atlasMode && atlas.anim.loopType == flxanimate.data.AnimationData.Loop.Loop);
+	}
+
+	public inline function curAnimFinished():Bool {
+		return (!atlasMode && animation.curAnim != null && animation.curAnim.finished) || 
+				(atlasMode && atlas.anim.finished);
+	}
+
+	public function curAnimName():String {
+		if (!atlasMode && animation.curAnim != null) {
+			return animation.curAnim.name;
+		}
+
+		if (atlasMode) {
+			return lastAnim;
+		}
+
+		return '';
+	}
+
+	public inline function hasAnim(name:String):Bool {
+		return (!atlasMode && animation.exists(name)) || (atlasMode && atlas.anim.existsByName(name));
+	}
+
+	public inline function hasAnims():Bool {
+		return (!atlasMode && animation.curAnim != null) || (atlasMode && atlas != null && atlas.anim != null);
+	}
 
 	/**
 	 * FOR GF DANCING SHIT
 	 */
-	public function dance(?altAnim:String = '') {
+	public function dance(?altAnim:String = '', force:Bool = false) {
 		if (shouldDance) {
-			if (!debugMode && curCharacter != '' && animation.curAnim != null && !playFullAnim && !preventDanceForAnim) {
+			if (!debugMode && curCharacter != '' && hasAnims() && (force || (!playFullAnim && !preventDanceForAnim))) {
 				var alt = "";
 
-				if ((!dancesLeftAndRight && animation.getByName("idle" + altAnim) != null)
+				if ((!dancesLeftAndRight && hasAnim("idle" + altAnim))
 					|| (dancesLeftAndRight
-						&& animation.getByName("danceLeft" + altAnim) != null
-						&& animation.getByName("danceRight" + altAnim) != null))
+						&& hasAnim("danceLeft" + altAnim)
+						&& hasAnim("danceRight" + altAnim)))
 					alt = altAnim;
 
 				mostRecentAlt = alt;
 
-				var special_animation = !(animation.curAnim.name.startsWith('idle')
-					|| animation.curAnim.name.startsWith('danceLeft')
-					|| animation.curAnim.name.startsWith('danceRight')
-					|| animation.curAnim.name.startsWith('sing'));
+				var special_animation = !(curAnimName().startsWith('idle')
+					|| curAnimName().startsWith('danceLeft')
+					|| curAnimName().startsWith('danceRight')
+					|| curAnimName().startsWith('sing'));
 
-				if (!special_animation || animation.curAnim.finished || animation.curAnim.looped) {
+				if (!special_animation || curAnimFinished() || curAnimLooped()) {
 					if (!dancesLeftAndRight)
 						playAnim('idle' + alt);
 					else {
@@ -400,10 +490,10 @@ class Character extends FlxSprite {
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void {
-		if (playFullAnim || !animation.exists(AnimName))
+		if (playFullAnim)
 			return;
-
-
+		if (!hasAnim(AnimName))
+			return;
 		
 		if (singAnimPrefix != 'sing' && AnimName.contains('sing')){
 			var anim = AnimName;
@@ -414,8 +504,13 @@ class Character extends FlxSprite {
 
 		preventDanceForAnim = false; //reset it
 
+		if (atlasMode && atlas != null) {
+			atlas.anim.play(AnimName, Force, Reversed, Frame);
+		} else {
+			animation.play(AnimName, Force, Reversed, Frame);
+		}
 
-		animation.play(AnimName, Force, Reversed, Frame);
+		lastAnim = AnimName;
 
 		if (AnimName.contains('dodge'))
 			preventDanceForAnim = true;
@@ -431,7 +526,9 @@ class Character extends FlxSprite {
 	public inline function addOffset(name:String, x:Float = 0, y:Float = 0) {
 		animOffsets.set(name, [(isPlayer && offsetsFlipWhenPlayer) || (!isPlayer && offsetsFlipWhenEnemy) ? -x : x, y]);
 	}
+
 	public var followMainCharacter:Bool = false;
+
 	public function getMainCharacter():Character
 	{
 		if (otherCharacters != null && otherCharacters.length > 0)

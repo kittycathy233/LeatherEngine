@@ -93,7 +93,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			#if MODDING_ALLOWED
 			PolymodHandler.loadMods();
 			#end
-			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymodIcon.png");
+			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
 
 			#if FLX_NO_DEBUG

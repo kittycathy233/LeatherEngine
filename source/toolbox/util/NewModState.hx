@@ -208,7 +208,7 @@ class NewModState extends MusicBeatState{
                 return;
             }
             FileSystem.createDirectory('./mods/${modName.text}');
-            File.saveBytes('./mods/${modName.text}/_polymodIcon.png', File.getBytes(modIconPath));
+            File.saveBytes('./mods/${modName.text}/_polymod_icon.png', File.getBytes(modIconPath));
             for (dir in dirs){
                 FileSystem.createDirectory('./mods/${modName.text}/${dir}');
             }
