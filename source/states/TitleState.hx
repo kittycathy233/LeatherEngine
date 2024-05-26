@@ -421,7 +421,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	}
 
 	function textDataText(line:Int) {
-		if(line >= 0){
+		if(titleTextData != null && line >= 0){
 			var lineText:Null<String> = titleTextData[line];
 
 			if (lineText != null) {
