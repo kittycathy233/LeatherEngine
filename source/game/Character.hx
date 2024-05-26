@@ -1,7 +1,6 @@
 package game;
 
 import flixel.FlxState;
-import shaders.NoteColors;
 import modding.scripts.languages.HScript;
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
@@ -30,9 +29,7 @@ class Character extends FlxSprite {
 
 	public var dancesLeftAndRight:Bool = false;
 
-	public var barColor:FlxColor = FlxColor.WHITE;
-	public var noteColors:Array<Array<Array<Int>>>;
-	public var notesMatchBar:Bool = false;
+	public var barColor:FlxColor = FlxColor.GREEN;
 	public var positioningOffset:Array<Float> = [0, 0];
 	public var cameraOffset:Array<Float> = [0, 0];
 
@@ -62,9 +59,6 @@ class Character extends FlxSprite {
 	public var playFullAnim:Bool = false;
 	public var preventDanceForAnim:Bool = false;
 
-	public var lastHitStrumTime:Float = 0;
-	public var justHitStrumTime:Float = -5000;
-
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false, ?isDeathCharacter:Bool = false) {
 		
 		super(x, y);
@@ -85,7 +79,6 @@ class Character extends FlxSprite {
 			case '':
 				trace("NO VALUE THINGY LOL DONT LOAD SHIT");
 				deathCharacter = "bf-dead";
-				noteColors = NoteColors.defaultColors;
 
 			default:
 				if (isPlayer)
@@ -290,7 +283,6 @@ class Character extends FlxSprite {
 			localKeyCount = 4;
 		}
 
-		noteColors = NoteColors.defaultColors;
 
 		if (config.cameraOffset != null) {
 			if (flipX)

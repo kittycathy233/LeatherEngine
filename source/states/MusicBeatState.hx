@@ -121,7 +121,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		if (FlxG.keys.checkStatus(FlxKey.fromString(Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (FlxG.keys.justPressed.F5)
+		if (FlxG.keys.justPressed.F5 && Options.getData("developer"))
 			FlxG.resetState();
 
 		FlxG.autoPause = Options.getData("autoPause");

@@ -57,8 +57,6 @@ class StrumNote extends FlxSkewedSprite
 
 		noteData = leData;
 
-		var localKeyCount = (isPlayer == 1) ? (FlxG.state == PlayState.instance ? PlayState.SONG.playerKeyCount : keyCount) : keyCount;
-
 		this.ui_Skin = ui_Skin;
 		this.ui_settings = ui_settings;
 		this.mania_size = mania_size;
@@ -73,22 +71,10 @@ class StrumNote extends FlxSkewedSprite
 		}
 
 		super(x, y);
-
+		noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 		shader = colorSwap.shader;
 
-		var charColors;
-
 		if(affectedbycolor && PlayState.instance != null && colorSwap != null){
-			if(Options.getData("middlescroll")){
-				charColors = (isPlayer == 1) ? PlayState.dad : PlayState.boyfriend;
-			}
-			else{
-				charColors = (isPlayer == 1) ? PlayState.boyfriend : PlayState.dad;
-			}
-			noteColor = !customColors ? charColors.noteColors[localKeyCount - 1][noteData] : NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]); 
-
-			if(Options.getData("customNoteColors"))
-				noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
 			if (noteColor != null){
 				colorSwap.r = noteColor[0];
 				colorSwap.g = noteColor[1];

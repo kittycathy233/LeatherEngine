@@ -35,8 +35,8 @@ class NoteColorSubstate extends MusicBeatSubstate
 
     var current_ColorVals:Array<Int> = [255,0,0];
 
-    var colorMins:Array<Int> = [0, 0, 0];
-    var colorMaxs:Array<Int> = [255, 255, 255];
+    final colorMins:Array<Int> = [0, 0, 0];
+    final colorMaxs:Array<Int> = [255, 255, 255];
 
     public function new()
     {
@@ -90,11 +90,11 @@ class NoteColorSubstate extends MusicBeatSubstate
         {
             if(reset)
             {
-                current_ColorVals = [255,0,0];
+                current_ColorVals = NoteColors.defaultColors.get(NoteVariables.Other_Note_Anim_Stuff[key_Count - 1][selectedControl]);
 
-                arrow_Group.members[selectedControl].colorSwap.r = 255;
-                arrow_Group.members[selectedControl].colorSwap.g = 0;
-                arrow_Group.members[selectedControl].colorSwap.b = 0;
+                arrow_Group.members[selectedControl].colorSwap.r = current_ColorVals[0];
+                arrow_Group.members[selectedControl].colorSwap.g = current_ColorVals[1];
+                arrow_Group.members[selectedControl].colorSwap.b = current_ColorVals[2];
 
                 NoteColors.setNoteColor(NoteVariables.Other_Note_Anim_Stuff[key_Count - 1][selectedControl], current_ColorVals);
             }

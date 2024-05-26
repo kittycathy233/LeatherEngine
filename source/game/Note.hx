@@ -243,12 +243,7 @@ class Note extends FlxSkewedSprite {
 				colorSwap = new ColorSwap();
 				shader = colorSwap.shader;
 	
-				var charColors = (mustPress) ? PlayState.boyfriend : PlayState.dad;
-				var noteColor;
-				if (!Options.getData("customNoteColors"))
-					noteColor = charColors.noteColors[localKeyCount - 1][noteData];
-				else
-					noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[song.keyCount - 1][noteData]);
+				var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[song.keyCount - 1][noteData]);
 	
 				if(noteColor != null){
 					colorSwap.r = noteColor[0];

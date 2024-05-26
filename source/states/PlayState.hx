@@ -4457,56 +4457,6 @@ class PlayState extends MusicBeatState{
 					bar.createFilledBar(dad.barColor, boyfriend.barColor);
 					bar.updateFilledBar();
 				}
-				if(!Options.getData("colorQuantization")){
-					for (note in notes.members){
-						if(note.affectedbycolor){
-							var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
-							var noteColor;
-							if (!Options.getData("customNoteColors"))
-								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-							else
-								noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
-							note.colorSwap.r = noteColor[0];
-							note.colorSwap.g = noteColor[1];
-							note.colorSwap.b = noteColor[2];
-						}
-					}
-					for (note in unspawnNotes){
-						if(note.affectedbycolor){
-							var charColors = (note.checkPlayerMustPress()) ? boyfriend : dad;
-							var noteColor;
-							if (!Options.getData("customNoteColors"))
-								noteColor = charColors.noteColors[SONG.keyCount - 1][note.noteData];
-							else
-								noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[SONG.keyCount - 1][note.noteData]);
-								note.colorSwap.r = noteColor[0];
-								note.colorSwap.g = noteColor[1];
-								note.colorSwap.b = noteColor[2];
-							}
-						}
-				}
-				//the strums need to be cleared for the note colors to change when switching characters, oof.
-				playerStrums.clear();
-				enemyStrums.clear();
-				strumLineNotes.clear();
-				if(Options.getData("middlescroll"))
-					{
-						generateStaticArrows(50, false, false);
-						generateStaticArrows(0.5, true, false);
-					}
-					else
-					{
-						if(characterPlayingAs == 0)
-						{
-							generateStaticArrows(0, false, false);
-							generateStaticArrows(1, true, false);
-						}
-						else
-						{
-							generateStaticArrows(1, false, false);
-							generateStaticArrows(0, true, false);
-						}
-					}
 			}
 		} else
 			CoolUtil.coolError("The character " + event[3] + " isn't in any character cache!\nHow did this happen? ¯|_(ツ)_|¯",

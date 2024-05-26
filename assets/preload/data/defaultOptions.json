@@ -306,14 +306,6 @@
       "value": "Friday Night Funkin'"
     },
     {
-      "option": "customNoteColors",
-      "value": false
-    },
-    {
-      "option": "noteColorsAllChars",
-      "value": false
-    },
-    {
       "option": "optimizedModcharts",
       "value": false
     },

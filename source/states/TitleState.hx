@@ -368,7 +368,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 				http.onData = function(data:String) {
 					data = 'v' + data;
-					trace(data, DEBUG);
+					trace(data);
 
 					if (CoolUtil.getCurrentVersion() != data) {
 						trace('Outdated Version Detected! ' + data + ' != ' + CoolUtil.getCurrentVersion(), WARNING);
