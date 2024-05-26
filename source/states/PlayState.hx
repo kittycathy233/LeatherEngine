@@ -1179,6 +1179,7 @@ class PlayState extends MusicBeatState{
 		scoreTxt = new FlxText(0, healthBarBG.y + funnyBarOffset, 0, "", 20);
 		scoreTxt.screenCenter(X);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), scoreTxtSize, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.antialiasing = Options.getData("antialiasing");
 		scoreTxt.scrollFactor.set();
 
 		// settings again
@@ -1195,6 +1196,7 @@ class PlayState extends MusicBeatState{
 		infoTxt.screenCenter(X);
 
 		infoTxt.scrollFactor.set();
+		infoTxt.antialiasing = Options.getData("antialiasing");
 		// don't ask why this is different idfk
 		infoTxt.cameras = [camHUD];
 
@@ -1276,7 +1278,6 @@ class PlayState extends MusicBeatState{
 		// mhm
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
-
 		add(infoTxt);
 
 		// the funny
@@ -1288,7 +1289,7 @@ class PlayState extends MusicBeatState{
 			ratingText = new FlxText(4, 0, 0, "bruh");
 			ratingText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			ratingText.screenCenter(Y);
-
+			ratingText.antialiasing = Options.getData("antialiasing");
 			ratingText.scrollFactor.set();
 			add(ratingText);
 
