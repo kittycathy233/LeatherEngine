@@ -153,6 +153,7 @@ class MainMenuState extends MusicBeatState implements IHScriptable {
 		versionShit.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		#if MODDING_ALLOWED
 		var switchInfo:FlxText = new FlxText(5, versionShit.y - versionShit.height, 0, 'Hit TAB to switch mods.', 16);
 		switchInfo.scrollFactor.set();
 		switchInfo.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -162,6 +163,7 @@ class MainMenuState extends MusicBeatState implements IHScriptable {
 		modInfo.scrollFactor.set();
 		modInfo.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(modInfo);
+		#end
 
 		changeItem();
 
@@ -181,7 +183,6 @@ class MainMenuState extends MusicBeatState implements IHScriptable {
 		#end
 
 		FlxG.camera.followLerp = elapsed * 3.6;
-
 
 		if (FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

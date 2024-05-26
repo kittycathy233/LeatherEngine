@@ -86,7 +86,9 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			PlayerSettings.player1.controls.loadKeyBinds();
 
 			Highscore.load();
+			#if MODDING_ALLOWED
 			ModList.load();
+			#end
 			NoteColors.load();
 			#if MODDING_ALLOWED
 			PolymodHandler.loadMods();
@@ -450,6 +452,10 @@ class TitleState extends MusicBeatState implements IHScriptable{
 					gfDance.animation.play('danceLeft');
 			}
 
+			if (skippedIntro) {
+				return;
+			}
+
 			switch (curBeat) {
 				case 1:
 					textDataText(0);
@@ -466,9 +472,13 @@ class TitleState extends MusicBeatState implements IHScriptable{
 					deleteCoolText();
 					ngSpr.visible = false;
 				case 9:
-					createCoolText([curWacky[0]]);
+					if (curWacky[0] != null) {
+						createCoolText([curWacky[0]]);
+					}
 				case 11:
-					addMoreText(curWacky[1]);
+					if (curWacky[1] != null) {
+						addMoreText(curWacky[1]);
+					}
 				case 12:
 					deleteCoolText();
 				// yipee
@@ -485,6 +495,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			skippedIntro = true;
 			MusicBeatState.windowNameSuffix = "";
 		}
+		
 		call("beatHit");
 	}
 

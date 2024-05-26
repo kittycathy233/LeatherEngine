@@ -118,7 +118,9 @@ class HScript
 		interp.variables.set("FlxText", modding.helpers.FlxTextFix);
 		interp.variables.set('FlxColor', modding.helpers.FlxColorHelper);
 		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
+		#if MODDING_ALLOWED
 		interp.variables.set("Polymod", polymod.Polymod);
+		#end
 		interp.variables.set("Assets", openfl.utils.Assets);
 		interp.variables.set("LimeAssets", lime.utils.Assets);
 		interp.variables.set("Math", Math);
@@ -141,10 +143,12 @@ class HScript
 		interp.variables.set('Options', utilities.Options);
 		interp.variables.set('Character', game.Character);
 		interp.variables.set('Alphabet', ui.Alphabet);
+		#if MODDING_ALLOWED
 		interp.variables.set('ModList', modding.ModList);
+		#end
 		interp.variables.set('CustomState', modding.custom.CustomState);
 		interp.variables.set('CustomSubstate', modding.custom.CustomSubstate);
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		interp.variables.set('DiscordClient', utilities.Discord.DiscordClient);
 		#end
 		//modchart tools stuff
