@@ -62,13 +62,13 @@ class PauseSubState extends MusicBeatSubstate {
 		add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += PlayState.SONG.song;
+		levelInfo.text = PlayState.SONG.song;
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelDifficulty.text += PlayState.storyDifficultyStr.toUpperCase();
+		levelDifficulty.text = PlayState.storyDifficultyStr.toUpperCase();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
@@ -81,6 +81,7 @@ class PauseSubState extends MusicBeatSubstate {
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
+		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 
 		add(grpMenuShit);
 
