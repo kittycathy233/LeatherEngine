@@ -32,7 +32,6 @@ jobs:
       
       - name: Install Haxelib
         run: |
-
           haxelib setup ~/haxelib
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
           haxelib install lime
