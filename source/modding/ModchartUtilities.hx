@@ -3421,7 +3421,7 @@ class ModchartUtilities {
 	}
 
 	@:access(openfl.display.BlendMode)
-	function blendModeFromString(blend:String):BlendMode {
+	inline function blendModeFromString(blend:String):BlendMode {
 		return BlendMode.fromString(blend.toLowerCase());
 	}
 

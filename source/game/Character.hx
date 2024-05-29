@@ -527,11 +527,12 @@ class Character extends FlxSprite {
 			preventDanceForAnim = true;
 
 		var daOffset = animOffsets.get(AnimName);
-
-		if (animOffsets.exists(AnimName))
-			offset.set(daOffset[0], daOffset[1]);
-		else
+		if (animOffsets.exists(AnimName)) {
+			offset.set((daOffset[0] * _cosAngle) - (daOffset[1] *_sinAngle), (daOffset[1] * _cosAngle) + (daOffset[0] * _sinAngle));
+		}
+		else{
 			offset.set(0, 0);
+		}
 	}
 
 	public inline function addOffset(name:String, x:Float = 0, y:Float = 0) {

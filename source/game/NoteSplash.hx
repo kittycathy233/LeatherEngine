@@ -56,12 +56,10 @@ class NoteSplash extends FlxSprite {
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 
-		var charColors = (isPlayer) ? PlayState.boyfriend : PlayState.dad;
-
-		if(affectedbycolor){
+		if(affectedbycolor) {
 			noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[PlayState.SONG.keyCount - 1][noteData]);
 		}
-		else{
+		else {
 			noteColor = [255,0,0];
 		}
 		colorSwap.r = noteColor[0];

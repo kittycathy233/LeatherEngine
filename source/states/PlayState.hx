@@ -607,6 +607,19 @@ class PlayState extends MusicBeatState{
 	public var tweenManager:FlxTweenManager;
 	
 
+	public function clearLuaObjects(){
+		#if linc_luajit
+		// clear dumb lua stuffs
+		ModchartUtilities.killShaders();
+		ModchartUtilities.lua_Characters.clear();
+		ModchartUtilities.lua_Sounds.clear();
+		ModchartUtilities.lua_Sprites.clear();
+		ModchartUtilities.lua_Shaders.clear();
+		ModchartUtilities.lua_Custom_Shaders.clear();
+		ModchartUtilities.lua_Cameras.clear();
+		#end
+	}
+
 	override public function create() {
 
 		tweenManager = new FlxTweenManager();
@@ -624,12 +637,8 @@ class PlayState extends MusicBeatState{
 		// gaming time
 		curSong = SONG.song;
 
-		#if linc_luajit
-		// clear dumb lua stuffs
-		ModchartUtilities.lua_Characters.clear();
-		ModchartUtilities.lua_Sounds.clear();
-		ModchartUtilities.lua_Sprites.clear();
-		#end
+		clearLuaObjects();
+
 
 		// if we have a hitsound, preload it nerd
 		if (hitSoundString != "none")
@@ -3109,12 +3118,10 @@ class PlayState extends MusicBeatState{
 
 	override function destroy()
 		{
-			#if linc_luajit
-			ModchartUtilities.killShaders();
-			#end
 			call("onDestroy", []);
 			closeLua();
 			super.destroy();
+			instance = null;
 		}
 
 	function endSong():Void {
@@ -4615,6 +4622,8 @@ class PlayState extends MusicBeatState{
 	}
 
 	public function closeLua(){
+		clearLuaObjects();
+		
 		#if linc_luajit
 		if (executeModchart && luaModchart != null) {
 			luaModchart.die();
