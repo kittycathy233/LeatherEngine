@@ -2261,7 +2261,7 @@ class PlayState extends MusicBeatState{
 
 	var speed:Float = 1.0;
 
-	#if linc_luajit
+	#if LUA_ALLOWED
 	public var generatedSomeDumbEventLuas:Bool = false;
 	#end
 
@@ -2277,20 +2277,18 @@ class PlayState extends MusicBeatState{
 
 
 	override public function update(elapsed:Float) {
-
 		super.update(elapsed);
 
 		tweenManager.update(elapsed);
 
-		FlxG.camera.followLerp = (elapsed * 2.4) *cameraSpeed;
+		FlxG.camera.followLerp = (elapsed * 2.4) * cameraSpeed;
+		var iconLerp:Float = elapsed * 9;
+		var zoomLerp:Float = (elapsed * 3) * cameraZoomSpeed;
 
-		var icon_Zoom_Lerp = elapsed * 9;
-		var camera_Zoom_Lerp = (elapsed * 3) * cameraZoomSpeed;
-
-		iconP1.scale.set(FlxMath.lerp(iconP1.scale.x, iconP1.startSize, icon_Zoom_Lerp * songMultiplier),
-			FlxMath.lerp(iconP1.scale.y, iconP1.startSize, icon_Zoom_Lerp * songMultiplier));
-		iconP2.scale.set(FlxMath.lerp(iconP2.scale.x, iconP2.startSize, icon_Zoom_Lerp * songMultiplier),
-			FlxMath.lerp(iconP2.scale.y, iconP2.startSize, icon_Zoom_Lerp * songMultiplier));
+		iconP1.scale.set(FlxMath.lerp(iconP1.scale.x, iconP1.startSize, iconLerp * songMultiplier),
+			FlxMath.lerp(iconP1.scale.y, iconP1.startSize, iconLerp * songMultiplier));
+		iconP2.scale.set(FlxMath.lerp(iconP2.scale.x, iconP2.startSize, iconLerp * songMultiplier),
+			FlxMath.lerp(iconP2.scale.y, iconP2.startSize, iconLerp * songMultiplier));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -2312,8 +2310,8 @@ class PlayState extends MusicBeatState{
 			- iconP2.offsetX;
 
 		if (Options.getData("cameraZooms") && camZooming && !switchedStates) {
-			FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, defaultCamZoom, camera_Zoom_Lerp);
-			camHUD.zoom = FlxMath.lerp(camHUD.zoom, defaultHudCamZoom, camera_Zoom_Lerp);
+			FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, defaultCamZoom, zoomLerp);
+			camHUD.zoom = FlxMath.lerp(camHUD.zoom, defaultHudCamZoom, zoomLerp);
 		} else if (!Options.getData("cameraZooms")) {
 			FlxG.camera.zoom = defaultCamZoom;
 			camHUD.zoom = 1;
@@ -3121,7 +3119,7 @@ class PlayState extends MusicBeatState{
 			call("onDestroy", []);
 			closeLua();
 			super.destroy();
-			instance = null;
+			// instance = null;
 		}
 
 	function endSong():Void {
