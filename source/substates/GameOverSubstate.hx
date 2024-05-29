@@ -1,5 +1,7 @@
 package substates;
 
+import flixel.sound.FlxSound;
+import game.graphics.FlxAtlasSprite;
 import lime.utils.Assets;
 import game.Character;
 import states.FreeplayState;
@@ -21,6 +23,10 @@ class GameOverSubstate extends MusicBeatSubstate {
 	public var camFollow:FlxObject;
 	public static var instance:GameOverSubstate = null;
 
+	var gameOverRoll:Bool = FlxG.random.bool((1 / 4096) * 100);
+	var fakeout:FlxAtlasSprite;
+	var doneWithSecret:Bool = false;
+
 	public function new(x:Float, y:Float) {
 		instance = this;
 		super();
@@ -29,7 +35,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 		FlxG.camera.scroll.set();
 		FlxG.camera.target = null;
 
-		if (Options.getData("quickRestart")) {
+		if (Options.getData("quickRestart") && !gameOverRoll) {
 			PlayState.instance.call("onRetry", []);
 			PlayState.instance.closeLua();
 			PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
@@ -49,17 +55,41 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (FlxG.sound.music.active)
 			FlxG.sound.music.stop();
 
-		var soundPath = Paths.sound("deaths/bf-dead/death");
+		if(gameOverRoll){
+			bf.visible = false;
+			var soundlol:FlxSound = new FlxSound().loadEmbedded(Paths.sound("deaths/fakeout_death", "shared"));
+			soundlol.play();
+			soundlol.onComplete = () -> {
+				bfDies();
+				fakeout.visible = false;
+			}
+			fakeout = new FlxAtlasSprite(bf.x * 1.5, bf.y * 1.75, Paths.getTextureAtlas('characters/bfFakeOut', 'shared'), {
+				FrameRate: 24.0,
+				Reversed: false,
+				ShowPivot: false,
+				Antialiasing: Options.getData("antialiasing"),
+				ScrollFactor: new FlxPoint(bf.scrollFactor.x, bf.scrollFactor.y),
+			  });
+			fakeout.anim.addBySymbol('fakeoutDeath', 'fake out death BF', 24, false);
+			fakeout.anim.play('fakeoutDeath', true);
+			add(fakeout);
+		}
+		else {
+			bfDies();
+		}
+	}
 
+	function bfDies(){
+		var soundPath = Paths.sound("deaths/bf-dead/death");
+		bf.visible = true;
 		if (Assets.exists(Paths.sound("deaths/" + bf.curCharacter + "/death")))
 			soundPath = Paths.sound("deaths/" + bf.curCharacter + "/death");
 
-		var soundThing = FlxG.sound.play(soundPath);
-		soundThing.play();
+		FlxG.sound.play(soundPath);
+
 
 		Conductor.changeBPM(100);
-
-		bf.playAnim('firstDeath');
+		bf.playAnim('firstDeath', true);
 	}
 
 	override function update(elapsed:Float) {
@@ -82,7 +112,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished) {
+		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished && doneWithSecret) {
 			var soundPath = Paths.music("deaths/bf-dead/loop");
 
 			if (Assets.exists(Paths.music("deaths/" + bf.curCharacter + "/loop")))

@@ -28,7 +28,7 @@ class Options {
 		createSave("main", "options");
 		createSave("binds", "binds");
 		createSave("scores", "scores");
-		createSave("noteColors", "noteColors");
+		createSave("arrowColors", "arrowColors");
 		createSave("autosave", "autosave");
 		createSave("modlist", "modlist");
 
@@ -56,8 +56,8 @@ class Options {
 		if (getData("songAccuracies", "scores") == null)
 			setData(new Map<String, Float>(), "songAccuracies", "scores");
 
-		if (getData("noteColors", "noteColors") == null)
-			setData(new Map<String, Array<Int>>(), "noteColors", "noteColors");
+		if (getData("arrowColors", "arrowColors") == null)
+			setData(new Map<String, Array<Int>>(), "arrowColors", "arrowColors");
 	}
 
 	public static function createSave(key:String, bindNameSuffix:String) {

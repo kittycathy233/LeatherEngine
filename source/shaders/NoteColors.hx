@@ -26,20 +26,20 @@ class NoteColors {
 
 	public static function setNoteColor(note:String, color:Array<Int>):Void {
 		noteColors.set(note, color);
-		Options.setData(noteColors, "noteColors", "noteColors");
+		Options.setData(noteColors, "arrowColors", "arrowColors");
 	}
 
 	public static function getNoteColor(note:String):Array<Int> {
 		if (!noteColors.exists(note))
-			setNoteColor(note, [255, 0, 0]);
+			setNoteColor(note, defaultColors.get(note));
 
 		return noteColors.get(note);
 	}
 
 	public static function load():Void {
-		if (Options.getData("noteColors", "noteColors") != null)
-			noteColors = Options.getData("noteColors", "noteColors");
+		if (Options.getData("arrowColors", "arrowColors") != null)
+			noteColors = Options.getData("arrowColors", "arrowColors");
 		else
-			Options.setData(defaultColors, "noteColors", "noteColors");
+			Options.setData(defaultColors, "arrowColors", "arrowColors");
 	}
 }

@@ -384,11 +384,11 @@ class ModchartUtilities {
 		setVar("version", CoolUtil.getCurrentVersion().replace('v', ''));
 
 		// callbacks
-		setLuaFunction("trace", function(str:Dynamic = "", ?printType:String = "DEBUG") {
+		setLuaFunction("trace", function(str:Dynamic = "", ?printType:String = "LOG") {
             trace(str, Logs.printTypeFromSting(printType));
         });
 
-		setLuaFunction("print", function(str:Dynamic = "", ?printType:String = "DEBUG") {
+		setLuaFunction("print", function(str:Dynamic = "", ?printType:String = "LOG") {
 			trace(str, Logs.printTypeFromSting(printType));
         });
 

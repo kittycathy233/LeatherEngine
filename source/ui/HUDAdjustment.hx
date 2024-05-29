@@ -81,6 +81,7 @@ class HUDAdjustment extends MusicBeatState {
 		uiMap.set('3', FlxGraphic.fromAssetKey(Paths.image("ui skins/" + Options.getData("uiSkin") + "/numbers/num3"), false, null, false));
 
 		popUpScore();
+		rating.loadGraphic(uiMap.get('marvelous'));
 
 		ratingPos = new FlxSprite(Options.getData("ratingsSettings")[0], Options.getData("ratingsSettings")[1]);
 		ratingPos.makeGraphic(32, 32, FlxColor.RED);
@@ -158,9 +159,6 @@ class HUDAdjustment extends MusicBeatState {
 	}
 
     public function popUpScore():Void {
-		ratingsGroup.clear();
-
-		rating.loadGraphic(uiMap.get('marvelous'));
         rating.x = Options.getData("ratingsSettings")[0];
 		rating.x -= Options.getData("middlescroll") ? 350 : 0;
 		rating.y = Options.getData("ratingsSettings")[1];
@@ -168,8 +166,6 @@ class HUDAdjustment extends MusicBeatState {
 		rating.scale.y = rating.scale.x = Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[4]);
 		rating.updateHitbox();
 		rating.antialiasing = ui_settings[3] == "true";
-
-		ratingsGroup.add(rating);
 		var scoreStrings:Array<String> = Std.string(combo).split('');
 
 		for (i in 0...scoreStrings.length) {

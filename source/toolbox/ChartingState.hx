@@ -5,7 +5,7 @@ import flixel.FlxObject;
 import game.EventSprite;
 import utilities.NoteVariables;
 import modding.CharacterConfig;
-import ui.FlxUIDropDownMenuCustom;
+import ui.FlxScrollableDropDownMenu;
 import game.Song;
 import states.LoadingState;
 import game.Conductor;
@@ -614,7 +614,7 @@ class ChartingState extends MusicBeatState {
 
 	var curEvent:Int = 0;
 
-	var eventDropDown:FlxUIDropDownMenuCustom;
+	var eventDropDown:FlxScrollableDropDownMenu;
 
 	function addEventUI():Void {
 		// base ui thingy :D
@@ -624,7 +624,7 @@ class ChartingState extends MusicBeatState {
 		// interactive
 
 		// dropdown
-		eventDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventList, true), function(event:String) {
+		eventDropDown = new FlxScrollableDropDownMenu(10, 30, FlxScrollableDropDownMenu.makeStrIdLabelArray(eventList, true), function(event:String) {
 			curEvent = Std.parseInt(event);
 			eventName = eventList[Std.parseInt(event)];
 
@@ -806,8 +806,8 @@ class ChartingState extends MusicBeatState {
 		// dropdown lmao
 		var arrow_Types = CoolUtil.coolTextFile(Paths.txt("arrowTypes"));
 
-		var typeDropDown = new FlxUIDropDownMenuCustom(setCharacterLeftSide.x, setCharacterLeftSide.y + setCharacterLeftSide.height,
-			FlxUIDropDownMenuCustom.makeStrIdLabelArray(arrow_Types, true), function(type:String) {
+		var typeDropDown = new FlxScrollableDropDownMenu(setCharacterLeftSide.x, setCharacterLeftSide.y + setCharacterLeftSide.height,
+			FlxScrollableDropDownMenu.makeStrIdLabelArray(arrow_Types, true), function(type:String) {
 				cur_Note_Type = arrow_Types[Std.parseInt(type)];
 		});
 
@@ -888,7 +888,7 @@ class ChartingState extends MusicBeatState {
 		}
 
 		// CHARS
-		var player1DropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray(arrayCharacters, true),
+		var player1DropDown = new FlxScrollableDropDownMenu(10, 30, FlxScrollableDropDownMenu.makeStrIdLabelArray(arrayCharacters, true),
 			function(character:String) {
 				_song.player1 = arrayCharacters[Std.parseInt(character)];
 				updateHeads();
@@ -896,13 +896,13 @@ class ChartingState extends MusicBeatState {
 
 		player1DropDown.selectedLabel = _song.player1;
 
-		var gfDropDown = new FlxUIDropDownMenuCustom(10, 50, FlxUIDropDownMenuCustom.makeStrIdLabelArray(arrayCharacters, true), function(character:String) {
+		var gfDropDown = new FlxScrollableDropDownMenu(10, 50, FlxScrollableDropDownMenu.makeStrIdLabelArray(arrayCharacters, true), function(character:String) {
 			_song.gf = arrayCharacters[Std.parseInt(character)];
 		});
 
 		gfDropDown.selectedLabel = _song.gf;
 
-		var player2DropDown = new FlxUIDropDownMenuCustom(10, 70, FlxUIDropDownMenuCustom.makeStrIdLabelArray(arrayCharacters, true),
+		var player2DropDown = new FlxScrollableDropDownMenu(10, 70, FlxScrollableDropDownMenu.makeStrIdLabelArray(arrayCharacters, true),
 			function(character:String) {
 				_song.player2 = arrayCharacters[Std.parseInt(character)];
 				updateHeads();
@@ -917,7 +917,7 @@ class ChartingState extends MusicBeatState {
 		// OTHER
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
 
-		var stageDropDown = new FlxUIDropDownMenuCustom(10, 120, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(stage:String) {
+		var stageDropDown = new FlxScrollableDropDownMenu(10, 120, FlxScrollableDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String) {
 			_song.stage = stages[Std.parseInt(stage)];
 		});
 
@@ -927,7 +927,7 @@ class ChartingState extends MusicBeatState {
 
 		var uiSkins:Array<String> = CoolUtil.coolTextFile(Paths.txt('uiSkinList'));
 
-		var uiSkinDropDown = new FlxUIDropDownMenuCustom(10, stageDropDown.y + 20, FlxUIDropDownMenuCustom.makeStrIdLabelArray(uiSkins, true),
+		var uiSkinDropDown = new FlxScrollableDropDownMenu(10, stageDropDown.y + 20, FlxScrollableDropDownMenu.makeStrIdLabelArray(uiSkins, true),
 			function(uiSkin:String) {
 				_song.ui_Skin = uiSkins[Std.parseInt(uiSkin)];
 
@@ -958,7 +958,7 @@ class ChartingState extends MusicBeatState {
 			mods.push(i);
 		}
 
-		var modDropDown = new FlxUIDropDownMenuCustom(uiSkinDropDown.x, uiSkinDropDown.y + 20, FlxUIDropDownMenuCustom.makeStrIdLabelArray(mods, true),
+		var modDropDown = new FlxScrollableDropDownMenu(uiSkinDropDown.x, uiSkinDropDown.y + 20, FlxScrollableDropDownMenu.makeStrIdLabelArray(mods, true),
 			function(mod:String) {
 				selected_mod = mods[Std.parseInt(mod)];
 
@@ -969,7 +969,7 @@ class ChartingState extends MusicBeatState {
 					arrayCharacters.push(Item);
 				}
 
-				var character_Data_List = FlxUIDropDownMenuCustom.makeStrIdLabelArray(arrayCharacters, true);
+				var character_Data_List = FlxScrollableDropDownMenu.makeStrIdLabelArray(arrayCharacters, true);
 
 				player1DropDown.setData(character_Data_List);
 				gfDropDown.setData(character_Data_List);
@@ -1210,7 +1210,7 @@ class ChartingState extends MusicBeatState {
 
 	private var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
 	private var blockPressWhileTypingOnStepper:Array<FlxUINumericStepper> = [];
-	private var blockPressWhileScrolling:Array<FlxUIDropDownMenuCustom> = [];
+	private var blockPressWhileScrolling:Array<FlxScrollableDropDownMenu> = [];
 
 	override function update(elapsed:Float) {
 		var blockInput:Bool = false;

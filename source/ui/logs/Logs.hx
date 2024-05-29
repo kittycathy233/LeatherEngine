@@ -131,10 +131,10 @@ class Logs extends Sprite {
 
     public static function printTypeFromSting(s:String):PrintType{
         switch (s){
-            case "[LOG]" | "LOG": return PrintType.LOG;
+            case "[DEBUG]" | "DEBUG": return PrintType.DEBUG;
             case "[ERROR]" | "ERROR": return PrintType.ERROR;
             case "[WARNING]" | "WARNING": return PrintType.WARNING;
-            default: return PrintType.DEBUG;
+            default: return PrintType.LOG;
         }
     }
 }

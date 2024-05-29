@@ -20,7 +20,7 @@ class SpraycanAtlasSprite extends FlxAtlasSprite {
       Reversed: false,
       // ?OnComplete:Void -> Void,
       ShowPivot: false,
-      Antialiasing: true,
+      Antialiasing: Options.getData("antialiasing"),
       ScrollFactor: new FlxPoint(1, 1),
     });
 

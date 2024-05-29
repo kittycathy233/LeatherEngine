@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.addons.ui.StrNameLabel;
 import flixel.addons.ui.FlxUIButton;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIDropDownMenu;
@@ -73,4 +74,26 @@ class FlxScrollableDropDownMenu extends FlxUIDropDownMenu  {
 			}
 		}
     }
+
+	/**
+	 * Helper function to easily create a data list for a dropdown menu from an array of strings.
+	 *
+	 * @param	StringArray		The strings to use as data - used for both label and string ID.
+	 * @param	UseIndexID		Whether to use the integer index of the current string as ID.
+	 * @return	The StrIDLabel array ready to be used in FlxUIDropDownMenuCustom's constructor
+	 */
+	 public static function makeStrIdLabelArray(StringArray:Array<String>, UseIndexID:Bool = false):Array<StrNameLabel>
+		{
+			var strIdArray:Array<StrNameLabel> = [];
+			for (i in 0...StringArray.length)
+			{
+				var ID:String = StringArray[i];
+				if (UseIndexID)
+				{
+					ID = Std.string(i);
+				}
+				strIdArray[i] = new StrNameLabel(ID, StringArray[i]);
+			}
+			return strIdArray;
+		}
 }
