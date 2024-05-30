@@ -594,7 +594,7 @@ class PlayState extends MusicBeatState{
 
 	public var marvelousRatings:Bool = Options.getData("marvelousRatings");
 
-
+	public static var playCutscenes:Bool = false;
 
 	/**
 	 * Manages tweens in lua scripts to pause when game is
@@ -1316,11 +1316,13 @@ class PlayState extends MusicBeatState{
 
 		// WINDOW TITLE POG
 		MusicBeatState.windowNameSuffix = " - " + SONG.song + " " + (isStoryMode ? "(Story Mode)" : "(Freeplay)");
-
+		
 		var cutscenePlays:String = Options.getData("cutscenePlaysOn");
 		playCutsceneOnPauseLmao = playCutsceneLmao = ((cutscenePlays == "both") ||
-				(isStoryMode && cutscenePlays == "story") || 
-				(!isStoryMode && cutscenePlays == "freeplay"));
+			(isStoryMode && cutscenePlays == "story") || 
+			(!isStoryMode && cutscenePlays == "freeplay")) && !playCutscenes;
+
+		playCutscenes = false;
 
 		if (playCutsceneLmao && SONG.cutscene != null && SONG.cutscene != "") {
 			cutscene = CutsceneUtil.loadFromJson(SONG.cutscene);
