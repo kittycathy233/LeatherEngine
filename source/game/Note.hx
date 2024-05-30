@@ -35,8 +35,6 @@ class Note extends FlxSkewedSprite {
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 
-	public var noteScore:Float = 1;
-
 	public static var swagWidth:Float = 160 * 0.7;
 
 	public var sustainScaleY:Float = 1;
@@ -106,7 +104,6 @@ class Note extends FlxSkewedSprite {
 
 	public inline function reloadNotes(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 		?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
-
 			if (prevNote == null)
 				prevNote = this;
 	
@@ -131,16 +128,15 @@ class Note extends FlxSkewedSprite {
 			// MAKE SURE ITS DEFINITELY OFF SCREEN?
 			y = -2000;
 	
-			if (PlayState.instance.types.contains(arrow_Type)){
-				if(Assets.exists(Paths.image('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared'))){
+			if (PlayState.instance.types.contains(arrow_Type)) {
+				if (Assets.exists(Paths.image('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared'))) {
 					frames = Paths.getSparrowAtlas('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared');
-				}
-				else{
+				} else {
 					frames = Paths.getSparrowAtlas('ui skins/default/arrows/default', 'shared');
 				}
-			}
-			else
+			} else {
 				frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
+			}
 	
 			animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
 			animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);

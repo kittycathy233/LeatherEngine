@@ -457,11 +457,6 @@ class PlayState extends MusicBeatState{
 	public var cutscene:Cutscene;
 
 	/**
-		Whether or not to play cutscenes.
-	**/
-	public static var playCutscenes:Bool = false;
-
-	/**
 		Current time of the song in milliseconds used for the progress bar.
 	**/
 	public var time:Float = 0.0;
@@ -564,7 +559,7 @@ class PlayState extends MusicBeatState{
 	**/
 	public var ogKeyCount:Int = 4;
 
-	#if linc_luajit
+	#if LUA_ALLOWED
 	/**
 		`Map` of `Strings` to Lua Modcharts used for custom events.
 	**/
@@ -608,7 +603,7 @@ class PlayState extends MusicBeatState{
 	
 
 	public function clearLuaObjects(){
-		#if linc_luajit
+		#if LUA_ALLOWED
 		// clear dumb lua stuffs
 		ModchartUtilities.killShaders();
 		ModchartUtilities.lua_Characters.clear();
@@ -1002,7 +997,7 @@ class PlayState extends MusicBeatState{
 								
 									scripts.push(script);
 								}
-							#if linc_luajit
+							#if LUA_ALLOWED
 							if(file.endsWith('.lua'))
 								{
 
@@ -1034,7 +1029,7 @@ class PlayState extends MusicBeatState{
 								
 									scripts.push(script);
 								}
-							#if linc_luajit
+							#if LUA_ALLOWED
 							if(file.endsWith('.lua'))
 								{
 
@@ -1060,7 +1055,7 @@ class PlayState extends MusicBeatState{
 									
 					scripts.push(script);
 				}
-				#if linc_luajit
+				#if LUA_ALLOWED
 				if(file.endsWith('.lua')){
 					var script = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/scripts/local/" + file));
 					luaScriptArray.push(script);
@@ -1080,7 +1075,7 @@ class PlayState extends MusicBeatState{
 										
 						scripts.push(script);
 				}
-				#if linc_luajit
+				#if LUA_ALLOWED
 				if(file.endsWith('.lua')){
 						var script = (new ModchartUtilities("mods/" + Options.getData("curMod") + "/data/song data/" + curSong + "/" + file));
 						luaScriptArray.push(script);
@@ -1099,7 +1094,7 @@ class PlayState extends MusicBeatState{
 										
 						scripts.push(script);
 				}
-				#if linc_luajit
+				#if LUA_ALLOWED
 				if(file.endsWith('.lua')){
 						var script = (new ModchartUtilities("assets/data/song data/" + curSong + "/" + file));
 						luaScriptArray.push(script);
@@ -1322,58 +1317,51 @@ class PlayState extends MusicBeatState{
 		// WINDOW TITLE POG
 		MusicBeatState.windowNameSuffix = " - " + SONG.song + " " + (isStoryMode ? "(Story Mode)" : "(Freeplay)");
 
-		playCutscenes = false;
+		var cutscenePlays:String = Options.getData("cutscenePlaysOn");
+		playCutsceneOnPauseLmao = playCutsceneLmao = ((cutscenePlays == "both") ||
+				(isStoryMode && cutscenePlays == "story") || 
+				(!isStoryMode && cutscenePlays == "freeplay"));
 
-		var cutscenePlays = Options.getData("cutscenePlaysOn");
+		if (playCutsceneLmao && SONG.cutscene != null && SONG.cutscene != "") {
+			cutscene = CutsceneUtil.loadFromJson(SONG.cutscene);
 
-		// what the actual fuck are these conditions i need to change this
-		// TODO: CHANGE THIS SHIT
-		playCutsceneLmao = (((isStoryMode && cutscenePlays == "story") || (!isStoryMode && cutscenePlays == "freeplay") || (cutscenePlays == "both"))
-			&& !playCutscenes);
-		playCutsceneOnPauseLmao = ((isStoryMode && cutscenePlays == "story") || (!isStoryMode && cutscenePlays == "freeplay") || (cutscenePlays == "both"));
+			switch (cutscene.type.toLowerCase()) {
+				case "script":
+					var cutscene = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
+					for (object in stage.stage_Objects){
+						cutscene.interp.variables.set(object[0], object[1]);
+					}
+					scripts.push(cutscene);
+					cutscene.call("startCutscene");
+				case "video":
+					startVideo(cutscene.videoPath, cutscene.videoExt, false);
 
-		if (playCutsceneLmao) {
-			if (SONG.cutscene != null && SONG.cutscene != "") {
-				cutscene = CutsceneUtil.loadFromJson(SONG.cutscene);
+				case "dialogue":
+					var box:DialogueBox = new DialogueBox(cutscene);
+					box.scrollFactor.set();
+					// i love this
+					box.finish_Function = function():Void {
+						bruhDialogue(false);
+					};
+					box.cameras = [camHUD];
 
-				switch (cutscene.type.toLowerCase()) {
-					case "script":
-						var cutscene = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
-						for (object in stage.stage_Objects){
-							cutscene.interp.variables.set(object[0], object[1]);
-						}
-						scripts.push(cutscene);
-						cutscene.call("startCutscene");
-					case "video":
-						startVideo(cutscene.videoPath, cutscene.videoExt, false);
+					startDialogue(box, false);
 
-					case "dialogue":
-						var box:DialogueBox = new DialogueBox(cutscene);
-						box.scrollFactor.set();
-						// i love this
-						box.finish_Function = function():Void {
-							bruhDialogue(false);
-						};
-						box.cameras = [camHUD];
-
-						startDialogue(box, false);
-
-					default:
-						startCountdown();
-				}
-			} else
-				startCountdown();
-		} else
+				default:
+					startCountdown();
+			}
+		} else {
 			startCountdown();
+		}
 
-		for (event in events){
+		for (event in events) {
 			call("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
 
 		//@see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
-		if(Options.getData('colorQuantization')){
-			for(note in unspawnNotes){
-				if(note.affectedbycolor){
+		if (Options.getData('colorQuantization')) {
+			for (note in unspawnNotes) {
+				if (note.affectedbycolor) {
 					var quantStrumTime = note.isSustainNote ? note.prevNote.prevNoteStrumtime : note.strumTime;
 					var currentStepCrochet = Conductor.stepCrochet;
 					var noteBeat = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48)+0.5);
@@ -1565,8 +1553,6 @@ class PlayState extends MusicBeatState{
 				return;
 			}, true);
 		video_handler.onEndReached.add(video_handler.dispose);
-
-
 		video_handler.load(PolymodAssets.getPath(Paths.video(name, ext)));
 		video_handler.play();
 		video_handler.mute = false;
@@ -1657,7 +1643,7 @@ class PlayState extends MusicBeatState{
 		}
 
 
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (executeModchart && luaModchart != null)
 			luaModchart.setupTheShitCuzPullRequestsSuck();
 
@@ -2275,10 +2261,8 @@ class PlayState extends MusicBeatState{
 
 	var fixedUpdateTime:Float = 0.0;
 
-
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
-
 		tweenManager.update(elapsed);
 
 		FlxG.camera.followLerp = (elapsed * 2.4) * cameraSpeed;
@@ -2290,18 +2274,13 @@ class PlayState extends MusicBeatState{
 		iconP2.scale.set(FlxMath.lerp(iconP2.scale.x, iconP2.startSize, iconLerp * songMultiplier),
 			FlxMath.lerp(iconP2.scale.y, iconP2.startSize, iconLerp * songMultiplier));
 
+		iconP1.scale.set(Math.min(iconP1.scale.x, iconP1.startSize + 0.2), Math.min(iconP1.scale.y, iconP1.startSize + 0.2));
+		iconP2.scale.set(Math.min(iconP2.scale.x, iconP2.startSize + 0.2), Math.min(iconP2.scale.y, iconP2.startSize + 0.2));
+		
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
-		iconP1.scale.set(CoolUtil.boundTo(iconP1.scale.x, Math.NEGATIVE_INFINITY, iconP1.startSize + 0.2),
-			CoolUtil.boundTo(iconP1.scale.y, Math.NEGATIVE_INFINITY, iconP1.startSize + 0.2));
-		iconP2.scale.set(CoolUtil.boundTo(iconP2.scale.x, Math.NEGATIVE_INFINITY, iconP2.startSize + 0.2),
-			CoolUtil.boundTo(iconP2.scale.y, Math.NEGATIVE_INFINITY, iconP2.startSize + 0.2));
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
-
-		var iconOffset:Int = 26;
+		var iconOffset:Float = 26.0;
 
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset) - iconP1.offsetX;
 		iconP2.x = healthBar.x
@@ -2318,7 +2297,6 @@ class PlayState extends MusicBeatState{
 		}
 
 		song_info_timer += elapsed;
-
 		fixedUpdateTime += elapsed;
 
 		if (fixedUpdateTime >= 1 / 120) {
@@ -2351,25 +2329,18 @@ class PlayState extends MusicBeatState{
 			}
 		}
 
-		if (generatedMusic) {
-			if (startedCountdown && canPause && !endingSong && !switchedStates) {
-				// Song ends abruptly on slow rate even with second condition being deleted,
-				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
-				// so no reason to delete it at all
-				if (FlxG.sound.music.length - Conductor.songPosition <= 20) {
-					time = FlxG.sound.music.length;
-					endSong();
-				}
+		if (generatedMusic && startedCountdown && canPause && !endingSong && !switchedStates) {
+			// Song ends abruptly on slow rate even with second condition being deleted,
+			// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
+			// so no reason to delete it at all
+			if (FlxG.sound.music.length - Conductor.songPosition <= 20) {
+				time = FlxG.sound.music.length;
+				endSong();
 			}
 		}
 
-		if (!endingSong)
-			time = FlxG.sound.music.time;
-		else
-			time = FlxG.sound.music.length;
-
-		if (health > maxHealth)
-			health = maxHealth;
+		time = endingSong ? FlxG.sound.music.length : FlxG.sound.music.time;
+		health = Math.min(health, maxHealth);
 
 		if (characterPlayingAs == 1)
 			healthShown = maxHealth - health;
@@ -2405,13 +2376,15 @@ class PlayState extends MusicBeatState{
 		if (!switchedStates) {
 			if (startingSong) {
 				if (startedCountdown) {
-					Conductor.songPosition += (FlxG.elapsed * 1000);
+					Conductor.songPosition += FlxG.elapsed * 1000.0;
 
-					if (Conductor.songPosition >= 0)
+					if (Conductor.songPosition >= 0.0) {
 						startSong();
+					}
 				}
-			} else
-				Conductor.songPosition += (FlxG.elapsed * 1000) * songMultiplier;
+			} else {
+				Conductor.songPosition += (FlxG.elapsed * 1000.0) * songMultiplier;
+			}
 		}
 
 		if (generatedMusic
@@ -2423,14 +2396,11 @@ class PlayState extends MusicBeatState{
 
 			setLuaVar("mustHit", PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection);
 			
-			if(!PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
-			{
+			if(!PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
 				var midPos = dad.getMainCharacter().getMidpoint();
 
-				if(Options.getData("cameraTracksDirections") && dad.animation.curAnim != null)
-				{
-					switch(dad.animation.curAnim.name.toLowerCase())
-					{
+				if (Options.getData("cameraTracksDirections") && dad.getMainCharacter().hasAnims()) {
+					switch(dad.curAnimName().toLowerCase()) {
 						case "singleft":
 							midPos.x -= 50;
 						case "singright":
@@ -2450,8 +2420,7 @@ class PlayState extends MusicBeatState{
 					if(!paused)
 						camFollow.setPosition(midPos.x + 150 + dad.getMainCharacter().cameraOffset[0], midPos.y - 100 + dad.getMainCharacter().cameraOffset[1]);
 	
-					switch (dad.curCharacter)
-					{
+					switch (dad.curCharacter) {
 						case 'mom':
 							camFollow.y = midPos.y;
 						case 'senpai':
@@ -2467,21 +2436,18 @@ class PlayState extends MusicBeatState{
 				//}
 			}
 
-			if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
-			{
+			if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
 				var midPos = boyfriend.getMainCharacter().getMidpoint();
 
-				if(Options.getData("cameraTracksDirections") && boyfriend.animation.curAnim != null)
-				{
-					switch(boyfriend.animation.curAnim.name)
-					{
-						case "singLEFT":
+				if (Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().hasAnims()) {
+					switch(boyfriend.curAnimName().toLowerCase()) {
+						case "singleft":
 							midPos.x -= 50;
-						case "singRIGHT":
+						case "singright":
 							midPos.x += 50;
-						case "singUP":
+						case "singup":
 							midPos.y -= 50;
-						case "singDOWN":
+						case "singdown":
 							midPos.y += 50;
 					}
 				}
@@ -2494,8 +2460,7 @@ class PlayState extends MusicBeatState{
 					if(!paused)
 						camFollow.setPosition(midPos.x - 100 + boyfriend.getMainCharacter().cameraOffset[0], midPos.y - 100 + boyfriend.getMainCharacter().cameraOffset[1]);
 	
-					switch (curStage)
-					{
+					switch (curStage) {
 						case 'limo':
 							camFollow.x = midPos.x - 300;
 						case 'mall':
@@ -2507,8 +2472,7 @@ class PlayState extends MusicBeatState{
 				//}
 			}
 
-			if (centerCamera)
-			{
+			if (centerCamera) {
 				var midPos = boyfriend.getMainCharacter().getMidpoint();
 				midPos.x += stage.p1_Cam_Offset.x;
 				midPos.y += stage.p1_Cam_Offset.y;
@@ -2520,28 +2484,27 @@ class PlayState extends MusicBeatState{
 				camFollow.y += midPos.y - 100 + dad.getMainCharacter().cameraOffset[1];
 				camFollow.x *= 0.5;
 				camFollow.y *= 0.5;
-				if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection)
-				{
-					if(Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().animation.curAnim != null)
+				if(PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
+					if(Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().hasAnims())
 					{
-						switch(boyfriend.getMainCharacter().animation.curAnim.name)
+						switch(boyfriend.curAnimName().toLowerCase())
 						{
-							case "singLEFT":
+							case "singleft":
 								camFollow.x -= 50;
-							case "singRIGHT":
+							case "singright":
 								camFollow.x += 50;
-							case "singUP":
+							case "singup":
 								camFollow.y -= 50;
-							case "singDOWN":
+							case "singdown":
 								camFollow.y += 50;
 						}
 					}
 				}
 				else 
 				{
-					if(Options.getData("cameraTracksDirections") && dad.getMainCharacter().animation.curAnim != null)
+					if(Options.getData("cameraTracksDirections") && dad.getMainCharacter().hasAnims())
 					{
-						switch(dad.getMainCharacter().animation.curAnim.name.toLowerCase())
+						switch(dad.curAnimName().toLowerCase())
 						{
 							case "singleft":
 								camFollow.x -= 50;
@@ -2571,30 +2534,22 @@ class PlayState extends MusicBeatState{
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			if (boyfriend.otherCharacters == null)
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-			else
-				openSubState(new GameOverSubstate(boyfriend.otherCharacters[0].getScreenPosition().x, boyfriend.otherCharacters[0].getScreenPosition().y));
+			openSubState(new GameOverSubstate(boyfriend.getMainCharacter().getScreenPosition().x, boyfriend.getMainCharacter().getScreenPosition().y));
 
-			#if discord_rpc
+			#if DISCORD_ALLOWED
 			// Game Over doesn't get his own variable because it's only used here
 			DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			#end
 
-
 			call("onDeath", [Conductor.songPosition]);
 		}
 
-		if (health < minHealth)
-			health = minHealth;
+		health = Math.max(health, minHealth);
 
 		if (unspawnNotes[0] != null && !switchedStates) {
-			while (unspawnNotes.length > 0 && unspawnNotes[0].strumTime - Conductor.songPosition < (1500 * songMultiplier)) {
-				var dunceNote:Note = unspawnNotes[0];
-				notes.add(dunceNote);
-
-				var index:Int = unspawnNotes.indexOf(dunceNote);
-				unspawnNotes.splice(index, 1);
+			while (unspawnNotes.length > 0 && unspawnNotes[0].strumTime - Conductor.songPosition < (1500.0 * songMultiplier)) {
+				notes.add(unspawnNotes[0]);
+				unspawnNotes.splice(0, 1);
 			}
 		}
 
@@ -2646,8 +2601,6 @@ class PlayState extends MusicBeatState{
 						}
 					}
 				daNote.calculateCanBeHit();
-
-			
 
 				if (!daNote.checkPlayerMustPress() && daNote.strumTime <= Conductor.songPosition && daNote.shouldHit) {
 					camZooming = true;
@@ -2720,7 +2673,6 @@ class PlayState extends MusicBeatState{
 							]);
 						}
 					}
-
 
 					call(getSingLuaFuncName(false)+'SingExtra', [Math.abs(daNote.noteData), notes.members.indexOf(daNote), daNote.arrow_Type, daNote.isSustainNote]);
 
@@ -2936,7 +2888,7 @@ class PlayState extends MusicBeatState{
 			call('onPause', []);
 			openSubState(new PauseSubState());
 
-			#if discord_rpc
+			#if DISCORD_ALLOWED
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			#end
 		}
@@ -2956,7 +2908,7 @@ class PlayState extends MusicBeatState{
 
 				FlxG.switchState(new ChartingState());
 
-				#if discord_rpc
+				#if DISCORD_ALLOWED
 				DiscordClient.changePresence("Chart Editor", null, null, true);
 				#end
 			}
@@ -2964,7 +2916,6 @@ class PlayState extends MusicBeatState{
 			// #if debug
 			if (FlxG.keys.justPressed.EIGHT && !switchedStates && !inCutscene) {
 				closeLua();
-
 
 				switchedStates = true;
 
@@ -2977,7 +2928,7 @@ class PlayState extends MusicBeatState{
 
 				toolbox.CharacterCreator.lastState = "PlayState";
 
-				#if discord_rpc
+				#if DISCORD_ALLOWED
 				DiscordClient.changePresence("Creating A Character", null, null, true);
 				#end
 			}
@@ -2996,7 +2947,7 @@ class PlayState extends MusicBeatState{
 
 				FlxG.switchState(new modcharting.ModchartEditorState());
 
-				#if discord_rpc
+				#if DISCORD_ALLOWED
 				DiscordClient.changePresence("In The Modchart Editor", null, null, true);
 				#end
 			}
@@ -3025,7 +2976,7 @@ class PlayState extends MusicBeatState{
 				splash.kill();
 		});
 
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (((stage.stageScript != null || (luaModchart != null && executeModchart)) || generatedSomeDumbEventLuas || luaScriptArray.length != 0)
 			&& generatedMusic
 			&& !switchedStates
@@ -3066,7 +3017,9 @@ class PlayState extends MusicBeatState{
 				height: FlxG.height,
 				elapsed: FlxG.elapsed,
 			});
+
 			call("update", [elapsed]);
+			
 			if (getLuaVar("showOnlyStrums", "bool")) {
 				healthBarBG.visible = false;
 				infoTxt.visible = false;
@@ -3109,18 +3062,23 @@ class PlayState extends MusicBeatState{
 
 			if (!canFullscreen && FlxG.fullscreen)
 				FlxG.fullscreen = false;
+		} else {
+		#else
+			call("update", [elapsed]);
+		#end
+		#if LUA_ALLOWED
 		}
 		#end
+
 		call("updatePost", [elapsed]);
 	}
 
-	override function destroy()
-		{
-			call("onDestroy", []);
-			closeLua();
-			super.destroy();
-			// instance = null;
-		}
+	override function destroy() {
+		call("onDestroy", []);
+		closeLua();
+		super.destroy();
+		// instance = null;
+	}
 
 	function endSong():Void {
 		call("endSong", []);
@@ -3130,7 +3088,7 @@ class PlayState extends MusicBeatState{
 
 		// lol dude when a song ended in freeplay it legit reloaded the page and i was like:  o_o ok
 		if (FlxG.state == instance) {
-			#if linc_luajit
+			#if LUA_ALLOWED
 			if (executeModchart && luaModchart != null) {
 				for (sound in ModchartUtilities.lua_Sounds) {
 					sound.stop();
@@ -3887,7 +3845,7 @@ class PlayState extends MusicBeatState{
 				(note != null ? note.isSustainNote : false)
 			]);
 
-			#if linc_luajit
+			#if LUA_ALLOWED
 			setLuaVar("misses", misses);
 			#end
 		}
@@ -4332,7 +4290,7 @@ class PlayState extends MusicBeatState{
 						}
 					}
 
-					#if linc_luajit
+					#if LUA_ALLOWED
 					if (executeModchart && luaModchart != null)
 						luaModchart.setupTheShitCuzPullRequestsSuck();
 
@@ -4375,7 +4333,7 @@ class PlayState extends MusicBeatState{
 						}
 					}
 
-					#if linc_luajit
+					#if LUA_ALLOWED
 					if (executeModchart && luaModchart != null)
 						luaModchart.setupTheShitCuzPullRequestsSuck();
 
@@ -4428,7 +4386,7 @@ class PlayState extends MusicBeatState{
 						}
 					}
 
-					#if linc_luajit
+					#if LUA_ALLOWED
 					if (executeModchart && luaModchart != null)
 						luaModchart.setupTheShitCuzPullRequestsSuck();
 
@@ -4505,7 +4463,7 @@ class PlayState extends MusicBeatState{
 
 	public inline function call(func:String, ?args:Array<Dynamic>, ?execute_on:Execute_On = BOTH, ?stage_arguments:Array<Dynamic>){
 		hscriptCall(func, (args == []) ? null : args, execute_on);
-		#if linc_luajit
+		#if LUA_ALLOWED
 		executeALuaState(func, args, execute_on, stage_arguments);
 		#end
 	}
@@ -4523,7 +4481,7 @@ class PlayState extends MusicBeatState{
 		if (stage_arguments == null)
 			stage_arguments = arguments;
 
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (executeModchart && luaModchart != null && execute_on != STAGE)
 			luaModchart.executeState(name, arguments);
 
@@ -4549,7 +4507,7 @@ class PlayState extends MusicBeatState{
 		if (stage_data == null)
 			stage_data = data;
 
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (executeModchart && luaModchart != null && execute_on != STAGE){
 			luaModchart.setVar(name, data);
 		}
@@ -4574,7 +4532,7 @@ class PlayState extends MusicBeatState{
 	}
 
 	function getLuaVar(name:String, type:String):Dynamic {
-		#if linc_luajit
+		#if LUA_ALLOWED
 		var luaVar:Dynamic = null;
 
 		// we prioritize modchart cuz frick you
@@ -4622,7 +4580,7 @@ class PlayState extends MusicBeatState{
 	public function closeLua(){
 		clearLuaObjects();
 		
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (executeModchart && luaModchart != null) {
 			luaModchart.die();
 			luaModchart = null;
@@ -4655,7 +4613,7 @@ class PlayState extends MusicBeatState{
 	}
 
 	public function processEvent(event:Array<Dynamic>) {
-		#if linc_luajit
+		#if LUA_ALLOWED
 		if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
 			event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 			generatedSomeDumbEventLuas = true;
@@ -4857,14 +4815,14 @@ class PlayState extends MusicBeatState{
 					defaultCamZoom = stage.camZoom;
 
 
-					#if linc_luajit
+					#if LUA_ALLOWED
 					stage.createLuaStuff();
 					#end
 
 					call("create", [stage.stage], STAGE);
 					call("createStage", [stage.stage]);
 
-					#if linc_luajit
+					#if LUA_ALLOWED
 					if (stage.stageScript != null)
 						stage.stageScript.setupTheShitCuzPullRequestsSuck();
 					#end
@@ -4934,7 +4892,7 @@ class PlayState extends MusicBeatState{
 						note.inEditor);
 					}
 				}
-				#if linc_luajit
+				#if LUA_ALLOWED
 				for (i in 0...strumLineNotes.length) {
 					var member = strumLineNotes.members[i];
 		
@@ -5107,7 +5065,7 @@ class PlayState extends MusicBeatState{
 		if (totalNotes != 0 && !switchedStates)
 			accuracy = FlxMath.roundDecimal(100.0 / (totalNotes / hitNotes), 2);
 
-		#if linc_luajit
+		#if LUA_ALLOWED
 		setLuaVar("accuracy", accuracy);
 		#end
 
@@ -5196,7 +5154,7 @@ class PlayState extends MusicBeatState{
 				}
 			}
 
-			#if linc_luajit
+			#if LUA_ALLOWED
 			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
 				event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
 				generatedSomeDumbEventLuas = true;
@@ -5208,7 +5166,7 @@ class PlayState extends MusicBeatState{
 	}
 	public function setupNoteTypeScript(noteType:String)
 		{
-				#if linc_luajit
+				#if LUA_ALLOWED
 				if(!event_luas.exists(noteType.toLowerCase()) && Assets.exists(Paths.lua("arrow types/" + noteType)))
 				{
 					event_luas.set(noteType.toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("arrow types/" + noteType))));			
