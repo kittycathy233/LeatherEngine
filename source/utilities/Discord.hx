@@ -22,7 +22,7 @@ typedef DiscordStuff = {
 class DiscordClient
 {
 
-	public static var discordData:DiscordStuffs = Json.parse(Assets.getText(Paths.json("discord")));
+	public static var discordData:DiscordStuffs;
 
 	public static var started:Bool = false;
 
@@ -31,7 +31,8 @@ class DiscordClient
 
 
 	inline public function new()
-	{
+	{	
+		discordData = Json.parse(Assets.getText(Paths.json("discord")));
 		startLmao();
 	}
 
