@@ -70,7 +70,7 @@ class StageGroup extends FlxGroup {
 	public var foregroundSprites:FlxGroup = new FlxGroup();
 	public var infrontOfGFSprites:FlxGroup = new FlxGroup();
 
-	#if linc_luajit
+	#if LUA_ALLOWED
 	public var stageScript:ModchartUtilities = null;
 	#end
 
