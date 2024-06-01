@@ -15,6 +15,8 @@ function createPost(){
     for(i in 1...4){ //precache sounds
         FlxG.sound.play(Paths.soundRandom('shot'+i));
     }
+    //precache can
+    var cacheCan:SpraycanAtlasSprite = new SpraycanAtlasSprite(0, 0);
 }
 
 
