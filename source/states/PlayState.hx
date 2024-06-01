@@ -2903,7 +2903,7 @@ class PlayState extends MusicBeatState{
 					if (daNote != null && daNote.animation != null && daNote.animation.curAnim != null && daNote.checkPlayerMustPress()
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
-						&& !daNote.wasGoodHit) {
+						&& !daNote.wasGoodHit && vocals != null) {
 						vocals.volume = 0;
 						noteMiss(daNote.noteData, daNote);
 					}

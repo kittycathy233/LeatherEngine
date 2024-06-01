@@ -5,6 +5,7 @@ import Sys.sleep;
 import discord_rpc.DiscordRpc;
 import flixel.FlxG;
 import openfl.Assets;
+import haxe.Json;
 
 
 using StringTools;
@@ -21,25 +22,21 @@ typedef DiscordStuff = {
 class DiscordClient
 {
 
-	public static var discordData:DiscordStuffs;
+	public static var discordData:DiscordStuffs = Json.parse(Assets.getText(Paths.json("discord")));
 
 	public static var started:Bool = false;
 
 	public static var active:Bool = false;
 
 
-	
 
-
-	public function new()
+	inline public function new()
 	{
 		startLmao();
 	}
 
 	public static function startLmao()
 	{
-
-		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
 
 		for (value in discordData.values) {
 			var idStuff = value.id;
@@ -78,7 +75,6 @@ class DiscordClient
 
 	static function onReady()
 	{
-		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
 		for (value in discordData.values) {
 			var keyLol = value.key;
 			var textLol = value.text;
@@ -120,7 +116,6 @@ class DiscordClient
 		{
 			endTimestamp = startTimestamp + endTimestamp;
 		}
-		discordData = haxe.Json.parse(Assets.getText(Paths.json("discord")));
 		for (value in discordData.values) {
 			var keyLol = value.key;
 			var textLol = value.text;
