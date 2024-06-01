@@ -25,7 +25,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 
 	var gameOverRoll:Bool = FlxG.random.bool((1 / 4096) * 100);
 	var fakeout:FlxAtlasSprite;
-	var doneWithSecret:Bool = false;
 
 	public function new(x:Float, y:Float) {
 		instance = this;
@@ -112,7 +111,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished && doneWithSecret) {
+		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished) {
 			var soundPath = Paths.music("deaths/bf-dead/loop");
 
 			if (Assets.exists(Paths.music("deaths/" + bf.curCharacter + "/loop")))
