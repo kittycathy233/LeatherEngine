@@ -1211,7 +1211,7 @@ class PlayState extends MusicBeatState{
 				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
-				timeBarBG.pixelPerfectPosition = true;
+				// timeBarBG.pixelPerfectPosition = true;
 				timeBarBG.y = Options.getData("downscroll") ? FlxG.height - (timeBarBG.height + 1) : 1;
 				add(timeBarBG);
 
@@ -1219,7 +1219,7 @@ class PlayState extends MusicBeatState{
 					'time', 0, FlxG.sound.music.length);
 				timeBar.scrollFactor.set();
 				timeBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE);
-				timeBar.pixelPerfectPosition = true;
+				// timeBar.pixelPerfectPosition = true;
 				timeBar.numDivisions = 400;
 				
 				if (SONG.notes.length > 0) {
@@ -1234,7 +1234,7 @@ class PlayState extends MusicBeatState{
 				timeBarBG = new FlxSprite(0, healthBarPosY).makeGraphic(400, 19, FlxColor.BLACK);
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
-				timeBarBG.pixelPerfectPosition = true;
+				// timeBarBG.pixelPerfectPosition = true;
 
 				if (Options.getData("downscroll"))
 					timeBarBG.y = FlxG.height - 36;
@@ -1247,7 +1247,7 @@ class PlayState extends MusicBeatState{
 					'time', 0, FlxG.sound.music.length);
 				timeBar.scrollFactor.set();
 				timeBar.createFilledBar(FlxColor.BLACK, FlxColor.WHITE);
-				timeBar.pixelPerfectPosition = true;
+				// timeBar.pixelPerfectPosition = true;
 				timeBar.numDivisions = 800;
 				add(timeBar);
 
@@ -1260,7 +1260,7 @@ class PlayState extends MusicBeatState{
 				timeBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 				timeBarBG.screenCenter(X);
 				timeBarBG.scrollFactor.set();
-				timeBarBG.pixelPerfectPosition = true;
+				// timeBarBG.pixelPerfectPosition = true;
 
 				if (Options.getData("downscroll"))
 					timeBarBG.y = FlxG.height * 0.9 + 45;
@@ -1273,7 +1273,7 @@ class PlayState extends MusicBeatState{
 					'time', 0, FlxG.sound.music.length);
 				timeBar.scrollFactor.set();
 				timeBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
-				timeBar.pixelPerfectPosition = true;
+				// timeBar.pixelPerfectPosition = true;
 				timeBar.numDivisions = 400;
 				add(timeBar);
 
@@ -1302,7 +1302,6 @@ class PlayState extends MusicBeatState{
 
 			updateRatingText();
 		}
-
 
 		// grouped cuz fuck you this is based on base game B)
 		strumLineNotes.cameras = [camHUD];
@@ -2861,6 +2860,10 @@ class PlayState extends MusicBeatState{
 						&& daNote.playMissOnMiss
 						&& !(daNote.isSustainNote && daNote.animation.curAnim.name == "holdend")
 						&& !daNote.wasGoodHit) {
+						if (vocals != null) {
+							vocals.volume = 0;
+						}
+						
 						noteMiss(daNote.noteData, daNote);
 					}
 
