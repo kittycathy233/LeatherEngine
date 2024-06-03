@@ -19,5 +19,7 @@ haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modchar
 haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
 haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
 haxelib install hxcpp-debug-server
+haxelib git funkin.vis https://github.com/FunkinCrew/funkVis useGrig
+haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
 
 echo Finished

@@ -48,7 +48,8 @@ jobs:
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib install flixel-screenshot-plugin
+          haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
           haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
@@ -95,9 +96,10 @@ jobs:
           haxelib git openfl https://github.com/openfl/openfl
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
-          haxelib install flixel-screenshot-plugin
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
+          haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -141,6 +143,8 @@ jobs:
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
+          haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
           haxelib install hxcpp-debug-server
           haxelib list
         shell: cmd
@@ -187,6 +191,8 @@ jobs:
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
+          haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
           haxelib install hxcpp-debug-server
           haxelib list
       - name: Create Version Tag
@@ -232,6 +238,8 @@ jobs:
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
+          haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+          haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION

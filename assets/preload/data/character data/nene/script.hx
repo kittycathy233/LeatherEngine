@@ -1,3 +1,6 @@
+import game.graphics.ABotVis;
+import flixe.sound.FlxSound;
+
 var pupilState:Int = 0;
 
 var PUPIL_STATE_NORMAL = 0;
@@ -7,6 +10,9 @@ var abot:FlxAnimate;
 var stereoBG:FlxSprite;
 var eyeWhites:FlxSprite;
 var pupil:FlxAtlasSprite;
+var abotViz:ABotVis;
+
+var time:Float;
 
 function createPost(){
     trace('LET HIM COOK!');
@@ -26,12 +32,24 @@ function createPost(){
     abot.scrollFactor.set(0.95, 0.95);
     abot.antialiasing = Options.getData("antialiasing");
 
+    FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song, (PlayState.SONG.specialAudioName == null ? PlayState.instance.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
+    FlxG.sound.music.play();   
+    abotViz = new ABotVis();
+	abotViz.x = character.x + 100;
+	abotViz.y = character.y + 400;
+    abotViz.antialiasing = Options.getData("antialiasing");
+    abotViz.scrollFactor.set(0.95, 0.95);
+    FlxG.sound.music.pause(); 
+    FlxG.sound.music.volume = 0;
+
+
     abot.x = character.x - 100;
     abot.y = character.y + 316; // 764 - 740
 
     PlayState.instance.addBehindGF(stereoBG);
     PlayState.instance.addBehindGF(eyeWhites);
     PlayState.instance.addBehindGF(pupil);
+    PlayState.instance.addBehindGF(abotViz);
     PlayState.instance.addBehindGF(abot);
 
     eyeWhites.x = abot.x + 40;
@@ -49,6 +67,12 @@ function createPost(){
     character.x += 20;
     character.y += 5;
 }
+
+function startSong() {
+    FlxG.sound.music.play();
+    FlxG.sound.music.volume = 1;
+}
+
 function updatePost(elapsed:Float) {
     // Set the visibility of ABot to match Nene's.
     abot.visible = character.visible;
