@@ -34,13 +34,14 @@ function createPost(){
 
     FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song, (PlayState.SONG.specialAudioName == null ? PlayState.instance.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
     FlxG.sound.music.play();   
+    FlxG.sound.music.volume = 0;
     abotViz = new ABotVis();
 	abotViz.x = character.x + 100;
 	abotViz.y = character.y + 400;
     abotViz.antialiasing = Options.getData("antialiasing");
     abotViz.scrollFactor.set(0.95, 0.95);
     FlxG.sound.music.pause(); 
-    FlxG.sound.music.volume = 0;
+
 
 
     abot.x = character.x - 100;

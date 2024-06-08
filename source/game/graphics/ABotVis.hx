@@ -16,7 +16,6 @@ using Lambda;
 class ABotVis extends FlxSpriteGroup
 {
     var analyzer:SpectralAnalyzer;
-    var debugMode:Bool = false;
 
     public function new(snd:AudioSource)
     {
@@ -75,22 +74,7 @@ class ABotVis extends FlxSpriteGroup
             group.members[i].animation.curAnim.curFrame = animFrame;
         }
 
-        if (debugMode) {
-            lime.system.System.exit(0);
-        }
       }
         super.draw();
-    }
-
-    override public function update(elapsed:Float):Void
-    {
-        if (FlxG.keys.justReleased.ENTER)
-        {
-            debugMode = true;
-            // The up arrow key is currently pressed
-            // This code is executed every frame, while the key is pressed
-        }
-
-        super.update(elapsed);
     }
 }
