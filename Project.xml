@@ -109,8 +109,8 @@
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="hxNoise"/>
 	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" unless="hl || web" />
-	<haxelib name="funkin.vis"/>
-	<haxelib name="grig.audio"/>
+	<haxelib name="funkin.vis" if="desktop" />
+	<haxelib name="grig.audio" if="desktop" />
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 

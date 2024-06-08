@@ -14,23 +14,30 @@ var abotViz:ABotVis;
 
 var time:Float;
 
+//stuff to copy properties to.
+var objects:Array<FlxSprite> = [];
+
 function createPost(){
     trace('LET HIM COOK!');
     stereoBG = new FlxSprite(0, 0, Paths.image('characters/abot/stereoBG', 'shared'));
     stereoBG.scrollFactor.set(0.95, 0.95);
+    objects.push(stereoBG);
     eyeWhites = new FlxSprite().makeGraphic(160, 60, FlxColor.WHITE);
+    objects.push(eyeWhites);
 
 	pupil = new FlxAtlasSprite(0, 0, Paths.getTextureAtlas("characters/abot/systemEyes", "shared"));
 	pupil.x = character.x;
 	pupil.y = character.y;
     pupil.scrollFactor.set(0.95, 0.95);
     pupil.antialiasing = Options.getData("antialiasing");
+    objects.push(pupil);
 
 	abot = new FlxAnimate(0, 0, Paths.getTextureAtlas("characters/abot/abotSystem", "shared"));
 	abot.x = character.x;
 	abot.y = character.y;
     abot.scrollFactor.set(0.95, 0.95);
     abot.antialiasing = Options.getData("antialiasing");
+    objects.push(abot);
 
     FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song, (PlayState.SONG.specialAudioName == null ? PlayState.instance.storyDifficultyStr.toLowerCase() : PlayState.SONG.specialAudioName)));
     FlxG.sound.music.play();   
@@ -40,6 +47,7 @@ function createPost(){
 	abotViz.y = character.y + 400;
     abotViz.antialiasing = Options.getData("antialiasing");
     abotViz.scrollFactor.set(0.95, 0.95);
+    objects.push(abotViz);
     FlxG.sound.music.pause(); 
 
 
@@ -75,11 +83,15 @@ function startSong() {
 }
 
 function updatePost(elapsed:Float) {
-    // Set the visibility of ABot to match Nene's.
-    abot.visible = character.visible;
-    pupil.visible = character.visible;
-    eyeWhites.visible = character.visible;
-    stereoBG.visible = character.visible;
+    // Set the properties of ABot to match Nene's.
+    for (object in objects){
+        object.visible = character.visible;
+        object.alpha = character.alpha;
+        object.shader = character.shader;
+        object.color = character.color;
+        object.colorTransform = character.colorTransform;
+        object.scrollFactor = character.scrollFactor;
+    }
 
     if (pupil.anim.isPlaying)
     {

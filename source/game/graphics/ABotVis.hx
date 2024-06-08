@@ -3,19 +3,21 @@ package game.graphics;
 import lime.media.AudioSource;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
-import flixel.util.FlxColor;
 import flixel.math.FlxMath;
-import funkin.vis.AudioClip;
-import funkin.vis.dsp.SpectralAnalyzer;
 import flixel.graphics.frames.FlxAtlasFrames;
+
+#if desktop
+import funkin.vis.dsp.SpectralAnalyzer;
+#end
 
 using Lambda;
 
 class ABotVis extends FlxSpriteGroup
 {
+    #if desktop
     var analyzer:SpectralAnalyzer;
+    #end
 
     public function new(snd:AudioSource)
     {
@@ -50,31 +52,35 @@ class ABotVis extends FlxSpriteGroup
         }
 
         @:privateAccess
+        #if desktop
         analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource , 7, 0.01, 30);
+        #end
         //analyzer.maxDb = -35;
     }
 
     override function draw()
     {
-      if(FlxG.sound.music != null){
-        var levels = analyzer.getLevels();
+        #if desktop
+        if(FlxG.sound.music != null){
+            var levels = analyzer.getLevels();
 
-        var grp = group.members.length;
-        var lvls = levels.length;
-        for (i in 0...(grp > lvls ? lvls : grp))
-        {
-            var animFrame:Int = Math.round(levels[i].value * 5);
-            animFrame = Math.floor(FlxMath.bound(animFrame, 0, 5));
+            var grp = group.members.length;
+            var lvls = levels.length;
+            for (i in 0...(grp > lvls ? lvls : grp))
+            {
+                var animFrame:Int = Math.round(levels[i].value * 5);
+                animFrame = Math.floor(FlxMath.bound(animFrame, 0, 5));
 
-            //animFrame = Math.floor(Math.min(5, animFrame));
-            //animFrame = Math.floor(Math.max(0, animFrame));
+                //animFrame = Math.floor(Math.min(5, animFrame));
+                //animFrame = Math.floor(Math.max(0, animFrame));
 
-            animFrame = Std.int(Math.abs(animFrame - 5)); // shitty dumbass flip, cuz dave got da shit backwards lol!
+                animFrame = Std.int(Math.abs(animFrame - 5)); // shitty dumbass flip, cuz dave got da shit backwards lol!
 
-            group.members[i].animation.curAnim.curFrame = animFrame;
+                group.members[i].animation.curAnim.curFrame = animFrame;
+            }
+
         }
-
-      }
+        #end
         super.draw();
     }
 }
