@@ -59,6 +59,7 @@ jobs:
             haxelib install format
             haxelib install tjson
             haxelib list
+            mkdir pages
       
       - name: Create Documentation Site
         run: |
