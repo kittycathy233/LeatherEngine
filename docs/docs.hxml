@@ -7,7 +7,6 @@
 -L flixel-ui
 -L flxanimate
 -L scriptless-polymod 
--L hxcpp
 -L linc_luajit
 -L hxvlc
 -L fnf-modcharting-tools
