@@ -1395,6 +1395,7 @@ class PlayState extends MusicBeatState{
 	}
 
 	public var scripts:Array<HScript> = [];
+	public var hscriptEvents:Map<String, HScript> = [];
 
 
 	public function reorderCameras(?newCam:FlxCamera = null){
@@ -3938,7 +3939,7 @@ class PlayState extends MusicBeatState{
 				else{
 					call("playerOneSing", lua_Data);
 				}
-				executeALuaState('playerOneSingExtra', [Math.abs(note.noteData), notes.members.indexOf(note), note.arrow_Type, note.isSustainNote]);
+				call('playerOneSingExtra', [Math.abs(note.noteData), notes.members.indexOf(note), note.arrow_Type, note.isSustainNote]);
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
 					if (note.characters.length <= 1)
@@ -4511,6 +4512,13 @@ class PlayState extends MusicBeatState{
 				cool_script.call(func, args);
 			}
 		}
+
+		if(execute_on != STAGE){
+			for (cool_script in hscriptEvents.keys()) {
+				if (hscriptEvents.exists(cool_script))
+					hscriptEvents.get(cool_script).call(func, args);
+			}
+		}
 	}
 
 
@@ -4670,6 +4678,9 @@ class PlayState extends MusicBeatState{
 			}
 		}
 		#end
+		if (!hscriptEvents.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
+			hscriptEvents.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
+		}
 
 		switch (event[0].toLowerCase()) {
 			#if !linc_luajit
@@ -5201,6 +5212,11 @@ class PlayState extends MusicBeatState{
 				generatedSomeDumbEventLuas = true;
 			}
 			#end
+
+			if (!hscriptEvents.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
+				hscriptEvents.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
+				generatedSomeDumbEventLuas = true;
+			}
 		}
 
 		events.sort((a, b) -> Std.int(a[1] - b[1]));
