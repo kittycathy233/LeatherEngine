@@ -6,17 +6,17 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import ui.logs.Logs;
-import lime.graphics.Image;
+import flixel.FlxG;
 import flixel.math.FlxMath;
-import openfl.utils.Function;
+import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.text.FlxText;
 import lime.app.Application;
-import flixel.FlxG;
-import states.PlayState;
+import lime.graphics.Image;
 import lime.utils.Assets;
+import openfl.utils.Function;
+import states.PlayState;
+import ui.logs.Logs;
 
 using StringTools;
 

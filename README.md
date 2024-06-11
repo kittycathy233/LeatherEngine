@@ -63,9 +63,7 @@ You can have different note types that give different amounts of health or give 
 
 - larsiusprime + Polymod Contributors - [polymod](https://github.com/larsiusprime/polymod) (funny cool mod loader!!!)
 
-- TheZoroForce240 + FNF-Modcharting-Tools Contributors - [fnf-modcharting-tools](https://github.com/TheZoroForce240/FNF-Modcharting-Tools) (cool modchart shits, check them out!!!)
-
-- EliteMasterEric - [FlxRuntimeShader](https://github.com/elitemastereric) cool class that allows for custom shaders
+- TheZoroForce240 + FNF-Modcharting-Tools Contributors - [note modifying events (mania changes but modified to work with change ui skin too) generated with song code. Instead of right on the spot](https://github.com/TheZoroForce240/LeatherEngine/blob/main/source/states/PlayState.hx#L1432) and [fnf-modcharting-tools](https://github.com/TheZoroForce240/FNF-Modcharting-Tools) (cool modchart shits, check them out!!!)
 
 - Rozebud - [fps plus](https://github.com/ThatRozebudDude/FPS-Plus-Public) lil' buddies and note glow when can be hit came from here
 

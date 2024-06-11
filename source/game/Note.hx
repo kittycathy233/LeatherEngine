@@ -99,155 +99,150 @@ class Note extends FlxSkewedSprite {
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
 			?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
 		super();
-		reloadNotes(strumTime,noteData,prevNote,sustainNote,character,arrowType,song,characters,mustPress,inEditor);
-	}
+		if (prevNote == null)
+			prevNote = this;
 
-	public inline function reloadNotes(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?character:Int = 0, ?arrowType:String = "default",
-		?song:SwagSong, ?characters:Array<Int>, ?mustPress:Bool = false, ?inEditor:Bool = false) {
-			if (prevNote == null)
-				prevNote = this;
-	
-			this.prevNote = prevNote;
-			this.inEditor = inEditor;
-			this.character = character;
-			this.strumTime = strumTime;
-			this.arrow_Type = arrowType;
-			this.characters = characters;
-			this.mustPress = mustPress;
-	
-			isSustainNote = sustainNote;
-	
-			if (song == null)
-				song = PlayState.SONG;
-	
-			var localKeyCount = mustPress ? song.playerKeyCount : song.keyCount;
-	
-			this.noteData = noteData;
-	
-			x += 100;
-			// MAKE SURE ITS DEFINITELY OFF SCREEN?
-			y = -2000;
-	
-			if (PlayState.instance.types.contains(arrow_Type)) {
-				if (Assets.exists(Paths.image('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared'))) {
-					frames = Paths.getSparrowAtlas('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared');
-				} else {
-					frames = Paths.getSparrowAtlas('ui skins/default/arrows/default', 'shared');
-				}
+		this.prevNote = prevNote;
+		this.inEditor = inEditor;
+		this.character = character;
+		this.strumTime = strumTime;
+		this.arrow_Type = arrowType;
+		this.characters = characters;
+		this.mustPress = mustPress;
+
+		isSustainNote = sustainNote;
+
+		if (song == null)
+			song = PlayState.SONG;
+
+		var localKeyCount = mustPress ? song.playerKeyCount : song.keyCount;
+
+		this.noteData = noteData;
+
+		x += 100;
+		// MAKE SURE ITS DEFINITELY OFF SCREEN?
+		y = -2000;
+
+		if (PlayState.instance.types.contains(arrow_Type)) {
+			if (Assets.exists(Paths.image('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared'))) {
+				frames = Paths.getSparrowAtlas('ui skins/' + song.ui_Skin + "/arrows/" + arrow_Type, 'shared');
 			} else {
-				frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
+				frames = Paths.getSparrowAtlas('ui skins/default/arrows/default', 'shared');
 			}
-	
-			animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
-			animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);
-			animation.addByPrefix("holdend", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold end0", 24);
-			animation.addByPrefix("glow", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " glow0", 24);
-	
-			var lmaoStuff = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
-				- (Std.parseFloat(PlayState.instance.mania_size[localKeyCount - 1])));
-	
-			if (isSustainNote)
-				scale.set(lmaoStuff,
-					Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
-						- (Std.parseFloat(PlayState.instance.mania_size[3]))));
+		} else {
+			frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
+		}
+
+		animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
+		animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);
+		animation.addByPrefix("holdend", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold end0", 24);
+		animation.addByPrefix("glow", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " glow0", 24);
+
+		var lmaoStuff = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
+			- (Std.parseFloat(PlayState.instance.mania_size[localKeyCount - 1])));
+
+		if (isSustainNote)
+			scale.set(lmaoStuff,
+				Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
+					- (Std.parseFloat(PlayState.instance.mania_size[3]))));
+		else
+			scale.set(lmaoStuff, lmaoStuff);
+
+		updateHitbox();
+
+		antialiasing = PlayState.instance.ui_settings[3] == "true";
+
+		x += swagWidth * noteData;
+		animation.play("default");
+
+		if (!PlayState.instance.arrow_Configs.exists(arrow_Type)) {
+			if (PlayState.instance.types.contains(arrow_Type))
+				PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/" + song.ui_Skin + "/" + arrow_Type)));
 			else
-				scale.set(lmaoStuff, lmaoStuff);
-	
+				PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/default/" + arrow_Type)));
+
+			PlayState.instance.type_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("arrow types/" + arrow_Type)));
+			PlayState.instance.setupNoteTypeScript(arrow_Type);
+		}
+
+		offset.y += Std.parseFloat(PlayState.instance.arrow_Configs.get(arrow_Type)[0]) * lmaoStuff;
+
+		shouldHit = PlayState.instance.type_Configs.get(arrow_Type)[0] == "true";
+		hitDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[1]);
+		missDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[2]);
+
+		if (PlayState.instance.type_Configs.get(arrow_Type)[4] != null)
+			playMissOnMiss = PlayState.instance.type_Configs.get(arrow_Type)[4] == "true";
+		else {
+			if (shouldHit)
+				playMissOnMiss = true;
+			else
+				playMissOnMiss = false;
+		}
+
+		if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
+			heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
+
+		if (Options.getData("downscroll") && sustainNote)
+			flipY = true;
+
+		if (isSustainNote && prevNote != null) {
+			alpha = 0.6;
+
+			prevNoteStrumtime = prevNote.strumTime;
+			prevNoteIsSustainNote = prevNote.isSustainNote;
+
+			if (!song.ui_Skin.contains("pixel"))
+				x += width / 2;
+
+			animation.play("holdend");
 			updateHitbox();
-	
-			antialiasing = PlayState.instance.ui_settings[3] == "true";
-	
-			x += swagWidth * noteData;
-			animation.play("default");
-	
-			if (!PlayState.instance.arrow_Configs.exists(arrow_Type)) {
-				if (PlayState.instance.types.contains(arrow_Type))
-					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/" + song.ui_Skin + "/" + arrow_Type)));
-				else
-					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/default/" + arrow_Type)));
-	
-				PlayState.instance.type_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("arrow types/" + arrow_Type)));
-				PlayState.instance.setupNoteTypeScript(arrow_Type);
-			}
-	
-			offset.y += Std.parseFloat(PlayState.instance.arrow_Configs.get(arrow_Type)[0]) * lmaoStuff;
-	
-			shouldHit = PlayState.instance.type_Configs.get(arrow_Type)[0] == "true";
-			hitDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[1]);
-			missDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[2]);
-	
-			if (PlayState.instance.type_Configs.get(arrow_Type)[4] != null)
-				playMissOnMiss = PlayState.instance.type_Configs.get(arrow_Type)[4] == "true";
-			else {
-				if (shouldHit)
-					playMissOnMiss = true;
-				else
-					playMissOnMiss = false;
-			}
-	
-			if (PlayState.instance.type_Configs.get(arrow_Type)[3] != null)
-				heldMissDamage = Std.parseFloat(PlayState.instance.type_Configs.get(arrow_Type)[3]);
-	
-			if (Options.getData("downscroll") && sustainNote)
-				flipY = true;
-	
-			if (isSustainNote && prevNote != null) {
-				alpha = 0.6;
 
-				prevNoteStrumtime = prevNote.strumTime;
-				prevNoteIsSustainNote = prevNote.isSustainNote;
-	
-				if (!song.ui_Skin.contains("pixel"))
-					x += width / 2;
-	
-				animation.play("holdend");
-				updateHitbox();
-	
-				if (!song.ui_Skin.contains("pixel"))
-					x -= width / 2;
-	
-				if (song.ui_Skin.contains("pixel"))
-					x += 30;
-	
-				if (prevNote.isSustainNote) {
-					if (prevNote.animation != null)
-						prevNote.animation.play("hold");
-	
-					var speed = song.speed;
-	
-					if (Options.getData("useCustomScrollSpeed"))
-						speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
-	
-					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
-					prevNote.updateHitbox();
-					prevNote.sustainScaleY = prevNote.scale.y;
-				}
-	
-				centerOffsets();
-				centerOrigin();
+			if (!song.ui_Skin.contains("pixel"))
+				x -= width / 2;
 
-				sustainScaleY = scale.y;
+			if (song.ui_Skin.contains("pixel"))
+				x += 30;
+
+			if (prevNote.isSustainNote) {
+				if (prevNote.animation != null)
+					prevNote.animation.play("hold");
+
+				var speed = song.speed;
+
+				if (Options.getData("useCustomScrollSpeed"))
+					speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
+
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
+				prevNote.updateHitbox();
+				prevNote.sustainScaleY = prevNote.scale.y;
 			}
-	
-	
-			if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] != null) {
-				if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] == "true")
-					affectedbycolor = true;
+
+			centerOffsets();
+			centerOrigin();
+
+			sustainScaleY = scale.y;
+		}
+
+
+		if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] != null) {
+			if (PlayState.instance.arrow_Configs.get(arrow_Type)[5] == "true")
+				affectedbycolor = true;
+		}
+
+		if (affectedbycolor) {
+			colorSwap = new ColorSwap();
+			shader = colorSwap.shader;
+
+			var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[song.keyCount - 1][noteData]);
+
+			if(noteColor != null){
+				colorSwap.r = noteColor[0];
+				colorSwap.g = noteColor[1];
+				colorSwap.b = noteColor[2];
 			}
-	
-			if (affectedbycolor) {
-				colorSwap = new ColorSwap();
-				shader = colorSwap.shader;
-	
-				var noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[song.keyCount - 1][noteData]);
-	
-				if(noteColor != null){
-					colorSwap.r = noteColor[0];
-					colorSwap.g = noteColor[1];
-					colorSwap.b = noteColor[2];
-				}
-			}
-}
+		}
+	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);

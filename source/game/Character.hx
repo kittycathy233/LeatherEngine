@@ -1,17 +1,17 @@
 package game;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import modding.scripts.languages.HScript;
-import flixel.FlxG;
 import flixel.addons.effects.FlxTrail;
 import flixel.util.FlxColor;
-import lime.utils.Assets;
-import haxe.Json;
-import states.PlayState;
-import modding.CharacterConfig;
 import flixel.util.FlxDestroyUtil;
 import flxanimate.FlxAnimate;
+import haxe.Json;
+import lime.utils.Assets;
+import modding.CharacterConfig;
+import modding.scripts.languages.HScript;
+import states.PlayState;
 
 class Character extends FlxSprite {
 	public var animOffsets:Map<String, Array<Dynamic>>;
@@ -142,6 +142,9 @@ class Character extends FlxSprite {
 		} else {
 			visible = false;
 		}
+		if (Assets.exists(Paths.hx("data/character data/" + curCharacter + "/script"))) {
+			script.call("createCharacterPost", [curCharacter]);
+		}
 	}
 
 	public function loadNamedConfiguration(characterName:String) {
@@ -154,9 +157,9 @@ class Character extends FlxSprite {
 				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
 	
 				script.interp.variables.set("character", this);
+				PlayState.instance.scripts.push(script);
 				script.call("createCharacter", [curCharacter]);
 				script.start();
-				PlayState.instance.scripts.push(script);
 			}
 
 		if (Options.getData("optimizedChars") && Assets.exists(Paths.json("character data/optimized_" + characterName + "/config")))

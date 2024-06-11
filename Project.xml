@@ -142,13 +142,12 @@
 	<haxedef name="HXVLC_VERBOSE" value="2" if="debug" />
 	<haxedef name="HXVLC_LOGGING" if="debug" />
 
-	<!-- Akways enable Null Object Reference check for crash dialog -->
+	<!-- Aways enable Null Object Reference check for crash dialog -->
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
 	<haxedef name="HXCPP_STACK_LINE" if="release" />
 	<haxedef name="HXCPP_STACK_TRACE" if="release" />
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
-	<!-- _________________________________ Custom _______________________________ -->
+	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
 
 	<icon path="art/icon.png" />
 </project>

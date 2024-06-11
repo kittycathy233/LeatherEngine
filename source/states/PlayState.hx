@@ -1,6 +1,64 @@
 package states;
 
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxSubState;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxFramesCollection;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.input.FlxInput.FlxInputState;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+import flixel.sound.FlxSound;
+import flixel.system.FlxAssets.FlxShader;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.tweens.misc.VarTween;
+import flixel.ui.FlxBar;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
+import flixel.util.FlxTimer;
+import game.Boyfriend;
+import game.Character;
+import game.Conductor;
+import game.Cutscene;
+import game.Highscore;
+import game.Note;
+import game.NoteSplash;
+import game.Section.SwagSection;
+import game.Song;
+import game.StageGroup;
+import game.StrumNote;
+import haxe.Json;
+import haxe.io.Path;
+import lime.app.Application;
 import lime.media.AudioSource;
+import lime.utils.Assets;
+import modding.ModList;
+import modding.ModchartUtilities;
+import modding.scripts.languages.HScript;
+import openfl.display.BitmapData;
+import openfl.utils.Assets as OpenFlAssets;
+import shaders.NoteColors;
+import substates.GameOverSubstate;
+import substates.PauseSubState;
+import toolbox.ChartingState;
+import ui.DialogueBox;
+import ui.HealthIcon;
+import utilities.NoteVariables;
+import utilities.Ratings;
+
+using StringTools;
 #if sys
 import sys.FileSystem;
 #end
@@ -18,71 +76,12 @@ import hxvlc.flixel.FlxVideo;
 #end
 
 #if MODCHARTING_TOOLS
+import modcharting.ModchartEditorState;
 import modcharting.ModchartFuncs;
 import modcharting.NoteMovement;
 import modcharting.PlayfieldRenderer;
-import modcharting.ModchartEditorState;
 #end
 
-import haxe.io.Path;
-import modding.ModList;
-import flixel.group.FlxSpriteGroup;
-import modding.scripts.languages.HScript;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import flixel.util.FlxStringUtil;
-import openfl.display.BitmapData;
-import flixel.graphics.FlxGraphic;
-import shaders.NoteColors;
-import flixel.system.FlxAssets.FlxShader;
-import haxe.Json;
-import lime.utils.Assets;
-import game.StrumNote;
-import game.Cutscene;
-import game.NoteSplash;
-import flixel.graphics.frames.FlxFramesCollection;
-import flixel.tweens.misc.VarTween;
-import modding.ModchartUtilities;
-import lime.app.Application;
-import utilities.NoteVariables;
-import flixel.input.FlxInput.FlxInputState;
-import flixel.group.FlxGroup;
-import utilities.Ratings;
-import toolbox.ChartingState;
-import game.Section.SwagSection;
-import flixel.FlxBasic;
-import flixel.FlxCamera;
-import flixel.FlxG;
-import flixel.FlxObject;
-import flixel.FlxSprite;
-import flixel.FlxSubState;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
-import flixel.sound.FlxSound;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.ui.FlxBar;
-import flixel.util.FlxColor;
-import flixel.util.FlxSort;
-import flixel.util.FlxTimer;
-import game.Note;
-import ui.HealthIcon;
-import ui.DialogueBox;
-import game.Character;
-import game.Boyfriend;
-import game.StageGroup;
-import game.Conductor;
-import game.Song;
-
-import substates.PauseSubState;
-import substates.GameOverSubstate;
-import game.Highscore;
-import openfl.utils.Assets as OpenFlAssets;
-
-using StringTools;
 
 /**
 	The main gameplay state.
@@ -653,15 +652,15 @@ class PlayState extends MusicBeatState{
 		}
 
 		// key count flipping
-		ogPlayerKeyCount = SONG.playerKeyCount;
+		ogPlayerKeyCount = SONG.playerKeyCount ;
 		ogKeyCount = SONG.keyCount;
 
 		if (characterPlayingAs == 1) {
-			var oldRegKeyCount = SONG.keyCount;
-			var oldPlrKeyCount = SONG.playerKeyCount;
+			var oldRegKeyCount = SONG.playerKeyCount;
+			var oldPlrKeyCount = SONG.keyCount;
 
-			SONG.keyCount = oldPlrKeyCount;
-			SONG.playerKeyCount = oldRegKeyCount;
+			SONG.playerKeyCount = oldPlrKeyCount;
+			SONG.keyCount = oldRegKeyCount;
 		}
 
 		// check for invalid settings
@@ -951,6 +950,7 @@ class PlayState extends MusicBeatState{
 		playerStrums = new FlxTypedGroup<StrumNote>();
 		enemyStrums = new FlxTypedGroup<StrumNote>();
 
+		generareNoteChangeEvents();
 		generateSong(SONG.song);
 		generateEvents();
 
@@ -1851,7 +1851,6 @@ class PlayState extends MusicBeatState{
 
 		if (!paused){
 			FlxG.sound.music.play();
-			//visSnd = @:privateAccess cast FlxG.sound.music._channel.__audioSource;
 		}
 
 		vocals.play();
@@ -1876,9 +1875,13 @@ class PlayState extends MusicBeatState{
 		resyncVocals();
 	}
 
-	var debugNum:Int = 0;
 
-	public var visSnd:AudioSource;
+	private var maniaChanges:Array<Dynamic> = [];
+
+	//https://github.com/TheZoroForce240/LeatherEngine/blob/main/source/states/PlayState.hx#L1432
+	var currentParsingKeyCount = SONG.keyCount;
+	var currentParsingPlayerKeyCount = SONG.playerKeyCount;
+
 
 	public function generateSong(dataPath:String):Void {
 		var songData = SONG;
@@ -1915,9 +1918,23 @@ class PlayState extends MusicBeatState{
 
 			for (songNotes in section.sectionNotes) {
 				var daStrumTime:Float = songNotes[0] + Conductor.offset + SONG.chartOffset;
+
+				for (mchange in maniaChanges)
+					{
+						if (daStrumTime >= mchange[0])
+						{
+							currentParsingKeyCount = mchange[2];
+							currentParsingPlayerKeyCount = mchange[1];
+	
+							SONG.keyCount = currentParsingKeyCount; //so notes are correct anim/scale and whatever
+							SONG.playerKeyCount = currentParsingPlayerKeyCount;
+						}
+					}
+	
+
 				var gottaHitNote:Bool = section.mustHitSection;
 
-				if (songNotes[1] >= (!gottaHitNote ? SONG.keyCount : SONG.playerKeyCount))
+				if (songNotes[1] >= (!gottaHitNote ? currentParsingKeyCount : currentParsingPlayerKeyCount))
 					gottaHitNote = !section.mustHitSection;
 
 				switch (characterPlayingAs) {
@@ -1927,7 +1944,7 @@ class PlayState extends MusicBeatState{
 						gottaHitNote = true;
 				}
 
-				var daNoteData:Int = Std.int(songNotes[1] % (SONG.keyCount + SONG.playerKeyCount));
+				var daNoteData:Int = Std.int(songNotes[1] % (currentParsingKeyCount + currentParsingPlayerKeyCount));
 				if (section.mustHitSection && daNoteData >= SONG.playerKeyCount)
 					{
 						daNoteData -= SONG.playerKeyCount;
@@ -2001,6 +2018,15 @@ class PlayState extends MusicBeatState{
 				swagNote.sustains = sustainGroup;
 				swagNote.mustPress = gottaHitNote;
 			}
+		}
+
+		SONG.keyCount = ogKeyCount;
+		SONG.playerKeyCount = ogPlayerKeyCount;
+
+		if (characterPlayingAs == 1)
+		{
+			SONG.keyCount = ogPlayerKeyCount;
+			SONG.playerKeyCount = ogKeyCount;
 		}
 
 		unspawnNotes.sort(sortByShit);
@@ -2207,7 +2233,9 @@ class PlayState extends MusicBeatState{
 
 		if (!switchedStates) {
 			if (!(Conductor.songPosition > 20 && FlxG.sound.music.time < 20)) {
-				trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
+				#if debug
+				trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}', DEBUG);
+				#end
 
 				vocals.pause();
 				FlxG.sound.music.pause();
@@ -2223,7 +2251,9 @@ class PlayState extends MusicBeatState{
 				vocals.play();
 			} else {
 				while (Conductor.songPosition > 20 && FlxG.sound.music.time < 20) {
-					trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}');
+					#if debug
+					trace('Resynced Vocals {Conductor.songPosition: ${Conductor.songPosition}, FlxG.sound.music.time: ${FlxG.sound.music.time} / ${FlxG.sound.music.length}}', DEBUG);
+					#end
 
 					FlxG.sound.music.time = Conductor.songPosition;
 					vocals.time = Conductor.songPosition;
@@ -4872,23 +4902,12 @@ class PlayState extends MusicBeatState{
 							generateStaticArrows(0, true);
 						}
 					}
-				for (note in notes.members)
+				/*for (note in notes.members){
+					trace(note.reloadNotes == null, DEBUG);
 					if(note != null){
-						note.reloadNotes(note.strumTime, 
-						note.noteData, 
-						note.prevNote, 
-						note.isSustainNote, 
-						note.character, 
-						note.arrow_Type, 
-						PlayState.SONG, 
-						note.characters, 
-						note.checkPlayerMustPress(), 
-						note.inEditor);
-					}
-				for(note in unspawnNotes){
-					if(note != null){
-						note.reloadNotes(note.strumTime, 
-						note.noteData, 
+						note.reloadNotes(
+						note.strumTime, 
+						note.noteData, 	
 						note.prevNote, 
 						note.isSustainNote, 
 						note.character, 
@@ -4899,6 +4918,21 @@ class PlayState extends MusicBeatState{
 						note.inEditor);
 					}
 				}
+				for(note in unspawnNotes){
+					if(note != null){
+						note.reloadNotes(
+						note.strumTime, 
+						note.noteData, 
+						note.prevNote, 
+						note.isSustainNote, 
+						note.character, 
+						note.arrow_Type, 
+						PlayState.SONG, 
+						note.characters, 
+						note.checkPlayerMustPress(), 
+						note.inEditor);
+					}
+				}*/
 				#if LUA_ALLOWED
 				for (i in 0...strumLineNotes.length) {
 					var member = strumLineNotes.members[i];
@@ -5028,40 +5062,6 @@ class PlayState extends MusicBeatState{
 							generateStaticArrows(0, true, false);
 						}
 					}
-					for (note in notes.members){
-						if(note != null){
-							note.reloadNotes(note.strumTime, 
-							note.noteData, 
-							note.prevNote, 
-							note.isSustainNote, 
-							note.character, 
-							note.arrow_Type, 
-							PlayState.SONG, 
-							note.characters, 
-							note.checkPlayerMustPress(), 
-							note.inEditor);
-						}
-						if(!note.affectedbycolor){
-							note.shader = null;
-						}
-					}
-					for(note in unspawnNotes){
-						if(note != null){
-							note.reloadNotes(note.strumTime, 
-							note.noteData, 
-							note.prevNote, 
-							note.isSustainNote, 
-							note.character, 
-							note.arrow_Type, 
-							PlayState.SONG, 
-							note.characters, 
-							note.checkPlayerMustPress(), 
-							note.inEditor);
-						}
-						if(!note.affectedbycolor){
-							note.shader = null;
-						}
-					}
 		}
 
 		//                name       pos      param 1   param 2
@@ -5082,6 +5082,40 @@ class PlayState extends MusicBeatState{
 
 	public inline function updateRating()
 		ratingStr = Ratings.getRank(accuracy, misses);
+
+	function generareNoteChangeEvents():Void {
+		baseEvents = [];
+		events = [];
+
+		if (SONG.events.length > 0) {
+			for (event in SONG.events) {
+				baseEvents.push(event);
+				events.push(event);
+			}
+		}
+
+		if (Assets.exists(Paths.songEvents(SONG.song.toLowerCase(), storyDifficultyStr.toLowerCase())) && loadChartEvents) {
+			var eventFunnies:Array<Array<Dynamic>> = Song.parseJSONshit(Assets.getText(Paths.songEvents(SONG.song.toLowerCase(),
+				storyDifficultyStr.toLowerCase())))
+				.events;
+
+			for (event in eventFunnies) {
+				baseEvents.push(event);
+				events.push(event);
+			}
+		}
+
+		for (event in events) {
+			var map:Map<String, Dynamic>;
+
+			// cache shit
+			if (event[0].toLowerCase() == "change keycount" || event[0].toLowerCase() == "change mania"){
+				maniaChanges.push([event[1], Std.parseInt(event[2]), Std.parseInt(event[3])]); //track strumtime, p1 keycount, p2 keycount
+			}
+		}
+
+		events.sort((a, b) -> Std.int(a[1] - b[1]));
+	}
 
 	function generateEvents():Void {
 		baseEvents = [];

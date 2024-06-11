@@ -1,19 +1,19 @@
 package;
 
-import states.TitleState;
-import flixel.FlxGame;
-import haxe.Log;
-import ui.logs.Logs;
 import flixel.FlxG;
-import lime.app.Application;
-import haxe.io.Path;
-import haxe.CallStack;
-import openfl.Lib;
-import openfl.events.UncaughtErrorEvent;
-import openfl.display.Sprite;
-import openfl.text.TextFormat;
-import ui.SimpleInfoDisplay;
+import flixel.FlxGame;
 import flixel.system.debug.log.LogStyle;
+import haxe.CallStack;
+import haxe.Log;
+import haxe.io.Path;
+import lime.app.Application;
+import openfl.Lib;
+import openfl.display.Sprite;
+import openfl.events.UncaughtErrorEvent;
+import openfl.text.TextFormat;
+import states.TitleState;
+import ui.SimpleInfoDisplay;
+import ui.logs.Logs;
 
 class Main extends Sprite {
 	public static var instance:Main = null;

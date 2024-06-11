@@ -72,7 +72,7 @@ class StrumNote extends FlxSkewedSprite
 
 		super(x, y);
 		noteColor = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[keyCount - 1][noteData]);
-		shader = colorSwap.shader;
+		shader = affectedbycolor ? colorSwap.shader : null;
 
 		if(affectedbycolor && PlayState.instance != null && colorSwap != null){
 			if (noteColor != null){
