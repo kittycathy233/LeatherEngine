@@ -20,19 +20,24 @@ jobs:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
 
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
+    
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@main
-
-      - uses: GuillaumeFalourd/setup-rsync@v1.2
-      - run: rsync --version
       
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.4
+
+      - name: Install rsync 📚
+        run: |
+          sudo apt-get update && sudo apt-get install -y rsync
+
+      - name: Install libvlc
+        run: sudo apt-get install -y libvlc-dev libvlccore-dev
       
       # Runs a set of commands using the runners shell
       - name: Install Haxe Libraries
