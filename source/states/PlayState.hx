@@ -5215,7 +5215,6 @@ class PlayState extends MusicBeatState{
 
 			if (!hscriptEvents.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
 				hscriptEvents.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
-				generatedSomeDumbEventLuas = true;
 			}
 		}
 
