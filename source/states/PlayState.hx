@@ -828,7 +828,7 @@ class PlayState extends MusicBeatState{
 		}
 		/* end of character time */
 
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		// weird ass rpc stuff from muffin man
 		storyDifficultyText = storyDifficultyStr;
 		iconRPC = dad.icon;
@@ -1866,7 +1866,7 @@ class PlayState extends MusicBeatState{
 		Conductor.recalculateStuff(songMultiplier);
 
 		// Updating Discord Rich Presence (with Time Left)
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength / songMultiplier);
 		#end
 		#end
@@ -2185,7 +2185,7 @@ class PlayState extends MusicBeatState{
 
 			paused = false;
 
-			#if discord_rpc
+			#if DISCORD_ALLOWED
 			if (startTimer.finished) {
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true,
 					((songLength - Conductor.songPosition) / songMultiplier >= 1 ? (songLength - Conductor.songPosition) / songMultiplier : 1));
@@ -2202,7 +2202,7 @@ class PlayState extends MusicBeatState{
 	}
 
 	override public function onFocus():Void {
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		if (health > minHealth && !paused) {
 			if (Conductor.songPosition > 0.0) {
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true,
@@ -2217,7 +2217,7 @@ class PlayState extends MusicBeatState{
 	}
 
 	override public function onFocusLost():Void {
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		if (health > minHealth && !paused) {
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 		}

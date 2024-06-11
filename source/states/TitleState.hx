@@ -1,6 +1,9 @@
 package states;
 
-//import haxe.ui.Toolkit;
+#if DISCORD_ALLOWED
+import utilities.Discord.DiscordClient;
+#end
+
 import utilities.PlayerSettings;
 import shaders.NoteColors;
 import modding.ModList;
@@ -8,15 +11,11 @@ import game.Highscore;
 import utilities.PlayerSettings;
 import modding.scripts.languages.HScript;
 import modding.scripts.languages.HScript.IHScriptable;
-#if discord_rpc
-import utilities.Discord.DiscordClient;
-#end
 import utilities.Options;
 import utilities.NoteVariables;
 import substates.OutdatedSubState;
 import modding.PolymodHandler;
 import utilities.MusicUtilities;
-
 import game.Conductor;
 import ui.Alphabet;
 import flixel.FlxG;
@@ -37,7 +36,7 @@ import lime.app.Application;
 import openfl.Assets;
 import shaders.ColorSwapHSV;
 import flixel.system.FlxSplash;
-//import systools.Registry;
+import haxe.Http;
 
 using StringTools;
 
@@ -86,15 +85,13 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			PlayerSettings.player1.controls.loadKeyBinds();
 
 			Highscore.load();
-			#if MODDING_ALLOWED
-			ModList.load();
-			#end
 			NoteColors.load();
 			#if MODDING_ALLOWED
+			ModList.load();
 			PolymodHandler.loadMods();
 			#end
-			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
+			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
 
 			#if FLX_NO_DEBUG
 			if (Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
@@ -111,7 +108,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 			super.create();
 
-			#if discord_rpc
+			#if DISCORD_ALLOWED
 			if (!DiscordClient.started && Options.getData("discordRPC"))
 				DiscordClient.initialize();
 
@@ -128,7 +125,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			firstTimeStarting = true;
 		}
 
-		#if sys
+		#if MODDING_ALLOWED
 		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx")){
 			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx", true);
 			script.start();		
@@ -168,20 +165,13 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
+			playTitleMusic();
+			Conductor.changeBPM(102);
 
-			if (Options.getData("oldTitle"))
-				playTitleMusic();
-			else {
-				if (Date.now().getDay() == 5 && Date.now().getHours() >= 18 || Options.getData("nightMusic")) {
-					playTitleMusic();
-					Conductor.changeBPM(117);
-				} else {
-					playTitleMusic();
-					Conductor.changeBPM(102);
-				}
+			var now:Date = Date.now();
+
+			if (!Options.getData("oldTitle") && ((now.getDay() == 5 && now.getHours() >= 18) || Options.getData("nightMusic"))) {
+				Conductor.changeBPM(117);
 			}
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
@@ -277,17 +267,16 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		ngSpr.visible = false;
 		add(ngSpr);
 
-		FlxG.mouse.visible = false;
-
 		if (Options.getData("watermarks"))
 			titleTextData = CoolUtil.coolTextFile(Paths.txt("watermarkTitleText", "preload"));
 		else
 			titleTextData = CoolUtil.coolTextFile(Paths.txt("titleText", "preload"));
-
+		
 		if (initialized) {
 			skipIntro();
 		}
-		
+			
+		FlxG.mouse.visible = false;
 		initialized = true;
 	}
 
@@ -318,7 +307,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		if (controls.RIGHT)
 			swagShader.hue += elapsed * 0.1;
 
-		#if sys
+		#if MODDING_ALLOWED
 		if(FlxG.keys.justPressed.TAB){
 			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
@@ -333,13 +322,11 @@ class TitleState extends MusicBeatState implements IHScriptable{
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
-		#if mobile
 		for (touch in FlxG.touches.list) {
 			if (touch.justPressed) {
 				pressedEnter = true;
 			}
 		}
-		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
@@ -363,21 +350,21 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			transitioning = true;
 
 			call("checkForUpdate");
-			new FlxTimer().start(2, function(tmr:FlxTimer) {
-				var http = new haxe.Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
-
-				http.onData = function(data:String) {
+			new FlxTimer().start(2, (tmr:FlxTimer) -> {
+				var http:Http = new Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
+				http.onData = (data:String) -> {
 					data = 'v' + data;
 					trace(data);
 
 					if (CoolUtil.getCurrentVersion() != data) {
 						trace('Outdated Version Detected! ' + data + ' != ' + CoolUtil.getCurrentVersion(), WARNING);
 						FlxG.switchState(new OutdatedSubState(data));
-					} else
+					} else {
 						FlxG.switchState(new MainMenuState());
+					}
 				}
 
-				http.onError = function(error) {
+				http.onError = (error:String) -> {
 					trace('$error', ERROR);
 					FlxG.switchState(new MainMenuState()); // fail so we go anyway
 				}
@@ -386,8 +373,9 @@ class TitleState extends MusicBeatState implements IHScriptable{
 			});
 		}
 
-		if (pressedEnter && !skippedIntro)
+		if (pressedEnter && !skippedIntro) {
 			skipIntro();
+		}
 
 		super.update(elapsed);
 		call("update", [elapsed]);
@@ -421,16 +409,20 @@ class TitleState extends MusicBeatState implements IHScriptable{
 	}
 
 	function textDataText(line:Int) {
-		if(titleTextData != null && line >= 0){
-			var lineText:Null<String> = titleTextData[line];
+		if (titleTextData == null || line < 0) {
+			return;
+		}
 
-			if (lineText != null) {
-				if (lineText.contains("~")) {
-					var coolText = lineText.split("~");
-					createCoolText(coolText);
-				} else
-					addMoreText(lineText);
-			}
+		var lineText:Null<String> = titleTextData[line];
+		if (lineText == null) {
+			return;
+		}
+
+		if (lineText.contains("~")) {
+			var coolText = lineText.split("~");
+			createCoolText(coolText);
+		} else {
+			addMoreText(lineText);
 		}
 	}
 
@@ -440,7 +432,7 @@ class TitleState extends MusicBeatState implements IHScriptable{
 		super.beatHit();
 
 		if (!Options.getData("oldTitle")) {
-			if(logoBl != null){
+			if (logoBl != null) {
 				logoBl.animation.play('bump');
 			}
 			danceLeft = !danceLeft;

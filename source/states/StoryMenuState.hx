@@ -160,7 +160,7 @@ class StoryMenuState extends MusicBeatState {
 
 		menuCharacters = new FlxTypedGroup<MenuCharacter>();
 
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Menus", null);
 		#end

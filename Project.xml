@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Leather Engine" file="Leather Engine" packageName="com.leather128.funkin"
+	<app title="Leather Engine" file="LeatherEngine" packageName="com.leather128.funkin"
 		package="com.leather128.funkin" main="Main" version="0.5.0" company="leather128" />
 
 	<!-- totally not stolen from psych engine -->
@@ -17,15 +17,8 @@
 	<!--These window settings apply to all targets-->
 	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" allow-high-dpi="true" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
-
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
-
-	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0"
-		resizable="false" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -120,7 +113,6 @@
 	<haxedef name="FLX_NO_POINT_POOL" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="FLX_NO_HEALTH" />
-
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 

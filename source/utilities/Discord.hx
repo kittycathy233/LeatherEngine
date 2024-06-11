@@ -1,6 +1,6 @@
 package utilities;
 
-#if discord_rpc
+#if DISCORD_ALLOWED
 import Sys.sleep;
 import discord_rpc.DiscordRpc;
 import flixel.FlxG;

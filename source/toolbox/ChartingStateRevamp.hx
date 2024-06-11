@@ -89,7 +89,7 @@ class ChartingStateRevamp extends MusicBeatState
 
 	override function create()
 	{
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Charting a song", null, null);
 		#end
 

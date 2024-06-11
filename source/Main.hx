@@ -40,12 +40,9 @@ class Main extends Sprite {
 		game._customSoundTray = ui.FunkinSoundTray;
 
 		addChild(game);
-
-		#if !mobile
 		logsOverlay = new Logs();
 		logsOverlay.visible = false;
 		addChild(logsOverlay);
-		#end
 
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");
 		addChild(display);

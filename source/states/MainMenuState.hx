@@ -75,7 +75,7 @@ class MainMenuState extends MusicBeatState implements IHScriptable {
 		
 		MusicBeatState.windowNameSuffix = "";
 		
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end

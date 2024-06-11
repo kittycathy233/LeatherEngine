@@ -16,7 +16,7 @@ import states.ModsMenu;
 import lime.ui.FileDialogType;
 import flixel.ui.FlxButton;
 import flixel.FlxG;
-#if discord_rpc
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
 import states.MusicBeatState;
@@ -81,7 +81,7 @@ class NewModState extends MusicBeatState{
 
     override function create(){
         super.create();
-        #if discord_rpc
+        #if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A New Mod", null, null, true);
 		#end
         bg = new FlxSprite();

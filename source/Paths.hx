@@ -8,13 +8,13 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 
 class Paths {
-	inline public static final SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	public static inline final SOUND_EXT:String = "ogg";
 
-	static var currentLevel:String = "preload";
+	private static var currentLevel:String = "preload";
 
-
-	inline static public function setCurrentLevel(name:String):Void
+	public static inline function setCurrentLevel(name:String):Void {
 		currentLevel = name.toLowerCase();
+	}
 
 	static function getPath(file:String, type:AssetType, library:Null<String>):String {
 		if (library != null)
