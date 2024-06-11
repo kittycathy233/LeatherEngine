@@ -226,6 +226,11 @@ class MainMenuState extends MusicBeatState implements IHScriptable {
 					}
 				});
 			}
+
+			if (controls.BACK) {
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				FlxG.switchState(new TitleState());
+			}
 		}
 
 		call("update", [elapsed]);

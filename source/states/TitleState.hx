@@ -1,5 +1,6 @@
 package states;
 
+import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
@@ -475,12 +476,12 @@ class TitleState extends MusicBeatState implements IHScriptable{
 					deleteCoolText();
 				// yipee
 				case 13 | 14 | 15:
-					textDataText(4 + (curBeat - 13));
+					textDataText(curBeat - 9);
 				case 16:
 					skipIntro();
 			}
 
-			MusicBeatState.windowNameSuffix = skippedIntro ? "" : " " + Std.string(Math.min(15 - (curBeat - 1), 15));
+			MusicBeatState.windowNameSuffix = skippedIntro ? "" : " " + Std.string(FlxMath.bound(16 - curBeat, 1, 15));
 		} else {
 			remove(ngSpr);
 			remove(credGroup);
