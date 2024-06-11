@@ -28,6 +28,7 @@ jobs:
       - uses: actions/checkout@main
 
       - uses: GuillaumeFalourd/setup-rsync@v1.2
+      - run: rsync --version
       
       - uses: krdlab/setup-haxe@master
         with:
