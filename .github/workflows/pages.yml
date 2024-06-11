@@ -30,12 +30,16 @@ jobs:
       - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.3
+
+      - name: Install libvlc
+        run: sudo apt-get install -y libvlc-dev libvlccore-dev
       
       # Runs a set of commands using the runners shell
       - name: Install Haxe Libraries
         run: |
             haxelib setup ~/haxelib
             haxelib install hxcpp > /dev/null
+            haxelib setup ~/haxelib
             haxelib install lime
             haxelib install openfl
             haxelib --never install flixel
@@ -46,16 +50,14 @@ jobs:
             haxelib install flixel-addons
             haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
             haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-            haxelib install systools
             haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
             haxelib install hxvlc
             haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-            haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
-            haxelib git fnf-modcharting-tools https://github.com/EdwhakKB/FNF-Modcharting-Tools
-            haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+            haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
+            haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
             haxelib git hxNoise https://github.com/whuop/hxNoise
-            haxelib install HxWebView
-            haxelib install flixel-screenshot-plugin
+            haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+            haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
             haxelib install hxcpp-debug-server
             haxelib git dox https://github.com/HaxeFoundation/dox
             haxelib install format
