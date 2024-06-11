@@ -1,46 +1,17 @@
--D openfl
--D flixel
--D lime
--D hscript
--D flixel-addons
--D flixel-ui
--D hscript-improved
--D tjson
--D hxNoise
--D flxanimate
--D flixelTextureAtlas
--D scriptless-polymod
--D HxWebView
--D hxcpp-debug-server
--D hxcpp
--D away3d
--D linc_luajit
--D hxvlc
--D systools
--D fnf-modcharting-tools
-
-
-
-
 -L lime
 -L openfl
 -L flixel
 -L hscript-improved
 -L flixel-addons
 -L hxNoise
--L tjson
 -L flixel-ui
 -L flxanimate
--L flixelTextureAtlas
 -L scriptless-polymod 
--L HxWebView
--L hxcpp-debug-server
 -L hxcpp
--L away3d
 -L linc_luajit
 -L hxvlc
--L systools
 -L fnf-modcharting-tools
+-L funkin.vis
 
 
 
@@ -52,22 +23,14 @@
 -cp source
 
 --define polymod
---define THREE_D_ALLOWED
 --define LUA_ALLOWED
 --define VIDEOS_ALLOWED
 --define LEATHER
+--define MODDING_ALLOWED
 
 
---macro include('external')
 --macro include('game')
---macro include('modding')
---macro include('shaders')
---macro include('states')
---macro include('substates')
---macro include('ui')
---macro include('utilities')
---macro include('toolbox')
---macro include('models')
+--macro include('flixel', true, [ 'flixel.addons.editors.spine.*', 'flixel.addons.nape.*', 'flixel.system.macros.*' ])
 --macro keep('Main')
 
 --no-output

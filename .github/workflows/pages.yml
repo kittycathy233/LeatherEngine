@@ -6,9 +6,9 @@ name: github-pages
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "" ]
+    branches: [  ]
   pull_request:
-    branches: [ "" ]
+    branches: [ ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -46,7 +46,6 @@ jobs:
             haxelib install flixel-addons
             haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
             haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-            haxelib install away3d
             haxelib install systools
             haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
             haxelib install hxvlc

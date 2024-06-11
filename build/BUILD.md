@@ -14,7 +14,6 @@ haxelib install flixel-ui
 haxelib install flixel-addons
 haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
 haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
-haxelib install away3d
 haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
 haxelib install hxCodec
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
