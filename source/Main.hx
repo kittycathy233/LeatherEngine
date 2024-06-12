@@ -1,5 +1,7 @@
 package;
 
+import openfl.errors.Error;
+import openfl.events.ErrorEvent;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.system.debug.log.LogStyle;
@@ -116,8 +118,20 @@ class Main extends Sprite {
 			}
 		}
 
-		error += "\nUncaught Error: " + e.error;
-		path = "./crash/" + "crash-" + e.error + '-on-' + date + ".txt";
+		// see the docs for e.error to see why we do this
+		// since i guess it can sometimes be an issue???
+		// /shrug - what-is-a-git 2024
+		var errorData:String = "";
+		if (Std.isOfType(e.error, Error)) {
+			errorData = cast(e.error, Error).message;
+		} else if (Std.isOfType(e.error, ErrorEvent)) {
+			errorData = cast(e.error, ErrorEvent).text;
+		} else {
+			errorData = Std.string(e.error);
+		}
+		
+		error += "\nUncaught Error: " + errorData;
+		path = "./crash/" + "crash-" + errorData + '-on-' + date + ".txt";
 
 		if (!sys.FileSystem.exists("./crash/")) {
 			sys.FileSystem.createDirectory("./crash/");
