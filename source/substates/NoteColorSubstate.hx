@@ -221,7 +221,7 @@ class NoteColorSubstate extends MusicBeatSubstate
         coolText.screenCenter(X);
     }
 
-    function updateColorValsBase()
+    inline function updateColorValsBase()
     {
         current_ColorVals = NoteColors.getNoteColor(NoteVariables.Other_Note_Anim_Stuff[key_Count - 1][selectedControl]);
     }
@@ -237,7 +237,7 @@ class NoteColorSubstate extends MusicBeatSubstate
 
 		for (i in 0...key_Count)
         {
-            var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, "default", ui_settings, mania_size, key_Count, null, true);
+            var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, "default", ui_settings, mania_size, key_Count, null);
 
             babyArrow.frames = Paths.getSparrowAtlas("ui skins/default/arrows/default", 'shared');
 

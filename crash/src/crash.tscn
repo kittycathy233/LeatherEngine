@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://3fy0wk0ek2wl"]
+
+[ext_resource type="Script" path="res://src/crash.gd" id="1_gray3"]
+
+[node name="Crash" type="Node2D"]
+script = ExtResource("1_gray3")
+
+[node name="Crash Quote" type="RichTextLabel" parent="."]
+offset_right = 500.0
+offset_bottom = 64.0
+bbcode_enabled = true
+
+[node name="Crash Dump" type="RichTextLabel" parent="."]
+offset_top = 83.0
+offset_right = 500.0
+offset_bottom = 415.0
+scroll_following = true
+
+[node name="View Crash Dump" type="Button" parent="."]
+offset_top = 417.0
+offset_right = 145.0
+offset_bottom = 465.0
+text = "View Crash Dump"
+
+[node name="Restart" type="Button" parent="."]
+offset_left = 178.0
+offset_top = 417.0
+offset_right = 323.0
+offset_bottom = 465.0
+text = "Restart"
+
+[node name="Close" type="Button" parent="."]
+offset_left = 355.0
+offset_top = 417.0
+offset_right = 500.0
+offset_bottom = 465.0
+text = "Close"
+
+[connection signal="pressed" from="View Crash Dump" to="." method="_on_view_crash_dump_pressed"]
+[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Close" to="." method="_on_close_pressed"]
