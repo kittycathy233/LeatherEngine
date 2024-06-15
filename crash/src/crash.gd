@@ -1,31 +1,52 @@
-extends Node2D
+extends Node
 
-var quotes:Array[String] = [
-	"Skill Issue", 
-	"Shaggy was too strong",
-	"You can now play as Luigi",
-	"400 BPM",
-	"if (!working) crash();",
-	"Space Breaker 2%",
-	"Should have used a good engine",
-	"haha godot crash handler go brrr"
+
+const quotes: Array[String] = [
+	'Skill Issue', 
+	'Shaggy was too strong',
+	'You can now play as Luigi',
+	'400 BPM',
+	'if (!working) crash();',
+	'Space Breaker 2%',
+	'Should have used a good engine',
+	'haha godot crash handler go brrr'
 ]
 
-func _ready():
-	$"Crash Dump".text = load_text()
-	$"Crash Quote".text = "[center]%s[/center]" % (quotes[randi() % quotes.size()] + "\nUnfortunately, Leather Engine has crashed.")
+@onready var quote_label: Label = %quote_label
+@onready var dump_label: RichTextLabel = %dump_label
+var input_file: String
 
-func _on_close_pressed():
+
+func _ready() -> void:
+	# Initial size is minimum size
+	get_window().min_size = get_window().size
+	
+	var quote: String = quotes.pick_random()
+	quote_label.text = '%s\nUnfortunately, Leather Engine has crashed.' % quote
+	
+	for argument in OS.get_cmdline_args():
+		if argument.begins_with('--crash_path='):
+			input_file = ProjectSettings.globalize_path(argument.split('=')[1])
+	
+	if FileAccess.file_exists(input_file):
+		dump_label.text = load_text()
+	else:
+		printerr(OS.get_cmdline_args())
+		printerr('Couldn\'t find file at path %s!' % input_file)
+
+
+func _on_close_pressed() -> void:
 	get_tree().quit()
 
-func load_text():
-	var file = FileAccess.open("res://" + OS.get_cmdline_args()[0], FileAccess.READ)
-	var content = file.get_as_text()
-	return content
 
-func _on_view_crash_dump_pressed():
-	OS.execute("res://" + OS.get_cmdline_args()[0], [])
+func load_text() -> String:
+	var file := FileAccess.open(input_file, FileAccess.READ)
+	return file.get_as_text()
 
 
-func _on_restart_pressed():
-	OS.execute('res://"Leather Engine.exe"', [])
+func _on_view_crash_dump_pressed() -> void:
+	OS.shell_show_in_file_manager(input_file)
+
+
+func _on_restart_pressed() -> void:
+	OS.execute('./Leather Engine.exe', [])

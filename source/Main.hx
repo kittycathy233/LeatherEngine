@@ -148,9 +148,10 @@ class Main extends Sprite {
 				Sys.println("Found crash dialog: " + crashPath);
 	
 				#if linux
-				crashPath = "./" + crashPath;
+				crashPath = "./" + crashPath + '.x86_64';
+				new sys.io.Process('chmod', ['+x', crashPath]); // make sure we can run the file lol
 				#end
-				new sys.io.Process(crashPath, [path]);
+				new sys.io.Process(crashPath, ['--crash_path="' + path + '"']);
 		} else {
 			Sys.println("No crash dialog found! Making a simple alert instead...");
 			Application.current.window.alert(error, "Error!");

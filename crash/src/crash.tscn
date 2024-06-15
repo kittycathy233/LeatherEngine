@@ -2,40 +2,103 @@
 
 [ext_resource type="Script" path="res://src/crash.gd" id="1_gray3"]
 
-[node name="Crash" type="Node2D"]
+[node name="crash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_gray3")
 
-[node name="Crash Quote" type="RichTextLabel" parent="."]
-offset_right = 500.0
+[node name="quote_label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
 offset_bottom = 64.0
-bbcode_enabled = true
+grow_horizontal = 2
+text = "This Is The Quote Label
+Unfortunately, It Is Not Your Mother."
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Crash Dump" type="RichTextLabel" parent="."]
-offset_top = 83.0
-offset_right = 500.0
-offset_bottom = 415.0
-scroll_following = true
+[node name="dump_label" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 72.0
+offset_right = -2.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls
+Balls"
 
-[node name="View Crash Dump" type="Button" parent="."]
-offset_top = 417.0
-offset_right = 145.0
-offset_bottom = 465.0
+[node name="view_crash" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -56.0
+offset_right = 168.0
+offset_bottom = -8.0
+grow_vertical = 0
 text = "View Crash Dump"
 
-[node name="Restart" type="Button" parent="."]
-offset_left = 178.0
-offset_top = 417.0
-offset_right = 323.0
-offset_bottom = 465.0
+[node name="restart" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -56.0
+offset_right = 80.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
 text = "Restart"
 
-[node name="Close" type="Button" parent="."]
-offset_left = 355.0
-offset_top = 417.0
-offset_right = 500.0
-offset_bottom = 465.0
+[node name="close" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -168.0
+offset_top = -56.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
 text = "Close"
 
-[connection signal="pressed" from="View Crash Dump" to="." method="_on_view_crash_dump_pressed"]
-[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="view_crash" to="." method="_on_view_crash_dump_pressed"]
+[connection signal="pressed" from="restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="close" to="." method="_on_close_pressed"]

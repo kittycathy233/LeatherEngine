@@ -1,7 +1,23 @@
+# export
 export/
+
+# stupid adobe recovery files
 art/flashFiles/RECOVER_*
-crash/export/
-.*/
+
+# allow github stuff lol
 !.github
+
+# docs we don't need here
 pages/
+
+# big file
 docs/doc.xml
+
+# hidden folders / files
+.*/
+
+# godot imports
+**.import
+
+# backup files
+**~
