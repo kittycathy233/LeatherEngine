@@ -27,12 +27,17 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_args():
 		if argument.begins_with('--crash_path='):
 			input_file = ProjectSettings.globalize_path(argument.split('=')[1])
+			
+			if input_file.begins_with('"') and input_file.ends_with('"'):
+				input_file = input_file.lstrip('"').rstrip('"')
+			input_file.lstrip('./')
 	
 	if FileAccess.file_exists(input_file):
 		dump_label.text = load_text()
 	else:
 		printerr(OS.get_cmdline_args())
-		printerr('Couldn\'t find file at path %s!' % input_file)
+		printerr('Couldn\'t find file at path "%s"!' % input_file)
+		quote_label.text += '\n' + 'Couldn\'t find file at path "%s"!' % input_file
 
 
 func _on_close_pressed() -> void:

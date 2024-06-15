@@ -131,7 +131,7 @@ class Main extends Sprite {
 		}
 		
 		error += "\nUncaught Error: " + errorData;
-		path = "./crash/" + "crash-" + errorData + '-on-' + date + ".txt";
+		path = Sys.getCwd() + "crash/" + "crash-" + errorData + '-on-' + date + ".txt";
 
 		if (!sys.FileSystem.exists("./crash/")) {
 			sys.FileSystem.createDirectory("./crash/");
@@ -142,16 +142,18 @@ class Main extends Sprite {
 		Sys.println(error);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		var crashPath:String = "Crash" #if windows + ".exe" #end;
+		var crashPath:String = "Crash" #if linux + '.x86_64' #end #if windows + ".exe" #end;
 
 		if (sys.FileSystem.exists("./" + crashPath)){
 				Sys.println("Found crash dialog: " + crashPath);
 	
 				#if linux
-				crashPath = "./" + crashPath + '.x86_64';
+				crashPath = "./" + crashPath;
 				new sys.io.Process('chmod', ['+x', crashPath]); // make sure we can run the file lol
 				#end
-				new sys.io.Process(crashPath, ['--crash_path="' + path + '"']);
+				FlxG.stage.window.visible = false;
+				var process = new sys.io.Process(crashPath, ['--crash_path="' + path + '"']);
+				trace(process.exitCode());
 		} else {
 			Sys.println("No crash dialog found! Making a simple alert instead...");
 			Application.current.window.alert(error, "Error!");
