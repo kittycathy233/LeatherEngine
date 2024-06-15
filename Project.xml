@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<!-- _________________________ Application Settings _________________________ -->
+	<!-- Application Settings -->
 
-	<app title="Leather Engine" file="Leather Engine" packageName="com.leather128.funkin"
+	<app title="Leather Engine" file="LeatherEngine" packageName="com.leather128.funkin"
 		package="com.leather128.funkin" main="Main" version="0.5.0" company="leather128" />
 
 	<!-- totally not stolen from psych engine -->
@@ -12,22 +12,15 @@
 
 	<set name="SWF_VERSION" value="11.8" />
 
-	<!-- ____________________________ Window Settings ___________________________ -->
+	<!-- Window Settings -->
 
 	<!--These window settings apply to all targets-->
 	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" allow-high-dpi="true" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
-
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
 
-	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0"
-		resizable="false" />
-
-	<!-- _____________________________ Path Settings ____________________________ -->
+	<!-- Path Settings -->
 
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
@@ -35,8 +28,7 @@
 
 	<source path="source" />
 
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web" />
-	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web" />
+	<assets path="assets/preload" rename="assets" />
 
 	<!-- LEATHER ENGINE CUSTOMIZATION -->
 	
@@ -46,15 +38,14 @@
 		<define name="DISCORD_ALLOWED" />
 	</section>
 
-	<define name="MODDING_ALLOWED" unless="web" />
+	<define name="MODDING_ALLOWED" />
 
 	<section if="MODDING_ALLOWED">
-		<assets path="mods" embed="false" exclude="*.ogg" if="web" />
-		<assets path="mods" embed="false" exclude="*.mp3" unless="web" />
+		<assets path="mods" embed="false" />
 	</section>
 
 	<!-- <define name="PRELOAD_ALL" /> -->
-	<define name="PRELOAD_ALL" unless="web" />
+	<define name="PRELOAD_ALL" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL" />
 
 	<!-- Remove this line if you want to build 32 bit, since the 32bit thingy doesn't automatically
@@ -73,20 +64,14 @@
 		<library name="shared" preload="false" />
 	</section>
 
-	<assets path="assets/songs" library="songs" exclude="*.ogg" if="web" />
-	<assets path="assets/songs" library="songs" exclude="*.mp3" unless="web" />
-
-	<assets path="assets/stages" library="stages" exclude="*.ogg" if="web" />
-	<assets path="assets/stages" library="stages" exclude="*.mp3" unless="web" />
-
-	<assets path="assets/shared" library="shared" exclude="*.ogg" if="web" />
-	<assets path="assets/shared" library="shared" exclude="*.mp3" unless="web" />
-
+	<assets path="assets/songs" library="songs" />
+	<assets path="assets/stages" library="stages" />
+	<assets path="assets/shared" library="shared" />
 	<assets path="assets/preload/fonts" rename="assets/fonts" library="fonts" />
 
 	<assets path="CHANGELOG.md" rename='changelog.txt' />
 
-	<assets path="console.bat" if="windows" unless="web" />
+	<assets path="console.bat" if="windows" />
 
 	<assets path="version.txt" />
 
@@ -95,7 +80,7 @@
 
 	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
-	<!-- _______________________________ Libraries ______________________________ -->
+	<!-- Libraries -->
 
 	<!--Packages-->
 	<haxelib name="flixel" />
@@ -108,11 +93,11 @@
 	<haxelib name="linc_luajit" if="LUA_ALLOWED" version="git" url="https://github.com/Leather128/linc_luajit.git" />
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="hxNoise"/>
-	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" unless="hl || web" />
+	<haxelib name="fnf-modcharting-tools" url="https://github.com/EdwhakKB/FNF-Modcharting-Tools" unless="hl" />
 	<haxelib name="funkin.vis" if="desktop" />
 	<haxelib name="grig.audio" if="desktop" />
 
-	<!-- ______________________________ Haxedefines _____________________________ -->
+	<!-- Haxedefines -->
 
 	<haxedef name="message.reporting" value="pretty" />
 
@@ -120,7 +105,6 @@
 	<haxedef name="FLX_NO_POINT_POOL" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="FLX_NO_HEALTH" />
-
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 

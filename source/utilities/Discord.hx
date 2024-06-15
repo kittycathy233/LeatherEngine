@@ -1,6 +1,6 @@
 package utilities;
 
-#if discord_rpc
+#if DISCORD_ALLOWED
 import Sys.sleep;
 import discord_rpc.DiscordRpc;
 import flixel.FlxG;
@@ -38,7 +38,10 @@ class DiscordClient
 
 	public static function startLmao()
 	{
-
+		if (discordData == null) {
+			return;
+		}
+		
 		for (value in discordData.values) {
 			var idStuff = value.id;
 			trace("Discord Client starting...");
@@ -76,6 +79,11 @@ class DiscordClient
 
 	static function onReady()
 	{
+		// should be a bigger issue maybe but whatevs
+		if (discordData == null) {
+			return;
+		}
+
 		for (value in discordData.values) {
 			var keyLol = value.key;
 			var textLol = value.text;
@@ -111,6 +119,10 @@ class DiscordClient
 
 	public static function changePresence(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
+		if (discordData == null) {
+			return;
+		}
+
 		var startTimestamp:Float = if (hasStartTimestamp) Date.now().getTime() else 0;
 
 		if (endTimestamp > 0)

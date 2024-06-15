@@ -1,6 +1,6 @@
 package toolbox;
 
-#if discord_rpc
+#if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
 
@@ -83,7 +83,7 @@ class CharacterCreator extends MusicBeatState {
 
 
 	override function create() {
-		#if discord_rpc
+		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
 		#end
 		FlxG.mouse.visible = true;
