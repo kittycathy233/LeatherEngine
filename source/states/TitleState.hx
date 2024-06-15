@@ -10,7 +10,6 @@ import shaders.NoteColors;
 import modding.ModList;
 import game.Highscore;
 import utilities.PlayerSettings;
-import modding.scripts.languages.HScript;
 #if discord_rpc
 import utilities.Discord.DiscordClient;
 #end
@@ -125,13 +124,6 @@ class TitleState extends MusicBeatState{
 
 			firstTimeStarting = true;
 		}
-
-		#if sys
-		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx")){
-			script = new HScript("mods/" + Options.getData("curMod") + "/classes/states/TitleState.hx", true);
-			script.start();		
-		}
-		#end
 
 		new FlxTimer().start(1, function(tmr:FlxTimer) startIntro());
 	}
