@@ -4028,7 +4028,7 @@ class PlayState extends MusicBeatState {
 			gf.dance();
 
 		if (dad.animation.curAnim != null)
-			if (curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf'))
+			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf'))
 				dad.dance();
 
 		if (characterPlayingAs == 0) {
