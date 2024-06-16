@@ -167,7 +167,7 @@ class MainMenuState extends MusicBeatState {
 
 	override function update(elapsed:Float) {
 		#if sys
-		if(FlxG.keys.justPressed.TAB){
+		if(!selectedSomethin && FlxG.keys.justPressed.TAB){
 			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
