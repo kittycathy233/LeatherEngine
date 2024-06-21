@@ -233,10 +233,6 @@
       "value": false
     },
     {
-      "option": "skipResultsScreen",
-      "value": false
-    },
-    {
       "option": "healthBar",
       "value": true
     },
