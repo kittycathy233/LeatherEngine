@@ -1198,6 +1198,10 @@ class ModchartUtilities {
 
 		// actors
 
+		setLuaFunction("getNoteProperty", function(note:Note, property:String):Dynamic {
+			return Reflect.getProperty(note, property);
+		});
+
 		setLuaFunction("makeNoteCopy", function(id:String, noteIdx:Int) {
             var actor:FlxSprite = PlayState.instance.notes.members[noteIdx];
             
