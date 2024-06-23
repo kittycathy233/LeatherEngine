@@ -156,8 +156,8 @@ class Main extends Sprite {
 				new sys.io.Process('chmod', ['+x', crashPath]); // make sure we can run the file lol
 				#end
 				FlxG.stage.window.visible = false;
-				var process = new sys.io.Process(crashPath, ['--crash_path="' + path + '"']);
-				trace(process.exitCode());
+				new sys.io.Process(crashPath, ['--crash_path="' + path + '"']);
+				//trace(process.exitCode());
 		} else {
 			Sys.println("No crash dialog found! Making a simple alert instead...");
 			Application.current.window.alert(error, "Error!");
