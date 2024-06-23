@@ -14,6 +14,9 @@ import utilities.Controls;
 import flixel.FlxG;
 import flixel.sound.FlxSound;
 
+/**
+ * The backend state all states will extend from.
+ */
 class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeatState #else flixel.addons.ui.FlxUIState #end {
 	public var lastBeat:Float = 0;
 	public var lastStep:Float = 0;
