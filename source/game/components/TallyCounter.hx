@@ -31,6 +31,8 @@ class TallyCounter extends FlxTypedSpriteGroup<FlxSprite>
 
     this.neededNumber = neededNumber;
 
+    antialiasing = Options.getData("antialiasing");
+
     if (curNumber == neededNumber) drawNumbers();
   }
 
