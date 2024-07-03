@@ -33,7 +33,7 @@ class Main extends Sprite {
 		Log.trace = CoolUtil.haxe_print;
 
 		#if VIDEOS_ALLOWED
-		hxvlc.util.Handle.initAsync();
+		hxvlc.util.Handle.init();
 		#end
 
 		game = new FlxGame(0, 0, TitleState, 60, 60, true);
