@@ -605,14 +605,14 @@ class ResultsSubstate extends MusicBeatSubstate {
 		switch (rank) {
 			case PERFECT | PERFECT_GOLD:
 				if (bfPerfect == null) {
-					trace("Could not build PERFECT animation!");
+					trace("Could not build PERFECT animation!", ERROR);
 				} else {
 					bfPerfect.visible = true;
 					bfPerfect.playAnimation('');
 				}
 				new FlxTimer().start(106 / 24, _ -> {
 					if (heartsPerfect == null) {
-						trace("Could not build heartsPerfect animation!");
+						trace("Could not build heartsPerfect animation!", ERROR);
 					} else {
 						heartsPerfect.visible = true;
 						heartsPerfect.playAnimation('');
@@ -620,14 +620,14 @@ class ResultsSubstate extends MusicBeatSubstate {
 				});
 			case EXCELLENT:
 				if (bfExcellent == null) {
-					trace("Could not build EXCELLENT animation!");
+					trace("Could not build EXCELLENT animation!", ERROR);
 				} else {
 					bfExcellent.visible = true;
 					bfExcellent.playAnimation('');
 				}
 			case GREAT:
 				if (bfGreat == null) {
-					trace("Could not build GREAT animation!");
+					trace("Could not build GREAT animation!", ERROR);
 				} else {
 					bfGreat.visible = true;
 					bfGreat.playAnimation('');
@@ -635,7 +635,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 
 				new FlxTimer().start(6 / 24, _ -> {
 					if (gfGreat == null) {
-						trace("Could not build GREAT animation for gf!");
+						trace("Could not build GREAT animation for gf!", ERROR);
 					} else {
 						gfGreat.visible = true;
 						gfGreat.playAnimation('');
@@ -643,7 +643,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 				});
 			case SHIT:
 				if (bfShit == null) {
-					trace("Could not build SHIT animation!");
+					trace("Could not build SHIT animation!", ERROR);
 				} else {
 					bfShit.visible = true;
 					bfShit.playAnimation('Intro');
@@ -661,7 +661,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 							gfGood.animation.play('clap', true);
 							gfGood.visible = true;
 						} else {
-							trace("Could not build GOOD animation!");
+							trace("Could not build GOOD animation!", ERROR);
 						}
 					});
 				}
