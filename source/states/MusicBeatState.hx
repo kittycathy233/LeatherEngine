@@ -36,11 +36,11 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	override public function create(){
+	override public function create() {
 		super.create();
 		#if sys
 		var statePath:String = Type.getClassName(Type.getClass(FlxG.state)).replace(".", "/");
-		if(sys.FileSystem.exists('mods/${Options.getData("curMod")}/classes/${statePath}.hx')){
+		if (sys.FileSystem.exists('mods/${Options.getData("curMod")}/classes/${statePath}.hx')) {
 			stateScript = new HScript('mods/${Options.getData("curMod")}/classes/${statePath}.hx', true);
 			stateScript.start();
 		}
@@ -60,10 +60,11 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			clear_memory();
 		}
 	}
+
 	/**
 	 * Clears all assets and other objects from the game's memory.
 	 */
-	 public static function clear_memory():Void {
+	public static function clear_memory():Void {
 		// Remove cached assets (prevents memory leaks that i can prevent)
 		lime.utils.Assets.cache.clear();
 		openfl.utils.Assets.cache.clear();
