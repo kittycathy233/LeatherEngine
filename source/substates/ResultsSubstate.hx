@@ -345,6 +345,10 @@ class ResultsSubstate extends MusicBeatSubstate {
 		// ratingsPopin.zIndex = 1200;
 		add(ratingsPopin);
 		new FlxTimer().start(21 / 24, _ -> {
+			if (ratingsPopin == null || ratingsPopin.animation == null) {
+				return;
+			}
+			
 			ratingsPopin.visible = true;
 			ratingsPopin.animation.play("idle");
 		});
@@ -574,7 +578,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 
 		// Scrolling.
 		new FlxTimer().start(30 / 24, _ -> {
-			if (rankTextVert != null) {
+			if (rankTextVert != null && rankTextVert.velocity != null) {
 				rankTextVert.velocity.y = -80;
 			}
 		});

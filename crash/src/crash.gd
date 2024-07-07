@@ -6,27 +6,44 @@ const quotes: Array[String] = [
 	'Shaggy was too strong',
 	'You can now play as Luigi',
 	'400 BPM',
+	'522 BPM',
 	'if (!working) crash();',
 	'Space Breaker 2%',
 	'Should have used a good engine',
-	'haha godot crash handler go brrr'
+	'haha godot crash handler go brrr',
+	'top 10 null object reference',
+	'if (usingLE) memoryLeak();',
 ]
 
-@onready var quote_label: Label = %quote_label
-@onready var dump_label: RichTextLabel = %dump_label
+@onready var root: Control = %root
+@onready var quote_label: Label = root.get_node('%quote_label')
+@onready var dump_label: RichTextLabel = root.get_node('%dump_label')
+@onready var background: ColorRect = root.get_node('%background')
+
 var input_file: String
 
 
 func _ready() -> void:
+	RenderingServer.set_default_clear_color(Color.BLACK)
+	
+	var tween := create_tween().set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT).set_parallel()
+	tween.tween_property(background, 'color:a', 0.25, 1.5)
+	tween.tween_property(root, 'modulate:a', 1.0, 0.75)
+	
 	# Initial size is minimum size
 	get_window().min_size = get_window().size
 	
 	var quote: String = quotes.pick_random()
 	quote_label.text = '%s\nUnfortunately, Leather Engine has crashed.' % quote
 	
+	if randi_range(1, 1000) == 128:
+		quote_label.text = quote_label.text.replace('Leather Engine', 'You\'re Mother')
+	
 	for argument in OS.get_cmdline_args():
 		if argument.begins_with('--crash_path='):
-			input_file = ProjectSettings.globalize_path(argument.split('=')[1])
+			input_file = ProjectSettings.globalize_path(argument.split('=')[1])\
+					.strip_edges().strip_escapes()
 			
 			if input_file.begins_with('"') and input_file.ends_with('"'):
 				input_file = input_file.lstrip('"').rstrip('"')
@@ -45,8 +62,7 @@ func _on_close_pressed() -> void:
 
 
 func load_text() -> String:
-	var file := FileAccess.open(input_file, FileAccess.READ)
-	return file.get_as_text()
+	return FileAccess.get_file_as_string(input_file)
 
 
 func _on_view_crash_dump_pressed() -> void:
@@ -54,4 +70,12 @@ func _on_view_crash_dump_pressed() -> void:
 
 
 func _on_restart_pressed() -> void:
-	OS.execute('./Leather Engine.exe', [])
+	match OS.get_name():
+		'macOS':
+			OS.execute('./LeatherEngine.app', [])
+		'Linux':
+			OS.execute('./LeatherEngine', [])
+		'Windows':
+			OS.execute('./LeatherEngine.exe', [])
+		_:
+			print('Uhh.... farf....')
