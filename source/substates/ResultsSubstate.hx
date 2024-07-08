@@ -593,7 +593,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 
 		// Scrolling.
 		new FlxTimer().start(30 / 24, _ -> {
-			if (rankTextVert != null) {
+			if (rankTextVert != null && rankTextVert.velocity != null) {
 				rankTextVert.velocity.y = -80;
 			}
 		});

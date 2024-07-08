@@ -14,7 +14,7 @@ config/name="Leather Engine Crash"
 config/description="Crash Handler for Leather Engines"
 run/main_scene="res://src/crash.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-boot_splash/bg_color=Color(0.286275, 0.286275, 0.286275, 1)
+boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
@@ -22,6 +22,8 @@ config/icon="res://icon.png"
 
 window/size/viewport_width=640
 window/size/viewport_height=480
+window/size/resizable=false
+window/size/borderless=true
 window/size/always_on_top=true
 
 [editor]
@@ -31,6 +33,7 @@ run/main_run_args="--crash_path=res://src/crash.gd"
 [file_customization]
 
 folder_colors={
+"res://assets/": "orange",
 "res://src/": "teal"
 }
 

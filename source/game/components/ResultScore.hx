@@ -87,15 +87,17 @@ class ScoreNum extends FlxSprite {
 		return finalDigit = val;
 	}
 
-	function set_digit(val):Int {
-		if (val >= 0 && animation.curAnim != null && animation.curAnim.name != numToString[val]) {
-			if (glow) {
-				animation.play(numToString[val], true, false, 0);
-				glow = false;
-			} else {
-				animation.play(numToString[val], true, false, 4);
-			}
-			updateHitbox();
+  function set_digit(val:Int):Int
+  {
+    if (val >= 0 && animation != null && animation.curAnim != null && animation.curAnim.name != numToString[val])
+    {
+      if(glow){
+        animation.play(numToString[val], true, false, 0);
+        glow = false;
+      }else{
+        animation.play(numToString[val], true, false, 4);
+      }
+      updateHitbox();
 
 			switch (val) {
 				case 1:

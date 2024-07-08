@@ -4021,10 +4021,8 @@ class PlayState extends MusicBeatState {
 			camHUD.zoom += 0.03;
 		}
 
-		iconP1.scale.set(iconP1.scale.x + (0.2 / (songMultiplier < 1 ? 1 : songMultiplier)),
-			iconP1.scale.y + (0.2 / (songMultiplier < 1 ? 1 : songMultiplier)));
-		iconP2.scale.set(iconP2.scale.x + (0.2 / (songMultiplier < 1 ? 1 : songMultiplier)),
-			iconP2.scale.y + (0.2 / (songMultiplier < 1 ? 1 : songMultiplier)));
+		iconP1.scale.set(iconP1.scale.x + 0.2, iconP1.scale.y + 0.2);
+		iconP2.scale.set(iconP2.scale.x + 0.2, iconP2.scale.y + 0.2);
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
