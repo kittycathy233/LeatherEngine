@@ -4133,6 +4133,7 @@ class PlayState extends MusicBeatState {
 			isNewHighscore: isNewHighscore
 		});
 		this.persistentDraw = false;
+		PlayState.chartingMode = false;
 		openSubState(res);
 	}
 
