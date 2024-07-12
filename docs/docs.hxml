@@ -17,6 +17,7 @@
 --define polymod
 --define LUA_ALLOWED
 --define VIDEOS_ALLOWED
+--define MODCHARTING_TOOLS
 --define LEATHER
 --define MODDING_ALLOWED
 
