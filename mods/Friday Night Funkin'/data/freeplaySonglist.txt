@@ -23,3 +23,4 @@ Stress:tankman:7:Easy,Normal,Hard:#F6B604
 Darnell:darnell:END1:Easy,Normal,Hard:#735EB0
 Lit Up:darnell:END1:Easy,Normal,Hard:#735EB0
 2Hot:darnell:END1:Easy,Normal,Hard:#735EB0
+Blazin:darnell:END1:Easy,Normal,Hard:#735EB0
