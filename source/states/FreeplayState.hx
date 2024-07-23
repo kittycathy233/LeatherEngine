@@ -3,11 +3,9 @@ package states;
 #if sys
 import sys.thread.Thread;
 #end
-
 #if DISCORD_ALLOWED
 import utilities.Discord.DiscordClient;
 #end
-
 import modding.scripts.languages.HScript;
 import modding.ModList;
 import game.Conductor;
@@ -17,7 +15,7 @@ import substates.ResetScoreSubstate;
 import flixel.sound.FlxSound;
 import lime.app.Application;
 import flixel.tweens.FlxTween;
-import game.Song;
+import game.SongLoader;
 import game.Highscore;
 import ui.HealthIcon;
 import ui.Alphabet;
@@ -32,7 +30,7 @@ import flixel.tweens.FlxEase;
 
 using StringTools;
 
-class FreeplayState extends MusicBeatState{
+class FreeplayState extends MusicBeatState {
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
@@ -85,7 +83,6 @@ class FreeplayState extends MusicBeatState{
 	public var loading_songs:#if cpp Thread #else Dynamic #end;
 	public var stop_loading_songs:Bool = false;
 
-
 	var ui_Skin:Null<String>;
 	var lastSelectedSong:Int = -1;
 
@@ -93,10 +90,11 @@ class FreeplayState extends MusicBeatState{
 		Current instance of `FreeplayState`.
 	**/
 	public static var instance:FreeplayState = null;
+
 	public inline function call(func:String, ?args:Array<Dynamic>) {
-		if (stateScript != null ) stateScript.call(func, args);
+		if (stateScript != null)
+			stateScript.call(func, args);
 	}
-	
 
 	override function create() {
 		instance = this;
@@ -130,25 +128,25 @@ class FreeplayState extends MusicBeatState{
 			TitleState.playTitleMusic();
 		#if MODDING_ALLOWED
 		var initSonglist;
-		if(!ModList.modList.get(Options.getData("curMod"))){
+		if (!ModList.modList.get(Options.getData("curMod"))) {
 			Options.setData("Friday Night Funkin'", "curMod");
-			CoolUtil.coolError("Hmmm... I couldnt find the mod you are trying to switch to.\nIt is either disabled or not in the files.\nI switched the mod to base game to avoid a crash!","Leather Engine's No Crash, We Help Fix Stuff Tool");
-			CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+			CoolUtil.coolError("Hmmm... I couldnt find the mod you are trying to switch to.\nIt is either disabled or not in the files.\nI switched the mod to base game to avoid a crash!",
+				"Leather Engine's No Crash, We Help Fix Stuff Tool");
+			CoolUtil.setWindowIcon("mods/" + Options.getData("curMod") + "/_polymod_icon.png");
 		}
 		if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt"))
 			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/data/freeplaySonglist.txt");
-		else if(sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt"))
+		else if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt"))
 			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySongList.txt");
-		else if(sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt"))
+		else if (sys.FileSystem.exists("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt"))
 			initSonglist = CoolUtil.coolTextFileSys("mods/" + Options.getData("curMod") + "/_append/data/freeplaySonglist.txt");
 		else
 			initSonglist = [];
 		#else
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 		#end
-		
 
-		if(curSelected > initSonglist.length)
+		if (curSelected > initSonglist.length)
 			curSelected = 0;
 
 		#if DISCORD_ALLOWED
@@ -201,20 +199,16 @@ class FreeplayState extends MusicBeatState{
 
 		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 1, FlxColor.BLACK);
 		scoreBG.alpha = 0.6;
-		add(scoreBG);
 
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		add(scoreText);
 
 		diffText = new FlxText(FlxG.width, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
 		diffText.alignment = RIGHT;
-		add(diffText);
 
 		speedText = new FlxText(FlxG.width, diffText.y + 36, 0, "", 24);
 		speedText.font = scoreText.font;
 		speedText.alignment = RIGHT;
-		add(speedText);
 
 		#if cpp
 		if (!Options.getData("loadAsynchronously") || !Options.getData("healthIcons")) {
@@ -255,6 +249,12 @@ class FreeplayState extends MusicBeatState{
 		}
 		#end
 
+		// layering
+		add(scoreBG);
+		add(scoreText);
+		add(diffText);
+		add(speedText);
+
 		selector = new FlxText();
 
 		selector.size = 40;
@@ -272,7 +272,7 @@ class FreeplayState extends MusicBeatState{
 			new FlxTimer().start(1, function(_) songsReady = true);
 		}
 
-		if (songs.length != 0 && curSelected >= 0){
+		if (songs.length != 0 && curSelected >= 0) {
 			selectedColor = songs[curSelected].color;
 			bg.color = selectedColor;
 		} else {
@@ -304,11 +304,10 @@ class FreeplayState extends MusicBeatState{
 		call("addSongPost", [songName, weekNum, songCharacter]);
 	}
 
-
 	override function update(elapsed:Float) {
 		call("update", [elapsed]);
 		#if sys
-		if(FlxG.keys.justPressed.TAB){
+		if (FlxG.keys.justPressed.TAB) {
 			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;
 		}
@@ -437,8 +436,9 @@ class FreeplayState extends MusicBeatState{
 
 				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
 
+				// TODO: CHANGE THIS
 				if (Assets.exists(Paths.json("song data/" + songs[curSelected].songName.toLowerCase() + "/" + poop))) {
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+					PlayState.SONG = SongLoader.loadFromJson(curDiffString, songs[curSelected].songName.toLowerCase());
 					Conductor.changeBPM(PlayState.SONG.bpm, curSpeed);
 				}
 			}
@@ -456,10 +456,9 @@ class FreeplayState extends MusicBeatState{
 
 			if (FlxG.keys.justPressed.ENTER && canEnterSong) {
 				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
-				trace(poop);
 
-				if (Assets.exists(Paths.json("song data/" + songs[curSelected].songName.toLowerCase() + "/" + poop))) {
-					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+				if (CoolUtil.songExists(songs[curSelected].songName, curDiffString)) {
+					PlayState.SONG = SongLoader.loadFromJson(curDiffString, songs[curSelected].songName.toLowerCase());
 					PlayState.isStoryMode = false;
 					PlayState.songMultiplier = curSpeed;
 					PlayState.storyDifficultyStr = curDiffString.toUpperCase();
@@ -508,7 +507,7 @@ class FreeplayState extends MusicBeatState{
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, curDiffArray.length - 1);
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
-		if (songs.length != 0){
+		if (songs.length != 0) {
 			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
 			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
 		}
@@ -522,8 +521,8 @@ class FreeplayState extends MusicBeatState{
 
 	function changeSelection(change:Int = 0) {
 		call("changeSelection", [change]);
-		
-		if(grpSongs.length <= 0) {
+
+		if (grpSongs.length <= 0) {
 			return;
 		}
 
@@ -542,12 +541,12 @@ class FreeplayState extends MusicBeatState{
 				destroyFreeplayVocals(false);
 		}
 
-		if (songs.length != 0){
+		if (songs.length != 0) {
 			intendedScore = Highscore.getScore(songs[curSelected].songName, curDiffString);
 			curRank = Highscore.getSongRank(songs[curSelected].songName, curDiffString);
 		}
 
-		if(songs.length != 0){
+		if (songs.length != 0) {
 			curDiffArray = songs[curSelected].difficulties;
 			changeDiff();
 		}
@@ -562,7 +561,7 @@ class FreeplayState extends MusicBeatState{
 					iconArray[i].animation.curAnim.curFrame = 0;
 			}
 
-			if (iconArray != null && curSelected >= 0 && (curSelected <= iconArray.length) && iconArray.length != 0){
+			if (iconArray != null && curSelected >= 0 && (curSelected <= iconArray.length) && iconArray.length != 0) {
 				iconArray[curSelected].alpha = 1;
 			}
 
@@ -601,8 +600,8 @@ class FreeplayState extends MusicBeatState{
 					}
 				});
 			}
-		} else{
-			if(songs.length != 0){
+		} else {
+			if (songs.length != 0) {
 				bg.color = songs[curSelected].color;
 			}
 		}
