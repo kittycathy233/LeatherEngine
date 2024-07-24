@@ -206,6 +206,16 @@ class PlayState extends MusicBeatState {
 	public var cameraZoomSpeed:Float = 1;
 
 	/**
+	 * Multiplier for strength of camera bops.
+	 */
+	public var cameraZoomStrength:Float = 1;
+
+	/**
+	 * Multiplier for speed of camera bops.
+	 */
+	public var cameraZoomRate:Float = 1;
+
+	/**
 		Shortner for `SONG.song`.
 	**/
 	public var curSong:String = "";
@@ -4015,10 +4025,9 @@ class PlayState extends MusicBeatState {
 				}
 			}
 		}
-
-		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % Conductor.timeScale[0] == 0) {
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
+		if (camZooming && FlxG.camera.zoom < (1.35 * FlxCamera.defaultZoom) && cameraZoomRate > 0 && curBeat % ((Conductor.timeScale[0]) * cameraZoomRate) == 0) {
+			FlxG.camera.zoom += 0.015 * cameraZoomStrength;
+			camHUD.zoom += 0.03 * cameraZoomStrength;
 		}
 
 		iconP1.scale.set(iconP1.scale.x + 0.2, iconP1.scale.y + 0.2);
@@ -4774,8 +4783,8 @@ class PlayState extends MusicBeatState {
 					if (Math.isNaN(addHUD))
 						addHUD = 0.03;
 
-					FlxG.camera.zoom += addGame;
-					camHUD.zoom += addHUD;
+					FlxG.camera.zoom += addGame * cameraZoomStrength;
+					camHUD.zoom += addHUD * cameraZoomStrength;
 				}
 			case "screen shake":
 				if (Options.getData("screenShakes")) {
@@ -4824,6 +4833,16 @@ class PlayState extends MusicBeatState {
 				if (Math.isNaN(speed))
 					speed = 1;
 				cameraZoomSpeed = speed;
+			case "change camera zoom strength":
+				var strength:Float = Std.parseFloat(event[2]);
+				if (Math.isNaN(strength))
+					speed = 1;
+				cameraZoomStrength = strength;
+
+				var speed:Float = Std.parseFloat(event[2]);
+				if (Math.isNaN(speed))
+					speed = 1;
+				cameraZoomRate = speed;
 			case "character will idle?":
 				var char = getCharFromEvent(event[2]);
 
@@ -5031,6 +5050,8 @@ class PlayState extends MusicBeatState {
 					case '1':
 						turnChange('dad');
 				}
+			case 'zoomcamera':
+				defaultCamZoom = Std.parseFloat(event[2]);
 		}
 
 		//                name       pos      param 1   param 2
@@ -5108,75 +5129,82 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		for (event in events) {
-			var map:Map<String, Dynamic>;
+		try{
+			for (event in events) {
+				var map:Map<String, Dynamic>;
 
-			switch (event[2].toLowerCase()) {
-				case "dad" | "opponent" | "player2" | "1":
-					map = dadMap;
-				case "gf" | "girlfriend" | "player3" | "2":
-					map = gfMap;
-				default:
-					map = bfMap;
-			}
+				switch (event[2].toLowerCase()) {
+					case "dad" | "opponent" | "player2" | "1":
+						map = dadMap;
+					case "gf" | "girlfriend" | "player3" | "2":
+						map = gfMap;
+					default:
+						map = bfMap;
+				}
 
-			// cache shit
-			if (Options.getData("charsAndBGs")) {
-				if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
-					#if sys
-					var tmr:Float = Sys.time();
-					#end
-					var funnyCharacter:Character;
-					trace('Caching ${event[3]}');
 
-					if (map == bfMap)
-						funnyCharacter = new Boyfriend(100, 100, event[3]);
-					else
-						funnyCharacter = new Character(100, 100, event[3]);
+				// cache shit
+				if (Options.getData("charsAndBGs")) {
+					if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
+						#if sys
+						var tmr:Float = Sys.time();
+						#end
+						var funnyCharacter:Character;
+						trace('Caching ${event[3]}');
 
-					funnyCharacter.alpha = 0.00001;
-					add(funnyCharacter);
+						if (map == bfMap)
+							funnyCharacter = new Boyfriend(100, 100, event[3]);
+						else
+							funnyCharacter = new Character(100, 100, event[3]);
 
-					map.set(event[3], funnyCharacter);
+						funnyCharacter.alpha = 0.00001;
+						add(funnyCharacter);
 
-					if (funnyCharacter.otherCharacters != null) {
-						for (character in funnyCharacter.otherCharacters) {
-							character.alpha = 0.00001;
-							add(character);
+						map.set(event[3], funnyCharacter);
+
+						if (funnyCharacter.otherCharacters != null) {
+							for (character in funnyCharacter.otherCharacters) {
+								character.alpha = 0.00001;
+								add(character);
+							}
 						}
+
+						#if sys
+						trace('Cached ${event[3]} in ${FlxMath.roundDecimal(Sys.time() - tmr, 2)} seconds');
+						#end
 					}
 
-					#if sys
-					trace('Cached ${event[3]} in ${FlxMath.roundDecimal(Sys.time() - tmr, 2)} seconds');
-					#end
+					if (event[0].toLowerCase() == "change stage"
+						&& event[1] <= FlxG.sound.music.length
+						&& !stageMap.exists(event[2])
+						&& Options.getData("preloadChangeBGs")) {
+						var funnyStage = new StageGroup(event[2]);
+						funnyStage.visible = false;
+
+						stageMap.set(event[2], funnyStage);
+
+						trace(funnyStage.stage);
+					}
 				}
 
-				if (event[0].toLowerCase() == "change stage"
-					&& event[1] <= FlxG.sound.music.length
-					&& !stageMap.exists(event[2])
-					&& Options.getData("preloadChangeBGs")) {
-					var funnyStage = new StageGroup(event[2]);
-					funnyStage.visible = false;
+				#if LUA_ALLOWED
+				if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
+					event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
+					generatedSomeDumbEventLuas = true;
+				}
+				#end
 
-					stageMap.set(event[2], funnyStage);
-
-					trace(funnyStage.stage);
+				if (!hscriptEvents.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
+					hscriptEvents.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
 				}
 			}
 
-			#if LUA_ALLOWED
-			if (!event_luas.exists(event[0].toLowerCase()) && Assets.exists(Paths.lua("event data/" + event[0].toLowerCase()))) {
-				event_luas.set(event[0].toLowerCase(), new ModchartUtilities(PolymodAssets.getPath(Paths.lua("event data/" + event[0].toLowerCase()))));
-				generatedSomeDumbEventLuas = true;
-			}
-			#end
 
-			if (!hscriptEvents.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
-				hscriptEvents.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
-			}
+			events.sort((a, b) -> Std.int(a[1] - b[1]));
 		}
-
-		events.sort((a, b) -> Std.int(a[1] - b[1]));
+		catch(e){
+			//trace(e, ERROR);
+		}
 	}
 
 	public function setupNoteTypeScript(noteType:String) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 	<!-- Application Settings -->
+	<define name="no-deprecation-warnings" />
 
 	<app title="Leather Engine" file="LeatherEngine" packageName="com.leather128.funkin"
 		package="com.leather128.funkin" main="Main" version="0.5.0" company="leather128" />
@@ -81,8 +82,6 @@
 	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
 	<!-- Libraries -->
-
-	<!--Packages-->
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
@@ -115,7 +114,6 @@
 	<haxeflag name="--macro" value="include('hxvlc')" if="VIDEOS_ALLOWED" />
 
 	<define name="hscriptPos" />
-	<define name="no-deprecation-warnings" />
 	<define name="CUSTOM_CLASSES" />
 
 	<define name="MODCHARTING_TOOLS" if="fnf-modcharting-tools" />

@@ -6,9 +6,13 @@ import lime.utils.Assets;
 
 class SongLoader {
 	public static function loadFromJson(difficulty:String, ?folder:String):SongData {
+		var chartSuffix:String = '';
+		if(difficulty.toLowerCase() == 'erect' || difficulty.toLowerCase() == 'nightmare'){
+			chartSuffix = '-erect';
+		}
 		folder = folder.toLowerCase();
 		difficulty = difficulty.toLowerCase();
-		var path:String = Paths.json('song data/$folder/$folder-chart');
+		var path:String = Paths.json('song data/$folder/$folder-chart$chartSuffix');
 		if (!Assets.exists(path)) { // prefer FNFC charts lol
 			path = Paths.json('song data/$folder/$folder${difficulty != 'normal' ? '-$difficulty' : ''}');
 		}
@@ -33,7 +37,11 @@ class SongLoader {
 	}
 
 	private static function parseFNFC(parsedJSON:Dynamic, songName:String, difficulty:String):SongData {
-		var metaPath:String = Paths.json('song data/$songName/$songName-metadata');
+		var chartSuffix:String = '';
+		if(difficulty.toLowerCase() == 'erect' || difficulty.toLowerCase() == 'nightmare'){
+			chartSuffix = '-erect';
+		}
+		var metaPath:String = Paths.json('song data/$songName/$songName-metadata$chartSuffix');
 		if (!Assets.exists(metaPath)) {
 			trace('You can\'t load an FNFC chart without putting in the metadata!', ERROR);
 			return null;
@@ -100,6 +108,10 @@ class SongLoader {
 			switch (event.e) {
 				case 'FocusCamera':
 					output.events.push([event.e, event.t, event.v.char, '${event.v.x},${event.v.y}']);
+				case 'ZoomCamera':
+					output.events.push([event.e, event.t, event.v.zoom, '${event.v.ease},${event.v.duration}']);
+				case 'SetCameraBop':
+					output.events.push(['change camera zoom strength', event.t, event.v.intensity, event.v.rate]);
 				default:
 					output.events.push([event.e, event.t, Std.string(event.v), '']);
 			}

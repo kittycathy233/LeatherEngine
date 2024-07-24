@@ -264,7 +264,7 @@ class CoolUtil {
 		@author Leather128
 	**/
 	public static function coolError(message:Null<String> = null, title:Null<String> = null):Void {
-		// trace(title + " /// " + message, ERROR);
+		trace(title + " /// " + message, ERROR);
 
 		var text:FlxText = new FlxText(0, 0, 1280, title + "\n\n" + message, 32);
 		text.font = Paths.font("vcr.ttf");
@@ -424,17 +424,18 @@ class CoolUtil {
 		var exists:Bool = false;
 		var songPath:String = 'song data/$song';
 		var difficultyExtension:String = difficulty == 'normal' ? '' : '-$difficulty';
+		var difficultyExtensionMeta:String = (difficulty == 'nightmare' || difficulty == 'erect') ? '-erect' : '';
 
 		// legacy charts
 		if (Assets.exists(Paths.json('$songPath/$song$difficultyExtension'))) {
 			return true;
 		} else {
 			// no meta or no chart
-			if (!Assets.exists(Paths.json('$songPath/$song-metadata')) || !Assets.exists(Paths.json('$songPath/$song-chart'))) {
+			if (!Assets.exists(Paths.json('$songPath/$song-metadata$difficultyExtensionMeta')) || !Assets.exists(Paths.json('$songPath/$song-chart$difficultyExtensionMeta'))) {
 				return exists;
 			}
 
-			var meta:FNFCMetadata = cast haxe.Json.parse(Assets.getText(Paths.json('$songPath/$song-metadata')));
+			var meta:FNFCMetadata = cast haxe.Json.parse(Assets.getText(Paths.json('$songPath/$song-metadata$difficultyExtensionMeta')));
 			if (meta.playData.difficulties.contains(difficulty)) {
 				exists = true;
 			}

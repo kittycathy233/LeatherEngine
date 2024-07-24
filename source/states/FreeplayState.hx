@@ -455,8 +455,6 @@ class FreeplayState extends MusicBeatState {
 			}
 
 			if (FlxG.keys.justPressed.ENTER && canEnterSong) {
-				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDiffString);
-
 				if (CoolUtil.songExists(songs[curSelected].songName, curDiffString)) {
 					PlayState.SONG = SongLoader.loadFromJson(curDiffString, songs[curSelected].songName.toLowerCase());
 					PlayState.isStoryMode = false;
@@ -464,7 +462,6 @@ class FreeplayState extends MusicBeatState {
 					PlayState.storyDifficultyStr = curDiffString.toUpperCase();
 
 					PlayState.storyWeek = songs[curSelected].week;
-					trace('CUR WEEK' + PlayState.storyWeek);
 
 					if (Assets.exists(Paths.inst(PlayState.SONG.song, curDiffString.toLowerCase()))) {
 						#if cpp
