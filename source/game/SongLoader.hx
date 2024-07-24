@@ -112,6 +112,8 @@ class SongLoader {
 					output.events.push([event.e, event.t, event.v.zoom, '${event.v.ease},${event.v.duration}']);
 				case 'SetCameraBop':
 					output.events.push(['change camera zoom strength', event.t, event.v.intensity, event.v.rate]);
+				case 'PlayAnimation':
+					output.events.push(['play character animation', event.t, event.v.target, event.v.anim]);
 				default:
 					output.events.push([event.e, event.t, Std.string(event.v), '']);
 			}
