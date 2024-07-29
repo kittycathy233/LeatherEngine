@@ -197,6 +197,11 @@ class PlayState extends MusicBeatState {
 	public var camZooming:Bool = false;
 
 	/**
+	 * `Bool` for if the camera is allowed to zoom in.
+	 */
+	public var cameraZooms:Bool = Options.getData("cameraZooms");
+
+	/**
 		Speed of camera.
 	**/
 	public var cameraSpeed:Float = 1;
@@ -2196,10 +2201,10 @@ class PlayState extends MusicBeatState {
 			- (iconP2.width - iconOffset)
 			- iconP2.offsetX;
 
-		if (Options.getData("cameraZooms") && camZooming && !switchedStates) {
+		if (cameraZooms && camZooming && !switchedStates) {
 			FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, defaultCamZoom, zoomLerp);
 			camHUD.zoom = FlxMath.lerp(camHUD.zoom, defaultHudCamZoom, zoomLerp);
-		} else if (!Options.getData("cameraZooms")) {
+		} else if (!cameraZooms) {
 			FlxG.camera.zoom = defaultCamZoom;
 			camHUD.zoom = 1;
 		}
@@ -2219,12 +2224,10 @@ class PlayState extends MusicBeatState {
 
 		if (stopSong && !switchedStates) {
 			PlayState.instance.paused = true;
-
 			FlxG.sound.music.volume = 0;
-			PlayState.instance.vocals.volume = 0;
-
+			vocals.volume = 0;
 			FlxG.sound.music.time = 0;
-			PlayState.instance.vocals.time = 0;
+			vocals.time = 0;
 			Conductor.songPosition = 0;
 		}
 
@@ -2312,7 +2315,7 @@ class PlayState extends MusicBeatState {
 			}
 
 			if (centerCamera) {
-				var midPos = boyfriend.getMainCharacter().getMidpoint();
+				var midPos:FlxPoint = boyfriend.getMainCharacter().getMidpoint();
 				midPos.x += stage.p1_Cam_Offset.x;
 				midPos.y += stage.p1_Cam_Offset.y;
 				camFollow.setPosition(midPos.x
@@ -2393,8 +2396,8 @@ class PlayState extends MusicBeatState {
 
 		if (generatedMusic && !switchedStates && startedCountdown && notes != null && playerStrums.members.length != 0 && enemyStrums.members.length != 0) {
 			notes?.forEachAlive(function(daNote:Note) {
-				var coolStrum = (daNote.shouldHit ? playerStrums.members[Math.floor(Math.abs(daNote.noteData)) % playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData)) % enemyStrums.members.length]);
-				var strumY = coolStrum.y;
+				var coolStrum:StrumNote = (daNote.shouldHit ? playerStrums.members[Math.floor(Math.abs(daNote.noteData)) % playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData)) % enemyStrums.members.length]);
+				var strumY:Float = coolStrum.y;
 				daNote.visible = true;
 				daNote.active = true;
 
@@ -2411,7 +2414,7 @@ class PlayState extends MusicBeatState {
 						if (((daNote.wasGoodHit || daNote.prevNote.wasGoodHit) && daNote.shouldHit)
 							&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (strumLine.y + Note.swagWidth / 2)) {
 							// Clip to strumline
-							var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
+							var swagRect:FlxRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
 							swagRect.height = (coolStrum.y + (coolStrum.width / 2) - daNote.y) / daNote.scale.y;
 							swagRect.y = daNote.frameHeight - swagRect.height;
 
@@ -2425,7 +2428,7 @@ class PlayState extends MusicBeatState {
 						if (((daNote.wasGoodHit || daNote.prevNote.wasGoodHit) && daNote.shouldHit)
 							&& daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2)) {
 							// Clip to strumline
-							var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
+							var swagRect:FlxRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
 							swagRect.y = (coolStrum.y + Note.swagWidth / 2 - daNote.y) / daNote.scale.y;
 							swagRect.height -= swagRect.y;
 							daNote.clipRect = swagRect;
@@ -2578,8 +2581,8 @@ class PlayState extends MusicBeatState {
 
 				if (daNote != null && coolStrum != null) {
 					if (daNote.mustPress && daNote != null) {
-						var coolStrum = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
-						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
+						var coolStrum:StrumNote = playerStrums.members[Math.floor(Math.abs(daNote.noteData))];
+						var arrayVal:String = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
 						if (coolStrum != null)
 							daNote.visible = coolStrum.visible;
@@ -2628,8 +2631,8 @@ class PlayState extends MusicBeatState {
 							daNote.color = coolStrum.color;
 						}
 					} else if (!daNote?.wasGoodHit) {
-						var coolStrum = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
-						var arrayVal = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
+						var coolStrum:StrumNote = enemyStrums.members[Math.floor(Math.abs(daNote.noteData))];
+						var arrayVal:String = Std.string([daNote.noteData, daNote.arrow_Type, daNote.isSustainNote]);
 
 						if (coolStrum != null && daNote != null)
 							daNote.visible = coolStrum.visible;
@@ -4644,7 +4647,7 @@ class PlayState extends MusicBeatState {
 					camGame.fade(FlxColor.fromString(event[2].toLowerCase()), time);
 			#end
 			case "add camera zoom":
-				if (Options.getData("cameraZooms") && ((FlxG.camera.zoom < 1.35 && camZooming) || !camZooming)) {
+				if (cameraZooms && ((FlxG.camera.zoom < 1.35 && camZooming) || !camZooming)) {
 					var addGame:Float = Std.parseFloat(event[2]);
 					var addHUD:Float = Std.parseFloat(event[3]);
 
