@@ -127,13 +127,16 @@ class Note extends FlxSkewedSprite {
 				frames = Paths.getSparrowAtlas('ui skins/default/arrows/default', 'shared');
 			}
 		} else {
-			frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
+			if (Assets.exists(Paths.image("ui skins/default/arrows/" + arrow_Type, 'shared'))) {
+				frames = Paths.getSparrowAtlas("ui skins/default/arrows/" + arrow_Type, 'shared');
+			} else {
+				frames = Paths.getSparrowAtlas("ui skins/default/arrows/default", 'shared');
+			}
 		}
 
 		animation.addByPrefix("default", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + "0", 24);
 		animation.addByPrefix("hold", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold0", 24);
 		animation.addByPrefix("holdend", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " hold end0", 24);
-		animation.addByPrefix("glow", NoteVariables.Other_Note_Anim_Stuff[localKeyCount - 1][noteData] + " glow0", 24);
 
 		var lmaoStuff = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
 			- (Std.parseFloat(PlayState.instance.mania_size[localKeyCount - 1])));
@@ -153,12 +156,26 @@ class Note extends FlxSkewedSprite {
 		animation.play("default");
 
 		if (!PlayState.instance.arrow_Configs.exists(arrow_Type)) {
-			if (PlayState.instance.types.contains(arrow_Type))
-				PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/" + song.ui_Skin + "/" + arrow_Type)));
-			else
-				PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/default/" + arrow_Type)));
+			if (PlayState.instance.types.contains(arrow_Type)){
+				if(Assets.exists(Paths.txt("ui skins/" + song.ui_Skin + "/" + arrow_Type))){
+					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/" + song.ui_Skin + "/" + arrow_Type)));
+				}
+				else{
+					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/" + song.ui_Skin + "/default")));
+				}
+			}
+			else{
+				if(Assets.exists(Paths.txt("ui skins/default/" + arrow_Type))){
+					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/default/" + arrow_Type)));
+				}
+				else{
+					PlayState.instance.arrow_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("ui skins/default/default")));
+				}
+			}
 
-			PlayState.instance.type_Configs.set(arrow_Type, CoolUtil.coolTextFile(Paths.txt("arrow types/" + arrow_Type)));
+			PlayState.instance.type_Configs.set(arrow_Type, Assets.exists(Paths.txt("arrow types/" + arrow_Type)) ? 
+			CoolUtil.coolTextFile(Paths.txt("arrow types/" + arrow_Type)) : 
+			CoolUtil.coolTextFile(Paths.txt("arrow types/default")));
 			PlayState.instance.setupNoteTypeScript(arrow_Type);
 		}
 

@@ -73,7 +73,6 @@ jobs:
             haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
             haxelib git hxNoise https://github.com/whuop/hxNoise
             haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
-            haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
             haxelib install hxcpp-debug-server
             haxelib git dox https://github.com/HaxeFoundation/dox
             haxelib install format
