@@ -4914,12 +4914,6 @@ class PlayState extends MusicBeatState {
 						generateStaticArrows(0, true, false);
 					}
 				}
-				for(note in notes.members){
-					note.frames = note.getSpritesheet();
-				}
-				for(note in unspawnNotes){
-					note.frames = note.getSpritesheet();
-				}
 			// FNFC stuff
 			case 'focuscamera':
 				switch (Std.string(event[2])) {
