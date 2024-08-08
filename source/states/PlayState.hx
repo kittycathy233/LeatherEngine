@@ -2223,7 +2223,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (stopSong && !switchedStates) {
-			PlayState.instance.paused = true;
+			paused = true;
 			FlxG.sound.music.volume = 0;
 			vocals.volume = 0;
 			FlxG.sound.music.time = 0;
@@ -2395,7 +2395,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (generatedMusic && !switchedStates && startedCountdown && notes != null && playerStrums.members.length != 0 && enemyStrums.members.length != 0) {
-			notes?.forEachAlive(function(daNote:Note) {
+			notes.forEachAlive(function(daNote:Note) {
 				var coolStrum:StrumNote = (daNote.shouldHit ? playerStrums.members[Math.floor(Math.abs(daNote.noteData)) % playerStrums.members.length] : enemyStrums.members[Math.floor(Math.abs(daNote.noteData)) % enemyStrums.members.length]);
 				var strumY:Float = coolStrum.y;
 				daNote.visible = true;
@@ -2574,9 +2574,7 @@ class PlayState extends MusicBeatState {
 					daNote.active = false;
 					daNote.visible = false;
 
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
+					invalidateNote(daNote);
 				}
 
 				if (daNote != null && coolStrum != null) {
@@ -2691,9 +2689,7 @@ class PlayState extends MusicBeatState {
 					daNote.active = false;
 					daNote.visible = false;
 
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
+					invalidateNote(daNote);
 				}
 			});
 
@@ -3752,8 +3748,7 @@ class PlayState extends MusicBeatState {
 			Conductor.songPosition,
 			note.arrow_Type,
 			note.strumTime,
-			note.character,
-			note.mustPress
+			note.character
 		]);
 		if (!note.wasGoodHit) {
 			if (note.shouldHit && note.isSustainNote)
@@ -3853,9 +3848,7 @@ class PlayState extends MusicBeatState {
 			vocals.volume = 1;
 
 			if (!note.isSustainNote) {
-				note.kill();
-				notes.remove(note, true);
-				note.destroy();
+				invalidateNote(note);
 			}
 		}
 		call("goodNoteHitPost", [
@@ -3948,8 +3941,15 @@ class PlayState extends MusicBeatState {
 		if (gfSpeed < 1)
 			gfSpeed = 1;
 
-		if (curBeat % gfSpeed == 0 && !dad.curCharacter.startsWith('gf'))
-			gf.dance();
+		if (curBeat % gfSpeed == 0 && !dad.curCharacter.startsWith('gf')){
+			if (gf.otherCharacters == null) {
+				gf.dance();
+			} else {
+				for (character in gf.otherCharacters) {
+					character.dance();
+				}
+			}
+		}
 
 		if (dad.animation.curAnim != null)
 			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf'))
@@ -4056,8 +4056,8 @@ class PlayState extends MusicBeatState {
 			ratings.get("shit")
 		];
 
-		var MA = ratingArray[1] + ratingArray[2] + ratingArray[3] + ratingArray[4];
-		var PA = ratingArray[2] + ratingArray[3] + ratingArray[4];
+		var MA:Int = ratingArray[1] + ratingArray[2] + ratingArray[3] + ratingArray[4];
+		var PA:Int = MA - ratingArray[1];
 
 		return ((marvelousRatings ? "Marvelous: " + Std.string(ratingArray[0]) + "\n" : "")
 			+ "Sick: "
@@ -4308,13 +4308,12 @@ class PlayState extends MusicBeatState {
 
 					@:privateAccess
 					{
-						var bar = PlayState.instance.healthBar;
 
 						iconP2.scale.set(1, 1);
 						iconP2.changeIconSet(dad.icon);
 
-						bar.createFilledBar(dad.barColor, boyfriend.barColor);
-						bar.updateFilledBar();
+						healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
+						healthBar.updateFilledBar();
 					}
 				case "bf" | "boyfriend" | "player" | "0":
 					{
@@ -4359,13 +4358,12 @@ class PlayState extends MusicBeatState {
 
 					@:privateAccess
 					{
-						var bar = PlayState.instance.healthBar;
 
 						iconP1.scale.set(1, 1);
 						iconP1.changeIconSet(boyfriend.icon);
 
-						bar.createFilledBar(dad.barColor, boyfriend.barColor);
-						bar.updateFilledBar();
+						healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
+						healthBar.updateFilledBar();
 					}
 			}
 		} else
