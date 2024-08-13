@@ -87,7 +87,7 @@ class TitleState extends MusicBeatState {
 			ModList.load();
 			PolymodHandler.loadMods();
 			#end
-			MusicBeatState.windowNamePrefix = Assets.getText(Paths.txt("windowTitleBase", "preload"));
+			MusicBeatState.windowNamePrefix = Options.getData("curMod");
 			CoolUtil.setWindowIcon("mods/" + Options.getData("curMod") + "/_polymod_icon.png");
 
 			#if FLX_NO_DEBUG

@@ -1232,17 +1232,22 @@ class PlayState extends MusicBeatState {
 						var quantStrumTime:Float = note.strumTime;
 						var currentStepCrochet:Float = Conductor.stepCrochet;
 						var noteBeat:Int = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48) + 0.5);
-						for (beat in 0...note.beats.length - 1) {
-							if ((noteBeat % (192 / note.beats[beat]) == 0)) {
-								noteBeat = note.beats[beat];
-								col = note.quantColors[beat];
+						for (beat in 0...Note.beats.length - 1) {
+							if ((noteBeat % (192 / Note.beats[beat]) == 0)) {
+								noteBeat = Note.beats[beat];
+								col = Note.quantColors[beat];
 								break;
 							}
 						}
+						note.colorSwap.r = col[0];
+						note.colorSwap.g = col[1];
+						note.colorSwap.b = col[2];
+						for(sustain in note.sustains){
+							sustain.colorSwap.r = note.colorSwap.r;
+							sustain.colorSwap.g = note.colorSwap.g;
+							sustain.colorSwap.b = note.colorSwap.b;
+						}
 					}
-					note.colorSwap.r = col[0];
-					note.colorSwap.g = col[1];
-					note.colorSwap.b = col[2];
 				}
 			}
 		}
@@ -4870,7 +4875,6 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (Assets.exists(Paths.songEvents(SONG.song.toLowerCase(), storyDifficultyStr.toLowerCase())) && loadChartEvents) {
-			@:privateAccess
 			var eventFunnies:Array<Array<Dynamic>> = SongLoader.parseLegacy(Json.parse(Assets.getText(Paths.songEvents(SONG.song.toLowerCase(),
 				storyDifficultyStr.toLowerCase()))), SONG.song)
 				.events;
