@@ -10,6 +10,7 @@ import modding.PolymodHandler;
 
 import lime.app.Application;
 import states.TitleState;
+import states.MusicBeatState;
 import modding.ModList;
 import flixel.FlxSprite;
 import flixel.FlxState;
