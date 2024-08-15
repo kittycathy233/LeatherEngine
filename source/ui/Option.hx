@@ -284,7 +284,6 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 			if (FlxG.keys.justPressed.ENTER) {
 				Options.setData(optionValue, "curMod");
 				modEnabled = !modEnabled;
-				@:privateAccess
 				if (FlxG.state is TitleState) TitleState.initialized = false;
 				if (FlxG.sound.music != null) {
 					FlxG.sound.music.fadeOut(0.25, 0);
@@ -295,6 +294,7 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				lime.utils.Assets.cache.clear();
             	openfl.utils.Assets.cache.clear();
 				CoolUtil.setWindowIcon("mods/"+Options.getData("curMod")+"/_polymod_icon.png");
+				MusicBeatState.windowNamePrefix = Options.getData("curMod");
 				PolymodHandler.loadMods();
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();

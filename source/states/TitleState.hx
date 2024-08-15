@@ -39,7 +39,7 @@ import haxe.Http;
 using StringTools;
 
 class TitleState extends MusicBeatState {
-	static var initialized:Bool = false;
+	public static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
 	var credGroup:FlxGroup;
