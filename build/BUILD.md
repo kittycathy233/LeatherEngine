@@ -15,13 +15,12 @@ haxelib install flixel-addons
 haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
 haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
 haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
-haxelib install hxCodec
+haxelib install hxvlc
 haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-haxelib git flixelTextureAtlas https://github.com/Smokey555/Flixel-TextureAtlas.git
-haxelib git fnf-modcharting-tools https://github.com/TheZoroForce240/FNF-Modcharting-Tools
-haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate
+haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
+haxelib git flxanimate https://github.com/funkincrew/flxanimate
 haxelib git hxNoise https://github.com/whuop/hxNoise
-haxelib install flixel-screenshot-plugin
+haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
 haxelib install hxcpp-debug-server
 ```
 
