@@ -26,7 +26,7 @@ haxelib install hxcpp-debug-server
 
 Dependencies for compiling:
 
-## Windows
+## Windows Only
 
 Install Visual Studio Community 2019, and while installing instead of selecting the normal options, only select these components in the 'individual components' instead (or the closest equivalents).
 
@@ -35,7 +35,7 @@ Install Visual Studio Community 2019, and while installing instead of selecting 
 * Windows 10 SDK (Latest)
 ```
 
-## Linux (if you decide to try and use hxvlc while compiling which requires changes at the moment)
+## Linux Only
 
 In your package manager, install the following packages:
 
