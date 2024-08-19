@@ -44,12 +44,12 @@ sudo apt-get install libvlc-dev
 sudo apt-get install libvlccore-dev
 sudo apt-get install vlc-bin
 sudo apt-get install luajit
-``` (APT Example)
+```
 
 ```sh
 sudo pacman -S vlc
 sudo pacman -S luajit
-``` (Pacman Example)
+```
 
 ```
 Step 5. Run `lime test [platform]` in the project directory while replacing '[platform]' with your build target (usually `html5`, `windows`, `linux`, `mac`, or whatever platform you are building for).
