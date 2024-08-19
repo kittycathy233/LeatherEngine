@@ -35,7 +35,7 @@ Install Visual Studio Community 2019, and while installing instead of selecting 
 * Windows 10 SDK (Latest)
 ```
 
-## Linux (if you decide to try and use hxCodec while compiling which requires changes at the moment)
+## Linux (if you decide to try and use hxvlc while compiling which requires changes at the moment)
 
 In your package manager, install the following packages:
 
