@@ -1704,8 +1704,6 @@ class PlayState extends MusicBeatState {
 
 	var noteBG:FlxSprite;
 
-	var babyArrow:StrumNote;
-
 	public function generateStaticArrows(pos:Float, ?isPlayer:Bool = false, ?showReminders:Bool = true):Void {
 		call("generateStaticArrows", [pos, isPlayer, showReminders]);
 		var usedKeyCount:Int = SONG.keyCount;
@@ -2532,7 +2530,6 @@ class PlayState extends MusicBeatState {
 				crochet: Conductor.crochet,
 				stepCrochet: Conductor.stepCrochet,
 				songPosition: Conductor.songPosition,
-				lastSongPos: Conductor.lastSongPos,
 				offset: Conductor.offset,
 				safeFrames: Conductor.safeFrames,
 				safeZoneOffset: Conductor.safeZoneOffset,
