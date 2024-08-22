@@ -4307,9 +4307,7 @@ class PlayState extends MusicBeatState {
 				// cache shit
 				if (Options.getData("charsAndBGs")) {
 					if (event[0].toLowerCase() == "change character" && event[1] <= FlxG.sound.music.length && !map.exists(event[3])) {
-						#if sys
 						var tmr:Float = Sys.time();
-						#end
 						var funnyCharacter:Character;
 						trace('Caching ${event[3]}');
 
@@ -4330,9 +4328,7 @@ class PlayState extends MusicBeatState {
 							}
 						}
 
-						#if sys
 						trace('Cached ${event[3]} in ${FlxMath.roundDecimal(Sys.time() - tmr, 2)} seconds');
-						#end
 					}
 
 					if (event[0].toLowerCase() == "change stage"
