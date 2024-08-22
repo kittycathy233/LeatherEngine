@@ -77,6 +77,8 @@ jobs:
             haxelib install dox
             haxelib install format
             haxelib install tjson
+            haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
+            haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
             haxelib git thx.core https://github.com/fponticelli/thx.core
             haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
             haxelib list
