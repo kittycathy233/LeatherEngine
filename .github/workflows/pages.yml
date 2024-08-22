@@ -58,12 +58,12 @@ jobs:
             haxelib install hxcpp
             haxelib install lime
             haxelib install openfl
-            haxelib --never install flixel
+            haxelib git flixel https://github.com/HaxeFlixel/flixel
             haxelib run lime setup flixel
             haxelib run lime setup
             haxelib install flixel-tools
-            haxelib install flixel-ui
-            haxelib install flixel-addons
+            haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
+            haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
             haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
             haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
             haxelib git scriptless-polymod https://github.com/swordcube/scriptless-polymod
