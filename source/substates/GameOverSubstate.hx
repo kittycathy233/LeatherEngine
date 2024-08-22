@@ -18,9 +18,9 @@ import flixel.util.FlxTimer;
 import states.LoadingState;
 
 class GameOverSubstate extends MusicBeatSubstate {
-	
 	public var bf:Character;
 	public var camFollow:FlxObject;
+
 	public static var instance:GameOverSubstate = null;
 
 	var gameOverRoll:Bool = FlxG.random.bool((1 / 4096) * 100);
@@ -36,7 +36,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 
 		if (Options.getData("quickRestart") && !gameOverRoll) {
 			PlayState.instance.call("onRetry", []);
-			PlayState.instance.closeLua();
 			PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 			FlxG.resetState();
 		}
@@ -54,7 +53,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (FlxG.sound.music.active)
 			FlxG.sound.music.stop();
 
-		if(gameOverRoll){
+		if (gameOverRoll) {
 			bf.visible = false;
 			var soundlol:FlxSound = new FlxSound().loadEmbedded(Paths.sound("deaths/fakeout_death", "shared"));
 			soundlol.play();
@@ -68,24 +67,22 @@ class GameOverSubstate extends MusicBeatSubstate {
 				ShowPivot: false,
 				Antialiasing: Options.getData("antialiasing"),
 				ScrollFactor: new FlxPoint(bf.scrollFactor.x, bf.scrollFactor.y),
-			  });
+			});
 			fakeout.anim.addBySymbol('fakeoutDeath', 'fake out death BF', 24, false);
 			fakeout.anim.play('fakeoutDeath', true);
 			add(fakeout);
-		}
-		else {
+		} else {
 			bfDies();
 		}
 	}
 
-	function bfDies(){
+	function bfDies() {
 		var soundPath = Paths.sound("deaths/bf-dead/death");
 		bf.visible = true;
 		if (Assets.exists(Paths.sound("deaths/" + bf.curCharacter + "/death")))
 			soundPath = Paths.sound("deaths/" + bf.curCharacter + "/death");
 
 		FlxG.sound.play(soundPath);
-
 
 		Conductor.changeBPM(100);
 		bf.playAnim('firstDeath', true);
@@ -101,7 +98,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (controls.BACK) {
 			FlxG.sound.music.stop();
 
-			PlayState.instance.closeLua();
 			if (PlayState.isStoryMode)
 				FlxG.switchState(() -> new StoryMenuState());
 			else
@@ -145,7 +141,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 			FlxG.sound.play(soundPath);
 			new FlxTimer().start(0.7, function(tmr:FlxTimer) {
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function() {
-					PlayState.instance.closeLua();
 					PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
 					FlxG.resetState();
 				});

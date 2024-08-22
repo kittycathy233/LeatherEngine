@@ -21,6 +21,7 @@ haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modchar
 haxelib git flxanimate https://github.com/funkincrew/flxanimate
 haxelib git hxNoise https://github.com/whuop/hxNoise
 haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
 haxelib install hxcpp-debug-server
 ```
 

@@ -32,10 +32,6 @@ class Main extends Sprite {
 		CoolUtil.haxe_trace = Log.trace;
 		Log.trace = CoolUtil.haxe_print;
 
-		#if VIDEOS_ALLOWED
-		hxvlc.util.Handle.init();
-		#end
-
 		game = new FlxGame(0, 0, TitleState, 60, 60, true);
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from

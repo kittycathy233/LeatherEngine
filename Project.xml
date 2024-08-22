@@ -128,7 +128,8 @@
 	<haxedef name="HXCPP_STACK_LINE" if="release" />
 	<haxedef name="HXCPP_STACK_TRACE" if="release" />
 
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
+	<haxedef name="no-debug" unless="debug" />
+	<haxedef name="HXCPP_GC_GENERATIONAL" />
 
 	<icon path="art/icon.png" />
 </project>
