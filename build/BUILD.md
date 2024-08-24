@@ -40,7 +40,7 @@ Dependencies for compiling:
 
 ## Windows Only
 
-Install Visual Studio Community 2019, and while installing instead of selecting the normal options, only select these components in the 'individual components' instead (or the closest equivalents).
+Install [Visual Studio](https://visualstudio.microsoft.com/), and while installing instead of selecting the normal options, only select these components in the 'individual components' instead (or the closest equivalents).
 
 ```txt
 * MSVC v142 - VS 2019 C++ x64/x86 build tools
