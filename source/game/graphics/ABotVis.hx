@@ -52,10 +52,13 @@ class ABotVis extends FlxSpriteGroup
             viz.animation.play('VIZ', false, false, 6);
         }
 
+
         #if desktop
         @:privateAccess
-        analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource , 7, 0.01, 30);
+        analyzer = new SpectralAnalyzer(FlxG.sound.music._channel.__audioSource , 7, 0.1, 40);
         #end
+		analyzer.fftN = 256;
+
         //analyzer.maxDb = -35;
     }
 
@@ -69,7 +72,7 @@ class ABotVis extends FlxSpriteGroup
             var lvls = levels.length;
             for (i in 0...(grp > lvls ? lvls : grp))
             {
-                var animFrame:Int = Math.round(levels[i].value * 5);
+                var animFrame:Int = Math.round(levels[i].value * 5 * FlxG.sound.volume);
                 animFrame = Math.floor(FlxMath.bound(animFrame, 0, 5));
 
                 //animFrame = Math.floor(Math.min(5, animFrame));
