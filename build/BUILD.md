@@ -16,7 +16,7 @@ haxelib install flixel-tools
 haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
 haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
 haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
-haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved
+haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
 haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
 haxelib git hxNoise https://github.com/whuop/hxNoise
 haxelib install hxvlc
@@ -27,7 +27,7 @@ haxelib git thx.core https://github.com/fponticelli/thx.core
 haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
 haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
 haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
-haxelib git funkin.vis https://github.com/FNF-CNE-Devs/funkVis grig-test
+haxelib git funkin.vis https://github.com/FunkinCrew/funkVis
 haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
 haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
 haxelib install hxcpp-debug-server
