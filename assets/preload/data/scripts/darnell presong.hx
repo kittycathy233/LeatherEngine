@@ -36,7 +36,7 @@ function startCutscene(){
 	bf.addOffset('intro1', 60, 0);
 	bf.addOffset('intro2', -260, 230);
 	bf.addOffset('cock', 0, 0);
-	bf.playAnim('intro1', true);
+	bf.playAnimation('intro1', true);
 
 	// camera sets up, pico does his animation showing him pissed
 	new FlxTimer().start(0.1, function(tmr)
@@ -60,14 +60,14 @@ function startCutscene(){
 	// darnell lights up a can
 	new FlxTimer().start(cutsceneDelay + 3, function(tmr)
 	{
-		dad.playAnim('lightCan', true);
+		dad.playAnimation('lightCan', true);
 		FlxG.sound.play(Paths.sound('Darnell_Lighter'), 1.0);
 	});
 
 	// pico cocks his gun, camera shifts to his side to show this
 	new FlxTimer().start(cutsceneDelay + 4, function(tmr)
 	{
-		bf.playAnim('cock');
+		bf.playAnimation('cock');
 		tweenCameraToPosition(darnellPos[0]+180+250+250, darnellPos[1], 0.4, FlxEase.backOut);
 		FlxG.sound.play(Paths.sound('Gun_Prep'), 1.0);
 	});
@@ -75,7 +75,7 @@ function startCutscene(){
 	// darnell kicks the can up
 	new FlxTimer().start(cutsceneDelay + 4.4, function(tmr)
 	{
-		dad.playAnim('kickCan', true);
+		dad.playAnimation('kickCan', true);
 		FlxG.sound.play(Paths.sound('Kick_Can_UP'), 1.0);
       cutsceneCan.animation.play('up');
       cutsceneCan.visible = true;
@@ -84,7 +84,7 @@ function startCutscene(){
 	// darnell knees the can forward
 	new FlxTimer().start(cutsceneDelay + 4.9, function(tmr)
 	{
-		dad.playAnim('kneeCan', true);
+		dad.playAnimation('kneeCan', true);
 		FlxG.sound.play(Paths.sound('Kick_Can_FORWARD'), 1.0);
       cutsceneCan.animation.play('forward');
 	});
@@ -92,7 +92,7 @@ function startCutscene(){
 	// pico shoots the can, it explodes
 	new FlxTimer().start(cutsceneDelay + 5.1, function(tmr)
 	{
-		bf.playAnim('intro2', true);
+		bf.playAnimation('intro2', true);
 
 		FlxG.sound.play(Paths.soundRandom('shot', 1, 4));
 
@@ -112,14 +112,14 @@ function startCutscene(){
 	// darnell laughs
 	new FlxTimer().start(cutsceneDelay + 5.9, function(tmr)
 	{
-		dad.playAnim('laughCutscene', true);
+		dad.playAnimation('laughCutscene', true);
 		FlxG.sound.play(Paths.sound('cutscene/darnell_laugh'), 0.6);
 	});
 
 	// nene spits and laughs
 	new FlxTimer().start(cutsceneDelay + 6.2, function(tmr)
 	{
-		gf.playAnim('laughCutscene', true);
+		gf.playAnimation('laughCutscene', true);
 		FlxG.sound.play(Paths.sound('cutscene/nene_laugh'), 0.6);
 	});
 

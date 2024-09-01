@@ -53,7 +53,7 @@ class ResultScore extends FlxTypedSpriteGroup<ScoreNum> {
 				new FlxTimer().start((i - 1) / 24, _ -> {
 					try{
 						group.members[i].finalDelay = scoreStart - (i - 1);
-						group.members[i].playAnim();
+						group.members[i].playAnimation();
 						group.members[i].shuffle();
 					} catch (e) {
 						// trace(e, ERROR);
@@ -107,7 +107,7 @@ class ScoreNum extends FlxSprite {
 		return digit = val;
 	}
 
-	public inline function playAnim():Void {
+	public inline function playAnimation():Void {
 		animation.play(numToString[digit], true, false, 0);
 	}
 

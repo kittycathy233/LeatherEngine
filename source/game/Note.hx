@@ -202,11 +202,21 @@ class Note extends FlxSkewedSprite {
 		if (isSustainNote && prevNote != null) {
 			alpha = 0.6;
 
+			if (!song.ui_Skin.contains('pixel'))
+				x += width / 2;
+
+
 			prevNoteStrumtime = prevNote.strumTime;
 			prevNoteIsSustainNote = prevNote.isSustainNote;
 
 			animation.play("holdend");
 			updateHitbox();
+
+			if (!song.ui_Skin.contains('pixel'))
+				x -= width / 2;
+
+			if (!song.ui_Skin.contains('pixel'))
+				x += 30;
 
 			if (prevNote.isSustainNote) {
 				if (prevNote.animation != null)
@@ -261,13 +271,6 @@ class Note extends FlxSkewedSprite {
 		angle = modAngle + localAngle;
 
 		calculateCanBeHit();
-
-		if (!inEditor) {
-			if (tooLate) {
-				if (alpha > 0.3)
-					alpha = 0.3;
-			}
-		}
 	}
 
 	public function calculateCanBeHit() {

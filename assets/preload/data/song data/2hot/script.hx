@@ -41,7 +41,7 @@ function onEvent(name:String, position:Float, value1:String, value2:String){
                     {
                         gunCocked = false;
                     });
-                    bf.playAnim('cock', true);
+                    bf.playAnimation('cock', true);
                 case "shoot":
                     if (gunCocked)
                     {

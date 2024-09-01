@@ -29,12 +29,12 @@ class EventHandeler {
 
 				switch (char) {
 					case 0:
-						PlayState.boyfriend.playAnim("hey", true);
-						PlayState.gf.playAnim("cheer", true);
+						PlayState.boyfriend.playAnimation("hey", true);
+						PlayState.gf.playAnimation("cheer", true);
 					case 1:
-						PlayState.boyfriend.playAnim("hey", true);
+						PlayState.boyfriend.playAnimation("hey", true);
 					case 2:
-						PlayState.gf.playAnim("cheer", true);
+						PlayState.gf.playAnimation("cheer", true);
 				}
 			case "set gf speed":
 				if (Std.parseInt(event[2]) != null)
@@ -74,7 +74,7 @@ class EventHandeler {
 				if (event[3] != "")
 					anim = event[3];
 
-				character.playAnim(anim, true);
+				character.playAnimation(anim, true);
 			case "camera flash":
 				var time = Std.parseFloat(event[3]);
 

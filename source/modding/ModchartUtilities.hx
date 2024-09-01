@@ -45,6 +45,7 @@ import flixel.FlxG;
 import game.Conductor;
 import lime.app.Application;
 import modding.helpers.FlxTextFix;
+import game.CharacterGroup;
 import haxe.Json;
 
 using StringTools;
@@ -58,18 +59,7 @@ typedef LuaCamera = {
 class ModchartUtilities {
 	public var lua:State = null;
 
-	public static var lua_Sprites:Map<String, FlxSprite> = [
-		'boyfriend' => PlayState.boyfriend,
-		'girlfriend' => PlayState.gf,
-		'dad' => PlayState.dad,
-	];
-
-	public static var lua_Characters:Map<String, Character> = [
-		'boyfriend' => PlayState.boyfriend,
-		'girlfriend' => PlayState.gf,
-		'dad' => PlayState.dad,
-	];
-
+	public static var lua_Sprites:Map<String, FlxSprite> = [];
 	public static var lua_Sounds:Map<String, FlxSound> = [];
 	public static var lua_Shaders:Map<String, shaders.Shaders.ShaderEffect> = [];
 	public static var lua_Custom_Shaders:Map<String, CustomShader> = [];
@@ -92,7 +82,7 @@ class ModchartUtilities {
 			return lua_Custom_Shaders.get(id);
 		else if (lua_Cameras.exists(id))
 			return lua_Cameras.get(id).cam;
-		else if(lua_Jsons.exists(id))
+		else if (lua_Jsons.exists(id))
 			return lua_Jsons.get(id);
 
 		if (Reflect.getProperty(PlayState.instance, id) != null)
@@ -100,16 +90,8 @@ class ModchartUtilities {
 		else if (Reflect.getProperty(PlayState, id) != null)
 			return Reflect.getProperty(PlayState, id);
 
-		if (PlayState.strumLineNotes.length - 1 >= Std.parseInt(id)) 
+		if (PlayState.strumLineNotes.length - 1 >= Std.parseInt(id))
 			return PlayState.strumLineNotes.members[Std.parseInt(id)];
-
-		return null;
-	}
-
-	function getCharacterByName(id:String):Dynamic {
-		// lua objects or what ever
-		if (lua_Characters.exists(id))
-			return lua_Characters.get(id);
 
 		return null;
 	}
@@ -137,7 +119,6 @@ class ModchartUtilities {
 		PlayState.songMultiplier = oldMultiplier;
 
 		lua_Sprites.clear();
-		lua_Characters.clear();
 		lua_Shaders.clear();
 		lua_Custom_Shaders.clear();
 		lua_Cameras.clear();
@@ -155,7 +136,8 @@ class ModchartUtilities {
 	}
 
 	function callLua(func_name:String, args:Array<Dynamic>, ?type:String):Dynamic {
-		functions_called.push(func_name);
+		if (!functions_called.contains(func_name))
+			functions_called.push(func_name);
 		var result:Any = null;
 
 		Lua.getglobal(lua, func_name);
@@ -165,9 +147,6 @@ class ModchartUtilities {
 		}
 
 		result = Lua.pcall(lua, args.length, 1, 0);
-
-		var p = Lua.tostring(lua, result);
-		var e = getLuaErrorMessage(lua);
 
 		if (result == null) {
 			return null;
@@ -212,20 +191,14 @@ class ModchartUtilities {
 		lua_Sprites.set("girlfriend", PlayState.gf);
 		lua_Sprites.set("dad", PlayState.dad);
 
-		lua_Characters.set("boyfriend", PlayState.boyfriend);
-		lua_Characters.set("girlfriend", PlayState.gf);
-		lua_Characters.set("dad", PlayState.dad);
-
 		lua_Cameras.set("game", {cam: PlayState.instance.camGame, shaders: [], shaderNames: []});
 		lua_Cameras.set("hud", {cam: PlayState.instance.camHUD, shaders: [], shaderNames: []});
 
 		lua_Sounds.set("Inst", FlxG.sound.music);
-		
+
 		lua_Sounds.set("Voices", PlayState.instance.vocals);
 
 		trace('Loading script at path \'${path}\'');
-		// trace("lua version: " + Lua.version());
-		// trace("LuaJIT version: " + Lua.versionJIT());
 
 		Lua.init_callbacks(lua);
 
@@ -236,7 +209,7 @@ class ModchartUtilities {
 
 		if (result != 0) {
 			CoolUtil.coolError("Lua ERROR:\n" + Lua.tostring(lua, result), "Leather Engine Modcharts");
-			//return;
+			// return;
 			// FlxG.switchState(new MainMenuState());
 		}
 
@@ -305,7 +278,6 @@ class ModchartUtilities {
 		setVar("curStage", PlayState.SONG.stage);
 
 		setVar("mobile", FlxG.onMobile);
-
 
 		setVar("curMod", Options.getData("curMod"));
 		setVar("developer", Options.getData("developer"));
@@ -427,24 +399,17 @@ class ModchartUtilities {
 				default:
 					map = PlayState.instance.bfMap;
 			}
-			var funnyCharacter:Character;
+			var funnyCharacter:CharacterGroup;
 
 			if (map == PlayState.instance.bfMap)
-				funnyCharacter = new Boyfriend(100, 100, character);
+				funnyCharacter = new CharacterGroup(100, 100, character);
 			else
-				funnyCharacter = new Character(100, 100, character);
+				funnyCharacter = new CharacterGroup(100, 100, character);
 
 			funnyCharacter.alpha = 0.00001;
 			PlayState.instance.add(funnyCharacter);
 
 			map.set(character, funnyCharacter);
-
-			if (funnyCharacter.otherCharacters != null) {
-				for (character in funnyCharacter.otherCharacters) {
-					character.alpha = 0.00001;
-					PlayState.instance.add(character);
-				}
-			}
 		});
 
 		setLuaFunction("setCamera", function(id:String, camera:String = "") {
@@ -511,7 +476,7 @@ class ModchartUtilities {
 		setLuaFunction("makeStageSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
 			if (!lua_Sprites.exists(id)) {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
-				
+
 				if (filename != null && filename.length > 0)
 					Sprite.loadGraphic(Paths.image(PlayState.instance.stage.stage + "/" + filename, "stages"));
 
@@ -520,7 +485,7 @@ class ModchartUtilities {
 				Sprite.updateHitbox();
 
 				lua_Sprites.set(id, Sprite);
-				
+
 				PlayState.instance.stage.add(Sprite);
 			} else
 				CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
@@ -529,7 +494,7 @@ class ModchartUtilities {
 		setLuaFunction("makeStageAnimatedSprite", function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?sizeY:Float = null) {
 			if (!lua_Sprites.exists(id)) {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
-				
+
 				if (filename != null && filename.length > 0)
 					Sprite.frames = Paths.getSparrowAtlas(PlayState.instance.stage.stage + "/" + filename, "stages");
 
@@ -548,7 +513,7 @@ class ModchartUtilities {
 			function(id:String, filename:String, x:Float, y:Float, size:Float = 1, ?oneDanceAnimation:Bool, ?antialiasing:Bool, ?sizeY:Float = null) {
 				if (!lua_Sprites.exists(id)) {
 					var Sprite:DancingSprite = new DancingSprite(x, y, oneDanceAnimation, antialiasing);
-					
+
 					if (filename != null && filename.length > 0)
 						Sprite.frames = Paths.getSparrowAtlas(PlayState.instance.stage.stage + "/" + filename, "stages");
 
@@ -558,7 +523,6 @@ class ModchartUtilities {
 
 					lua_Sprites.set(id, Sprite);
 
-					
 					PlayState.instance.stage.add(Sprite);
 				} else
 					CoolUtil.coolError("Sprite " + id + " already exists! Choose a different name!", "Leather Engine Modcharts");
@@ -634,13 +598,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("actorScreenCenter", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].screenCenter();
-					return;
-				}
-			}
 			var actor = getActorByName(id);
 
 			if (getActorByName(id) != null) {
@@ -750,12 +707,6 @@ class ModchartUtilities {
 
 		setLuaFunction("newSpriteCopy", function(id:String, targetID:String) {
 			var actor:FlxSprite = null;
-			if (getCharacterByName(targetID) != null) {
-				var character = getCharacterByName(targetID);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					actor = character.otherCharacters[0];
-				}
-			}
 			if (getActorByName(targetID) != null && actor == null)
 				actor = getActorByName(targetID);
 
@@ -839,12 +790,6 @@ class ModchartUtilities {
 
 		setLuaFunction("makeSpriteCopy", function(id:String, targetID:String) {
 			var actor:FlxSprite = null;
-			if (getCharacterByName(targetID) != null) {
-				var character = getCharacterByName(targetID);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					actor = character.otherCharacters[0];
-				}
-			}
 			if (getActorByName(targetID) != null && actor == null)
 				actor = getActorByName(targetID);
 
@@ -964,12 +909,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorLayer", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return PlayState.instance.members.indexOf(character.otherCharacters[0]);
-				}
-			}
 			var actor = getActorByName(id);
 
 			if (actor != null)
@@ -979,14 +918,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorLayer", function(id:String, layer:Int) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					PlayState.instance.remove(character.otherCharacters[0]);
-					PlayState.instance.insert(layer, character.otherCharacters[0]);
-					return;
-				}
-			}
 			var actor = getActorByName(id);
 
 			if (actor != null) {
@@ -1019,7 +950,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction('changeHealthRange', function(minHealth:Float, maxHealth:Float) {
-			
 			{
 				var bar = PlayState.instance.healthBar;
 				PlayState.instance.minHealth = minHealth;
@@ -1101,7 +1031,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setCamPosition", function(x:Int, y:Int) {
-			
 			{
 				PlayState.instance.camFollow.x = x;
 				PlayState.instance.camFollow.y = y;
@@ -1109,12 +1038,10 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getCameraX", function() {
-			
 			return PlayState.instance.camFollow.x;
 		});
 
 		setLuaFunction("getCameraY", function() {
-			
 			return PlayState.instance.camFollow.y;
 		});
 
@@ -1397,14 +1324,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorPos", function(x:Float, y:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].x = x;
-					character.otherCharacters[0].y = y;
-					return;
-				}
-			}
 			var actor = getActorByName(id);
 
 			if (actor != null) {
@@ -1414,13 +1333,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorScroll", function(x:Float, y:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].scrollFactor.set(x, y);
-					return;
-				}
-			}
 			var actor = getActorByName(id);
 
 			if (getActorByName(id) != null) {
@@ -1429,24 +1341,15 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorX", function(x:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].x = x;
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				getActorByName(id).x = x;
 		});
 
 		setLuaFunction("getOriginalCharX", function(character:Int) {
-			
 			return PlayState.instance.stage.getCharacterPos(character)[0];
 		});
 
 		setLuaFunction("getOriginalCharY", function(character:Int) {
-			
 			return PlayState.instance.stage.getCharacterPos(character)[1];
 		});
 
@@ -1469,25 +1372,11 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorOriginX", function(x:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].origin.x = x;
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				getActorByName(id).origin.x = x;
 		});
 
 		setLuaFunction("setActorOriginY", function(x:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].origin.y = x;
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				getActorByName(id).origin.y = x;
 		});
@@ -1518,7 +1407,7 @@ class ModchartUtilities {
 
 		setLuaFunction("playCharAnim", function(id:String, anim:String, force:Bool = false, reverse:Bool = false, frame:Int = 0) {
 			if (getActorByName(id) != null) {
-				getActorByName(id).playAnim(anim, force, reverse, frame);
+				getActorByName(id).playAnimation(anim, force, reverse, frame);
 			}
 		});
 
@@ -1535,13 +1424,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("playActorAnimation", function(id:String, anim:String, force:Bool = false, reverse:Bool = false, frame:Int = 0) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].animation.play(anim, force, reverse, frame);
-					return;
-				}
-			}
 			if (getActorByName(id) != null) {
 				getActorByName(id).animation.play(anim, force, reverse, frame);
 			}
@@ -1555,79 +1437,39 @@ class ModchartUtilities {
 
 		setLuaFunction("playCharacterAnimation", function(id:String, anim:String, force:Bool = false, reverse:Bool = false, frame:Int = 0) {
 			if (getActorByName(id) != null) {
-				getActorByName(id).playAnim(anim, force, reverse, frame);
+				getActorByName(id).playAnimation(anim, force, reverse, frame);
 			}
 		});
 
 		setLuaFunction("setCharacterShouldDance", function(id:String, shouldDance:Bool = true) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].shouldDance = shouldDance;
-					return;
-				}
-			}
 			if (getActorByName(id) != null) {
 				getActorByName(id).shouldDance = shouldDance;
 			}
 		});
 		setLuaFunction("setCharacterPlayFullAnim", function(id:String, playFullAnim:Bool = true) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].playFullAnim = playFullAnim;
-					return;
-				}
-			}
 			if (getActorByName(id) != null) {
 				getActorByName(id).playFullAnim = playFullAnim;
 			}
 		});
 
 		setLuaFunction("setCharacterSingPrefix", function(id:String, prefix:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].singAnimPrefix = prefix;
-					return;
-				}
-			}
 			if (getActorByName(id) != null) {
 				getActorByName(id).singAnimPrefix = prefix;
 			}
 		});
 
 		setLuaFunction("setCharacterPreventDanceForAnim", function(id:String, preventDanceForAnim:Bool = true) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].preventDanceForAnim = preventDanceForAnim;
-					return;
-				}
-			}
 			if (getActorByName(id) != null) {
 				getActorByName(id).preventDanceForAnim = preventDanceForAnim;
 			}
 		});
 
 		setLuaFunction("playCharacterDance", function(id:String, ?altAnim:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].dance(altAnim);
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				getActorByName(id).dance(altAnim);
 		});
 
 		setLuaFunction("getPlayingActorAnimation", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0)
-					return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(character.otherCharacters[0], "animation"), "curAnim"), "name");
-			}
 			if (getActorByName(id) != null) {
 				if (Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim") != null)
 					return Reflect.getProperty(Reflect.getProperty(Reflect.getProperty(getActorByName(id), "animation"), "curAnim"), "name");
@@ -1646,25 +1488,11 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorAlpha", function(alpha:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "alpha", alpha);
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				Reflect.setProperty(getActorByName(id), "alpha", alpha);
 		});
 
 		setLuaFunction("setActorVisible", function(visible:Bool, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					character.otherCharacters[0].visible = visible;
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				getActorByName(id).visible = visible;
 		});
@@ -1688,13 +1516,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorY", function(y:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "y", y);
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				Reflect.setProperty(getActorByName(id), "y", y);
 		});
@@ -1718,13 +1539,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorAngle", function(angle:Float, id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "angle", angle);
-					return;
-				}
-			}
 			if (getActorByName(id) != null)
 				Reflect.setProperty(getActorByName(id), "angle", angle);
 		});
@@ -1767,11 +1581,11 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorTrailVisible", function(id:String, visibleVal:Bool) {
-			var char = getCharacterByName(id);
+			var char = getActorByName(id);
 
 			if (char != null) {
-				if (char.coolTrail != null) {
-					char.coolTrail.visible = visibleVal;
+				if (char.trail != null) {
+					char.trail.visible = visibleVal;
 					return true;
 				} else
 					return false;
@@ -1780,11 +1594,11 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorTrailVisible", function(id:String) {
-			var char = getCharacterByName(id);
+			var char = getActorByName(id);
 
 			if (char != null) {
-				if (char.coolTrail != null)
-					return char.coolTrail.visible;
+				if (char.trail != null)
+					return char.trail.visible;
 				else
 					return false;
 			} else
@@ -1792,12 +1606,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorWidth", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].width;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).width;
 			else
@@ -1805,12 +1613,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorHeight", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].height;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).height;
 			else
@@ -1818,12 +1620,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorAlpha", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].alpha;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).alpha;
 			else
@@ -1831,12 +1627,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorAngle", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].angle;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).angle;
 			else
@@ -1844,12 +1634,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorX", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].x;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).x;
 			else
@@ -1857,12 +1641,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getActorY", function(id:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					return character.otherCharacters[0].y;
-				}
-			}
 			if (getActorByName(id) != null)
 				return getActorByName(id).y;
 			else
@@ -1870,47 +1648,18 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setActorReflection", function(id:String, r:Bool) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					for (i in 0...character.otherCharacters.length)
-						character.otherCharacters[i].drawReflection = r;
-					return;
-				}
-			}
 			Reflect.setProperty(getActorByName(id), "drawReflection", r);
 		});
 
 		setLuaFunction("setActorReflectionYOffset", function(id:String, y:Float) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "reflectionYOffset", y);
-					return;
-				}
-			}
 			Reflect.setProperty(getActorByName(id), "reflectionYOffset", y);
 		});
 
 		setLuaFunction("setActorReflectionAlpha", function(id:String, a:Float) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "reflectionAlpha", a);
-					return;
-				}
-			}
 			Reflect.setProperty(getActorByName(id), "reflectionAlpha", a);
 		});
 
 		setLuaFunction("setActorReflectionColor", function(id:String, color:String) {
-			if (getCharacterByName(id) != null) {
-				var character = getCharacterByName(id);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					Reflect.setProperty(character.otherCharacters[0], "reflectionColor", FlxColor.fromString(color));
-					return;
-				}
-			}
 			Reflect.setProperty(getActorByName(id), "reflectionColor", FlxColor.fromString(color));
 		});
 
@@ -1954,30 +1703,18 @@ class ModchartUtilities {
 			return Application.current.window.height;
 		});
 
-		setLuaFunction("setCanFullscreen", function(can_Fullscreen:Bool) {
-			PlayState.instance.canFullscreen = can_Fullscreen;
+		setLuaFunction("setCanFullscreen", function(canFullscreen:Bool) {
+			PlayState.instance.canFullscreen = canFullscreen;
 		});
 
 		setLuaFunction("changeDadCharacter", function(character:String) {
-			var oldDad = PlayState.dad;
+			var oldDad:CharacterGroup = PlayState.dad;
 			PlayState.instance.remove(oldDad);
 
-			var dad = new Character(100, 100, character);
+			var dad:CharacterGroup = new CharacterGroup(100, 100, character);
 			PlayState.dad = dad;
 
-			if (dad.otherCharacters == null) {
-				if (dad.coolTrail != null)
-					PlayState.instance.add(dad.coolTrail);
-
-				PlayState.instance.add(dad);
-			} else {
-				for (character in dad.otherCharacters) {
-					if (character.coolTrail != null)
-						PlayState.instance.add(character.coolTrail);
-
-					PlayState.instance.add(character);
-				}
-			}
+			PlayState.instance.add(dad);
 
 			lua_Sprites.remove("dad");
 
@@ -1986,47 +1723,32 @@ class ModchartUtilities {
 
 			lua_Sprites.set("dad", dad);
 
-			
-			{
-				var oldIcon = PlayState.instance.iconP2;
-				var bar = PlayState.instance.healthBar;
+			var oldIcon = PlayState.instance.iconP2;
+			var bar = PlayState.instance.healthBar;
 
-				PlayState.instance.remove(oldIcon);
-				oldIcon.kill();
-				oldIcon.destroy();
+			PlayState.instance.remove(oldIcon);
+			oldIcon.kill();
+			oldIcon.destroy();
 
-				PlayState.instance.iconP2 = new HealthIcon(dad.icon, false);
-				PlayState.instance.iconP2.y = PlayState.instance.healthBar.y - (PlayState.instance.iconP2.height / 2);
-				PlayState.instance.iconP2.cameras = [PlayState.instance.camHUD];
-				PlayState.instance.add(PlayState.instance.iconP2);
+			PlayState.instance.iconP2 = new HealthIcon(dad.icon, false);
+			PlayState.instance.iconP2.y = PlayState.instance.healthBar.y - (PlayState.instance.iconP2.height / 2);
+			PlayState.instance.iconP2.cameras = [PlayState.instance.camHUD];
+			PlayState.instance.add(PlayState.instance.iconP2);
 
-				bar.createFilledBar(dad.barColor, PlayState.boyfriend.barColor);
-				bar.updateFilledBar();
+			bar.createFilledBar(dad.barColor, PlayState.boyfriend.barColor);
+			bar.updateFilledBar();
 
-				PlayState.instance.stage.setCharOffsets();
-			}
+			PlayState.instance.stage.setCharOffsets();
 		});
 
 		setLuaFunction("changeBoyfriendCharacter", function(character:String) {
 			var oldBF = PlayState.boyfriend;
 			PlayState.instance.remove(oldBF);
 
-			var boyfriend = new Boyfriend(770, 450, character);
+			var boyfriend = new CharacterGroup(770, 450, character);
 			PlayState.boyfriend = boyfriend;
 
-			if (boyfriend.otherCharacters == null) {
-				if (boyfriend.coolTrail != null)
-					PlayState.instance.add(boyfriend.coolTrail);
-
-				PlayState.instance.add(boyfriend);
-			} else {
-				for (character in boyfriend.otherCharacters) {
-					if (character.coolTrail != null)
-						PlayState.instance.add(character.coolTrail);
-
-					PlayState.instance.add(character);
-				}
-			}
+			PlayState.instance.add(boyfriend);
 
 			lua_Sprites.remove("boyfriend");
 
@@ -2035,7 +1757,6 @@ class ModchartUtilities {
 
 			lua_Sprites.set("boyfriend", boyfriend);
 
-			
 			{
 				var oldIcon = PlayState.instance.iconP1;
 				var bar = PlayState.instance.healthBar;
@@ -2683,13 +2404,11 @@ class ModchartUtilities {
 
 		setLuaFunction("setProperty", function(object:String, property:String, value:Dynamic) {
 			if (object != "") {
-				
 				if (Reflect.getProperty(PlayState.instance, object) != null)
 					Reflect.setProperty(Reflect.getProperty(PlayState.instance, object), property, value);
 				else
 					Reflect.setProperty(Reflect.getProperty(PlayState, object), property, value);
 			} else {
-				
 				if (Reflect.getProperty(PlayState.instance, property) != null)
 					Reflect.setProperty(PlayState.instance, property, value);
 				else
@@ -2699,13 +2418,11 @@ class ModchartUtilities {
 
 		setLuaFunction("getProperty", function(object:String, property:String) {
 			if (object != "") {
-				
 				if (Reflect.getProperty(PlayState.instance, object) != null)
 					return Reflect.getProperty(Reflect.getProperty(PlayState.instance, object), property);
 				else
 					return Reflect.getProperty(Reflect.getProperty(PlayState, object), property);
 			} else {
-				
 				if (Reflect.getProperty(PlayState.instance, property) != null)
 					return Reflect.getProperty(PlayState.instance, property);
 				else
@@ -2714,7 +2431,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("getPropertyFromClass", function(className:String, variable:String) {
-			
 			{
 				var variablePaths = variable.split(".");
 
@@ -2733,7 +2449,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setPropertyFromClass", function(className:String, variable:String, value:Dynamic) {
-			
 			{
 				var variablePaths:Array<String> = variable.split('.');
 
@@ -2763,7 +2478,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("stopSong", function() {
-			
 			{
 				PlayState.instance.paused = true;
 
@@ -2830,7 +2544,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("tweenStageColorSwap", function(prop:String, value:Dynamic, time:Float, easeStr:String = "linear") {
-			
 			var actor = PlayState.instance.stage.colorSwap;
 			var ease = easeFromString(easeStr);
 
@@ -2851,7 +2564,6 @@ class ModchartUtilities {
 		});
 
 		setLuaFunction("setStageColorSwap", function(prop:String, value:Dynamic) {
-			
 			var actor = PlayState.instance.stage.colorSwap;
 
 			if (actor != null) {
@@ -2916,15 +2628,6 @@ class ModchartUtilities {
 				return;
 
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			if (getCharacterByName(actor) != null) {
-				var character = getCharacterByName(actor);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					for (c in 0...character.otherCharacters.length) {
-						character.otherCharacters[c].shader = funnyCustomShader;
-					}
-					return;
-				}
-			}
 			var actor = getActorByName(actor);
 
 			if (actor != null && funnyCustomShader != null)
@@ -3018,21 +2721,10 @@ class ModchartUtilities {
 				return;
 
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(shaderName);
-			if (getCharacterByName(actorStr) != null) {
-				var character = getCharacterByName(actorStr);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					for (c in 0...character.otherCharacters.length) {
-						character.otherCharacters[c].shader = funnyCustomShader;
-					}
-					return;
-				}
-			}
 			var actor = getActorByName(actorStr);
 
 			if (actor != null && funnyCustomShader != null) {
-				actor.shader = funnyCustomShader; // use reflect to workaround compiler errors
-
-				// trace('added shader '+shaderName+" to " + actorStr);
+				actor.shader = funnyCustomShader;
 			}
 		});
 
@@ -3134,7 +2826,6 @@ class ModchartUtilities {
 		setLuaFunction("parseJson", function(tag:String, content:String) {
 			lua_Jsons.set(tag, Json.parse(Assets.getText(Paths.json(content))));
 		});
-
 
 		setLuaFunction("loadScript", function(script:String) {
 			var modchart:ModchartUtilities = null;
@@ -3395,46 +3086,24 @@ class ModchartUtilities {
 	}
 
 	public function setupTheShitCuzPullRequestsSuck() {
-		lua_Sprites.set("boyfriend", PlayState.boyfriend);
-		lua_Sprites.set("girlfriend", PlayState.gf);
-		lua_Sprites.set("dad", PlayState.dad);
-
-		lua_Characters.set("boyfriend", PlayState.boyfriend);
-		lua_Characters.set("girlfriend", PlayState.gf);
-		lua_Characters.set("dad", PlayState.dad);
-
 		lua_Sounds.set("Inst", FlxG.sound.music);
 		lua_Sounds.set("Voices", PlayState.instance.vocals);
 
 		for (object in PlayState.instance.stage.stage_Objects) {
 			lua_Sprites.set(object[0], object[1]);
 		}
-
-		if (PlayState.dad.otherCharacters != null) {
-			lua_Sprites.set('dad', PlayState.dad.otherCharacters[PlayState.dad.mainCharacterID]);
-			lua_Characters.set('dad', PlayState.dad.otherCharacters[PlayState.dad.mainCharacterID]);
-			for (char in 0...PlayState.dad.otherCharacters.length) {
-				lua_Sprites.set("dadCharacter" + char, PlayState.dad.otherCharacters[char]);
-				lua_Characters.set("dadCharacter" + char, PlayState.dad.otherCharacters[char]);
-			}
+		for (char in 0...PlayState.dad.members.length) {
+			lua_Sprites.set("dadCharacter" + char, PlayState.dad.members[char]);
 		}
 
-		if (PlayState.boyfriend.otherCharacters != null) {
-			lua_Sprites.set('boyfriend', PlayState.boyfriend.otherCharacters[PlayState.boyfriend.mainCharacterID]);
-			lua_Characters.set('boyfriend', PlayState.boyfriend.otherCharacters[PlayState.boyfriend.mainCharacterID]);
-			for (char in 0...PlayState.boyfriend.otherCharacters.length) {
-				lua_Sprites.set("bfCharacter" + char, PlayState.boyfriend.otherCharacters[char]);
-				lua_Characters.set("bfCharacter" + char, PlayState.boyfriend.otherCharacters[char]);
-			}
+		lua_Sprites.set('boyfriend', PlayState.boyfriend);
+		for (char in 0...PlayState.boyfriend.members.length) {
+			lua_Sprites.set("bfCharacter" + char, PlayState.boyfriend.members[char]);
 		}
 
-		if (PlayState.gf.otherCharacters != null) {
-			lua_Sprites.set('girlfriend', PlayState.gf.otherCharacters[PlayState.gf.mainCharacterID]);
-			lua_Characters.set('girlfriend', PlayState.gf.otherCharacters[PlayState.gf.mainCharacterID]);
-			for (char in 0...PlayState.gf.otherCharacters.length) {
-				lua_Sprites.set("gfCharacter" + char, PlayState.gf.otherCharacters[char]);
-				lua_Characters.set("gfCharacter" + char, PlayState.gf.otherCharacters[char]);
-			}
+		lua_Sprites.set('girlfriend', PlayState.gf);
+		for (char in 0...PlayState.gf.members.length) {
+			lua_Sprites.set("gfCharacter" + char, PlayState.gf.members[char]);
 		}
 
 		if (PlayState.instance != null) {
@@ -3452,8 +3121,8 @@ class ModchartUtilities {
 		lua_Sprites.set("iconP1", PlayState.instance.iconP1);
 		lua_Sprites.set("iconP2", PlayState.instance.iconP2);
 
-		setVar("player1", PlayState.boyfriend.curCharacter);
-		setVar("player2", PlayState.dad.curCharacter);
+		setVar("player1", PlayState.boyfriend.character);
+		setVar("player2", PlayState.dad.character);
 
 		for (script in extra_scripts) {
 			script.setupTheShitCuzPullRequestsSuck();
@@ -3529,18 +3198,16 @@ class ModchartUtilities {
 		return Lua.tostring(lua, callLua(name, args));
 	}
 
-	function cameraFromString(cam:String):FlxCamera
-    {
-        var camera:LuaCamera = getCameraByName(cam);
-        if (camera == null)
-        {
-            switch(cam.toLowerCase())
-            {
-                case 'camhud' | 'hud': return PlayState.instance.camHUD;
-            }
-            return PlayState.instance.camGame;
-        }
-        return camera.cam;
+	function cameraFromString(cam:String):FlxCamera {
+		var camera:LuaCamera = getCameraByName(cam);
+		if (camera == null) {
+			switch (cam.toLowerCase()) {
+				case 'camhud' | 'hud':
+					return PlayState.instance.camHUD;
+			}
+			return PlayState.instance.camGame;
+		}
+		return camera.cam;
 	}
 
 	@:access(openfl.display.BlendMode)

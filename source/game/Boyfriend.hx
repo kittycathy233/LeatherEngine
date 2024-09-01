@@ -17,22 +17,23 @@ class Boyfriend extends Character
 	public function new(x:Float, y:Float, ?char:String = 'bf', ?isDeathCharacter:Bool = false)
 	{
 		super(x, y, char, true, isDeathCharacter);
+		flipX = !flipX;
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (!debugMode && animation.curAnim != null)
+		if (!debug && animation.curAnim != null)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
-				holdTimer += elapsed * (FlxG.state == PlayState.instance ? PlayState.songMultiplier : 1);
+				holdTimer += elapsed * (FlxG.state is PlayState ? PlayState.songMultiplier : 1);
 			else
 				holdTimer = 0;
 
-			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debug)
 				dance();
 
 			if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)
-				playAnim('deathLoop');
+				playAnimation('deathLoop');
 		}
 
 		super.update(elapsed);

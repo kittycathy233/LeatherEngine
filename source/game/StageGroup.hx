@@ -345,7 +345,7 @@ class StageGroup extends FlxGroup {
 		#end
 	}
 
-	public function setCharOffsets(?p1:Character, ?gf:Character, ?p2:Character):Void {
+	public function setCharOffsets(?p1:CharacterGroup, ?gf:CharacterGroup, ?p2:CharacterGroup):Void {
 		if (p1 == null)
 			p1 = PlayState.boyfriend;
 
@@ -355,15 +355,15 @@ class StageGroup extends FlxGroup {
 		if (p2 == null)
 			p2 = PlayState.dad;
  
-		p1.setPosition((player_1_Point.x - (p1.width / 2)) + p1.positioningOffset[0], (player_1_Point.y - p1.height) + p1.positioningOffset[1]);
-		gf.setPosition((gf_Point.x - (gf.width / 2)) + gf.positioningOffset[0], (gf_Point.y - gf.height) + gf.positioningOffset[1]);
-		p2.setPosition((player_2_Point.x - (p2.width / 2)) + p2.positioningOffset[0], (player_2_Point.y - p2.height) + p2.positioningOffset[1]);
+		p1.setPosition((player_1_Point.x - (p1.width / 2)) + p1.getMainCharacter().positioningOffset.x, (player_1_Point.y - p1.height) + p1.getMainCharacter().positioningOffset.y);
+		gf.setPosition((gf_Point.x - (gf.width / 2)) + gf.getMainCharacter().positioningOffset.x, (gf_Point.y - gf.height) + gf.getMainCharacter().positioningOffset.y);
+		p2.setPosition((player_2_Point.x - (p2.width / 2)) + p2.getMainCharacter().positioningOffset.x, (player_2_Point.y - p2.height) + p2.getMainCharacter().positioningOffset.y);
 
 		p1.scrollFactor.set(p1_Scroll, p1_Scroll);
 		p2.scrollFactor.set(p2_Scroll, p2_Scroll);
 		gf.scrollFactor.set(gf_Scroll, gf_Scroll);
 
-		if (p2.curCharacter.startsWith("gf") && gf.curCharacter.startsWith("gf")) {
+		if (p2.character.startsWith("gf") && gf.character.startsWith("gf")) {
 			p2.setPosition(gf.x, gf.y);
 			p2.scrollFactor.set(gf_Scroll, gf_Scroll);
 
@@ -371,56 +371,56 @@ class StageGroup extends FlxGroup {
 				gf.visible = false;
 		}
 
-		if (p1.otherCharacters != null) {
-			for (character in p1.otherCharacters) {
-				character.setPosition((player_1_Point.x - (character.width / 2)) + character.positioningOffset[0],
-					(player_1_Point.y - character.height) + character.positioningOffset[1]);
+		if (p1.members != null) {
+			for (character in p1.members) {
+				character.setPosition((player_1_Point.x - (character.width / 2)) + character.positioningOffset.x,
+					(player_1_Point.y - character.height) + character.positioningOffset.y);
 				character.scrollFactor.set(p1_Scroll, p1_Scroll);
 			}
 		}
 
-		if (gf.otherCharacters != null) {
-			for (character in gf.otherCharacters) {
-				character.setPosition((gf_Point.x - (character.width / 2)) + character.positioningOffset[0],
-					(gf_Point.y - character.height) + character.positioningOffset[1]);
+		if (gf.members != null) {
+			for (character in gf.members) {
+				character.setPosition((gf_Point.x - (character.width / 2)) + character.positioningOffset.x,
+					(gf_Point.y - character.height) + character.positioningOffset.y);
 				character.scrollFactor.set(gf_Scroll, gf_Scroll);
 			}
 		}
 
-		if (p2.otherCharacters != null) {
-			for (character in p2.otherCharacters) {
-				character.setPosition((player_2_Point.x - (character.width / 2)) + character.positioningOffset[0],
-					(player_2_Point.y - character.height) + character.positioningOffset[1]);
+		if (p2.members != null) {
+			for (character in p2.members) {
+				character.setPosition((player_2_Point.x - (character.width / 2)) + character.positioningOffset.x,
+					(player_2_Point.y - character.height) + character.positioningOffset.y);
 				character.scrollFactor.set(p2_Scroll, p2_Scroll);
 			}
 		}
 	}
 
-	public function getCharacterPos(character:Int, char:Character = null):Dynamic {
+	public function getCharacterPos(character:Int, char:CharacterGroup = null):Dynamic {
 		switch (character) {
 			case 0: // bf
 				if (char == null)
 					char = PlayState.boyfriend;
 
 				return [
-					(player_1_Point.x - (char.width / 2)) + char.positioningOffset[0],
-					(player_1_Point.y - char.height) + char.positioningOffset[1]
+					(player_1_Point.x - (char.width / 2)) + char.getMainCharacter().positioningOffset.x,
+					(player_1_Point.y - char.height) + char.getMainCharacter().positioningOffset.y
 				];
 			case 1: // dad
 				if (char == null)
 					char = PlayState.dad;
 
 				return [
-					(player_2_Point.x - (char.width / 2)) + char.positioningOffset[0],
-					(player_2_Point.y - char.height) + char.positioningOffset[1]
+					(player_2_Point.x - (char.width / 2)) + char.getMainCharacter().positioningOffset.x,
+					(player_2_Point.y - char.height) + char.getMainCharacter().positioningOffset.y
 				];
 			case 2: // gf
 				if (char == null)
 					char = PlayState.gf;
 
 				return [
-					(gf_Point.x - (char.width / 2)) + char.positioningOffset[0],
-					(gf_Point.y - char.height) + char.positioningOffset[1]
+					(gf_Point.x - (char.width / 2)) + char.getMainCharacter().positioningOffset.x,
+					(gf_Point.y - char.height) + char.getMainCharacter().positioningOffset.y
 				];
 		}
 

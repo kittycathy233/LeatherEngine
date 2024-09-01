@@ -1,5 +1,6 @@
 package substates;
 
+import game.CharacterGroup;
 import flixel.sound.FlxSound;
 import game.graphics.FlxAtlasSprite;
 import lime.utils.Assets;
@@ -18,7 +19,7 @@ import flixel.util.FlxTimer;
 import states.LoadingState;
 
 class GameOverSubstate extends MusicBeatSubstate {
-	public var bf:Character;
+	public var bf:CharacterGroup;
 	public var camFollow:FlxObject;
 
 	public static var instance:GameOverSubstate = null;
@@ -42,9 +43,9 @@ class GameOverSubstate extends MusicBeatSubstate {
 
 		Conductor.songPosition = 0;
 
-		bf = new Boyfriend(x, y, PlayState.boyfriend.deathCharacter, true);
-		bf.x += bf.positioningOffset[0];
-		bf.y += bf.positioningOffset[1];
+		bf = new CharacterGroup(x, y, PlayState.boyfriend.getMainCharacter().deathCharacter, true, true);
+		bf.x += bf.getMainCharacter().positioningOffset.x;
+		bf.y += bf.getMainCharacter().positioningOffset.y;
 		add(bf);
 
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
@@ -79,13 +80,13 @@ class GameOverSubstate extends MusicBeatSubstate {
 	function bfDies() {
 		var soundPath = Paths.sound("deaths/bf-dead/death");
 		bf.visible = true;
-		if (Assets.exists(Paths.sound("deaths/" + bf.curCharacter + "/death")))
-			soundPath = Paths.sound("deaths/" + bf.curCharacter + "/death");
+		if (Assets.exists(Paths.sound("deaths/" + bf.character + "/death")))
+			soundPath = Paths.sound("deaths/" + bf.character + "/death");
 
 		FlxG.sound.play(soundPath);
 
 		Conductor.changeBPM(100);
-		bf.playAnim('firstDeath', true);
+		bf.playAnimation('firstDeath', true);
 	}
 
 	override function update(elapsed:Float) {
@@ -104,14 +105,14 @@ class GameOverSubstate extends MusicBeatSubstate {
 				FlxG.switchState(() -> new FreeplayState());
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
+		if (bf.getMainCharacter().animation.curAnim.name == 'firstDeath' && bf.getMainCharacter().animation.curAnim.curFrame == 12)
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished) {
+		if (bf.getMainCharacter().animation.curAnim.name == 'firstDeath' && bf.getMainCharacter().animation.curAnim.finished) {
 			var soundPath = Paths.music("deaths/bf-dead/loop");
 
-			if (Assets.exists(Paths.music("deaths/" + bf.curCharacter + "/loop")))
-				soundPath = Paths.music("deaths/" + bf.curCharacter + "/loop");
+			if (Assets.exists(Paths.music("deaths/" + bf.character + "/loop")))
+				soundPath = Paths.music("deaths/" + bf.character + "/loop");
 
 			FlxG.sound.playMusic(soundPath);
 			PlayState.instance.call("onDeathLoop", []);
@@ -130,13 +131,13 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (!isEnding) {
 			PlayState.instance.call("onRetry", []);
 			isEnding = true;
-			bf.playAnim('deathConfirm', true);
+			bf.playAnimation('deathConfirm', true);
 			FlxG.sound.music.stop();
 
 			var soundPath = Paths.music("deaths/bf-dead/retry");
 
-			if (Assets.exists(Paths.music("deaths/" + bf.curCharacter + "/retry")))
-				soundPath = Paths.music("deaths/" + bf.curCharacter + "/retry");
+			if (Assets.exists(Paths.music("deaths/" + bf.character + "/retry")))
+				soundPath = Paths.music("deaths/" + bf.character + "/retry");
 
 			FlxG.sound.play(soundPath);
 			new FlxTimer().start(0.7, function(tmr:FlxTimer) {

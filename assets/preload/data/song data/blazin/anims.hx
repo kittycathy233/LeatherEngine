@@ -72,36 +72,36 @@ function doAlternate():String {
 }
 
 function playCringeAnim() {
-	dad.playAnim('cringe', true, false);
+	dad.playAnimation('cringe', true, false);
 	moveToBack();
 }
 
 function playDodgeAnim() {
-	bf.playAnim('dodge', true, false);
-	dad.playAnim('punchHigh' + doAlternate(), true, false);
+	bf.playAnimation('dodge', true, false);
+	dad.playAnimation('punchHigh' + doAlternate(), true, false);
 	moveToBack();
 }
 
 function playIdleAnim() {
-	bf.playAnim('idle', false, false);
-	dad.playAnim('idle', false, false);
+	bf.playAnimation('idle', false, false);
+	dad.playAnimation('idle', false, false);
 	moveToBack();
 }
 
 function playFakeoutAnim() {
-	bf.playAnim('fakeout', true, false);
-	dad.playAnim('pissed', true, false);
+	bf.playAnimation('fakeout', true, false);
+	dad.playAnimation('pissed', true, false);
 	moveToBack();
 }
 
 function playUppercutPrepAnim() {
-	bf.playAnim('uppercutPrep', true, false);
+	bf.playAnimation('uppercutPrep', true, false);
 	moveToFront();
 }
 
 function playUppercutAnim(hit:Bool) {
-	bf.playAnim('uppercut', true, false);
-	dad.playAnim('uppercutHit', true, false);
+	bf.playAnimation('uppercut', true, false);
+	dad.playAnimation('uppercutHit', true, false);
 	if (hit) {
 		PlayState.instance.camGame.shake(0.005, 0.25);
 	}
@@ -109,41 +109,41 @@ function playUppercutAnim(hit:Bool) {
 }
 
 function playUppercutHitAnim() {
-	bf.playAnim('uppercutHit', true, false);
-	dad.playAnim('hitHigh', true, false);
+	bf.playAnimation('uppercutHit', true, false);
+	dad.playAnimation('hitHigh', true, false);
 	PlayState.instance.camGame.shake(0.005, 0.25);
 	moveToBack();
 }
 
 function playHitHighAnim() {
-	bf.playAnim('hitHigh', true, false);
-	dad.playAnim('punchHigh' + doAlternate(), true, false);
+	bf.playAnimation('hitHigh', true, false);
+	dad.playAnimation('punchHigh' + doAlternate(), true, false);
 	PlayState.instance.camGame.shake(0.0025, 0.15);
 	moveToBack();
 }
 
 function playHitLowAnim() {
-	bf.playAnim('hitLow', true, false);
-	dad.playAnim('punchLow' + doAlternate(), true, false);
+	bf.playAnimation('hitLow', true, false);
+	dad.playAnimation('punchLow' + doAlternate(), true, false);
 	PlayState.instance.camGame.shake(0.0025, 0.15);
 	moveToBack();
 }
 
 function playHitSpinAnim() {
-	bf.playAnim('hitSpin', true, false, true);
+	bf.playAnimation('hitSpin', true, false, true);
 	PlayState.instance.camGame.shake(0.0025, 0.15);
 	moveToBack();
 }
 
 function playPunchHighAnim() {
-	bf.playAnim('punchHigh' + doAlternate(), true, false);
-	dad.playAnim(FlxG.random.int(0,1) == 1 ? 'block' : 'hitHigh', true, false);
+	bf.playAnimation('punchHigh' + doAlternate(), true, false);
+	dad.playAnimation(FlxG.random.int(0,1) == 1 ? 'block' : 'hitHigh', true, false);
 	moveToFront();
 }
 
 function playPunchLowAnim() {
-	bf.playAnim('punchLow' + doAlternate(), true, false);
-	dad.playAnim(FlxG.random.int(0,1) == 1 ? 'block' : 'hitHigh', true, false);
+	bf.playAnimation('punchLow' + doAlternate(), true, false);
+	dad.playAnimation(FlxG.random.int(0,1) == 1 ? 'block' : 'hitHigh', true, false);
 	moveToFront();
 }
 
@@ -156,14 +156,14 @@ function playTauntConditionalAnim() {
 }
 
 function playTauntAnim() {
-	bf.playAnim('taunt', true, false);
-	dad.playAnim('pissed', true, false);
+	bf.playAnimation('taunt', true, false);
+	dad.playAnimation('pissed', true, false);
 	moveToBack();
 }
 
 function playBlockAnim() {
-	bf.playAnim('block', true, false);
-	dad.playAnim('punchHigh' + doAlternate(), true, false);
+	bf.playAnimation('block', true, false);
+	dad.playAnimation('punchHigh' + doAlternate(), true, false);
 	PlayState.instance.camGame.shake(0.002, 0.1);
 	moveToBack();
 }

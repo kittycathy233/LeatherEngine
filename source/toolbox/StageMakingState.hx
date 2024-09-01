@@ -11,7 +11,7 @@ import flixel.FlxObject;
 import game.Conductor;
 import flixel.math.FlxMath;
 import states.OptionsMenu;
-import game.Character;
+import game.CharacterGroup;
 import ui.FlxScrollableDropDownMenu;
 import states.MusicBeatState;
 import game.StageGroup;
@@ -43,9 +43,9 @@ class StageMakingState extends MusicBeatState {
 	private var gfChar:String = "gf";
 	private var dadChar:String = "dad";
 
-	public var bf:Character;
-	public var gf:Character;
-	public var dad:Character;
+	public var bf:CharacterGroup;
+	public var gf:CharacterGroup;
+	public var dad:CharacterGroup;
 
 	public var bf_Pos:FlxSprite;
 	public var gf_Pos:FlxSprite;
@@ -123,12 +123,12 @@ class StageMakingState extends MusicBeatState {
 
 		FlxG.camera = stageCam;
 
-		bf = new Character(0, 0, bfChar, true);
+		bf = new CharacterGroup(0, 0, bfChar, true);
 
-		gf = new Character(0, 0, gfChar);
+		gf = new CharacterGroup(0, 0, gfChar);
 		gf.scrollFactor.set(0.95, 0.95);
 
-		dad = new Character(0, 0, dadChar);
+		dad = new CharacterGroup(0, 0, dadChar);
 
 		UI_box = new FlxUITabMenu(null, [], false);
 
@@ -244,17 +244,17 @@ class StageMakingState extends MusicBeatState {
 					bf.kill();
 					bf.destroy();
 
-					bf = new Character(0, 0, daChar, true);
+					bf = new CharacterGroup(0, 0, daChar, true);
 
-					if (bf.otherCharacters == null) {
-						if (bf.coolTrail != null)
-							add(bf.coolTrail);
+					if (bf.members == null) {
+						if (bf.getMainCharacter().trail != null)
+							add(bf.getMainCharacter().trail);
 
 						add(bf);
 					} else {
-						for (character in bf.otherCharacters) {
-							if (character.coolTrail != null)
-								add(character.coolTrail);
+						for (character in bf.members) {
+							if (character.trail != null)
+								add(character.trail);
 
 							add(character);
 						}
@@ -266,17 +266,17 @@ class StageMakingState extends MusicBeatState {
 					gf.kill();
 					gf.destroy();
 
-					gf = new Character(0, 0, daChar, false);
+					gf = new CharacterGroup(0, 0, daChar, false);
 
-					if (gf.otherCharacters == null) {
-						if (gf.coolTrail != null)
-							add(gf.coolTrail);
+					if (gf.members == null) {
+						if (gf.getMainCharacter().trail != null)
+							add(gf.getMainCharacter().trail);
 
 						add(gf);
 					} else {
-						for (character in gf.otherCharacters) {
-							if (character.coolTrail != null)
-								add(character.coolTrail);
+						for (character in gf.members) {
+							if (character.trail != null)
+								add(character.trail);
 
 							add(character);
 						}
@@ -288,17 +288,17 @@ class StageMakingState extends MusicBeatState {
 					dad.kill();
 					dad.destroy();
 
-					dad = new Character(0, 0, daChar, false);
+					dad = new CharacterGroup(0, 0, daChar, false);
 
-					if (dad.otherCharacters == null) {
-						if (dad.coolTrail != null)
-							add(dad.coolTrail);
+					if (dad.members == null) {
+						if (dad.getMainCharacter().trail != null)
+							add(dad.getMainCharacter().trail);
 
 						add(dad);
 					} else {
-						for (character in dad.otherCharacters) {
-							if (character.coolTrail != null)
-								add(character.coolTrail);
+						for (character in dad.members) {
+							if (character.trail != null)
+								add(character.trail);
 
 							add(character);
 						}
@@ -733,19 +733,19 @@ class StageMakingState extends MusicBeatState {
 
 		stage.setCharOffsets(bf, gf, dad);
 
-		if (gf.otherCharacters == null) {
-			if (gf.coolTrail != null){
-				remove(gf.coolTrail);
-				add(gf.coolTrail);
+		if (gf.members == null) {
+			if (gf.getMainCharacter().trail != null){
+				remove(gf.getMainCharacter().trail);
+				add(gf.getMainCharacter().trail);
 			}
 
 			remove(gf);
 			add(gf);
 		} else {
-			for (character in gf.otherCharacters) {
-				if (character.coolTrail != null){
-					remove(character.coolTrail);
-					add(character.coolTrail);
+			for (character in gf.members) {
+				if (character.trail != null){
+					remove(character.trail);
+					add(character.trail);
 				}
 
 				remove(character);
@@ -756,19 +756,19 @@ class StageMakingState extends MusicBeatState {
 		remove(stage.infrontOfGFSprites);
 		add(stage.infrontOfGFSprites);
 
-		if (dad.otherCharacters == null) {
-			if (dad.coolTrail != null){
-				remove(dad.coolTrail);
-				add(dad.coolTrail);
+		if (dad.members == null) {
+			if (dad.getMainCharacter().trail != null){
+				remove(dad.getMainCharacter().trail);
+				add(dad.getMainCharacter().trail);
 			}
 
 			remove(dad);
 			add(dad);
 		} else {
-			for (character in dad.otherCharacters) {
-				if (character.coolTrail != null){
-					remove(character.coolTrail);
-					add(character.coolTrail);
+			for (character in dad.members) {
+				if (character.trail != null){
+					remove(character.trail);
+					add(character.trail);
 				}
 
 				remove(character);
@@ -776,20 +776,20 @@ class StageMakingState extends MusicBeatState {
 			}
 		}
 
-		if (bf.otherCharacters == null) {
-			if (bf.coolTrail != null){
-				remove(bf.coolTrail);
-				add(bf.coolTrail);
+		if (bf.members == null) {
+			if (bf.getMainCharacter().trail != null){
+				remove(bf.getMainCharacter().trail);
+				add(bf.getMainCharacter().trail);
 
 			}
 
 			remove(bf);
 			add(bf);
 		} else {
-			for (character in bf.otherCharacters) {
-				if (character.coolTrail != null){
-					remove(character.coolTrail);
-					add(character.coolTrail);
+			for (character in bf.members) {
+				if (character.trail != null){
+					remove(character.trail);
+					add(character.trail);
 				}
 
 				remove(character);
@@ -852,26 +852,26 @@ class StageMakingState extends MusicBeatState {
 
 		stage.beatHit();
 
-		if (bf.otherCharacters == null)
+		if (bf.members == null)
 			bf.dance();
 		else {
-			for (character in bf.otherCharacters) {
+			for (character in bf.members) {
 				character.dance();
 			}
 		}
 
-		if (dad.otherCharacters == null)
+		if (dad.members == null)
 			dad.dance();
 		else {
-			for (character in dad.otherCharacters) {
+			for (character in dad.members) {
 				character.dance();
 			}
 		}
 
-		if (gf.otherCharacters == null)
+		if (gf.members == null)
 			gf.dance();
 		else {
-			for (character in gf.otherCharacters) {
+			for (character in gf.members) {
 				character.dance();
 			}
 		}
