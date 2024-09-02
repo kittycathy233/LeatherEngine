@@ -10,6 +10,7 @@
 -L hxvlc
 -L funkin.vis
 -L grig.audio
+-L discord_rpc 
 -L linc_luajit
 -L fnf-modcharting-tools
 -L jsonpath
