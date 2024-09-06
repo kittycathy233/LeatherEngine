@@ -64,7 +64,7 @@ class ChartingState extends MusicBeatState {
 	var dummyArrow:FlxSprite;
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
-	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
+	var curRenderedSustains:FlxTypedGroup<Note>;
 	var curRenderedIds:FlxTypedGroup<FlxSprite>;
 	var curRenderedEvents:FlxTypedGroup<EventSprite>;
 
@@ -225,7 +225,7 @@ class ChartingState extends MusicBeatState {
 		add(gridEventBlackLine);
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
-		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+		curRenderedSustains = new FlxTypedGroup<Note>();
 		curRenderedEvents = new FlxTypedGroup<EventSprite>();
 		curRenderedIds = new FlxTypedGroup<FlxSprite>();
 
@@ -234,11 +234,8 @@ class ChartingState extends MusicBeatState {
 		else
 			_song = SongLoader.loadFromJson("normal", "tutorial");
 
-		@:privateAccess
-		{
-			for (event in PlayState.instance.baseEvents) {
-				events.push(event);
-			}
+		for (event in PlayState.instance.baseEvents) {
+			events.push(event);
 		}
 
 		_song.events = [];
@@ -284,9 +281,7 @@ class ChartingState extends MusicBeatState {
 			{name: "Events", label: "Events"}
 		];
 
-		var rawEventList = CoolUtil.coolTextFile(Paths.txt("eventList"));
-
-		for (event in rawEventList) {
+		for (event in CoolUtil.coolTextFile(Paths.txt("eventList"))) {
 			var eventData = event.split("~");
 
 			eventListData.push(eventData);
@@ -312,15 +307,22 @@ class ChartingState extends MusicBeatState {
 		updateHeads();
 		updateGrid();
 
-		new FlxTimer().start(Options.getData("backupDuration") * 60, backupChart, 0);
-		new FlxTimer().start(Options.getData("backupDuration") * 60, backupEvents, 0);
+		new FlxTimer().start(Options.getData("backupDuration") * 60, _backup, 0);
+
+		FlxG.sound.cache(Paths.sound('CLAP'));
+		FlxG.sound.cache(Paths.sound('snap'));
 
 		super.create();
 
 		loadedAutosave = false;
 	}
 
-	private function backupChart(_):Void {
+	private function _backup(_) {
+		backupChart();
+		backupEvents();
+	}
+
+	private function backupChart():Void {
 		trace("trying to make a backup of the chart...");
 		var json:Dynamic;
 		var date:String = Date.now().toString();
@@ -349,7 +351,7 @@ class ChartingState extends MusicBeatState {
 		}
 	}
 
-	private function backupEvents(_):Void {
+	private function backupEvents():Void {
 		trace("trying to make a backup of the events...");
 		var json:Dynamic;
 		var date:String = Date.now().toString();
@@ -531,16 +533,6 @@ class ChartingState extends MusicBeatState {
 			updateGrid();
 		});
 
-		var compatibilityLabel = new FlxText(10, 540, 0, "Compatibility", 9);
-
-		var finalDestinationButton:FlxButton = new FlxButton(10, 560, "Final Dest", function() {
-			for (i in 0..._song.notes.length) {
-				convertSectionToShaggy(i);
-			}
-
-			updateGrid();
-		});
-
 		// labels
 
 		var songNameLabel = new FlxText(UI_songTitle.x + UI_songTitle.width + 1, UI_songTitle.y, 0, "Song Name", 9);
@@ -597,7 +589,6 @@ class ChartingState extends MusicBeatState {
 		#if FLX_PITCH
 		tab_group_song.add(slider_playback_speed);
 		#end
-		tab_group_song.add(compatibilityLabel);
 
 		// tab_group_song.add(lilBuddiesBox);
 
@@ -1079,6 +1070,10 @@ class ChartingState extends MusicBeatState {
 			FlxG.sound.music.time = 0;
 			changeSection();
 		};
+
+		for (i in 0..._song.notes.length) {
+			convertSectionToShaggy(i);
+		}
 	}
 
 	#if FLX_PITCH
@@ -1887,7 +1882,7 @@ class ChartingState extends MusicBeatState {
 				NoteVariables.Other_Note_Anim_Stuff[_song.keyCount - 1][note.noteData] + "0", 12);
 			note.sustainLength = daSus;
 
-			note.setGraphicSize((Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4]) != null ? Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4]) : 0),
+			note.setGraphicSize((Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4]) ?? Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[4])),
 				Std.parseInt(PlayState.instance.arrow_Configs.get(daType)[2]));
 			note.updateHitbox();
 
@@ -1918,33 +1913,38 @@ class ChartingState extends MusicBeatState {
 				curRenderedIds.add(id);
 			}
 
-			if (daSus > 0) {
-				var sustainVis:FlxSprite = new FlxSprite(note.x
-					+ (GRID_SIZE / 2)
-					- Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[1]),
-					note.y
-					+ GRID_SIZE
-					- Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[3])).makeGraphic(8,
-						Math.floor(FlxMath.remapToRange(daSus, 0, Conductor.stepCrochet * Conductor.stepsPerSection, 0, gridBG.height)));
-				sustainVis.color = note.affectedbycolor ? FlxColor.fromRGB(Std.int(note.colorSwap.r), Std.int(note.colorSwap.g),
-					Std.int(note.colorSwap.b)) : CoolUtil.dominantColorFrame(note);
-				curRenderedSustains.add(sustainVis);
+			var sustainGroup:Array<Note> = [];
+			for (susNote in 0...Math.floor(note.sustainLength / Std.int(Conductor.stepCrochet))) {
+				var oldNote = curRenderedNotes.members[curRenderedNotes.members.length - 1];
+				var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, goodNoteInfo, oldNote, true, 0,
+					daType, _song, [0], mustPress, true);
+				sustainNote.setGraphicSize(sustainNote.width / 3, 40);
+				sustainNote.updateHitbox();
+				sustainNote.x = note.x + (GRID_SIZE / 2) - Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[1]) - sustainNote.width / 2;
+				sustainNote.y = note.height
+					+ Math.floor(getYfromStrum((oldNote.strumTime - sectionStartTime())) + Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[3]));
+				curRenderedNotes.add(sustainNote);
+
+				sustainGroup.push(sustainNote);
+				sustainNote.sustains = sustainGroup;
 			}
-		}
+			note.sustains = sustainGroup;
 
-		if (events.length >= 1) {
-			for (event in events) {
-				if (Std.int(event[1]) >= Std.int(sectionStartTime()) && Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
-					var eventSprite:EventSprite = new EventSprite(event[1]);
+			if (events.length >= 1) {
+				for (event in events) {
+					if (Std.int(event[1]) >= Std.int(sectionStartTime())
+						&& Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
+						var eventSprite:EventSprite = new EventSprite(event[1]);
 
-					eventSprite.loadGraphic(Paths.image("charter/eventSprite", "shared"));
+						eventSprite.loadGraphic(Paths.image("charter/eventSprite", "shared"));
 
-					eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
-					eventSprite.updateHitbox();
+						eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
+						eventSprite.updateHitbox();
 
-					eventSprite.y = Math.floor(getYfromStrum((event[1] - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection)));
+						eventSprite.y = Math.floor(getYfromStrum((event[1] - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection)));
 
-					curRenderedEvents.add(eventSprite);
+						curRenderedEvents.add(eventSprite);
+					}
 				}
 			}
 		}
