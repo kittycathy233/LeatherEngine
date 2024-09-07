@@ -64,7 +64,6 @@ class ChartingState extends MusicBeatState {
 	var dummyArrow:FlxSprite;
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
-	var curRenderedSustains:FlxTypedGroup<Note>;
 	var curRenderedIds:FlxTypedGroup<FlxSprite>;
 	var curRenderedEvents:FlxTypedGroup<EventSprite>;
 
@@ -225,7 +224,6 @@ class ChartingState extends MusicBeatState {
 		add(gridEventBlackLine);
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
-		curRenderedSustains = new FlxTypedGroup<Note>();
 		curRenderedEvents = new FlxTypedGroup<EventSprite>();
 		curRenderedIds = new FlxTypedGroup<FlxSprite>();
 
@@ -270,7 +268,6 @@ class ChartingState extends MusicBeatState {
 		add(dummyArrow);
 
 		add(curRenderedNotes);
-		add(curRenderedSustains);
 		add(curRenderedIds);
 		add(curRenderedEvents);
 
@@ -932,11 +929,7 @@ class ChartingState extends MusicBeatState {
 				while (curRenderedNotes.members.length > 0) {
 					curRenderedNotes.remove(curRenderedNotes.members[0], true);
 				}
-
-				while (curRenderedSustains.members.length > 0) {
-					curRenderedSustains.remove(curRenderedSustains.members[0], true);
-				}
-
+				
 				while (curRenderedEvents.members.length > 0) {
 					curRenderedEvents.remove(curRenderedEvents.members[0], true);
 				}
@@ -1816,13 +1809,6 @@ class ChartingState extends MusicBeatState {
 			sprite.destroy();
 		}, true);
 
-		curRenderedSustains.clear();
-
-		curRenderedSustains.forEach(function(sprite:FlxSprite) {
-			sprite.kill();
-			sprite.destroy();
-		}, true);
-
 		curRenderedEvents.clear();
 
 		curRenderedEvents.forEach(function(sprite:EventSprite) {
@@ -1918,7 +1904,7 @@ class ChartingState extends MusicBeatState {
 				var oldNote = curRenderedNotes.members[curRenderedNotes.members.length - 1];
 				var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, goodNoteInfo, oldNote, true, 0,
 					daType, _song, [0], mustPress, true);
-				sustainNote.setGraphicSize(sustainNote.width / 3, 40);
+				sustainNote.scale.set(note.scale.x, note.scale.y);
 				sustainNote.updateHitbox();
 				sustainNote.x = note.x + (GRID_SIZE / 2) - Std.parseFloat(PlayState.instance.arrow_Configs.get(daType)[1]) - sustainNote.width / 2;
 				sustainNote.y = note.height
