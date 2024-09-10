@@ -216,7 +216,10 @@ class FreeplayState extends MusicBeatState {
 		if (!Options.getData("loadAsynchronously") || !Options.getData("healthIcons")) {
 		#end
 			for (i in 0...songs.length) {
-				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+				var scaleShit = (9 / songs[i].songName.length);
+				if (songs[i].songName.length <= 9)
+					scaleShit = 1;
+				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, scaleShit);
 				songText.isMenuItem = true;
 				songText.targetY = i;
 				grpSongs.add(songText);
@@ -235,7 +238,10 @@ class FreeplayState extends MusicBeatState {
 				var i:Int = 0;
 
 				while (!stop_loading_songs && i < songs.length) {
-					var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
+					var scaleShit = (9 / songs[i].songName.length);
+					if (songs[i].songName.length <= 9)
+						scaleShit = 1;
+					var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false, scaleShit);
 					songText.isMenuItem = true;
 					songText.targetY = i;
 					grpSongs.add(songText);
