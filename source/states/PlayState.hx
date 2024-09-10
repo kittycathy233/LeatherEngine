@@ -1386,11 +1386,7 @@ class PlayState extends MusicBeatState {
 			}
 			boyfriend.dance();
 
-			var introAssets:Array<String> = [
-				"ui skins/" + SONG.ui_Skin + "/countdown/ready",
-				"ui skins/" + SONG.ui_Skin + "/countdown/set",
-				"ui skins/" + SONG.ui_Skin + "/countdown/go"
-			];
+			var introPath:String = 'ui skins/${SONG.ui_Skin}/countdown/';
 
 			var altSuffix:String = SONG.ui_Skin == 'pixel' ? "-pixel" : "";
 
@@ -1398,7 +1394,7 @@ class PlayState extends MusicBeatState {
 				case 0:
 					FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[0]));
+					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/ready'));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 
@@ -1415,7 +1411,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[1]));
+					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/set'));
 					set.scrollFactor.set();
 					set.updateHitbox();
 
@@ -1432,7 +1428,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAssets[2]));
+					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/go'));
 					go.scrollFactor.set();
 					go.updateHitbox();
 
@@ -1699,7 +1695,11 @@ class PlayState extends MusicBeatState {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
-	var noteBG:FlxSprite;
+	/**
+	 * The note underlay colored black. 
+	 * Turned off by default.
+	 */
+	public var noteBG:FlxSprite;
 
 	public function generateStaticArrows(pos:Float, ?isPlayer:Bool = false, ?showReminders:Bool = true):Void {
 		call("generateStaticArrows", [pos, isPlayer, showReminders]);
@@ -4383,6 +4383,11 @@ class PlayState extends MusicBeatState {
 		return name;
 	}
 
+	/**
+	 * Adds `behind` behind `obj`
+	 * @param behind The object to add behind
+	 * @param obj The object that will be in front
+	 */
 	public function addBehind(behind:FlxBasic, obj:FlxBasic) {
 		insert(members.indexOf(obj), behind);
 	}
