@@ -379,11 +379,11 @@ class ResultsSubstate extends MusicBeatSubstate {
 			}
 		});
 
-		new FlxTimer().start(rank.getBFDelay(), _ -> {
+		new FlxTimer().start(rank.getBFDelay() ?? 1, _ -> {
 			afterRankTallySequence();
 		});
 
-		new FlxTimer().start(rank.getFlashDelay(), _ -> {
+		new FlxTimer().start(rank.getFlashDelay() ?? 1, _ -> {
 			displayRankText();
 		});
 
