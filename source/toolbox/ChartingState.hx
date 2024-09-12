@@ -175,8 +175,8 @@ class ChartingState extends MusicBeatState {
 		// loadOffsetFile("lilOpp");
 
 		// preload hitsounds
-		FlxG.sound.load(Paths.sound('CLAP'));
-		FlxG.sound.load(Paths.sound('SNAP'));
+		FlxG.sound.cache(Paths.sound('CLAP'));
+		FlxG.sound.cache(Paths.sound('SNAP'));
 
 		var characterList = CoolUtil.coolTextFile(Paths.txt('characterList'));
 
@@ -306,8 +306,6 @@ class ChartingState extends MusicBeatState {
 
 		new FlxTimer().start(Options.getData("backupDuration") * 60, _backup, 0);
 
-		FlxG.sound.cache(Paths.sound('CLAP'));
-		FlxG.sound.cache(Paths.sound('snap'));
 
 		super.create();
 
@@ -1302,6 +1300,9 @@ class ChartingState extends MusicBeatState {
 			curRenderedNotes.forEach(function(note:Note) {
 				if (FlxG.sound.music.playing) {
 					FlxG.overlap(strumLine, note, function(_, _) {
+						if(note.isSustainNote)
+							return;
+						
 						if (!claps.contains(note)) {
 							claps.push(note);
 
