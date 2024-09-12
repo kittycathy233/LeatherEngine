@@ -1385,7 +1385,7 @@ class PlayState extends MusicBeatState {
 			}
 			boyfriend.dance();
 
-			var introPath:String = 'ui skins/${SONG.ui_Skin}/countdown/';
+			var introPath:String = 'ui skins/${SONG.ui_Skin}/countdown';
 
 			var altSuffix:String = SONG.ui_Skin == 'pixel' ? "-pixel" : "";
 
