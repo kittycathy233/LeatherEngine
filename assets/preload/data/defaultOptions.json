@@ -169,10 +169,6 @@
       "value": false
     },
     {
-      "option": "oldTitle",
-      "value": false
-    },
-    {
       "option": "watermarks",
       "value": true
     },

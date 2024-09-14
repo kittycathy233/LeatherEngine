@@ -2294,7 +2294,8 @@ class PlayState extends MusicBeatState {
 						}
 					}
 
-					if (SONG.needsVoices && vocals != null && SONG != null)
+					@:privateAccess
+					if (vocals != null && vocals._transform != null && SONG != null && SONG.needsVoices)
 						vocals.volume = 1;
 
 					note.active = false;
@@ -2794,7 +2795,8 @@ class PlayState extends MusicBeatState {
 		if (setNoteDiff != null)
 			noteDiff = setNoteDiff;
 
-		vocals.volume = 1;
+		if(vocals != null)
+			vocals.volume = 1;
 
 		var daRating:String = Ratings.getRating(Math.abs(noteDiff));
 		var score:Int = Ratings.getScore(daRating);
