@@ -76,7 +76,7 @@
 
 	<assets path="version.txt" />
 	<!--https://github.com/FunkinCrew/Funkin/pull/3318-->
-	<assets path="alsoft.ini" /> <!--this is important i think-->
+	<assets path="alsoft.ini" if="lime_openal"/> <!--this is important i think-->
 
 	<assets path="crash/bin/Crash-windows.exe" if="windows" rename="Crash.exe" />
 	<assets path="crash/bin/Crash-linux.x86_64" if="linux" rename="Crash.x86_64" />
