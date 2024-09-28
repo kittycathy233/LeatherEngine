@@ -1109,8 +1109,7 @@ class PlayState extends MusicBeatState {
 		if (Options.getData('colorQuantization')) {
 			var col:Array<Int> = [142, 142, 142];
 			for (note in unspawnNotes) {
-				if (note.affectedbycolor) {
-					if (!note.isSustainNote) {
+					if (!note.isSustainNote && note.affectedbycolor) {
 						var quantStrumTime:Float = note.strumTime;
 						var currentStepCrochet:Float = Conductor.stepCrochet;
 						var noteBeat:Int = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48) + 0.5);
@@ -1129,7 +1128,6 @@ class PlayState extends MusicBeatState {
 							sustain.colorSwap.g = note.colorSwap.g;
 							sustain.colorSwap.b = note.colorSwap.b;
 						}
-					}
 				}
 			}
 		}
