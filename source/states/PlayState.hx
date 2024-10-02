@@ -2435,7 +2435,7 @@ class PlayState extends MusicBeatState {
 
 			call('onPause', []);
 			openSubState(new PauseSubState());
-
+			call('onPausePost', []);
 			#if DISCORD_ALLOWED
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyStr + ")", iconRPC);
 			#end
