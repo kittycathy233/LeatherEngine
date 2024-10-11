@@ -95,7 +95,7 @@ class ModsMenu extends MusicBeatState {
 		add(text);
 	}
 
-	function loadMods() {
+	public function loadMods() {
 		page.forEachExists(function(option:ModOption) {
 			page.remove(option);
 			option.kill();
