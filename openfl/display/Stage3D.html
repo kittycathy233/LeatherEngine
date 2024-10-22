@@ -47,7 +47,7 @@ subclasses. For more information on broadcast events, see the
 DisplayObject class.</p><p class="javadoc">Events:</p><table class="table table-bordered params"><tr class="indent"><th style="width:25%;"><code>fullScreen</code></th><td><p>Dispatched when the Stage object enters, or
 leaves, full-screen mode. A change in
 full-screen mode can be initiated through
-ActionScript, or the user invoking a
+Haxe code, or the user invoking a
 keyboard shortcut, or if the current focus
 leaves the full-screen window.</p></td></tr><tr class="indent"><th style="width:25%;"><code>mouseLeave</code></th><td><p>Dispatched by the Stage object when the
 pointer moves out of the stage area. If the
@@ -241,7 +241,7 @@ subjecting them to garbage collection. If you set
 for a listener that is a nested inner function,
 the function will be garbage-collected and no
 longer persistent. If you create references to the
-inner function(save it in another variable) then
+inner function (save it in another variable) then
 it is not garbage-collected and stays
 persistent.</p>
 <p>Weak references are supported on some OpenFL

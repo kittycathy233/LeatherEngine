@@ -8,7 +8,7 @@ appearance like viewing an image through semi-opaque glass. When the
 &lt;code&gt;quality&lt;/code&gt; property of this filter is set to low, the result is a
 softly unfocused look. When the &lt;code&gt;quality&lt;/code&gt; property is set to
 high, it approximates a Gaussian blur filter. You can apply the filter to
-any display object(that is, objects that inherit from the DisplayObject
+any display object (that is, objects that inherit from the DisplayObject
 class), such as MovieClip, SimpleButton, TextField, and Video objects, as
 well as to BitmapData objects."/></head><body><script>/* Here to prevent flash of unstyled content */let systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;if ((!localStorage.theme && systemDarkMode) || localStorage.theme == "dark") {document.body.style.backgroundColor = "#111";document.body.style.opacity = "0";document.addEventListener("DOMContentLoaded", function(event) {toggleTheme();document.body.style.backgroundColor = "";document.body.style.opacity = "";});}</script><style>
 .navbar .brand {
@@ -23,7 +23,7 @@ appearance like viewing an image through semi-opaque glass. When the
 <code>quality</code> property of this filter is set to low, the result is a
 softly unfocused look. When the <code>quality</code> property is set to
 high, it approximates a Gaussian blur filter. You can apply the filter to
-any display object(that is, objects that inherit from the DisplayObject
+any display object (that is, objects that inherit from the DisplayObject
 class), such as MovieClip, SimpleButton, TextField, and Video objects, as
 well as to BitmapData objects.</p>
 <p>To create a new filter, use the constructor <code>new
@@ -70,9 +70,9 @@ applications, these three values are sufficient. Although
 you can use additional numeric values up to 15 to achieve
 different effects, be aware that higher values are rendered
 more slowly.</p></td></tr></table></div></div></div><h3 class="section">Variables</h3><div class="fields"><div class="field "><a name="blurX"></a><h3 class="anchor"><code><a href="#blurX"><span class="identifier">blurX</span></a>:<a class="type" title="Float - The standard Float type, this is a double-precision IEEE 64bit float." href="../../Float.html">Float</a></code></h3><div class="doc"><p>The amount of horizontal blur. Valid values are from 0 to 255(floating
-point). The default value is 4. Values that are a power of 2(such as 2,
+point). The default value is 4. Values that are a power of 2 (such as 2,
 4, 8, 16 and 32) are optimized to render more quickly than other values.</p></div></div><div class="field "><a name="blurY"></a><h3 class="anchor"><code><a href="#blurY"><span class="identifier">blurY</span></a>:<a class="type" title="Float - The standard Float type, this is a double-precision IEEE 64bit float." href="../../Float.html">Float</a></code></h3><div class="doc"><p>The amount of vertical blur. Valid values are from 0 to 255(floating
-point). The default value is 4. Values that are a power of 2(such as 2,
+point). The default value is 4. Values that are a power of 2 (such as 2,
 4, 8, 16 and 32) are optimized to render more quickly than other values.</p></div></div><div class="field "><a name="quality"></a><h3 class="anchor"><code><a href="#quality"><span class="identifier">quality</span></a>:<a class="type" title="Int - The standard Int type." href="../../Int.html">Int</a></code></h3><div class="doc"><p>The number of times to perform the blur. The default value is
 <code>BitmapFilterQuality.LOW</code>, which is equivalent to applying the
 filter once. The value <code>BitmapFilterQuality.MEDIUM</code> applies the

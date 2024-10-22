@@ -16,7 +16,7 @@ with shared objects and the use of the Clipboard.</p>
 openfl.system package: the Capabilities class, the IME class, and the
 Security class.</p>
 <p>This class contains only static methods and properties. You cannot
-create new instances of the System class.</p></div><h3 class="section">Static variables</h3><div class="fields"><div class="field "><a name="totalMemory"></a><h3 class="anchor"><code><span class="label label-static">static</span><span class="label">read only</span><a href="#totalMemory"><span class="identifier">totalMemory</span></a>:<a class="type" title="Int - The standard Int type." href="../../Int.html">Int</a></code></h3><div class="doc"><p>The amount of memory(in bytes) currently in use that has been directly
+create new instances of the System class.</p></div><h3 class="section">Static variables</h3><div class="fields"><div class="field "><a name="totalMemory"></a><h3 class="anchor"><code><span class="label label-static">static</span><span class="label">read only</span><a href="#totalMemory"><span class="identifier">totalMemory</span></a>:<a class="type" title="Int - The standard Int type." href="../../Int.html">Int</a></code></h3><div class="doc"><p>The amount of memory (in bytes) currently in use that has been directly
 allocated by Flash Player or AIR.</p>
 <p>This property does not return <em>all</em> memory used by an OpenFL
 application or by the application (such as a browser) containing Flash
@@ -26,7 +26,15 @@ used by an application.</p>
 <p>If the amount of memory allocated is greater than the maximum value for
 a uint object(<code>uint.MAX_VALUE</code>, or 4,294,967,295), then this
 property is set to 0. The <code><a href="../../openfl/system/System.html#totalMemoryNumber">System.totalMemoryNumber</a></code> property
-allows larger values.</p></div></div><div class="field "><a name="useCodePage"></a><h3 class="anchor"><code><span class="label label-meta label-meta-value" title="Used to store default values for fields and function arguments.">@:value(false)</span><span class="label label-static">static</span><a href="#useCodePage"><span class="identifier">useCodePage</span></a>:<a class="type" title="Bool - The standard Boolean type, which can either be true or false." href="../../Bool.html">Bool</a><span> = false</span></code></h3><div class="doc"><p>A Boolean value that determines which code page to use to interpret
+allows larger values.</p></div></div><div class="field "><a name="totalMemoryNumber"></a><h3 class="anchor"><code><span class="label label-static">static</span><span class="label">read only</span><a href="#totalMemoryNumber"><span class="identifier">totalMemoryNumber</span></a>:<a class="type" title="Float - The standard Float type, this is a double-precision IEEE 64bit float." href="../../Float.html">Float</a></code></h3><div class="doc"><p>The amount of memory (in bytes) currently in use that has been directly
+allocated by Flash Player or AIR.</p>
+<p>This property is expressed as a Float, which allows higher values than the
+<code><a href="../../openfl/system/System.html#totalMemory">System.totalMemory</a></code> property, which is of type Int.</p>
+<p>This property does not return <em>all</em> memory used by an OpenFL
+application or by the application (such as a browser) containing Flash
+Player content. The browser or operating system may consume other memory.
+The <code><a href="../../openfl/system/System.html#privateMemory">System.privateMemory</a></code> property reflects <em>all</em> memory
+used by an application.</p></div></div><div class="field "><a name="useCodePage"></a><h3 class="anchor"><code><span class="label label-meta label-meta-value" title="Used to store default values for fields and function arguments.">@:value(false)</span><span class="label label-static">static</span><a href="#useCodePage"><span class="identifier">useCodePage</span></a>:<a class="type" title="Bool - The standard Boolean type, which can either be true or false." href="../../Bool.html">Bool</a><span> = false</span></code></h3><div class="doc"><p>A Boolean value that determines which code page to use to interpret
 external text files. When the property is set to <code><a href="../../Bool.html">false</a></code>,
 external text files are interpretted as Unicode. (These files must be
 encoded as Unicode when you save them.) When the property is set to
@@ -40,7 +48,7 @@ Unicode. To encode external files as Unicode, save the files in an
 application that supports Unicode, such as Notepad on Windows.</p>
 <p>If you load external text files that are not Unicode-encoded, set
 <code>useCodePage</code> to <code><a href="../../Bool.html">true</a></code>. Add the following as the
-first line of code of the file that is loading the data(for Flash
+first line of code of the file that is loading the data (for Flash
 Professional, add it to the first frame):
 <code><a href="../../openfl/system/System.html#useCodePage">System.useCodePage</a> = <a href="../../Bool.html">true</a>;</code></p>
 <p>When this code is present, the application interprets external text
@@ -61,7 +69,7 @@ Chinese characters.</p>
 <p>To ensure that users on all platforms can view external text files used
 in your application, you should encode all external text files as Unicode
 and leave <code>useCodePage</code> set to <code><a href="../../Bool.html">false</a></code>. This way,
-the application(Flash Player 6 and later, or AIR) interprets the text as
+the application (Flash Player 6 and later, or AIR) interprets the text as
 Unicode.</p></div></div></div><h3 class="section">Static methods</h3><div class="fields"><div class="field "><a name="exit"></a><h3 class="anchor"><code><span class="label label-static">static</span><a href="#exit"><span class="identifier">exit</span></a>(<span style="white-space:nowrap">code:<a class="type" title="Int - The standard Int type." href="../../Int.html">Int</a></span>):<a class="type" title="Void - The standard Void type." href="../../Void.html">Void</a></code></h3><div class="doc"><p>Closes Flash Player.</p>
 <p><em>For the standalone Flash Player debugger version only.</em></p>
 <p>OpenFL applications on desktop operating systems should call the
@@ -75,7 +83,7 @@ on the html5 target.</p>
 the debugger version of the runtime.</p>
 <p>In an AIR application, the <code><a href="../../openfl/system/System.html#gc">System.gc</a>()</code> method is only enabled
 in content running in the AIR Debug Launcher (ADL) or, in an installed
-application, in content in the application security sandbox.</p></div></div><div class="field "><a name="pause"></a><h3 class="anchor"><code><span class="label label-static">static</span><a href="#pause"><span class="identifier">pause</span></a>():<a class="type" title="Void - The standard Void type." href="../../Void.html">Void</a></code></h3><div class="doc"><p>Pauses Flash Player or the AIR Debug Launcher(ADL). After calling this
+application, in content in the application security sandbox.</p></div></div><div class="field "><a name="pause"></a><h3 class="anchor"><code><span class="label label-static">static</span><a href="#pause"><span class="identifier">pause</span></a>():<a class="type" title="Void - The standard Void type." href="../../Void.html">Void</a></code></h3><div class="doc"><p>Pauses Flash Player or the AIR Debug Launcher (ADL). After calling this
 method, nothing in the application continues except the delivery of Socket
 events.</p>
 <p><em>For the Flash Player debugger version or the AIR Debug Launcher
@@ -89,4 +97,4 @@ allows only adding String content to the Clipboard.</p>
 <p>Flash Player 10 content, content in the application security sandbox
 in an AIR application, and Haxe "sys" targets can call the
 <code><a href="../../lime/system/Clipboard.html#setData">Clipboard.setData</a>()</code> method.</p><p class="javadoc">Parameters:</p><table class="table table-bordered params"><tr><th style="width:25%;"><code>string</code></th><td><p>A plain-text string of characters to put on the system
-Clipboard, replacing its current contents(if any).</p></td></tr></table></div></div></div></div></div></div></div><footer class="section site-footer" style="background:#FAFAFA"><div class="container"><div class="copyright"><p style="color:#000000">&copy; 2024 &nbsp;</p></div></div></footer><script src="../..//highlighter.js"></script><link href="../../highlighter.css" rel="stylesheet"/></body></html>
+Clipboard, replacing its current contents (if any).</p></td></tr></table></div></div></div></div></div></div></div><footer class="section site-footer" style="background:#FAFAFA"><div class="container"><div class="copyright"><p style="color:#000000">&copy; 2024 &nbsp;</p></div></div></footer><script src="../..//highlighter.js"></script><link href="../../highlighter.css" rel="stylesheet"/></body></html>

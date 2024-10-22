@@ -156,7 +156,7 @@ the window height.</p>
 <p>Setting <code>minSize</code>, will change the window bounds if the current bounds
 are smaller than the new minimum size.</p>
 <p>The <code>minSize</code> restriction is enforced for window resizing operations
-invoked both through ActionScript code and through the operating system.</p>
+invoked both through Haxe code and through the operating system.</p>
 <p>Note: The width and height of any displayed system chrome may make it
 impossible to set a window as small as the specified minimum size.</p><p class="javadoc">See also:</p><ul><li><div class="inline-content"><p><code><a href="../../openfl/display/NativeWindow.html#maxSize">NativeWindow.maxSize</a></code></p></div></li><li><div class="inline-content"><p><code><a href="../../openfl/display/NativeWindow.html#width">NativeWindow.width</a></code></p></div></li><li><div class="inline-content"><p><code><a href="../../openfl/display/NativeWindow.html#height">NativeWindow.height</a></code></p></div></li></ul></div></div><div class="field "><a name="minimizable"></a><h3 class="anchor"><code><span class="label">read only</span><a href="#minimizable"><span class="identifier">minimizable</span></a>:<a class="type" title="Bool - The standard Boolean type, which can either be true or false." href="../../Bool.html">Bool</a></code></h3><div class="doc"><p>Reports the minimizable setting used to create this window.</p>
 <p>The <code>minimizable</code> setting cannot be changed after a window is created.</p>
@@ -394,7 +394,7 @@ subjecting them to garbage collection. If you set
 for a listener that is a nested inner function,
 the function will be garbage-collected and no
 longer persistent. If you create references to the
-inner function(save it in another variable) then
+inner function (save it in another variable) then
 it is not garbage-collected and stays
 persistent.</p>
 <p>Weak references are supported on some OpenFL

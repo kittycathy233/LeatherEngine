@@ -200,9 +200,9 @@ situation, be aware that for local files, two different locations might be
 used to store shared objects. The domain that is used depends on the
 security permissions granted to the local file that created the shared
 object. Local files can have three different levels of permissions:</p><ol><li>Access to the local filesystem only.</li><li>Access to the network only.</li><li>Access to both the network and the local filesystem.</li></ol>
-<p>Local files with access to the local filesystem(level 1 or 3) store
+<p>Local files with access to the local filesystem (level 1 or 3) store
 their shared objects in one location. Local files without access to the
-local filesystem(level 2) store their shared objects in another
+local filesystem (level 2) store their shared objects in another
 location.</p>
 <p>You can prevent a SWF file from using this method by setting the
 <code>allowNetworking</code> parameter of the the <code>object</code> and
@@ -244,7 +244,7 @@ space allowed for a domain.</p>
 <p>The following diagram shows the use of the
 <code>secure</code> parameter:</p></td></tr></table><p class="javadoc">Returns:</p><div class="indent inline-content"><p>A reference to a shared object that is persistent locally and is
 available only to the current client. If Flash Player can't create
-or find the shared object(for example, if <code>localPath</code>
+or find the shared object (for example, if <code>localPath</code>
 was specified but no such directory exists), this method throws an
 exception.</p></div><p class="javadoc">Throws:</p><table class="table table-bordered params"><tr class="indent"><th style="width:25%;"><code>Error</code></th><td><p>Flash Player cannot create the shared object for whatever
 reason. This error might occur is if persistent shared
@@ -407,7 +407,7 @@ of looking for enough space to save the shared object at its current size.</p>
 <code>minDiskSpace</code>. If Flash asks the user to allot disk space for
 the shared object, it asks for 500 bytes. After the user allots the
 requested amount of space, Flash won't have to ask for more space on
-future attempts to flush the object(as long as its size doesn't exceed
+future attempts to flush the object (as long as its size doesn't exceed
 500 bytes).</p>
 <p>After the user responds to the dialog box, this method is called again.
 A <code>netStatus</code> event is dispatched with a <code>code</code>
@@ -428,7 +428,7 @@ allotted for this object.</p></td></tr></table><p class="javadoc">Returns:</p><d
 error might occur if the user has permanently disallowed
 local information storage for objects from this domain.</p>
 <p><strong>Note:</strong> Local content can always write shared
-objects from third-party domains(domains other than the
+objects from third-party domains (domains other than the
 domain in the current browser address bar) to disk, even if
 writing of third-party shared objects to disk is
 disallowed.</p></td></tr></table></div></div><div class="field "><a name="send"></a><h3 class="anchor"><code><a href="#send"><span class="identifier">send</span></a>(<span style="white-space:nowrap">args:<a class="type" title="Array - An Array is a storage for values." href="../../Array.html">Array</a>&lt;<a class="type" title="Dynamic - Dynamic is a special type which is compatible with all other types." href="../../Dynamic.html">Dynamic</a>&gt;</span>):<a class="type" title="Void - The standard Void type." href="../../Void.html">Void</a></code></h3><div class="doc"><p>Broadcasts a message to all clients connected to a remote shared
@@ -534,7 +534,7 @@ subjecting them to garbage collection. If you set
 for a listener that is a nested inner function,
 the function will be garbage-collected and no
 longer persistent. If you create references to the
-inner function(save it in another variable) then
+inner function (save it in another variable) then
 it is not garbage-collected and stays
 persistent.</p>
 <p>Weak references are supported on some OpenFL
