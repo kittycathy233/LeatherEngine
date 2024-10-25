@@ -74,7 +74,8 @@
 
 	<assets path="version.txt" />
 	<!--https://github.com/FunkinCrew/Funkin/pull/3318-->
-	<assets path="alsoft.ini"/> <!--this is important i think-->
+	<assets path="alsoft.ini" if="windows" /> <!--this is important i think-->
+	<assets path="alsoft.ini" rename="alsoft.conf" unless="windows" />
 
 	<assets path="crash/bin/Crash-windows.exe" if="windows" rename="Crash.exe" />
 	<assets path="crash/bin/Crash-linux.x86_64" if="linux" rename="Crash.x86_64" />
@@ -103,6 +104,10 @@
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 	<haxedef name="FLX_NO_HEALTH" /> <!--Remove dumb health variable from FlxSprite -->
+
+
+	<haxedef name="openfl_enable_experimental_update_queue" />
+
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 

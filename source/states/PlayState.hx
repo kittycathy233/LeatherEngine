@@ -1394,6 +1394,7 @@ class PlayState extends MusicBeatState {
 					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/ready'));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
+					ready.antialiasing = ui_settings[3] == "true";
 
 					ready.setGraphicSize(Std.int(ready.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[7])));
 					ready.updateHitbox();
@@ -1411,6 +1412,7 @@ class PlayState extends MusicBeatState {
 					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/set'));
 					set.scrollFactor.set();
 					set.updateHitbox();
+					set.antialiasing = ui_settings[3] == "true";
 
 					set.setGraphicSize(Std.int(set.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[7])));
 					set.updateHitbox();
@@ -1428,6 +1430,8 @@ class PlayState extends MusicBeatState {
 					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/go'));
 					go.scrollFactor.set();
 					go.updateHitbox();
+					go.antialiasing = ui_settings[3] == "true";
+
 
 					go.setGraphicSize(Std.int(go.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[7])));
 					go.updateHitbox();
@@ -1447,10 +1451,6 @@ class PlayState extends MusicBeatState {
 			swagCounter++;
 		}, 5);
 	}
-
-	var previousFrameTime:Int = 0;
-	var lastReportedPlayheadPosition:Int = 0;
-	var songTime:Float = 0;
 
 	public var invincible:Bool = false;
 
@@ -1481,7 +1481,7 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	inline function invalidateNote(note:Note):Void {
+	public inline function invalidateNote(note:Note):Void {
 		note.kill();
 		notes.remove(note, true);
 		note.destroy();
@@ -1515,9 +1515,6 @@ class PlayState extends MusicBeatState {
 	function startSong():Void {
 		startingSong = false;
 
-		previousFrameTime = FlxG.game.ticks;
-		lastReportedPlayheadPosition = 0;
-
 		if (!paused) {
 			FlxG.sound.music.play();
 		}
@@ -1545,11 +1542,11 @@ class PlayState extends MusicBeatState {
 		resyncVocals();
 	}
 
-	private var maniaChanges:Array<Dynamic> = [];
+	public var maniaChanges:Array<Dynamic> = [];
 
 	// https://github.com/TheZoroForce240/LeatherEngine/blob/main/source/states/PlayState.hx#L1432
-	var currentParsingKeyCount:Int = SONG.keyCount;
-	var currentParsingPlayerKeyCount:Int = SONG.playerKeyCount;
+	public var currentParsingKeyCount:Int = SONG.keyCount;
+	public var currentParsingPlayerKeyCount:Int = SONG.playerKeyCount;
 
 	public function generateSong(dataPath:String):Void {
 		Conductor.changeBPM(SONG.bpm, songMultiplier);
@@ -1683,12 +1680,12 @@ class PlayState extends MusicBeatState {
 			SONG.playerKeyCount = ogKeyCount;
 		}
 
-		unspawnNotes.sort(sortByShit);
+		unspawnNotes.sort(sortNotes);
 		generatedMusic = true;
 		SONG.validScore = SONG.validScore == true ? songMultiplier >= 1 : false;
 	}
 
-	function sortByShit(Obj1:Note, Obj2:Note):Int {
+	public function sortNotes(Obj1:Note, Obj2:Note):Int {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
@@ -1910,12 +1907,12 @@ class PlayState extends MusicBeatState {
 
 	public var paused:Bool = false;
 
-	var startedCountdown:Bool = false;
-	var canPause:Bool = true;
+	public var startedCountdown:Bool = false;
+	public var canPause:Bool = true;
 
 	public var canFullscreen:Bool = true;
 
-	var switchedStates:Bool = false;
+	public var switchedStates:Bool = false;
 
 	// give: [noteDataThingy, noteType]
 	// get : [xOffsetToUse]
@@ -1930,7 +1927,7 @@ class PlayState extends MusicBeatState {
 
 	public var ratingStr:String = "";
 
-	var song_info_timer:Float = 0.0;
+	public var song_info_timer:Float = 0.0;
 
 	inline function fixedUpdate() {
 		call("fixedUpdate", [1 / 120]);

@@ -1,7 +1,7 @@
 @echo off
 echo Installing all required libraries.
 
-haxelib --never install lime
+haxelib --never install lime 8.1.3
 haxelib --never install openfl
 haxelib --never git flixel https://github.com/HaxeFlixel/flixel
 haxelib --never install flixel-tools

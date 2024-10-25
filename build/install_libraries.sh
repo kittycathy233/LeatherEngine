@@ -2,7 +2,7 @@
 
 echo Installing all required libraries.
 
-haxelib install lime
+haxelib install lime 8.1.3
 haxelib install openfl
 haxelib git flixel https://github.com/HaxeFlixel/flixel
 haxelib install flixel-tools
