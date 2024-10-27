@@ -137,7 +137,7 @@ class TitleState extends MusicBeatState {
 		FlxG.sound.playMusic(MusicUtilities.getTitleMusic(), 0);
 	}
 
-	function startIntro() {
+	public function startIntro() {
 		if (!initialized) {
 			call("startIntro");
 
@@ -241,7 +241,7 @@ class TitleState extends MusicBeatState {
 		initialized = true;
 	}
 
-	function getIntroTextShit():Array<Array<String>> {
+	public function getIntroTextShit():Array<Array<String>> {
 		var fullText:String = Assets.getText(Paths.txt('introText'));
 
 		var firstArray:Array<String> = fullText.split('\n');
@@ -256,7 +256,8 @@ class TitleState extends MusicBeatState {
 
 	public var transitioning:Bool = false;
 
-	override function update(elapsed:Float) {
+	public override function update(elapsed:Float) {
+
 		if (FlxG.keys.justPressed.Y) {
 			FlxTween.tween(FlxG.stage.window, {x: FlxG.stage.window.x + 300}, 1.4, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.35});
 			FlxTween.tween(FlxG.stage.window, {y: FlxG.stage.window.y + 100}, 0.7, {ease: FlxEase.quadInOut, type: PINGPONG});
@@ -339,7 +340,7 @@ class TitleState extends MusicBeatState {
 		call("update", [elapsed]);
 	}
 
-	function createCoolText(textArray:Array<String>) {
+	public function createCoolText(textArray:Array<String>) {
 		call("createCoolText", textArray);
 		for (i in 0...textArray.length) {
 			addMoreText(textArray[i]);
@@ -347,7 +348,7 @@ class TitleState extends MusicBeatState {
 		call("createCoolTextPost", textArray);
 	}
 
-	function addMoreText(text:String) {
+	public function addMoreText(text:String) {
 		call("addMoreText", [text]);
 		var coolText:Alphabet = new Alphabet(0, 0, text.toUpperCase(), true, false);
 		coolText.screenCenter(X);
@@ -357,7 +358,7 @@ class TitleState extends MusicBeatState {
 		call("addMoreTextPost", [text]);
 	}
 
-	function deleteCoolText() {
+	public function deleteCoolText() {
 		call("deleteCoolText");
 		if (textGroup?.members != null) {
 			while (textGroup.members.length > 0) {
@@ -368,7 +369,7 @@ class TitleState extends MusicBeatState {
 		call("deleteCoolTextPost");
 	}
 
-	function textDataText(line:Int) {
+	public function textDataText(line:Int) {
 		if (titleTextData == null || line < 0) {
 			return;
 		}
