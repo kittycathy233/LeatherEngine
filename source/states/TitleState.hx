@@ -180,10 +180,8 @@ class TitleState extends MusicBeatState {
 
 		logoBl = new FlxSprite(0, 0);
 
-		if (Options.getData("watermarks"))
-			logoBl.frames = Paths.getSparrowAtlas('title/leatherLogoBumpin');
-		else
-			logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
+
+		logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
 
 		logoBl.antialiasing = Options.getData("antialiasing");
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
@@ -195,7 +193,7 @@ class TitleState extends MusicBeatState {
 		gfDance.frames = Paths.getSparrowAtlas('title/gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = true;
+		gfDance.antialiasing = Options.getData("antialiasing");
 		gfDance.shader = swagShader.shader;
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
