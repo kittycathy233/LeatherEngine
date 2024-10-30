@@ -173,16 +173,13 @@ class TitleState extends MusicBeatState {
 			call("startIntroPost");
 		}
 
-		version = '${MusicBeatState.windowNamePrefix} (${CoolUtil.getCurrentVersion()})';
+		version = '${Application.current.meta.get('name')} ${CoolUtil.getCurrentVersion()}';
 
 
 		call("createTitleAssets");
 
 		logoBl = new FlxSprite(0, 0);
-
-
 		logoBl.frames = Paths.getSparrowAtlas('title/logoBumpin');
-
 		logoBl.antialiasing = Options.getData("antialiasing");
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
@@ -308,7 +305,7 @@ class TitleState extends MusicBeatState {
 
 			call("checkForUpdate");
 			new FlxTimer().start(2, (tmr:FlxTimer) -> {
-				var http:Http = new Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine-Extended-Support/main/version.txt");
+				var http:Http = new Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine/main/version.txt");
 				http.onData = (data:String) -> {
 					data = 'v' + data;
 					trace(data);
@@ -445,7 +442,7 @@ class TitleState extends MusicBeatState {
 
 	public var skippedIntro:Bool = false;
 
-	function skipIntro():Void {
+	public function skipIntro():Void {
 		call("skipIntro");
 		if (!skippedIntro) {
 			MusicBeatState.windowNameSuffix = "";
