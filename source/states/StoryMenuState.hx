@@ -190,9 +190,7 @@ class StoryMenuState extends MusicBeatState {
 
 		add(menuCharacters);
 		add(new FlxSprite(0, 456).makeGraphic(400, 1280, FlxColor.BLACK));
-
-		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
-		add(blackBarThingie);
+		add(new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK));
 
 		createWeekGraphics();
 
