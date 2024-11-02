@@ -1374,7 +1374,13 @@ class PlayState extends MusicBeatState {
 
 		startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
 			call("countdownTick", [swagCounter]);
-			dad.dance(altAnim);
+			if (dad.otherCharacters == null) {
+				dad.dance(altAnim);
+			} else {
+				for (character in dad.otherCharacters) {
+					character.dance(altAnim);
+				}
+			}
 			if (gf.otherCharacters == null) {
 				gf.dance();
 			} else {
@@ -1382,7 +1388,13 @@ class PlayState extends MusicBeatState {
 					character.dance();
 				}
 			}
-			boyfriend.dance();
+			if (boyfriend.otherCharacters == null) {
+				boyfriend.dance();
+			} else {
+				for (character in boyfriend.otherCharacters) {
+					character.dance();
+				}
+			}
 
 			var introPath:String = 'ui skins/${SONG.ui_Skin}/countdown';
 
@@ -2196,7 +2208,10 @@ class PlayState extends MusicBeatState {
 						if (dad.otherCharacters == null || dad.otherCharacters.length - 1 < note.character)
 							dad.playAnim(singAnim, true);
 						else {
-							if (note.characters.length <= 1)
+							if(note.character == 0){
+								dad.getMainCharacter().playAnim(singAnim, true);
+							}
+							else if (note.characters.length <= 1)
 								dad.otherCharacters[note.character].playAnim(singAnim, true);
 							else {
 								for (character in note.characters) {
@@ -2268,7 +2283,10 @@ class PlayState extends MusicBeatState {
 						if (dad.otherCharacters == null || dad.otherCharacters.length - 1 < note.character)
 							dad.holdTimer = 0;
 						else {
-							if (note.characters.length <= 1)
+							if(note.character == 0){
+								dad.getMainCharacter().playAnim(singAnim, true);
+							}
+							else if (note.characters.length <= 1)
 								dad.otherCharacters[note.character].holdTimer = 0;
 							else {
 								for (char in note.characters) {
@@ -3451,7 +3469,10 @@ class PlayState extends MusicBeatState {
 				]);
 			} else {
 				if (dad.otherCharacters != null && !(dad.otherCharacters.length - 1 < note.character))
-					if (note.characters.length <= 1)
+					if(note.character == 0){
+						dad.getMainCharacter().playAnim(singAnim, true);
+					}
+					else if (note.characters.length <= 1)
 						dad.otherCharacters[note.character].playAnim(singAnim, true);
 					else {
 						for (character in note.characters) {
@@ -3549,24 +3570,20 @@ class PlayState extends MusicBeatState {
 		if (characterPlayingAs == 0) {
 			if (dad.otherCharacters == null) {
 				if (dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing'))
-					if (!dad.curCharacter.startsWith('gf'))
 						dad.dance(altAnim);
 			} else {
 				for (character in dad.otherCharacters) {
 					if (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
-						if (!character.curCharacter.startsWith('gf'))
-							character.dance(altAnim);
+						character.dance(altAnim);
 				}
 			}
 		} else {
 			if (boyfriend.otherCharacters == null) {
 				if (boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing'))
-					if (!boyfriend.curCharacter.startsWith('gf'))
 						boyfriend.dance();
 			} else {
 				for (character in boyfriend.otherCharacters) {
 					if (character.animation.curAnim != null && !character.animation.curAnim.name.startsWith('sing'))
-						if (!character.curCharacter.startsWith('gf'))
 							character.dance();
 				}
 			}
@@ -3596,7 +3613,7 @@ class PlayState extends MusicBeatState {
 		if (gfSpeed < 1)
 			gfSpeed = 1;
 
-		if (curBeat % gfSpeed == 0 && !dad.curCharacter.startsWith('gf')) {
+		if (curBeat % gfSpeed == 0) {
 			if (gf.otherCharacters == null) {
 				gf.dance();
 			} else {
@@ -3607,7 +3624,7 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (dad.animation.curAnim != null)
-			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf'))
+			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0)
 				dad.dance();
 
 		if (characterPlayingAs == 0) {
