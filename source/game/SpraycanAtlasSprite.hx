@@ -1,10 +1,10 @@
 //fuck you hscript
-package game.graphics;
+package game;
 
 import states.PlayState;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import game.graphics.FlxAtlasSprite;
+import game.FlxAtlasSprite;
 
 class SpraycanAtlasSprite extends FlxAtlasSprite {
     public var STATE_ARCING:Int = 2; // In the air.
