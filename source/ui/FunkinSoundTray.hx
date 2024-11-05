@@ -1,14 +1,12 @@
 package ui;
 
-import flixel.FlxG;
-import flixel.system.ui.FlxSoundTray;
-import flixel.tweens.FlxTween;
-import flixel.system.FlxAssets;
-import flixel.tweens.FlxEase;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import openfl.utils.Assets;
 import utilities.MathUtil;
+import flixel.FlxG;
+import openfl.display.Bitmap;
+import flixel.system.ui.FlxSoundTray;
+import flixel.tweens.FlxTween;
+import openfl.display.BitmapData;
 
 /**
  *  Extends the default flixel soundtray, but with some art
@@ -72,17 +70,18 @@ class FunkinSoundTray extends FlxSoundTray {
 		volumeUpSound = Paths.sound("soundtray/Volup");
 		volumeDownSound = Paths.sound("soundtray/Voldown");
 		volumeMaxSound = Paths.sound("soundtray/VolMAX");
-
-		// trace("Custom tray added!");
 	}
 
 	override public function update(MS:Float):Void {
 		y = MathUtil.coolLerp(y, lerpYPos, 0.1);
 		alpha = MathUtil.coolLerp(alpha, alphaTarget, 0.25);
 
+		var shouldHide = (FlxG.sound.muted == false && FlxG.sound.volume > 0);
+
 		// Animate sound tray thing
 		if (_timer > 0) {
-			_timer -= (MS / 1000);
+			if (shouldHide)
+				_timer -= (MS / 1000);
 			alphaTarget = 1;
 		} else if (y >= -height) {
 			lerpYPos = -height - 10;
@@ -114,9 +113,9 @@ class FunkinSoundTray extends FlxSoundTray {
 		lerpYPos = 10;
 		visible = true;
 		active = true;
-		var globalVolume:Int = Math.round(FlxG.sound.volume * 10);
+		var globalVolume:Int = Math.round(MathUtil.logToLinear(FlxG.sound.volume) * 10);
 
-		if (FlxG.sound.muted) {
+		if (FlxG.sound.muted || FlxG.sound.volume == 0) {
 			globalVolume = 0;
 		}
 
