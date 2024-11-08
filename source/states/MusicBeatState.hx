@@ -128,9 +128,6 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 		super.update(elapsed);
 
-		if (FlxG.stage != null)
-			FlxG.stage.frameRate = FlxMath.bound(Options.getData("maxFPS"), 0.1, 1000);
-
 		if (!Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {
 				if (!(basic is FlxSprite)) {

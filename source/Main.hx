@@ -38,6 +38,7 @@ class Main extends Sprite {
 
 		game = new FlxGame(1280, 720, TitleState, 60, 60, true);
 
+
 		// FlxG.game._customSoundTray wants just the class, it calls new from
 		// create() in there, which gets called when it's added to stage
 		// which is why it needs to be added before addChild(game) here
