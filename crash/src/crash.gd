@@ -13,6 +13,9 @@ const quotes: Array[String] = [
 	'haha godot crash handler go brrr',
 	'top 10 null object reference',
 	'if (usingLE) memoryLeak();',
+	'https://github.com/what-is-a-git/FunkinGodot',
+	'forgor a ;',
+	'play phighting'
 ]
 
 @onready var root: Control = %root
@@ -79,3 +82,4 @@ func _on_restart_pressed() -> void:
 			OS.execute('./LeatherEngine.exe', [])
 		_:
 			print('Uhh.... farf....')
+	get_tree().quit()

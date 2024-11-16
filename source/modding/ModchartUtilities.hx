@@ -519,7 +519,7 @@ class ModchartUtilities {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
 				
 				if (filename != null && filename.length > 0)
-					Sprite.loadGraphic(Paths.image(PlayState.instance.stage.stage + "/" + filename, "stages"));
+					Sprite.loadGraphic(Paths.gpuBitmap(PlayState.instance.stage.stage + "/" + filename, "stages"));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
 				Sprite.antialiasing = Options.getData("antialiasing");
@@ -743,7 +743,7 @@ class ModchartUtilities {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
 
 				if (filename != null && filename.length > 0)
-					Sprite.loadGraphic(Paths.image(filename));
+					Sprite.loadGraphic(Paths.gpuBitmap(filename));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
 				Sprite.antialiasing = Options.getData("antialiasing");
@@ -830,7 +830,7 @@ class ModchartUtilities {
 				var Sprite:FlxSprite = new FlxSprite(x, y);
 
 				if (filename != null && filename.length > 0)
-					Sprite.loadGraphic(Paths.image(filename));
+					Sprite.loadGraphic(Paths.gpuBitmap(filename));
 
 				Sprite.scale.set(size, sizeY == null ? size : sizeY);
 				Sprite.antialiasing = Options.getData("antialiasing");

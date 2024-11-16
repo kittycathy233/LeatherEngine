@@ -989,7 +989,7 @@ class PlayState extends MusicBeatState {
 		add(notes);
 
 		// health bar
-		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.image('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
+		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.gpuBitmap('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 		healthBarBG.pixelPerfectPosition = true;
@@ -1402,7 +1402,7 @@ class PlayState extends MusicBeatState {
 				case 0:
 					FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
 				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/ready'));
+					var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.gpuBitmap('$introPath/ready'));
 					ready.scrollFactor.set();
 					ready.updateHitbox();
 					ready.antialiasing = ui_settings[3] == "true";
@@ -1420,7 +1420,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
 				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/set'));
+					var set:FlxSprite = new FlxSprite().loadGraphic(Paths.gpuBitmap('$introPath/set'));
 					set.scrollFactor.set();
 					set.updateHitbox();
 					set.antialiasing = ui_settings[3] == "true";
@@ -1438,7 +1438,7 @@ class PlayState extends MusicBeatState {
 
 					FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
 				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('$introPath/go'));
+					var go:FlxSprite = new FlxSprite().loadGraphic(Paths.gpuBitmap('$introPath/go'));
 					go.scrollFactor.set();
 					go.updateHitbox();
 					go.antialiasing = ui_settings[3] == "true";

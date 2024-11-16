@@ -138,7 +138,7 @@ class ChartingState extends MusicBeatState {
 		add(menuBG);
 
 		lilStage = new FlxSprite(32, 650);
-		lilStage.loadGraphic(Paths.image("charter/lil_stage", "shared"));
+		lilStage.loadGraphic(Paths.gpuBitmap("charter/lil_stage", "shared"));
 		lilStage.scrollFactor.set();
 		add(lilStage);
 
@@ -1868,7 +1868,7 @@ class ChartingState extends MusicBeatState {
 
 				var idIcon:FlxSprite = new FlxSprite(Math.floor((daNoteInfo + 1) * GRID_SIZE) - 16,
 					Math.floor(getYfromStrum((daStrumTime - sectionStartTime()))) - 12);
-				idIcon.loadGraphic(Paths.image("charter/idSprite", "shared"));
+				idIcon.loadGraphic(Paths.gpuBitmap("charter/idSprite", "shared"));
 				idIcon.setGraphicSize(20, 20);
 				idIcon.updateHitbox();
 				idIcon.antialiasing = false;
@@ -1900,7 +1900,7 @@ class ChartingState extends MusicBeatState {
 						&& Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
 						var eventSprite:EventSprite = new EventSprite(event[1]);
 
-						eventSprite.loadGraphic(Paths.image("charter/eventSprite", "shared"));
+						eventSprite.loadGraphic(Paths.gpuBitmap("charter/eventSprite", "shared"));
 
 						eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
 						eventSprite.updateHitbox();
