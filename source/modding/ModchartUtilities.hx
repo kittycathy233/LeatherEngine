@@ -223,7 +223,11 @@ class ModchartUtilities {
 
 		lua_Sounds.set("Inst", FlxG.sound.music);
 		
-		lua_Sounds.set("Voices", PlayState.instance.vocals);
+		lua_Sounds.set("Voices", PlayState.instance.vocals.members[0]);
+
+		for(sound in 0...PlayState.instance.vocals.length){
+			lua_Sounds.set("Voices"+sound,PlayState.instance.vocals.members[sound]);
+		}
 
 		trace('Loading script at path \'${path}\'');
 		// trace("lua version: " + Lua.version());
@@ -3416,7 +3420,11 @@ class ModchartUtilities {
 		lua_Characters.set("dad", PlayState.dad.getMainCharacter());
 
 		lua_Sounds.set("Inst", FlxG.sound.music);
-		lua_Sounds.set("Voices", PlayState.instance.vocals);
+		lua_Sounds.set("Voices", PlayState.instance.vocals.members[0]);
+
+		for(sound in 0...PlayState.instance.vocals.length){
+			lua_Sounds.set("Voices"+sound,PlayState.instance.vocals.members[sound]);
+		}
 
 		for (object in PlayState.instance.stage.stage_Objects) {
 			lua_Sprites.set(object[0], object[1]);

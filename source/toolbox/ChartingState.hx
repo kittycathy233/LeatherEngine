@@ -1,5 +1,6 @@
 package toolbox;
 
+import game.SoundGroup;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
 import game.EventSprite;
@@ -54,13 +55,8 @@ class ChartingState extends MusicBeatState {
 	public var bpmTxt:FlxText;
 
 	public var strumLine:FlxSprite;
-	public var curSong:String = 'Dadbattle';
-	public var amountSteps:Int = 0;
-	public var bullshitUI:FlxGroup;
 
-	public var highlight:FlxSprite;
-
-	public var GRID_SIZE:Int = 40;
+	public static inline final GRID_SIZE:Int = 40;
 
 	public var dummyArrow:FlxSprite;
 
@@ -74,12 +70,12 @@ class ChartingState extends MusicBeatState {
 
 	public var difficulty:String = 'normal';
 
-	var typingShit:FlxUIInputText;
-	var swagShit:FlxUIInputText;
-	var modchart_Input:FlxUIInputText;
-	var cutscene_Input:FlxUIInputText;
-	var endCutscene_Input:FlxUIInputText;
-	var characterGroup_Input:FlxUIInputText;
+	public var typingShit:FlxUIInputText;
+	public var swagShit:FlxUIInputText;
+	public var modchart_Input:FlxUIInputText;
+	public var cutscene_Input:FlxUIInputText;
+	public var endCutscene_Input:FlxUIInputText;
+	public var characterGroup_Input:FlxUIInputText;
 
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
@@ -89,7 +85,7 @@ class ChartingState extends MusicBeatState {
 
 	public var tempBpm:Float = 0;
 
-	public var vocals:FlxSound;
+	public var vocals:SoundGroup;
 
 	public var leftIcon:HealthIcon;
 	public var rightIcon:HealthIcon;
@@ -1002,7 +998,9 @@ class ChartingState extends MusicBeatState {
 		UI_box.addGroup(tab_group_note);
 	}
 
-	function loadSong(daSong:String):Void {
+	public var addedVocals:Array<String> = [];
+
+	public function loadSong(daSong:String):Void {
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 
@@ -1017,15 +1015,22 @@ class ChartingState extends MusicBeatState {
 		if (openfl.Assets.cache.hasSound(Paths.voices(daSong, difficulty_name)))
 			openfl.Assets.cache.removeSound(Paths.voices(daSong, difficulty_name));
 
-		FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(daSong, difficulty_name));
+		FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(daSong,  _song.specialAudioName ?? difficulty_name, _song.player1));
 		FlxG.sound.music.persist = true;
 
-		if (_song.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, difficulty_name));
-		else
-			vocals = new FlxSound();
+		vocals = new SoundGroup(2);
+		if (_song.needsVoices){
+			for (character in ['player', 'opponent', _song.player1, _song.player2]) {
+				var soundPath:String = Paths.voices(daSong, _song.specialAudioName ?? difficulty_name, character,
+				_song.player1);
+				if (!addedVocals.contains(soundPath)) {
+					vocals.add(new FlxSound().loadEmbedded(soundPath));
+					addedVocals.push(soundPath);
+				}
+			}
+		}
 
-		FlxG.sound.list.add(vocals);
+		//FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
 		vocals.pause();

@@ -36,12 +36,11 @@ import game.Note;
 import game.NoteSplash;
 import game.Section.SwagSection;
 import game.SongLoader;
+import game.SoundGroup;
 import game.StageGroup;
 import game.StrumNote;
 import game.TimeBar;
 import lime.utils.Assets;
-import modding.ModList;
-import modding.PolymodHandler;
 import modding.ModchartUtilities;
 import modding.scripts.languages.HScript;
 import substates.GameOverSubstate;
@@ -124,9 +123,9 @@ class PlayState extends MusicBeatState {
 	public static var campaignTitle:String;
 
 	/**
-		Vocal track for the current song as a `FlxSound`.
+		Vocal tracks for the current song as a `SoundGroup`.
 	**/
-	public var vocals:FlxSound = new FlxSound();
+	public var vocals:SoundGroup = new SoundGroup(2);
 
 	/**
 		Your current opponent.
@@ -1079,7 +1078,7 @@ class PlayState extends MusicBeatState {
 			switch (cutscene.type.toLowerCase()) {
 				case "script":
 					var cutscene:HScript = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
-					
+
 					for (object in stage.stage_Objects) {
 						cutscene.interp.variables.set(object[0], object[1]);
 					}
@@ -1110,25 +1109,25 @@ class PlayState extends MusicBeatState {
 		if (Options.getData('colorQuantization')) {
 			var col:Array<Int> = [142, 142, 142];
 			for (note in unspawnNotes) {
-					if (!note.isSustainNote && note.affectedbycolor) {
-						var quantStrumTime:Float = note.strumTime;
-						var currentStepCrochet:Float = Conductor.stepCrochet;
-						var noteBeat:Int = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48) + 0.5);
-						for (beat in 0...Note.beats.length - 1) {
-							if ((noteBeat % (192 / Note.beats[beat]) == 0)) {
-								noteBeat = Note.beats[beat];
-								col = Note.quantColors[beat];
-								break;
-							}
+				if (!note.isSustainNote && note.affectedbycolor) {
+					var quantStrumTime:Float = note.strumTime;
+					var currentStepCrochet:Float = Conductor.stepCrochet;
+					var noteBeat:Int = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48) + 0.5);
+					for (beat in 0...Note.beats.length - 1) {
+						if ((noteBeat % (192 / Note.beats[beat]) == 0)) {
+							noteBeat = Note.beats[beat];
+							col = Note.quantColors[beat];
+							break;
 						}
-						note.colorSwap.r = col[0];
-						note.colorSwap.g = col[1];
-						note.colorSwap.b = col[2];
-						for (sustain in note.sustains) {
-							sustain.colorSwap.r = note.colorSwap.r;
-							sustain.colorSwap.g = note.colorSwap.g;
-							sustain.colorSwap.b = note.colorSwap.b;
-						}
+					}
+					note.colorSwap.r = col[0];
+					note.colorSwap.g = col[1];
+					note.colorSwap.b = col[2];
+					for (sustain in note.sustains) {
+						sustain.colorSwap.r = note.colorSwap.r;
+						sustain.colorSwap.g = note.colorSwap.g;
+						sustain.colorSwap.b = note.colorSwap.b;
+					}
 				}
 			}
 		}
@@ -1444,7 +1443,6 @@ class PlayState extends MusicBeatState {
 					go.updateHitbox();
 					go.antialiasing = ui_settings[3] == "true";
 
-
 					go.setGraphicSize(Std.int(go.width * Std.parseFloat(ui_settings[0]) * Std.parseFloat(ui_settings[7])));
 					go.updateHitbox();
 
@@ -1512,7 +1510,7 @@ class PlayState extends MusicBeatState {
 		#if FLX_PITCH FlxG.sound.music.pitch = songMultiplier; #end
 		FlxG.sound.music.play();
 
-		if (Conductor.songPosition <= vocals.length) {
+		if (Conductor.songPosition <= vocals.maxLength) {
 			vocals.time = time;
 			#if FLX_PITCH
 			vocals.pitch = songMultiplier;
@@ -1560,24 +1558,29 @@ class PlayState extends MusicBeatState {
 	public var currentParsingKeyCount:Int = SONG.keyCount;
 	public var currentParsingPlayerKeyCount:Int = SONG.playerKeyCount;
 
+	public var addedVocals:Array<String> = [];
+
 	public function generateSong(dataPath:String):Void {
 		Conductor.changeBPM(SONG.bpm, songMultiplier);
 
-		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song,
-				(SONG.specialAudioName == null ? storyDifficultyStr.toLowerCase() : SONG.specialAudioName)));
+		if (SONG.needsVoices) {
+			for (character in ['player', 'opponent', boyfriend.curCharacter, dad.curCharacter]) {
+				var soundPath:String = Paths.voices(PlayState.SONG.song, SONG.specialAudioName ?? storyDifficultyStr.toLowerCase(), character,
+					boyfriend.curCharacter);
+				if (!addedVocals.contains(soundPath)) {
+					vocals.add(new FlxSound().loadEmbedded(soundPath));
+					addedVocals.push(soundPath);
+				}
+			}
+		}
 
 		// LOADING MUSIC FOR CUSTOM SONGS
 		if (FlxG.sound.music != null)
 			if (FlxG.sound.music.active)
 				FlxG.sound.music.stop();
 
-		FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(SONG.song,
-			(SONG.specialAudioName == null ? storyDifficultyStr.toLowerCase() : SONG.specialAudioName)));
+		FlxG.sound.music = new FlxSound().loadEmbedded(Paths.inst(SONG.song, SONG.specialAudioName ?? storyDifficultyStr.toLowerCase(), boyfriend.curCharacter));
 		FlxG.sound.music.persist = true;
-
-		vocals.persist = false;
-		FlxG.sound.list.add(vocals);
 
 		notes = new FlxTypedGroup<Note>();
 
@@ -2174,12 +2177,11 @@ class PlayState extends MusicBeatState {
 				note.y = coolStrum.y + Note.calculateY(note);
 				if (note.isSustainNote) {
 					var swagRect:FlxRect = new FlxRect(0, 0, note.frameWidth * 2, note.frameHeight * 2);
-					//TODO: make this not... this
-					if(Options.getData("downscroll")){
+					// TODO: make this not... this
+					if (Options.getData("downscroll")) {
 						swagRect.height = (coolStrum.y + (coolStrum.width / 2) - note.y) / note.scale.y;
 						swagRect.y = note.frameHeight - swagRect.height - (note.animation.curAnim.name.endsWith("end") ? note.offset.y : 0);
-					}
-					else{
+					} else {
 						swagRect.y = (coolStrum.y + Note.swagWidth / 2 - note.y) / note.scale.y;
 						swagRect.height -= swagRect.y;
 					}
@@ -2300,9 +2302,8 @@ class PlayState extends MusicBeatState {
 							}
 						}
 					}
-
 					@:privateAccess
-					if (vocals != null && vocals._transform != null && SONG != null && SONG.needsVoices)
+					if (vocals != null && /* vocals._transform != null && */ SONG != null && SONG.needsVoices)
 						vocals.volume = 1;
 
 					note.active = false;
@@ -2802,7 +2803,7 @@ class PlayState extends MusicBeatState {
 		if (setNoteDiff != null)
 			noteDiff = setNoteDiff;
 
-		if(vocals != null)
+		if (vocals != null)
 			vocals.volume = 1;
 
 		var daRating:String = Ratings.getRating(Math.abs(noteDiff));
@@ -3617,8 +3618,8 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		if (dad.animation.curAnim != null){
-			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf')){
+		if (dad.animation.curAnim != null) {
+			if (!dad.animation.curAnim.name.startsWith("sing") && curBeat % gfSpeed == 0 && dad.curCharacter.startsWith('gf')) {
 				if (dad.otherCharacters == null) {
 					dad.dance();
 				} else {
@@ -4400,10 +4401,10 @@ class PlayState extends MusicBeatState {
 	}
 
 	/**
-	 * Adds `behind` behind `obj`
-	 * @param behind The object to add behind
-	 * @param obj The object that will be in front
-	 */
+		 * Adds `behind` behind `obj`
+		 * @param behind The object to add behind
+		 * @param obj The object that will be in front
+		 */
 	public function addBehind(behind:FlxBasic, obj:FlxBasic) {
 		insert(members.indexOf(obj), behind);
 	}
