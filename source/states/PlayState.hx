@@ -2272,7 +2272,7 @@ class PlayState extends MusicBeatState {
 									splash_group.add(splash);
 								}
 
-								spr.animation.finishCallback = function(_) spr.playAnim("static");
+								spr.animation.onFinish.add((animName:String) -> spr.playAnim("static"));
 							}
 						});
 					}
