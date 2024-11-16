@@ -26,17 +26,17 @@ class ToolboxPlaceholder extends MusicBeatState {
 	public var pages:Map<String, Array<Dynamic>> = [
 		"Categories" => [
 			#if sys
-			new GameStateOption("New Mod", NewModState()),
+			new GameStateOption("New Mod", NewModState),
 			#end
 			new ToolboxPageOption("Tools", "Tools",),
 			new ToolboxPageOption("Documentation", "Documentation")
 		],
 		"Tools" => [
-			new GameStateOption("Charter", ChartingState()),
-			new CharacterCreatorOption("Character Creator", CharacterCreator("dad", "stage")),
-			new GameStateOption("Stage Editor", StageMakingState("stage")),
+			new GameStateOption("Charter", ChartingState),
+			new CharacterCreatorOption("Character Creator", new CharacterCreator("dad", "stage")),
+			new GameStateOption("Stage Editor", new StageMakingState("stage")),
 			#if MODCHARTING_TOOLS
-			new GameStateOption("Modchart Editor", modcharting.ModchartEditorState())
+			new GameStateOption("Modchart Editor", modcharting.ModchartEditorState)
 			#end
 		],
 		"Documentation" => [
