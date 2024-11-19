@@ -362,12 +362,6 @@ class PlayState extends MusicBeatState {
 	**/
 	public var altAnim:String = "";
 
-	/**
-		how big to stretch the pixel art assets
-
-		@author ninjamuffin99 probably
-	**/
-	@:noCompletion public static var daPixelZoom:Float = 6;
 
 	/**
 		Whether or not you are currently in a cutscene.
