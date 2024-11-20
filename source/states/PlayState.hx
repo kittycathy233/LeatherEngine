@@ -2874,12 +2874,10 @@ class PlayState extends MusicBeatState {
 			accuracyText.text = noteMath + " ms" + (Options.getData("botplay") ? " (BOT)" : "");
 			accuracyText.setPosition(initRatingX + Options.getData("accuracyTextOffset")[0], initRatingY + 100 + Options.getData("accuracyTextOffset")[1]);
 
-			if(noteMath != 0)
-				accuracyText.color = FlxColor.PINK;
-			else if (Math.abs(noteMath) == noteMath)
+			if (Math.abs(noteMath) == noteMath)
 				accuracyText.color = FlxColor.CYAN;
 			else
-				accuracyText.color = 0xFF8800;
+				accuracyText.color = FlxColor.PINK;
 
 			accuracyText.borderStyle = FlxTextBorderStyle.OUTLINE;
 			accuracyText.borderSize = 1;
