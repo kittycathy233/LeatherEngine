@@ -894,6 +894,14 @@ class PlayState extends MusicBeatState {
 		playerStrums = new FlxTypedGroup<StrumNote>();
 		enemyStrums = new FlxTypedGroup<StrumNote>();
 
+		#if (MODCHARTING_TOOLS)
+		if (SONG.modchartingTools
+			|| Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart"))
+			|| Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart-" + storyDifficultyStr.toLowerCase()))) {
+			SONG.modchartingTools = true;
+		}
+		#end
+
 		generareNoteChangeEvents();
 		generateSong(SONG.song);
 		generateEvents();
@@ -970,6 +978,7 @@ class PlayState extends MusicBeatState {
 		if (SONG.modchartingTools
 			|| Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart"))
 			|| Assets.exists(Paths.json("song data/" + SONG.song.toLowerCase() + "/modchart-" + storyDifficultyStr.toLowerCase()))) {
+			SONG.modchartingTools = true;
 			playfieldRenderer = new PlayfieldRenderer(strumLineNotes, notes, this);
 			playfieldRenderer.cameras = [camHUD];
 			add(playfieldRenderer);
@@ -1697,7 +1706,7 @@ class PlayState extends MusicBeatState {
 		SONG.validScore = SONG.validScore == true ? songMultiplier >= 1 : false;
 	}
 
-	public function sortNotes(Obj1:Note, Obj2:Note):Int {
+	public inline function sortNotes(Obj1:Note, Obj2:Note):Int {
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
