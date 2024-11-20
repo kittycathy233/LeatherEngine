@@ -2877,7 +2877,7 @@ class PlayState extends MusicBeatState {
 			if (Math.abs(noteMath) == noteMath)
 				accuracyText.color = FlxColor.CYAN;
 			else
-				accuracyText.color = FlxColor.PINK;
+				accuracyText.color = FlxColor.ORANGE;
 
 			accuracyText.borderStyle = FlxTextBorderStyle.OUTLINE;
 			accuracyText.borderSize = 1;
