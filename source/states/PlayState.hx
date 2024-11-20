@@ -955,6 +955,7 @@ class PlayState extends MusicBeatState {
 		// TODO: Deprecate and convert this to new script system on script load.
 		#if LUA_ALLOWED
 		if (Assets.exists(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))) {
+			trace("The 'modcharts' folder is deprecated! Use the 'scripts' folder instead!", WARNING);
 			luaScriptArray.push(new ModchartUtilities(PolymodAssets.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath))));
 		} else if (Assets.exists(Paths.lua("scripts/" + PlayState.SONG.modchartPath))) {
 			luaScriptArray.push(new ModchartUtilities(PolymodAssets.getPath(Paths.lua("scripts/" + PlayState.SONG.modchartPath))));
