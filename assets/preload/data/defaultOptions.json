@@ -260,11 +260,6 @@
       "save": "binds"
     },
     {
-      "option": "screenshotBind",
-      "value": "F2",
-      "save": "binds"
-    },
-    {
       "option": "save",
       "value": "{}",
       "save": "autosave"
