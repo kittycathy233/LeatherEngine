@@ -237,6 +237,13 @@ class EventHandeler {
 				PlayState.playerStrums.clear();
 				PlayState.enemyStrums.clear();
 				PlayState.strumLineNotes.clear();
+
+				#if MODCHARTING_TOOLS
+				if(game.playfieldRenderer != null){
+					game.playfieldRenderer = new modcharting.PlayfieldRenderer(PlayState.strumLineNotes, game.notes, game);
+				}
+				#end
+
 				game.splash_group.clear();
 				game.binds = Options.getData("binds", "binds")[PlayState.SONG.playerKeyCount - 1];
 				if (Options.getData("middlescroll")) {
@@ -251,6 +258,9 @@ class EventHandeler {
 						game.generateStaticArrows(0, true);
 					}
 				}
+				#if MODCHARTING_TOOLS
+				modcharting.NoteMovement.getDefaultStrumPos(game);
+				#end
 				#if LUA_ALLOWED
 				game.setLuaVar("playerKeyCount", newPlayerKeyCount);
 				game.setLuaVar("keyCount", newKeyCount);
