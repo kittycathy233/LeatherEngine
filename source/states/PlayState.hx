@@ -1678,7 +1678,7 @@ class PlayState extends MusicBeatState {
 				for (susNote in 0...Math.floor(swagNote.sustainLength / Std.int(Conductor.stepCrochet))) {
 					oldNote = unspawnNotes[unspawnNotes.length - 1];
 
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, noteData, oldNote, true, char,
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet  / FlxMath.roundDecimal(speed, 2)), noteData, oldNote, true, char,
 						songNotes[4], null, chars, gottaHitNote);
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
@@ -2168,7 +2168,7 @@ class PlayState extends MusicBeatState {
 					// TODO: make this not... this
 					if (Options.getData("downscroll")) {
 						swagRect.height = (coolStrum.y + (coolStrum.width / 2) - note.y) / note.scale.y;
-						swagRect.y = note.frameHeight - swagRect.height - (note.animation.curAnim.name.endsWith("end") ? note.offset.y : 0);
+						swagRect.y = note.frameHeight - swagRect.height - (note.animation.curAnim.name.endsWith("end") ? note.offset.y: 0);
 					} else {
 						swagRect.y = (coolStrum.y + Note.swagWidth / 2 - note.y) / note.scale.y;
 						swagRect.height -= swagRect.y;

@@ -415,9 +415,9 @@ class CoolUtil {
 	}
 }
 
-enum PrintType {
-	LOG;
-	DEBUG;
-	WARNING;
-	ERROR;
+enum abstract PrintType(String) to String from String {
+	var LOG = "LOG";
+	var DEBUG = "DEBUG";
+	var WARNING = "WARNING";
+	var ERROR = "ERROR";
 }
