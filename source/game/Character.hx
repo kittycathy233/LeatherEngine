@@ -205,25 +205,6 @@ class Character extends FlxSprite {
 	}
 
 
-	private function getAtlas(path:String):FlxAtlasFrames{
-		if (Assets.exists(Paths.file("images/characters/" + path + ".txt", TEXT))) {
-			return Paths.getPackerAtlas('characters/' + path);
-		}
-		else if (Assets.exists(Paths.file("images/characters/" + path + ".json", TEXT))){
-			return Paths.getJsonAtlas('characters/' + path);
-		}
-		else if (Assets.exists(Paths.file("images/characters/" + path + ".plist", TEXT))){
-			return Paths.getCocos2DAtlas('characters/' + path);
-		} 
-		else if (Assets.exists(Paths.file("images/characters/" + path + ".eas", TEXT))){
-			return Paths.getEdgeAnimateAtlas('characters/' + path);
-		} 
-		else if (Assets.exists(Paths.file("images/characters/" + path + ".js", TEXT))){
-			return Paths.getEaselJSAtlas('characters/' + path);
-		} 
-		return Paths.getSparrowAtlas('characters/' + path);
-	}
-
 	public function loadCharacterConfiguration(config:CharacterConfig) {
 		if (config.characters == null || config.characters.length <= 1) {
 			if (!isPlayer)
@@ -258,12 +239,12 @@ class Character extends FlxSprite {
 				atlas.showPivot = false;
 			}
 			else{
-				frames = getAtlas(config.imagePath);
+				frames = Paths.getAtlas(config.imagePath);
 			}
 
 			if(config.extraSheets != null){
 				for (sheet in config.extraSheets){
-					cast(frames, FlxAtlasFrames).addAtlas(getAtlas(sheet)); //multiatlas support.
+					cast(frames, FlxAtlasFrames).addAtlas(Paths.getAtlas(sheet)); //multiatlas support.
 				}
 			}
 
