@@ -67,7 +67,7 @@ class Note extends FlxSkewedSprite {
 
 	public var song:SongData;
 
-	public var speed:Float = 1;
+	public var speed(default, set):Float = 1;
 
 	#if MODCHARTING_TOOLS
 	/**
@@ -333,6 +333,18 @@ class Note extends FlxSkewedSprite {
 		if (frames != null)
 			frame = frames.frames[animation.frameIndex];
 		return rect;
+	}
+
+	@:noCompletion function set_speed(speed:Float):Float {
+		if(isSustainNote && !inEditor && animation != null && !animation?.curAnim?.name?.endsWith('end')){
+			scale.y = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
+			- (Std.parseFloat(PlayState.instance.mania_size[3])));
+			scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
+			updateHitbox();
+			centerOffsets();
+			centerOrigin();
+		}
+		return this.speed = speed;
 	}
 }
 
