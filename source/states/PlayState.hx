@@ -2095,7 +2095,7 @@ class PlayState extends MusicBeatState {
 				camFollow.y *= 0.5;
 				if (PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
 					if (Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().hasAnims()) {
-						switch (boyfriend.curAnimName().toLowerCase()) {
+						switch (boyfriend.getMainCharacter().curAnimName().toLowerCase()) {
 							case "singleft":
 								camFollow.x -= 50;
 							case "singright":
@@ -2108,7 +2108,7 @@ class PlayState extends MusicBeatState {
 					}
 				} else {
 					if (Options.getData("cameraTracksDirections") && dad.getMainCharacter().hasAnims()) {
-						switch (dad.curAnimName().toLowerCase()) {
+						switch (dad.getMainCharacter().curAnimName().toLowerCase()) {
 							case "singleft":
 								camFollow.x -= 50;
 							case "singright":
@@ -2137,7 +2137,7 @@ class PlayState extends MusicBeatState {
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(boyfriend.getMainCharacter().getScreenPosition().x, boyfriend.getMainCharacter().getScreenPosition().y));
+			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 			#if DISCORD_ALLOWED
 			// Game Over doesn't get his own variable because it's only used here
@@ -3737,8 +3737,6 @@ class PlayState extends MusicBeatState {
 				return PlayState.gf.getMainCharacter();
 			case "dad" | "opponent" | "player2" | "1":
 				return PlayState.dad.getMainCharacter();
-			case "bf" | "boyfriend" | "player" | "player1" | "0":
-				return PlayState.boyfriend.getMainCharacter();
 		}
 
 		return PlayState.boyfriend.getMainCharacter();
