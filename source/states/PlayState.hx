@@ -695,7 +695,7 @@ class PlayState extends MusicBeatState {
 		if (SONG.speed < 0)
 			SONG.speed = 0;
 
-		speed = Options.getData("useCustomScrollSpeed") ? Options.getData("customScrollSpeed") / songMultiplier : SONG.speed;
+		speed = SONG.speed;
 
 		Conductor.recalculateStuff(songMultiplier);
 		Conductor.safeZoneOffset *= songMultiplier; // makes the game more fair
@@ -1676,16 +1676,17 @@ class PlayState extends MusicBeatState {
 				for (susNote in 0...Math.floor(swagNote.sustainLength / Std.int(Conductor.stepCrochet))) {
 					oldNote = unspawnNotes[unspawnNotes.length - 1];
 
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / FlxMath.roundDecimal(speed,
-						2)), noteData, oldNote, true,
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / (Options.getData("downscroll") ? 1 :FlxMath.roundDecimal(speed,
+						2))), noteData, oldNote, true,
 						char, songNotes[4], null, chars, gottaHitNote);
-					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
-
-					sustainNote.mustPress = gottaHitNote;
-
-					sustainGroup.push(sustainNote);
-					sustainNote.sustains = sustainGroup;
+						sustainNote.scrollFactor.set();
+						unspawnNotes.push(sustainNote);
+						
+						sustainNote.mustPress = gottaHitNote;
+						
+						sustainGroup.push(sustainNote);
+						sustainNote.sustains = sustainGroup;
+					}
 				}
 
 				swagNote.sustains = sustainGroup;
@@ -4388,6 +4389,9 @@ class PlayState extends MusicBeatState {
 	}
 
 	@:noCompletion function set_speed(speed:Float):Float {
+		if(Options.getData("useCustomScrollSpeed")){
+			speed = Options.getData("customScrollSpeed") / songMultiplier;
+		}
 		if (notes?.members != null && unspawnNotes != null) {
 			for (note in notes.members) {
 				note.speed = speed;
