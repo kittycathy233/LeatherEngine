@@ -2152,17 +2152,17 @@ class PlayState extends MusicBeatState {
 					// TODO: make this not... this
 					if (Options.getData("downscroll")) {
 						swagRect.height = (coolStrum.y + (coolStrum.width / 2) - note.y) / note.scale.y;
-						swagRect.y = note.frameHeight - swagRect.height - (note.animation.curAnim.name.endsWith("end") ? note.offset.y : 0);
+						swagRect.y = note.frameHeight - swagRect.height - (note.animation.curAnim.name.endsWith("end") ? note.offset.y * 2 : 0);
 					} else {
-						swagRect.width = note.width / note.scale.x;
-						swagRect.height = note.height / note.scale.y;
+						// swagRect.width = note.width / note.scale.x;
+						// swagRect.height = note.height / note.scale.y;
 						swagRect.y = (coolStrum.y + Note.swagWidth / 2 - note.y) / note.scale.y;
 						swagRect.height -= swagRect.y;
 					}
 					note.clipRect = swagRect;
 				}
 				note.calculateCanBeHit();
-				if (!note.mustPress && note.strumTime <= Conductor.songPosition && note.shouldHit) {
+				if (!note.mustPress && note.canBeHit && note.shouldHit) {
 					camZooming = true;
 
 					var singAnim:String = NoteVariables.characterAnimations[getCorrectKeyCount(false) - 1][Std.int(Math.abs(note.noteData))]

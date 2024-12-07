@@ -134,7 +134,7 @@ class Note extends FlxSkewedSprite {
 		super();
 		if (prevNote == null)
 			prevNote = this;
-		
+
 		this.prevNote = prevNote;
 		this.inEditor = inEditor;
 		this.character = character;
@@ -142,16 +142,16 @@ class Note extends FlxSkewedSprite {
 		this.arrow_Type = arrowType;
 		this.characters = characters;
 		this.mustPress = mustPress;
-		
+
 		isSustainNote = sustainNote;
-		
+
 		if (song == null)
 			song = PlayState.SONG;
-		
+
 		var localKeyCount:Int = mustPress ? song.playerKeyCount : song.keyCount;
-		
+
 		this.noteData = noteData;
-		
+
 		this.song = song;
 		speed = song.speed;
 
@@ -234,7 +234,6 @@ class Note extends FlxSkewedSprite {
 				if (prevNote.animation != null)
 					prevNote.animation.play("hold");
 
-
 				if (Options.getData("useCustomScrollSpeed"))
 					speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
 
@@ -274,8 +273,7 @@ class Note extends FlxSkewedSprite {
 	 * @return The Y value. NOTE: Will return the negative value if downscroll is enabled.
 	 */
 	public static function calculateY(note:Note):Float {
-		return (Options.getData("downscroll") ? 1 : -1) * (0.45 * (Conductor.songPosition - note.strumTime) * FlxMath.roundDecimal(note.speed,
-			2));
+		return (Options.getData("downscroll") ? 1 : -1) * (0.45 * (Conductor.songPosition - note.strumTime) * FlxMath.roundDecimal(note.speed, 2));
 	}
 
 	override function update(elapsed:Float) {
@@ -318,8 +316,15 @@ class Note extends FlxSkewedSprite {
 			} else {
 				canBeHit = false;
 
-				if (strumTime <= Conductor.songPosition)
-					wasGoodHit = true;
+				if (!isSustainNote) {
+					if (strumTime <= Conductor.songPosition)
+						canBeHit = true;
+				} else {
+					if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset * 0.3)
+						canBeHit = true;
+					else
+						canBeHit = false;
+				}
 			}
 		}
 	}
@@ -336,9 +341,9 @@ class Note extends FlxSkewedSprite {
 	}
 
 	@:noCompletion function set_speed(speed:Float):Float {
-		if(isSustainNote && !inEditor && animation != null && !animation?.curAnim?.name?.endsWith('end')){
+		if (isSustainNote && !inEditor && animation != null && !animation?.curAnim?.name?.endsWith('end')) {
 			scale.y = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
-			- (Std.parseFloat(PlayState.instance.mania_size[3])));
+				- (Std.parseFloat(PlayState.instance.mania_size[3])));
 			scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 			updateHitbox();
 			centerOffsets();
