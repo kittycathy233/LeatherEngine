@@ -234,8 +234,6 @@ class Note extends FlxSkewedSprite {
 				if (prevNote.animation != null)
 					prevNote.animation.play("hold");
 
-				if (Options.getData("useCustomScrollSpeed"))
-					speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 				prevNote.updateHitbox();
@@ -341,7 +339,10 @@ class Note extends FlxSkewedSprite {
 	}
 
 	@:noCompletion function set_speed(speed:Float):Float {
-		if (isSustainNote && !inEditor && animation != null && !animation?.curAnim?.name?.endsWith('end')) {
+		if(Options.getData("useCustomScrollSpeed")){
+			speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
+		}
+		if(isSustainNote && !inEditor && animation != null && !animation?.curAnim?.name?.endsWith('end')){
 			scale.y = Std.parseFloat(PlayState.instance.ui_settings[0]) * (Std.parseFloat(PlayState.instance.ui_settings[2])
 				- (Std.parseFloat(PlayState.instance.mania_size[3])));
 			scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
