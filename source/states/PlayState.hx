@@ -1677,16 +1677,15 @@ class PlayState extends MusicBeatState {
 					oldNote = unspawnNotes[unspawnNotes.length - 1];
 
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + (Conductor.stepCrochet / (Options.getData("downscroll") ? 1 :FlxMath.roundDecimal(speed,
-						2))), noteData, oldNote, true,
-						char, songNotes[4], null, chars, gottaHitNote);
-						sustainNote.scrollFactor.set();
-						unspawnNotes.push(sustainNote);
-						
-						sustainNote.mustPress = gottaHitNote;
-						
-						sustainGroup.push(sustainNote);
-						sustainNote.sustains = sustainGroup;
-					}
+					2))), noteData, oldNote, true,
+					char, songNotes[4], null, chars, gottaHitNote);
+					sustainNote.scrollFactor.set();
+					unspawnNotes.push(sustainNote);
+					
+					sustainNote.mustPress = gottaHitNote;
+					
+					sustainGroup.push(sustainNote);
+					sustainNote.sustains = sustainGroup;
 				}
 
 				swagNote.sustains = sustainGroup;
