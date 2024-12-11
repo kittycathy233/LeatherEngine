@@ -14,6 +14,7 @@ import openfl.errors.Error;
 import openfl.events.ErrorEvent;
 import openfl.events.UncaughtErrorEvent;
 import openfl.text.TextFormat;
+import openfl.utils._internal.Log as OpenFLLog;
 import states.TitleState;
 import ui.SimpleInfoDisplay;
 import ui.logs.Logs;
@@ -41,6 +42,7 @@ class Main extends Sprite {
 
 		CoolUtil.haxe_trace = Log.trace;
 		Log.trace = CoolUtil.haxe_print;
+		OpenFLLog.throwErrors = false;
 
 		game = new FlxGame(1280, 720, TitleState, 60, 60, true);
 
