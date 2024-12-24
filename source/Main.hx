@@ -5,7 +5,6 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.system.debug.log.LogStyle;
 import haxe.CallStack;
-import haxe.EntryPoint;
 import haxe.Log;
 import haxe.io.Path;
 import openfl.Lib;
