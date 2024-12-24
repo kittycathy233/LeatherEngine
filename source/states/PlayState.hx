@@ -3949,8 +3949,8 @@ class PlayState extends MusicBeatState {
 
 	public inline function set(name:String, data:Any, ?executeOn:ExecuteOn = BOTH) {
 		for (script in scripts) {
-			if (script is LuaScript && (script.executeOn == executeOn || executeOn == BOTH)) {
-				script?.set(name, data);
+			if (script.executeOn == executeOn || executeOn == BOTH) {
+				script.set(name, data);
 			}
 		}
 	}
@@ -4041,7 +4041,6 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (Assets.exists(Paths.songEvents(SONG.song.toLowerCase(), storyDifficultyStr.toLowerCase())) && loadChartEvents) {
-			@:privateAccess
 			var eventFunnies:Array<Array<Dynamic>> = SongLoader.parseLegacy(Json.parse(Assets.getText(Paths.songEvents(SONG.song.toLowerCase(),
 				storyDifficultyStr.toLowerCase()))), SONG.song)
 				.events;

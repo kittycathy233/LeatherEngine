@@ -64,8 +64,8 @@ class HScript extends Script {
 			}
 		}
 
-		for (other_script in otherScripts) {
-			other_script.call(func, args);
+		for (script in otherScripts) {
+			script.call(func, args);
 		}
 		return true;
 	}
