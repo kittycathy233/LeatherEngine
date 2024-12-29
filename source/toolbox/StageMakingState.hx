@@ -418,18 +418,18 @@ class StageMakingState extends MusicBeatState {
 
 						if (Object.updateHitbox || Object.updateHitbox == null) {
 							if (Object.uses_Frame_Width)
-								Sprite.setGraphicSize(Std.int(Sprite.frameWidth / Object.scale));
+								Sprite.setGraphicSize(Sprite.frameWidth / Object.scale);
 							else
-								Sprite.setGraphicSize(Std.int(Sprite.width / Object.scale));
+								Sprite.setGraphicSize(Sprite.width / Object.scale);
 						}
 
 						if (Object.updateHitbox || Object.updateHitbox == null)
 							Sprite.updateHitbox();
 
 						if (Object.uses_Frame_Width)
-							Sprite.setGraphicSize(Std.int(Sprite.frameWidth * nums.value));
+							Sprite.setGraphicSize(Sprite.frameWidth * nums.value);
 						else
-							Sprite.setGraphicSize(Std.int(Sprite.width * nums.value));
+							Sprite.setGraphicSize(Sprite.width * nums.value);
 
 						if (Object.updateHitbox || Object.updateHitbox == null)
 							Sprite.updateHitbox();
@@ -500,9 +500,9 @@ class StageMakingState extends MusicBeatState {
 
 					if (Object.updateHitbox || Object.updateHitbox == null) {
 						if (Object.uses_Frame_Width)
-							Sprite.setGraphicSize(Std.int(Sprite.frameWidth / Object.scale));
+							Sprite.setGraphicSize(Sprite.frameWidth / Object.scale);
 						else
-							Sprite.setGraphicSize(Std.int(Sprite.width / Object.scale));
+							Sprite.setGraphicSize(Sprite.width / Object.scale);
 					}
 
 					if (Object.updateHitbox || Object.updateHitbox == null)
@@ -530,9 +530,9 @@ class StageMakingState extends MusicBeatState {
 						Sprite.updateHitbox();
 
 					if (Object.uses_Frame_Width)
-						Sprite.setGraphicSize(Std.int(Sprite.frameWidth * Object.scale));
+						Sprite.setGraphicSize(Sprite.frameWidth * Object.scale);
 					else
-						Sprite.setGraphicSize(Std.int(Sprite.width * Object.scale));
+						Sprite.setGraphicSize(Sprite.width * Object.scale);
 
 					if (Object.updateHitbox || Object.updateHitbox == null)
 						Sprite.updateHitbox();
