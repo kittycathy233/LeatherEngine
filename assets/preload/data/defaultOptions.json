@@ -17,6 +17,10 @@
       "value": true
     },
     {
+      "option": "showCommitHash",
+      "value": true
+    },
+    {
       "option": "uiSkin",
       "value": "default"
     },

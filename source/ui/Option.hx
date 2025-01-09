@@ -101,6 +101,8 @@ class BoolOption extends Option {
 				Main.toggleVers(optionChecked);
 			case "developer":
 				Main.toggleLogs(optionChecked);
+			case "showCommitHash":
+				Main.toggleCommitHash(optionChecked);
 		}
 	}
 }

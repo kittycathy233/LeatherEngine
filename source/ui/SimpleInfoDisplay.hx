@@ -1,11 +1,14 @@
 package ui;
 
+import macros.GithubCommitHash;
 import flixel.util.FlxStringUtil;
 import flixel.FlxG;
 import openfl.utils.Assets;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import external.memory.Memory;
+import macros.GithubCommitHash;
+import haxe.macro.Compiler;
 
 /**
  * Shows basic info about the game.
@@ -35,7 +38,7 @@ class SimpleInfoDisplay extends TextField {
 		height = FlxG.height;
 	}
 
-	private function update():Void {
+	public function update():Void {
 		framerateTimer += FlxG.elapsed;
 
 		if (framerateTimer >= 1) {
@@ -59,16 +62,16 @@ class SimpleInfoDisplay extends TextField {
 
 			switch (i) {
 				case 0: // FPS
-					text += '${framerate}fps';
+					text += '${framerate}fps\n';
 				case 1: // Memory
-					text += '${FlxStringUtil.formatBytes(Memory.getCurrentUsage())} / ${FlxStringUtil.formatBytes(Memory.getPeakUsage())}';
+					text += '${FlxStringUtil.formatBytes(Memory.getCurrentUsage())} / ${FlxStringUtil.formatBytes(Memory.getPeakUsage())}\n';
 				case 2: // Version
-					text += version;
+					text += '$version\n';
 				case 3: // Console
-					text += '${Main.logsOverlay.logs.length} traced lines. F3 to view.';
+					text += Main.logsOverlay.logs.length > 0 ? '${Main.logsOverlay.logs.length} traced lines. F3 to view.\n' : '';
+				case 4:
+					text += 'Commit ${GithubCommitHash.getGitCommitHash().substring(0, 7)}';
 			}
-
-			text += '\n';
 		}
 	}
 }
