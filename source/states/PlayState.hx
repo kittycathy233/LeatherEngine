@@ -41,6 +41,7 @@ import game.StageGroup;
 import game.StrumNote;
 import game.TimeBar;
 import lime.utils.Assets;
+import modding.*;
 import modding.scripts.*;
 import modding.scripts.languages.*;
 import substates.GameOverSubstate;
@@ -910,8 +911,14 @@ class PlayState extends MusicBeatState {
 			'assets/data/song data/${curSong.toLowerCase()}/',
 			'mods/${Options.getData("curMod")}/data/scripts/local/',
 			'mods/${Options.getData("curMod")}/data/song data/${curSong.toLowerCase()}/',
-			PolymodAssets.getPath('data/scripts/global/')
+			//PolymodAssets.getPath('data/scripts/global/')
 		];
+
+		for(mod in ModList.getActiveMods(PolymodHandler.metadataArrays)){
+			if(FileSystem.exists('mods/$mod/data/scripts/global/')){
+				foldersToCheck.push('mods/$mod/data/scripts/global/');
+			}
+		}
 
 		for (folder in foldersToCheck) {
 			if (FileSystem.exists(folder)) {
@@ -2094,6 +2101,7 @@ class PlayState extends MusicBeatState {
 			#end
 
 			call("onDeath", [Conductor.songPosition]);
+			closeScripts();
 		}
 
 		health = Math.max(health, minHealth);
@@ -3991,7 +3999,7 @@ class PlayState extends MusicBeatState {
 		return null;
 	}
 
-	inline function closeScripts() {
+	function closeScripts() {
 		for (script in scripts) {
 			script?.destroy();
 		}
@@ -4011,6 +4019,7 @@ class PlayState extends MusicBeatState {
 		LuaScript.lua_Jsons.clear();
 
 		scripts.clear();
+		scripts = null;
 	}
 
 	function processEvent(event:Array<Dynamic>) {
@@ -4176,6 +4185,8 @@ class PlayState extends MusicBeatState {
 	}
 
 	function setupNoteTypeScript(noteType:String) {
+		if(FlxG.state != this)
+			return;
 		#if LUA_ALLOWED
 		if (!scripts.exists(noteType.toLowerCase()) && Assets.exists(Paths.lua("arrow types/" + noteType))) {
 			scripts.set(noteType.toLowerCase(), new LuaScript(PolymodAssets.getPath(Paths.lua("arrow types/" + noteType))));
