@@ -761,7 +761,6 @@ class PlayState extends MusicBeatState {
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyStr + ")", iconRPC);
 		#end
 
-		
 		strumLine = new FlxSprite(0, 100).makeGraphic(FlxG.width, 10);
 
 		if (Options.getData("downscroll"))
@@ -2430,7 +2429,7 @@ class PlayState extends MusicBeatState {
 			#end
 		}
 
-		if(FlxG.keys.justPressed.F6){
+		if (FlxG.keys.justPressed.F6) {
 			Options.setData(!Options.getData("botplay"), "botplay");
 			set("bot", Options.getData("botplay"));
 			SONG.validScore = false;
@@ -3824,7 +3823,7 @@ class PlayState extends MusicBeatState {
 		add(stage.foregroundSprites);
 	}
 
-	function eventCharacterShit(event:Array<Dynamic>) {
+	function cacheEventCharacter(event:Array<Dynamic>) {
 		removeBgStuff();
 
 		if (gfMap.exists(event[3]) || bfMap.exists(event[3]) || dadMap.exists(event[3])) // prevent game crash
@@ -3966,7 +3965,7 @@ class PlayState extends MusicBeatState {
 
 	function call(name:String, ?args:Array<Any>, ?executeOn:ExecuteOn = BOTH) {
 		for (script in scripts) {
-			if((script.executeOn == executeOn || executeOn == BOTH)){
+			if ((script.executeOn == executeOn || executeOn == BOTH)) {
 				script.call(name, args);
 			}
 		}
