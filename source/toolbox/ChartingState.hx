@@ -1427,55 +1427,43 @@ class ChartingState extends MusicBeatState {
 			}
 
 			if (FlxG.mouse.wheel != 0 && !control) {
+				if (control) {
+					cameraShitThing.x += FlxG.mouse.wheel * 5;
+
+					if (cameraShitThing.x > gridBG.x + gridBG.width)
+						cameraShitThing.x = gridBG.x + gridBG.width;
+
+					if (cameraShitThing.x < 0)
+						cameraShitThing.x = 0;
+				} else {
+					lilBf.animation.play("idle", true);
+					lilOpp.animation.play("idle", true);
+					FlxG.sound.music.pause();
+					vocals.pause();
+
+					FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
+					vocals.time = FlxG.sound.music.time;
+
+					if (FlxG.sound.music.time < sectionStartTime()) {
+						changeSection(curSection - 1);
+					}
+				}
+			}
+
+			if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
 				lilBf.animation.play("idle", true);
 				lilOpp.animation.play("idle", true);
 				FlxG.sound.music.pause();
 				vocals.pause();
 
-				FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
+				var daTime:Float = (FlxG.keys.pressed.SHIFT ? Conductor.stepCrochet * 2 : 700 * FlxG.elapsed);
+
+				if (FlxG.keys.justPressed.W) {
+					FlxG.sound.music.time -= daTime;
+				} else
+					FlxG.sound.music.time += daTime;
+
 				vocals.time = FlxG.sound.music.time;
-			} else if (FlxG.mouse.wheel != 0) {
-				cameraShitThing.x += FlxG.mouse.wheel * 5;
-
-				if (cameraShitThing.x > gridBG.x + gridBG.width)
-					cameraShitThing.x = gridBG.x + gridBG.width;
-
-				if (cameraShitThing.x < 0)
-					cameraShitThing.x = 0;
-			}
-
-			if (!FlxG.keys.pressed.SHIFT) {
-				if (FlxG.keys.pressed.W || FlxG.keys.pressed.S) {
-					lilBf.animation.play("idle", true);
-					lilOpp.animation.play("idle", true);
-					FlxG.sound.music.pause();
-					vocals.pause();
-
-					var daTime:Float = 700 * FlxG.elapsed;
-
-					if (FlxG.keys.pressed.W) {
-						FlxG.sound.music.time -= daTime;
-					} else
-						FlxG.sound.music.time += daTime;
-
-					vocals.time = FlxG.sound.music.time;
-				}
-			} else {
-				if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
-					lilBf.animation.play("idle", true);
-					lilOpp.animation.play("idle", true);
-					FlxG.sound.music.pause();
-					vocals.pause();
-
-					var daTime:Float = Conductor.stepCrochet * 2;
-
-					if (FlxG.keys.justPressed.W) {
-						FlxG.sound.music.time -= daTime;
-					} else
-						FlxG.sound.music.time += daTime;
-
-					vocals.time = FlxG.sound.music.time;
-				}
 			}
 
 			var shiftThing:Int = 1;
