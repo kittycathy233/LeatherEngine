@@ -1523,6 +1523,13 @@ class ChartingState extends MusicBeatState {
 		leftIcon.x = gridBG.x + GRID_SIZE;
 		rightIcon.x = gridBlackLine.x;
 
+		for(n in curRenderedNotes.members){
+			if(n.isSustainNote && !StringTools.endsWith(n.animation.curAnim.name, "end")){
+				n.setGraphicSize(n.frameWidth * n.scale.x, 40);
+				n.updateHitbox();
+			}
+		}
+
 		super.update(elapsed);
 	}
 
