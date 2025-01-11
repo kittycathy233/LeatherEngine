@@ -128,14 +128,14 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 		super.update(elapsed);
 
-		if (!Options.getData("antialiasing")) {
+		/*if (!Options.getData("antialiasing")) {
 			forEachAlive(function(basic:FlxBasic) {
 				if (!(basic is FlxSprite)) {
 					return;
 				}
 				cast(basic, FlxSprite).antialiasing = false;
 			}, true);
-		}
+		}*/
 
 		if (FlxG.keys.checkStatus(FlxKey.fromString(Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;

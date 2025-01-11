@@ -1878,7 +1878,6 @@ class ChartingState extends MusicBeatState {
 					eventSprite.updateHitbox();
 
 					eventSprite.y = Math.floor(getYfromStrum((event[1] - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection)));
-					eventSprite.antialiasing = Options.getData("antialiasing");
 
 					curRenderedEvents.add(eventSprite);
 				}

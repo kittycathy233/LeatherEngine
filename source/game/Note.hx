@@ -179,7 +179,7 @@ class Note extends FlxSkewedSprite {
 
 		updateHitbox();
 
-		antialiasing = PlayState.instance.ui_settings[3] == "true";
+		antialiasing = PlayState.instance.ui_settings[3] == "true" && Options.getData("antialiasing");
 
 		x += swagWidth * noteData;
 		animation.play("default");
