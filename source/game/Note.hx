@@ -69,6 +69,8 @@ class Note extends FlxSkewedSprite {
 
 	public var speed(default, set):Float = 1;
 
+	public var playedHitSound:Bool = false;
+
 	#if MODCHARTING_TOOLS
 	/**
 	 * The mesh used for sustains to make them stretchy
