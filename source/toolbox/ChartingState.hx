@@ -1865,23 +1865,22 @@ class ChartingState extends MusicBeatState {
 				sustainNote.sustains = sustainGroup;
 			}
 			note.sustains = sustainGroup;
+		}
 
-			if (events.length >= 1) {
-				for (event in events) {
-					if (Std.int(event[1]) >= Std.int(sectionStartTime())
-						&& Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
-						var eventSprite:EventSprite = new EventSprite(event[1]);
+		if (events.length >= 1) {
+			for (event in events) {
+				if (Std.int(event[1]) >= Std.int(sectionStartTime()) && Std.int(event[1]) < Std.int(sectionStartTime(curSection + 1))) {
+					var eventSprite:EventSprite = new EventSprite(event[1]);
 
-						eventSprite.loadGraphic(Paths.gpuBitmap("charter/eventSprite", "shared"));
+					eventSprite.loadGraphic(Paths.gpuBitmap("charter/eventSprite", "shared"));
 
-						eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
-						eventSprite.updateHitbox();
+					eventSprite.setGraphicSize(GRID_SIZE, GRID_SIZE);
+					eventSprite.updateHitbox();
 
-						eventSprite.y = Math.floor(getYfromStrum((event[1] - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection)));
-						eventSprite.antialiasing = Options.getData("antialiasing");
+					eventSprite.y = Math.floor(getYfromStrum((event[1] - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection)));
+					eventSprite.antialiasing = Options.getData("antialiasing");
 
-						curRenderedEvents.add(eventSprite);
-					}
+					curRenderedEvents.add(eventSprite);
 				}
 			}
 		}
