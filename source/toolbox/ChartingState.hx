@@ -371,7 +371,7 @@ class ChartingState extends MusicBeatState {
 		}
 	}
 
-	function addSongUI():Void {
+	public function addSongUI():Void {
 		// base ui thingy :D
 		var tab_group_song:FlxUI = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -586,16 +586,16 @@ class ChartingState extends MusicBeatState {
 	public static var muteInstShit:Bool = false;
 	public static var muteVocalShit:Bool = false;
 
-	var cameraShitThing:FlxObject = new FlxObject(0, 0, Std.int(FlxG.width / 2), 4);
+	public var cameraShitThing:FlxObject = new FlxObject(0, 0, Std.int(FlxG.width / 2), 4);
 
-	var value1:FlxUIInputText;
-	var value2:FlxUIInputText;
+	public var value1:FlxUIInputText;
+	public var value2:FlxUIInputText;
 
-	var valueDescriptions:FlxText;
+	public var valueDescriptions:FlxText;
 
-	var curEvent:Int = 0;
+	public var curEvent:Int = 0;
 
-	var eventDropDown:FlxScrollableDropDownMenu;
+	public var eventDropDown:FlxScrollableDropDownMenu;
 
 	function addEventUI():Void {
 		// base ui thingy :D
@@ -1915,9 +1915,9 @@ class ChartingState extends MusicBeatState {
 		}
 	}
 
-	var events = [];
+	public var events = [];
 
-	private function addSection(?coolLength:Int = 0):Void {
+	public function addSection(?coolLength:Int = 0):Void {
 		var col:Int = Conductor.stepsPerSection;
 
 		if (coolLength == 0)
@@ -1937,7 +1937,7 @@ class ChartingState extends MusicBeatState {
 		_song.notes.push(sec);
 	}
 
-	function selectNote(note:Note):Void {
+	public function selectNote(note:Note):Void {
 		var swagNum:Int = 0;
 
 		for (i in _song.notes[curSection].sectionNotes) {
@@ -1952,7 +1952,7 @@ class ChartingState extends MusicBeatState {
 		updateNoteUI();
 	}
 
-	function deleteNote(note:Note):Void {
+	public function deleteNote(note:Note):Void {
 		for (i in _song.notes[curSection].sectionNotes) {
 			if (i[0] == note.strumTime && i[1] == note.rawNoteData)
 				_song.notes[curSection].sectionNotes.remove(i);
@@ -1961,7 +1961,7 @@ class ChartingState extends MusicBeatState {
 		updateGrid();
 	}
 
-	function selectEvent(event:EventSprite):Void {
+	public function selectEvent(event:EventSprite):Void {
 		var swagNum:Int = 0;
 
 		for (i in events) {
@@ -1996,16 +1996,17 @@ class ChartingState extends MusicBeatState {
 		updateNoteUI();
 	}
 
-	function deleteEvent(event:EventSprite):Void {
+	public function deleteEvent(event:EventSprite):Void {
 		for (i in events) {
 			if (i[1] == event.strumTime)
 				events.remove(i);
 		}
 
+
 		updateGrid();
 	}
 
-	function clearSection():Void {
+	public function clearSection():Void {
 		_song.notes[curSection].sectionNotes = [];
 
 		updateGrid();
@@ -2085,8 +2086,7 @@ class ChartingState extends MusicBeatState {
 		var noteStrum = getStrumTime(dummyArrow.y) + sectionStartTime();
 		var noteData = Math.floor((FlxG.mouse.x / GRID_SIZE) - 1);
 		var noteSus = 0;
-
-		if (noteData != -1) {
+		if (noteData > -1) {
 			var characters:Array<Int> = [];
 
 			if (characterGroup_Input.text != "" && characterGroup_Input.text != " ") {
