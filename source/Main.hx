@@ -134,7 +134,7 @@ class Main extends Sprite {
 		for (stackItem in callStack) {
 			switch (stackItem) {
 				case FilePos(s, file, line, column):
-					error += file + " (line " + line + ")\n";
+					error += file + ":" + line + "\n";
 				default:
 					Sys.println(stackItem);
 			}
