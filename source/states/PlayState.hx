@@ -4004,7 +4004,7 @@ class PlayState extends MusicBeatState {
 	}
 
 	function closeScripts() {
-		/*for (script in scripts) {
+		for (script in scripts) {
 			script?.destroy();
 		}
 
@@ -4020,7 +4020,7 @@ class PlayState extends MusicBeatState {
 		LuaScript.lua_Shaders.clear();
 		LuaScript.lua_Custom_Shaders.clear();
 		LuaScript.lua_Cameras.clear();
-		LuaScript.lua_Jsons.clear();*/
+		LuaScript.lua_Jsons.clear();
 
 	}
 
