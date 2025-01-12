@@ -1149,6 +1149,10 @@ class LuaScript extends Script {
 			return PlayState.instance.unspawnNotes.length;
 		});
 
+		setFunction("getUnspawnedNoteType", function(id:Int) {
+			return PlayState.instance.unspawnNotes[id].arrow_Type;
+		});
+
 		setFunction("getUnspawnedNoteNoteType", function(id:Int) {
 			return PlayState.instance.unspawnNotes[id].arrow_Type;
 		});
