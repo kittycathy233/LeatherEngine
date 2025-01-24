@@ -34,7 +34,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 
 		if (Options.getData("quickRestart")) {
 			PlayState.instance.call("onRetry", []);
-			PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
+			PlayState.SONG.speed = PlayState.previousScrollSpeed;
 			FlxG.resetState();
 		}
 
@@ -120,7 +120,7 @@ class GameOverSubstate extends MusicBeatSubstate {
 			FlxG.sound.play(soundPath);
 			new FlxTimer().start(0.7, function(tmr:FlxTimer) {
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function() {
-					PlayState.SONG.speed = PlayState.previousScrollSpeedLmao;
+					PlayState.SONG.speed = PlayState.previousScrollSpeed;
 					FlxG.resetState();
 				});
 			});
