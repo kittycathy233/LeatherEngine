@@ -1521,9 +1521,11 @@ class ChartingState extends MusicBeatState {
 		rightIcon.x = gridBlackLine.x;
 
 		for (n in curRenderedNotes.members) {
-			if (n.isSustainNote && !StringTools.endsWith(n.animation.curAnim.name, "end")) {
-				n.setGraphicSize(n.frameWidth * n.scale.x, zoomLevel * GRID_SIZE);
-				n.updateHitbox();
+			if(n?.animation?.curAnim != null){
+				if (n.isSustainNote && !StringTools.endsWith(n.animation.curAnim.name, "end")) {
+					n.setGraphicSize(n.frameWidth * n.scale.x, zoomLevel * GRID_SIZE);
+					n.updateHitbox();
+				}
 			}
 		}
 
