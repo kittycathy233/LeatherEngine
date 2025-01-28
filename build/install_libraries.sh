@@ -21,7 +21,7 @@ haxelib --skip-dependencies git thx.semver https://github.com/fponticelli/thx.se
 haxelib --skip-dependencies git jsonpath https://github.com/EliteMasterEric/jsonpath
 haxelib --skip-dependencies git jsonpatch https://github.com/EliteMasterEric/jsonpatch
 haxelib --skip-dependencies git funkin.vis https://github.com/FunkinCrew/funkVis
-haxelib --skip-dependencies git grig.audio https://gitlab.com/haxe-grig/grig.audio
+haxelib git grig.audio https://gitlab.com/haxe-grig/grig.audio
 haxelib --never --skip-dependencies git hxcpp https://github.com/HaxeFoundation/hxcpp
 haxelib --skip-dependencies install hxcpp-debug-server
 haxelib --never upgrade
