@@ -51,7 +51,6 @@ class GameOverSubstate extends MusicBeatSubstate {
 		if (FlxG.sound.music.active)
 			FlxG.sound.music.stop();
 
-		
 		bfDies();
 	}
 
@@ -100,7 +99,9 @@ class GameOverSubstate extends MusicBeatSubstate {
 			Conductor.songPosition = FlxG.sound.music.time;
 		}
 
+		#if (flixel < "6.0.0")
 		FlxG.camera.followLerp = elapsed * 0.6;
+		#end
 	}
 
 	var isEnding:Bool = false;

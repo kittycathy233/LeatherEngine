@@ -154,7 +154,9 @@ class MainMenuState extends MusicBeatState {
 		}
 		#end
 
+		#if (flixel < "6.0.0")
 		FlxG.camera.followLerp = elapsed * 3.6;
+		#end
 
 		if (FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

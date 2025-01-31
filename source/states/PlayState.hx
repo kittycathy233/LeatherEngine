@@ -1914,7 +1914,11 @@ class PlayState extends MusicBeatState {
 		super.update(elapsed);
 		tweenManager.update(elapsed);
 
+		#if (flixel < "6.0.0")
 		FlxG.camera.followLerp = (elapsed * 2.4) * cameraSpeed;
+		#else
+		FlxG.camera.followLerp = 0.04 * cameraSpeed;
+		#end
 		var iconLerp:Float = elapsed * 9;
 		var zoomLerp:Float = (elapsed * 3) * cameraZoomSpeed;
 
@@ -2260,8 +2264,8 @@ class PlayState extends MusicBeatState {
 					if (!note.isSustainNote) {
 						invalidateNote(note);
 					} else {
-					    // my favorite part about this hack is that you can technically override it with a script
-					    note.shouldHit = false;
+						// my favorite part about this hack is that you can technically override it with a script
+						note.shouldHit = false;
 					}
 				}
 

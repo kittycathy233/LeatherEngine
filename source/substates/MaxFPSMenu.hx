@@ -45,6 +45,7 @@ class MaxFPSMenu extends MusicBeatSubstate {
 
 		if (back) {
 			Options.setData(fps, "maxFPS");
+			FlxG.stage.frameRate = fps;
 			FlxG.state.closeSubState();
 		}
 
