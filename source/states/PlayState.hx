@@ -2252,14 +2252,17 @@ class PlayState extends MusicBeatState {
 							}
 						}
 					}
-					@:privateAccess
-					if (vocals != null && /* vocals._transform != null && */ SONG != null && SONG.needsVoices)
+					/* @:privateAccess */
+					if (vocals != null && /* vocals._transform != null && */ SONG != null && SONG.needsVoices) {
 						vocals.volume = 1;
+					}
 
-					note.active = false;
-					note.visible = false;
-
-					invalidateNote(note);
+					if (!note.isSustainNote) {
+						invalidateNote(note);
+					} else {
+					    // my favorite part about this hack is that you can technically override it with a script
+					    note.shouldHit = false;
+					}
 				}
 
 				if (note != null && coolStrum != null) {
