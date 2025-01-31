@@ -60,9 +60,9 @@ class Main extends Sprite {
 		logsOverlay.visible = false;
 		addChild(logsOverlay);
 
-		LogStyle.WARNING.onLog.add(data, pos -> trace(data, WARNING, pos));
-		LogStyle.ERROR.onLog.add(data, pos -> trace(data, ERROR, pos));
-		LogStyle.NOTICE.onLog.add(data, pos -> trace(data, LOG, pos));
+		LogStyle.WARNING.onLog.add((data, pos) -> trace(data, WARNING, pos));
+		LogStyle.ERROR.onLog.add((data, pos) -> trace(data, ERROR, pos));
+		LogStyle.NOTICE.onLog.add((data, pos) -> trace(data, LOG, pos));
 
 		display = new SimpleInfoDisplay(8, 3, 0xFFFFFF, "_sans");
 		addChild(display);
