@@ -60,11 +60,11 @@ jobs:
           haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
-          lime rebuild linux
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile Linux
         run: |
+          lime rebuild linux
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
@@ -168,11 +168,11 @@ jobs:
           haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
-          lime rebuild mac
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: |
+          lime rebuild mac
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
