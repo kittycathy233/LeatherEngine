@@ -40,8 +40,6 @@ jobs:
           haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
           haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
           haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
           haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
@@ -63,11 +61,13 @@ jobs:
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile Linux
-        run: |
-          lime rebuild linux
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
+          haxelib run lime setup flixel
+          haxelib run lime setup
+          lime rebuild linux
+        run: |
           haxelib --always run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@main
@@ -95,8 +95,6 @@ jobs:
           haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
           haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
           haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
           haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
@@ -116,6 +114,8 @@ jobs:
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
           lime rebuild windows
+          haxelib run lime setup flixel
+          haxelib run lime setup
         shell: cmd
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -148,8 +148,6 @@ jobs:
           haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
           haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
           haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
           haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
@@ -172,10 +170,12 @@ jobs:
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
         run: |
-          lime rebuild mac
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
+          lime rebuild mac
+          haxelib run lime setup flixel
+          haxelib run lime setup
           haxelib --always run lime build mac --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@main

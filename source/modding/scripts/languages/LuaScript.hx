@@ -3422,6 +3422,8 @@ class LuaScript extends Script {
 		}
 		#end
 
+		setup();
+
 		call("onCreate", []);
 		call("createLua", []);
 		call("new", []);
