@@ -28,16 +28,21 @@ jobs:
       - name: Install libvlc
         run: sudo apt-get install -y libvlc-dev libvlccore-dev
 
+      - name: Install lime dependencies
+        run: sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev g++ g++-multilib gcc-multilib libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev
+
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
-          haxelib install lime 8.1.3
-          haxelib install openfl
-          haxelib git flixel https://github.com/HaxeFlixel/flixel
+          haxelib install format
+          haxelib install hxp
+          haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
+          haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
+          haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
+          haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
@@ -45,7 +50,7 @@ jobs:
           haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
           haxelib git thx.core https://github.com/fponticelli/thx.core
           haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
-          haxelib install hxvlc
+          haxelib git hxvlc https://github.com/Vortex2Oblivion/hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
@@ -55,7 +60,7 @@ jobs:
           haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
-          haxelib list
+          lime rebuild linux
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile Linux
@@ -85,19 +90,21 @@ jobs:
         run: |
           haxelib setup C:/haxelib
           haxelib git hxcpp https://github.com/Vortex2Oblivion/hxcpp-compiled
-          haxelib install lime 8.1.3
-          haxelib install openfl
-          haxelib git flixel https://github.com/HaxeFlixel/flixel
+          haxelib install format
+          haxelib install hxp
+          haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
+          haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
+          haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
+          haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
           haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
           haxelib git hxNoise https://github.com/whuop/hxNoise
-          haxelib install hxvlc
+          haxelib git hxvlc https://github.com/Vortex2Oblivion/hxvlc
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
           haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
@@ -108,7 +115,7 @@ jobs:
           haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
-          haxelib list
+          lime rebuild windows
         shell: cmd
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -136,18 +143,20 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
-          haxelib install lime 8.1.3
-          haxelib install openfl
-          haxelib git flixel https://github.com/HaxeFlixel/flixel
+          haxelib install format
+          haxelib install hxp
+          haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
+          haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
+          haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
+          haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
           haxelib git linc_luajit https://github.com/Vortex2Oblivion/linc_luajit
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
           haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
-          haxelib install hxvlc
+          haxelib git hxvlc https://github.com/Vortex2Oblivion/hxvlc
           haxelib git hxNoise https://github.com/whuop/hxNoise
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
@@ -159,7 +168,7 @@ jobs:
           haxelib git jsonpath https://github.com/EliteMasterEric/jsonpath
           haxelib git jsonpatch https://github.com/EliteMasterEric/jsonpatch
           haxelib install hxcpp-debug-server
-          haxelib list
+          lime rebuild mac
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile

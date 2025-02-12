@@ -1221,10 +1221,8 @@ class PlayState extends MusicBeatState {
 		}
 
 		#if VIDEOS_ALLOWED
-		videoHandler.autoPause = true;
 		if (videoHandler.load(PolymodAssets.getPath(Paths.video(name, ext))))
 			FlxTimer.wait(0.001, () -> videoHandler.play());
-		videoHandler.mute = false;
 		videoHandler.onEndReached.add(function() {
 			videoHandler.dispose();
 			FlxG.removeChild(videoHandler);

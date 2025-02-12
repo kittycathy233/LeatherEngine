@@ -40,7 +40,7 @@
 
 --macro include('game')
 --macro include('hxvlc')
---macro include('flixel', true, [ 'flixel.addons.editors.spine.*', 'flixel.addons.nape.*', 'flixel.system.macros.*' ])
+--macro include('flixel', true, [ 'flixel.addons.editors.spine.*', 'flixel.addons.nape.*', 'flixel.addons.tile.FlxRayCastTilemap', 'flixel.system.macros.*' ])
 --macro keep('Main')
 
 --no-output
