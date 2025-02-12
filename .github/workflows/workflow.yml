@@ -97,7 +97,6 @@ jobs:
           haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
           haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
           haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
-          haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
           haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
           haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
           haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
