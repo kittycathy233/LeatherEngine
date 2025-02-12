@@ -64,9 +64,9 @@ jobs:
           cd $(haxelib libpath hxcpp)/tools/hxcpp
           haxe compile.hxml
           cd -
+          lime rebuild linux
           haxelib run lime setup flixel
           haxelib run lime setup
-          lime rebuild linux
         run: |
           haxelib --always run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
