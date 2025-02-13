@@ -3445,8 +3445,10 @@ class LuaScript extends Script {
 			lua_Sounds.set("Voices" + sound, PlayState.instance.vocals.members[sound]);
 		}
 
-		for (object in PlayState.instance.stage.stageObjects) {
-			lua_Sprites.set(object[0], object[1]);
+		if(PlayState.instance.stage != null){
+			for (object in PlayState.instance.stage.stageObjects) {
+				lua_Sprites.set(object[0], object[1]);
+			}
 		}
 
 		if (PlayState.dad.otherCharacters != null) {
@@ -3476,7 +3478,7 @@ class LuaScript extends Script {
 			}
 		}
 
-		if (PlayState.instance != null) {
+		if (PlayState?.strumLineNotes?.members != null) {
 			for (i in 0...PlayState.strumLineNotes.length) {
 				lua_Sprites.set("defaultStrum" + i, PlayState.strumLineNotes.members[i]);
 

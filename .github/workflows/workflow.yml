@@ -65,7 +65,7 @@ jobs:
           haxe compile.hxml
           cd -
           haxelib --always run lime rebuild linux
-          haxelib --alwaysrun lime setup
+          haxelib --always run lime setup
           haxelib --always run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Linux Artifact
         uses: actions/upload-artifact@main
