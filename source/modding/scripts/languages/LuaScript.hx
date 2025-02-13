@@ -671,7 +671,7 @@ class LuaScript extends Script {
 		setFunction("makeText", function(id:String, text:String, x:Float, y:Float, size:Int = 32, font:String = "vcr.ttf", fieldWidth:Float = 0) {
 			if (!lua_Sprites.exists(id)) {
 				var Sprite:FlxTextFix = new FlxTextFix(x, y, fieldWidth, text, size);
-				Sprite.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.TRANSPARENT);
+				Sprite.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE_FAST, FlxColor.TRANSPARENT);
 				// Sprite.setFormat(Paths.font(font), size);
 				Sprite.font = Paths.font(font);
 
