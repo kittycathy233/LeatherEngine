@@ -2144,6 +2144,17 @@ class LuaScript extends Script {
 				lua_Sounds.get(id).stop();
 		});
 
+		setFunction("pauseSound", function(id:String) {
+			if (lua_Sounds.get(id) != null)
+				lua_Sounds.get(id).pause();
+		});
+
+		setFunction("resumeSound", function(id:String) {
+			if (lua_Sounds.get(id) != null)
+				lua_Sounds.get(id).resume();
+		});
+
+
 		setFunction("setSoundVolume", function(id:String, volume:Float) {
 			if (lua_Sounds.get(id) != null)
 				lua_Sounds.get(id).volume = volume;
