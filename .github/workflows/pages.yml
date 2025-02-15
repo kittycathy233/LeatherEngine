@@ -89,7 +89,8 @@ jobs:
             haxelib git thx.semver https://github.com/fponticelli/thx.semver.git
             haxelib list
             mkdir pages
-            lime rebuild linux
+            haxelib --always run lime rebuild linux
+            haxelib --always run lime setup
       
       - name: Create Documentation Site 🌐
         run: |
