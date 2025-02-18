@@ -3073,9 +3073,9 @@ class LuaScript extends Script {
 				if (actor != null && funnyCustomShader != null) {
 					actor.shader = funnyCustomShader;
 				}
-			} else {
-				trace('Shader named $id doesn\'t exist!', ERROR);
-			}
+			} 
+			else 
+			    trace('Shader named $id doesn\'t exist!', ERROR);
 		});
 
 		setFunction("setCameraShader", function(camera:String, id:String) {
