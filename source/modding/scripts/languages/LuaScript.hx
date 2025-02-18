@@ -3043,7 +3043,7 @@ class LuaScript extends Script {
 				if (shader != null) {
 					shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
 				} else {
-					trace('Shader named $shader doesn\'t exist!', ERROR);
+					trace('Shader named $id doesn\'t exist!', ERROR);
 				}
 			});
 
@@ -3058,19 +3058,23 @@ class LuaScript extends Script {
 				return;
 
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(shaderName);
-			if (getCharacterByName(actorStr) != null) {
-				var character = getCharacterByName(actorStr);
-				if (character.otherCharacters != null && character.otherCharacters.length > 0) {
-					for (c in 0...character.otherCharacters.length) {
-						character.otherCharacters[c].shader = funnyCustomShader;
+			if(funnyCustomShader != null)
+				if (getCharacterByName(actorStr) != null) {
+					var character = getCharacterByName(actorStr);
+					if (character.otherCharacters != null && character.otherCharacters.length > 0) {
+						for (c in 0...character.otherCharacters.length) {
+							character.otherCharacters[c].shader = funnyCustomShader;
+						}
+						return;
 					}
-					return;
 				}
-			}
-			var actor = getActorByName(actorStr);
-
-			if (actor != null && funnyCustomShader != null) {
-				actor.shader = funnyCustomShader;
+				var actor = getActorByName(actorStr);
+	
+				if (actor != null && funnyCustomShader != null) {
+					actor.shader = funnyCustomShader;
+				}
+			} else {
+				trace('Shader named $id doesn\'t exist!', ERROR);
 			}
 		});
 
@@ -3080,10 +3084,17 @@ class LuaScript extends Script {
 
 			var cam = lua_Cameras.get(camera);
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
-			if (cam != null && funnyCustomShader != null) {
-				cam.shaders.push(new ShaderFilter(funnyCustomShader));
-				cam.shaderNames.push(id);
-				cam.cam.filters = cam.shaders;
+			if(funnyCustomShader != null){
+				if (cam != null) {
+					cam.shaders.push(new ShaderFilter(funnyCustomShader));
+					cam.shaderNames.push(id);
+					cam.cam.filters = cam.shaders;
+				}
+				else{
+					trace('Camera named $camera doesn\'t exist!', ERROR);
+				}
+			} else {
+				trace('Shader named $id doesn\'t exist!', ERROR);
 			}
 		});
 
@@ -3132,7 +3143,7 @@ class LuaScript extends Script {
 				if (shader != null) {
 					shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
 				} else {
-					trace('Shader named $shader doesn\'t exist!', ERROR);
+					trace('Shader named $id doesn\'t exist!', ERROR);
 				}
 			});
 
