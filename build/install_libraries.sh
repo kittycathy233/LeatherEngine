@@ -6,8 +6,8 @@ haxelib install format
 haxelib install hxp
 haxelib --skip-dependencies git lime https://github.com/swordcubes-grave-of-shite/lime
 haxelib --skip-dependencies git openfl https://github.com/swordcubes-grave-of-shite/openfl
-haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel
-haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons
+haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-shite/flixel dev
+haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons dev
 haxelib --skip-dependencies git flixel-ui https://github.com/HaxeFlixel/flixel-ui
 haxelib --skip-dependencies git linc_luajit https://github.com/Leather128/linc_luajit.git
 haxelib --always --skip-dependencies git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
