@@ -929,11 +929,11 @@ class PlayState extends MusicBeatState {
 			if (FileSystem.exists(folder)) {
 				for (file in FileSystem.readDirectory(folder)) {
 					if (file.endsWith('.hx')) {
-						scripts.set(file, new HScript(folder + file));
+						scripts.set('$folder/$file.hx', new HScript('$folder$file'));
 					}
 					#if LUA_ALLOWED
 					else if (file.endsWith('.lua')) {
-						scripts.set(file, new LuaScript(folder + file));
+						scripts.set('$folder$file.lua', new LuaScript('$folder$file'));
 					}
 					#end
 				}
