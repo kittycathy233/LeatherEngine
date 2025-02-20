@@ -2,7 +2,7 @@ package states;
 
 import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 import utilities.PlayerSettings;
 import shaders.NoteColors;
@@ -109,7 +109,7 @@ class TitleState extends MusicBeatState {
 
 			#if DISCORD_ALLOWED
 			if (!DiscordClient.started && Options.getData("discordRPC"))
-				DiscordClient.initialize();
+				DiscordClient.startup();
 
 			Application.current.onExit.add(function(exitCode) {
 				DiscordClient.shutdown();

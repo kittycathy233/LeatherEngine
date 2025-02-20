@@ -1,7 +1,7 @@
 package toolbox;
 
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 import game.StageGroup;
 import flixel.ui.FlxButton;

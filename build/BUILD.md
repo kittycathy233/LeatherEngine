@@ -23,7 +23,7 @@ haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved co
 haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
 haxelib git hxNoise https://github.com/whuop/hxNoise
 haxelib install hxvlc
-haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+haxelib install hxdiscord_rpc
 haxelib git fnf-modcharting-tools https://github.com/Vortex2Oblivion/FNF-Modcharting-Tools
 haxelib git flxanimate https://github.com/Vortex2Oblivion/flxanimate
 haxelib git thx.core https://github.com/fponticelli/thx.core

@@ -127,7 +127,7 @@ class HScript extends Script {
 		set('CustomSubstate', modding.custom.CustomSubstate);
 
 		#if DISCORD_ALLOWED
-		set('DiscordClient', utilities.Discord.DiscordClient);
+		set('DiscordClient', utilities.DiscordClient);
 		#end
 
 		#if MODDING_ALLOWED

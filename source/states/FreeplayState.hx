@@ -4,7 +4,7 @@ package states;
 import sys.thread.Thread;
 #end
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 import modding.scripts.languages.HScript;
 import modding.ModList;

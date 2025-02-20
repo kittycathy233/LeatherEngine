@@ -1,7 +1,7 @@
 package ui;
 
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 
 #if MODDING_ALLOWED
@@ -93,7 +93,7 @@ class BoolOption extends Option {
 			#if DISCORD_ALLOWED
 			case "discordRPC":
 				if (optionChecked && !DiscordClient.active)
-					DiscordClient.initialize();
+					DiscordClient.startup();
 				else if (!optionChecked && DiscordClient.active)
 					DiscordClient.shutdown();
 			#end

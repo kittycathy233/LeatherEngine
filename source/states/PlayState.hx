@@ -57,7 +57,7 @@ import sys.FileSystem;
 using StringTools;
 
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 #if MODDING_ALLOWED
 import polymod.backends.PolymodAssets;

@@ -1,7 +1,7 @@
 package states;
 
 #if DISCORD_ALLOWED
-import utilities.Discord.DiscordClient;
+import utilities.DiscordClient;
 #end
 import substates.ResetScoreSubstate;
 import lime.app.Application;
