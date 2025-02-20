@@ -433,9 +433,9 @@ class CharacterCreator extends MusicBeatState {
 
 		if (FlxG.keys.justPressed.ESCAPE) {
 			if (lastState == "OptionsMenu") {
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(MainMenuState.new);
 			} else {
-				FlxG.switchState(new PlayState());
+				FlxG.switchState(PlayState.new);
 			}
 		}
 

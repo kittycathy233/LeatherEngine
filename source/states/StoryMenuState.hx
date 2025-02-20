@@ -137,7 +137,7 @@ class StoryMenuState extends MusicBeatState {
 		if (controls.BACK && !movedBack && !selectedWeek) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			FlxG.switchState(MainMenuState.new);
 		}
 
 		super.update(elapsed);
@@ -323,7 +323,7 @@ class StoryMenuState extends MusicBeatState {
 
 			new FlxTimer().start(1, function(tmr:FlxTimer) {
 				PlayState.loadChartEvents = true;
-				LoadingState.loadAndSwitchState(new PlayState());
+				LoadingState.loadAndSwitchState(PlayState.new);
 			});
 		} else if (!CoolUtil.songExists(song_name, dif))
 			CoolUtil.coolError('Error: ${Paths.json('song data/${song_name}/${song_file}')} not found!', "Leather Engine Crash Prevention");

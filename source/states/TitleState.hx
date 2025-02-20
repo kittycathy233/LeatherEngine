@@ -95,13 +95,13 @@ class TitleState extends MusicBeatState {
 			#if FLX_NO_DEBUG
 			if (Options.getData("flixelStartupScreen") && !doneFlixelSplash) {
 				doneFlixelSplash = true;
-				FlxG.switchState(() -> new FlxSplash(new TitleState()));
+				FlxG.switchState(() -> new FlxSplash(TitleState.new));
 				return;
 			}
 			#end
 
 			if (Options.getData("flashingLights") == null)
-				FlxG.switchState(new FlashingLightsMenu());
+				FlxG.switchState(FlashingLightsMenu.new);
 
 			curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -309,15 +309,15 @@ class TitleState extends MusicBeatState {
 					if (CoolUtil.getCurrentVersion() != data) {
 						trace('Outdated Version Detected! ' + data.trim() + ' != ' + CoolUtil.getCurrentVersion(), WARNING);
 						Main.display.version += ' - UPDATE AVALIABLE (${data.trim()})';
-						FlxG.switchState(new OutdatedSubState(data.trim()));
+						FlxG.switchState(() -> new OutdatedSubState(data.trim()));
 					} else {
-						FlxG.switchState(new MainMenuState());
+						FlxG.switchState(MainMenuState.new);
 					}
 				}
 
 				http.onError = (error:String) -> {
 					trace('$error', ERROR);
-					FlxG.switchState(new MainMenuState()); // fail so we go anyway
+					FlxG.switchState(MainMenuState.new); // fail so we go anyway
 				}
 
 				http.request();

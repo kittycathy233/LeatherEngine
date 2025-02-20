@@ -184,9 +184,9 @@ class GameStateOption extends Option {
  class CharacterCreatorOption extends Option {
 	// OPTIONS //
 
-	public var gameState:FlxState;
+	public var gameState:NextState;
 
-	public function new(_optionName:String = "", _gameState:Dynamic) {
+	public function new(_optionName:String = "", _gameState:NextState) {
 		super(_optionName, null);
 
 		// SETTING VALUES //

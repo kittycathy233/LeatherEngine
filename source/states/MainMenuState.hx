@@ -203,7 +203,7 @@ class MainMenuState extends MusicBeatState {
 
 			if (controls.BACK) {
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				FlxG.switchState(new TitleState());
+				FlxG.switchState(TitleState.new);
 			}
 		}
 
@@ -223,23 +223,23 @@ class MainMenuState extends MusicBeatState {
 
 		switch (selectedButton) {
 			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
+				FlxG.switchState(StoryMenuState.new);
 
 			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				FlxG.switchState(FreeplayState.new);
 
 			case 'options':
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
-				FlxG.switchState(new OptionsMenu());
+				FlxG.switchState(OptionsMenu.new);
 
 			#if MODDING_ALLOWED
 			case 'mods':
-				FlxG.switchState(new ModsMenu());
+				FlxG.switchState(ModsMenu.new);
 			#end
 
 			case 'toolbox':
-				FlxG.switchState(new toolbox.ToolboxState());
+				FlxG.switchState(toolbox.ToolboxState.new);
 		}
 		call("changeState");
 	}
