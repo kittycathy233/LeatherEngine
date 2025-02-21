@@ -43,7 +43,7 @@ using utilities.BackgroundUtil;
 
 @:publicFields
 class ChartingState extends MusicBeatState {
-	var _file:FileReference;
+	var fileDialogue:FileReference;
 
 	var UI_box:FlxUITabMenu;
 
@@ -1440,27 +1440,28 @@ class ChartingState extends MusicBeatState {
 
 					FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
 					vocals.time = FlxG.sound.music.time;
-
-					if (FlxG.sound.music.time < sectionStartTime()) {
-						changeSection(curSection - 1);
-					}
 				}
 			}
 
-			if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S) {
-				lilBf.animation.play("idle", true);
-				lilOpp.animation.play("idle", true);
+			if (FlxG.keys.pressed.W || FlxG.keys.pressed.S) {
+				lilBf.animation.play("idle", false);
+				lilOpp.animation.play("idle", false);
 				FlxG.sound.music.pause();
 				vocals.pause();
 
-				var daTime:Float = (FlxG.keys.pressed.SHIFT ? Conductor.stepCrochet * 2 : 700 * FlxG.elapsed);
+				var daTime:Float = (FlxG.keys.pressed.SHIFT ? Conductor.stepCrochet : 700 * FlxG.elapsed);
 
-				if (FlxG.keys.justPressed.W) {
+				if (FlxG.keys.pressed.W) {
 					FlxG.sound.music.time -= daTime;
-				} else
+				} else{
 					FlxG.sound.music.time += daTime;
+				}
 
 				vocals.time = FlxG.sound.music.time;
+
+				if (FlxG.sound.music.time < sectionStartTime()) {
+					changeSection(curSection - 1);
+				}
 			}
 
 			var shiftThing:Int = 1;
@@ -2186,10 +2187,10 @@ class ChartingState extends MusicBeatState {
 		var data:String = Json.stringify(json);
 
 		if ((data != null) && (data.length > 0)) {
-			_file = new FileReference();
-			_file.addEventListener(Event.COMPLETE, onSaveComplete);
-			_file.addEventListener(Event.CANCEL, onSaveCancel);
-			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			fileDialogue = new FileReference();
+			fileDialogue.addEventListener(Event.COMPLETE, onSaveComplete);
+			fileDialogue.addEventListener(Event.CANCEL, onSaveCancel);
+			fileDialogue.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 
 			var gamingName = _song.song.toLowerCase();
 
@@ -2199,15 +2200,15 @@ class ChartingState extends MusicBeatState {
 			if (saveEvents)
 				gamingName = "events";
 
-			_file.save(data.trim(), gamingName + ".json");
+			fileDialogue.save(data.trim(), gamingName + ".json");
 		}
 	}
 
 	function onSaveComplete(_):Void {
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
+		fileDialogue.removeEventListener(Event.COMPLETE, onSaveComplete);
+		fileDialogue.removeEventListener(Event.CANCEL, onSaveCancel);
+		fileDialogue.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		fileDialogue = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
 	}
 
@@ -2215,20 +2216,20 @@ class ChartingState extends MusicBeatState {
 	 * Called when the save file dialog is cancelled.
 	 */
 	function onSaveCancel(_):Void {
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
+		fileDialogue.removeEventListener(Event.COMPLETE, onSaveComplete);
+		fileDialogue.removeEventListener(Event.CANCEL, onSaveCancel);
+		fileDialogue.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		fileDialogue = null;
 	}
 
 	/**
 	 * Called if there is an error while saving the gameplay recording.
 	 */
 	function onSaveError(_):Void {
-		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
-		_file.removeEventListener(Event.CANCEL, onSaveCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file = null;
+		fileDialogue.removeEventListener(Event.COMPLETE, onSaveComplete);
+		fileDialogue.removeEventListener(Event.CANCEL, onSaveCancel);
+		fileDialogue.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		fileDialogue = null;
 		FlxG.log.error("Problem saving Level data");
 	}
 }
