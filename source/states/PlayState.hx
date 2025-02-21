@@ -1310,6 +1310,7 @@ class PlayState extends MusicBeatState {
 		if (startOnTime > 0) {
 			clearNotesBefore(startOnTime);
 			setSongTime(startOnTime - 350);
+			resyncVocals();
 			return;
 		}
 
@@ -1777,11 +1778,14 @@ class PlayState extends MusicBeatState {
 
 	override function openSubState(SubState:FlxSubState) {
 		if (paused) {
-			if (FlxG.sound.music != null)
-				FlxG.sound.music.pause();
 
-			if (vocals != null)
-				vocals.pause();
+			FlxG.sound.music?.pause();
+
+			vocals?.pause();
+
+			for(sound in LuaScript.lua_Sounds){
+				sound?.pause();
+			}
 
 			if (!startTimer.finished)
 				startTimer.active = false;
@@ -1797,6 +1801,10 @@ class PlayState extends MusicBeatState {
 
 			if (!startTimer.finished && startTimer != null)
 				startTimer.active = true;
+
+			for(sound in LuaScript.lua_Sounds){
+				sound?.resume();
+			}
 
 			paused = false;
 
