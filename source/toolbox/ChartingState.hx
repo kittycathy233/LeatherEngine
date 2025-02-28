@@ -638,7 +638,6 @@ class ChartingState extends MusicBeatState {
 		blockPressWhileTypingOnStepper.push(stepperSectionBPM);
 		blockPressWhileTypingOnStepper.push(copySectionCount);
 
-		// https://www.youtube.com/watch?v=B5O30UmxKLM&t=186
 		var copyButton:FlxButton = new FlxButton(10, 130, "Copy last", function() {
 			copySection(Std.int(copySectionCount.value));
 		});
@@ -699,6 +698,15 @@ class ChartingState extends MusicBeatState {
 
 		var pasteSectionButton:FlxButton = new FlxButton(copySectionButton.x + copySectionButton.width + 2, copySectionButton.y, "Paste Section", function() {
 			pasteSection();
+		});
+
+		var copyEventsButton:FlxButton = new FlxButton(copySectionButton.x, copySectionButton.y + copySectionButton.height + 2, "Copy Events", function() {
+			copiedEventsSection = curSection;
+			copyEvents(curSection);
+		});
+
+		var pasteEventsButton:FlxButton = new FlxButton(copyEventsButton.x + copyEventsButton.width + 2, copyEventsButton.y, "Paste Events", function() {
+			pasteEvents();
 		});
 
 		// Labels for Interactive Stuff
@@ -795,6 +803,9 @@ class ChartingState extends MusicBeatState {
 
 		tab_group_section.add(copySectionButton);
 		tab_group_section.add(pasteSectionButton);
+
+		tab_group_section.add(copyEventsButton);
+		tab_group_section.add(pasteEventsButton);
 
 		// final addition
 		UI_box.addGroup(tab_group_section);
@@ -1469,14 +1480,6 @@ class ChartingState extends MusicBeatState {
 			}
 		}
 
-		if(FlxG.keys.justPressed.N){
-			copyEvents(curSection);
-		}
-		if(FlxG.keys.justPressed.M){
-			pasteEvents();
-		}
-
-
 		super.update(elapsed);
 	}
 
@@ -1572,7 +1575,7 @@ class ChartingState extends MusicBeatState {
 	}
 
 	var copiedEvents:Array<Array<Dynamic>> = [];
-	var copiedEventsStartTime:Float = 0;
+	var copiedEventsSection:Int = 0;
 
 	function copyEvents(sectionNum:Int = 1) {
 		copiedEvents = [];
@@ -1581,16 +1584,14 @@ class ChartingState extends MusicBeatState {
 				copiedEvents.push(event);
 			}
 		}
-		copiedEventsStartTime = sectionStartTime(sectionNum);
 	}
 
 	function pasteEvents() {
-		var _events:Array<Array<Dynamic>> = copiedEvents;
-		for(event in _events){
-			event[1] = (event[1] - copiedEventsStartTime) + sectionStartTime();
-			if(!events.contains(event)){
-				events.push(event);
-				curSelectedEvent = events[events.length - 1];
+		for(event in copiedEvents){
+			var strumTime:Float = sectionStartTime() + (event[1] - sectionStartTime(copiedEventsSection));
+			var pastedEvent:Array<Dynamic> = [event[0], strumTime, event[2], event[3]];
+			if(!events.contains(pastedEvent)){
+				events.push(pastedEvent);
 			}
 		}
 		updateGrid();
