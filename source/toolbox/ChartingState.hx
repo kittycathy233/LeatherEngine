@@ -1469,6 +1469,14 @@ class ChartingState extends MusicBeatState {
 			}
 		}
 
+		if(FlxG.keys.justPressed.N){
+			copyEvents(curSection);
+		}
+		if(FlxG.keys.justPressed.M){
+			pasteEvents();
+		}
+
+
 		super.update(elapsed);
 	}
 
@@ -1563,18 +1571,28 @@ class ChartingState extends MusicBeatState {
 		updateGrid();
 	}
 
-	function copyEvents(?sectionNum:Int = 1) {
-		var daSec = FlxMath.maxInt(curSection, sectionNum);
+	var copiedEvents:Array<Array<Dynamic>> = [];
+	var copiedEventsStartTime:Float = 0;
 
-		if (daSec - sectionNum != curSection) {
-			for (note in _song.notes[daSec - sectionNum].sectionNotes) {
-				var strum = note[0] + Conductor.stepCrochet * (Conductor.stepsPerSection * sectionNum);
-
-				var copiedNote:Array<Dynamic> = [strum, note[1], note[2], note[3], note[4]];
-				_song.notes[curSection].sectionNotes.push(copiedNote);
+	function copyEvents(sectionNum:Int = 1) {
+		copiedEvents = [];
+		for(event in events){
+			if(event[1] >= sectionStartTime() && event[1] < sectionStartTime(sectionNum + 1)){
+				copiedEvents.push(event);
 			}
 		}
+		copiedEventsStartTime = sectionStartTime(sectionNum);
+	}
 
+	function pasteEvents() {
+		var _events:Array<Array<Dynamic>> = copiedEvents;
+		for(event in _events){
+			event[1] = (event[1] - copiedEventsStartTime) + sectionStartTime();
+			if(!events.contains(event)){
+				events.push(event);
+				curSelectedEvent = events[events.length - 1];
+			}
+		}
 		updateGrid();
 	}
 
@@ -1584,6 +1602,9 @@ class ChartingState extends MusicBeatState {
 		if (daSec != curSection) {
 			for (note in _song.notes[daSec].sectionNotes) {
 				var strum = sectionStartTime() + (note[0] - sectionStartTime(daSec));
+
+				var copiedNote:Array<Dynamic> = [strum, note[1], note[2], note[3], note[4]];
+				_song.notes[curSection].sectionNotes.push(copiedNote);
 			}
 		}
 
@@ -1638,7 +1659,7 @@ class ChartingState extends MusicBeatState {
 		return (json.healthIcon ?? char);
 	}
 
-	function updateNoteUI():Void {
+	inline function updateNoteUI():Void {
 		if (curSelectedNote != null)
 			stepperSusLength.value = curSelectedNote[2];
 	}
@@ -1829,7 +1850,7 @@ class ChartingState extends MusicBeatState {
 		}
 	}
 
-	var events = [];
+	var events:Array<Array<Dynamic>> = [];
 
 	function addSection(?coolLength:Int = 0):Void {
 		var col:Int = Conductor.stepsPerSection;
