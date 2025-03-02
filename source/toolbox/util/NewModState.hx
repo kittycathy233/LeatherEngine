@@ -220,7 +220,13 @@ class NewModState extends MusicBeatState {
 					canBeSwitchedTo: Std.string(!checkHideModSwitch.checked)
 				}
 			}, null, "\t");
+			var discordData:String = Json.stringify({
+				ID: rpc_id.text.length > 0 ? rpc_id.text : "864980501004812369",
+				key: "logo",
+				text: rpc_id.text.length > 0 ? modName.text : "Leather Engine",
+			}, null, "\t");
 			File.saveContent('./mods/${modName.text}/_polymod_meta.json', data);
+			File.saveContent('./mods/${modName.text}/discord.json', discordData);
 			trace("mod created");
 			FlxTween.tween(camHUD, {alpha: 1}, 0.4, {ease: FlxEase.quartInOut});
 		});

@@ -4,8 +4,11 @@ package utilities;
 import cpp.ConstCharStar;
 import cpp.RawConstPointer;
 import flixel.util.FlxSignal;
+import haxe.Json;
 import hxdiscord_rpc.Discord;
 import hxdiscord_rpc.Types;
+import sys.FileSystem;
+import sys.io.File;
 import sys.thread.Thread;
 
 using cpp.RawPointer;
@@ -25,7 +28,7 @@ class DiscordClient {
 	/**
 	 * The default application ID
 	 */
-	public static var defaultID(default, null):String = "864980501004812369";
+	public static var defaultID(default, never):String = "864980501004812369";
 
 	public static var ID(default, set):String = defaultID;
 
@@ -44,20 +47,18 @@ class DiscordClient {
 	/**
 	 * Signal for when the Discord RPC is ready.
 	 */
-	public static var onReady(default, null):FlxTypedSignal<RawConstPointer<DiscordUser> -> Void> = new FlxTypedSignal<RawConstPointer<DiscordUser> -> Void>();
+	public static var onReady(default, null):FlxTypedSignal<RawConstPointer<DiscordUser>->Void> = new FlxTypedSignal<RawConstPointer<DiscordUser>->Void>();
 
 	/**
 	 * Starts the Discord RPC
 	 */
 	public static function startup() {
-		if (started)
-			return;
 		final handlers:DiscordEventHandlers = new DiscordEventHandlers();
 
 		handlers.ready = _onReady.fromStaticFunction();
 		handlers.disconnected = _onDisconnect.fromStaticFunction();
 		handlers.errored = _onError.fromStaticFunction();
-		Discord.Initialize(defaultID, handlers.addressOf(), false, null);
+		Discord.Initialize(ID, handlers.addressOf(), false, null);
 
 		started = true;
 
@@ -78,10 +79,10 @@ class DiscordClient {
 	 * Shutsdown the Discord RPC.
 	 */
 	public static inline function shutdown() {
-		if(!active) return;
 		trace("Discord: Shutting down...");
 		Discord.Shutdown();
 		active = false;
+		started = false;
 	}
 
 	private static function _onReady(request:RawConstPointer<DiscordUser>) {
@@ -102,7 +103,7 @@ class DiscordClient {
 	}
 
 	public static function changePresence(details:String = "", ?state:String, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float,
-			largeImageKey:String = "icon") {
+			largeImageKey:String = "icon", largeImageText:String = "Leather Engine") {
 		var startTimestamp:Float = hasStartTimestamp ? Date.now().getTime() : 0;
 
 		if (endTimestamp > 0) {
@@ -112,10 +113,27 @@ class DiscordClient {
 		presence.details = details;
 		presence.state = state;
 		presence.largeImageKey = largeImageKey;
+		presence.largeImageText = largeImageText;
 		presence.smallImageKey = smallImageKey;
 		presence.startTimestamp = Std.int(startTimestamp / 1000);
 		presence.endTimestamp = Std.int(endTimestamp / 1000);
 		Discord.UpdatePresence(presence.addressOf());
+	}
+
+	public static function loadModPresence():Bool {
+		if (FileSystem.exists("mods/" + Options.getData("curMod") + "/discord.json")) {
+			var discordData:DiscordData = cast Json.parse(File.getContent("mods/" + Options.getData("curMod") + "/discord.json"));
+			ID = discordData.ID;
+			changePresence("", null, null, null, null, discordData.key, discordData.text);
+			trace("found mod presence");
+			return true;
+		}
+		else{
+			ID = defaultID;
+			changePresence();
+		}
+		trace("didnt find mod presence");
+		return false;
 	}
 
 	private static inline function _onDisconnect(errorCode:Int, message:ConstCharStar):Void {
@@ -130,15 +148,20 @@ class DiscordClient {
 
 	@:noCompletion
 	static inline function set_ID(newID:String):String {
-		if(ID == newID){
-			return ID;
-		}
-		if(started){
+		if (started) {
+			@:bypassAccessor
+			ID = newID;
 			shutdown();
 			startup();
 			Discord.UpdatePresence(presence.addressOf());
 		}
 		return ID = newID;
 	}
+}
+
+typedef DiscordData = {
+	var ID:String;
+	var key:String;
+	var text:String;
 }
 #end

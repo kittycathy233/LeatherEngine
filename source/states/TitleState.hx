@@ -1,5 +1,8 @@
 package states;
 
+import haxe.Json;
+import sys.FileSystem;
+import sys.io.File;
 import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
@@ -108,9 +111,11 @@ class TitleState extends MusicBeatState {
 			super.create();
 
 			#if DISCORD_ALLOWED
-			if (!DiscordClient.started && Options.getData("discordRPC"))
+			if (Options.getData("discordRPC"))
 				DiscordClient.startup();
 
+			DiscordClient.loadModPresence();
+			
 			Application.current.onExit.add(function(exitCode) {
 				DiscordClient.shutdown();
 
