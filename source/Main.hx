@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxSignal.FlxTypedSignal;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -28,15 +29,17 @@ class Main extends Sprite {
 
 	public static var previousState:FlxState;
 
+	public static var onCrash(default, null):FlxTypedSignal<UncaughtErrorEvent -> Void> = new FlxTypedSignal<UncaughtErrorEvent -> Void>();
+
 	public function new() {
 		super();
 
 		#if sys
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, _onCrash);
 		#end
 
 		#if cpp
-		untyped __global__.__hxcpp_set_critical_error_handler(onCrash); // this is important i guess?
+		untyped __global__.__hxcpp_set_critical_error_handler(_onCrash); // this is important i guess?
 		#end
 
 		CoolUtil.haxe_trace = Log.trace;
@@ -122,7 +125,8 @@ class Main extends Sprite {
 	 * @see https://github.com/gedehari/IzzyEngine/blob/master/source/Main.hx
 	 * @param e
 	 */
-	function onCrash(e:UncaughtErrorEvent):Void {
+	private function _onCrash(e:UncaughtErrorEvent):Void {
+		onCrash.dispatch(e);
 		var error:String = "";
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
@@ -144,9 +148,9 @@ class Main extends Sprite {
 		// since i guess it can sometimes be an issue???
 		// /shrug - what-is-a-git 2024
 		var errorData:String = "";
-		if (Std.isOfType(e.error, Error)) {
+		if (e.error is Error) {
 			errorData = cast(e.error, Error).message;
-		} else if (Std.isOfType(e.error, ErrorEvent)) {
+		} else if (e.error is ErrorEvent) {
 			errorData = cast(e.error, ErrorEvent).text;
 		} else {
 			errorData = Std.string(e.error);
