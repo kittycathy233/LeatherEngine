@@ -265,6 +265,8 @@ class CoolUtil {
 		return [Std.int(h * 360), Std.int(s * 100), Std.int(v * 100)];
 	}
 
+	public static var errors:Map<String, FlxText> = new Map<String, FlxText>();
+
 	/**
 		Funny handler for `Application.current.window.alert` that *doesn't* crash on Linux and shit.
 
@@ -276,6 +278,10 @@ class CoolUtil {
 	public static function coolError(message:Null<String> = null, title:Null<String> = null, ?pos:PosInfos):Void {
 		trace(title + "-" + message, ERROR, pos);
 
+		if(errors.exists(title + "\n\n" + message) || Lambda.count(errors) >= 10){
+			return;
+		}
+
 		var text:FlxText = new FlxText(0, 0, 1280, title + "\n\n" + message, 32);
 		text.font = Paths.font("vcr.ttf");
 		text.color = 0xFF6183;
@@ -285,10 +291,12 @@ class CoolUtil {
 		text.borderColor = FlxColor.BLACK;
 		text.scrollFactor.set();
 		text.cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+		errors.set(title + "\n\n" + message, text);
 
 		FlxTween.tween(text, {alpha: 0, y: 64}, 4, {
 			onComplete: function(_) {
 				if (text != null && text.exists) {
+					errors.remove(title + "\n\n" + message);
 					FlxG.state.remove(text);
 					text.destroy();
 				}
