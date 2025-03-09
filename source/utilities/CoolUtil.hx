@@ -276,11 +276,12 @@ class CoolUtil {
 		@author Leather128
 	**/
 	public static function coolError(message:Null<String> = null, title:Null<String> = null, ?pos:PosInfos):Void {
-		trace(title + "-" + message, ERROR, pos);
-
+		
 		if(errors.exists(title + "\n\n" + message) || Lambda.count(errors) >= 10){
 			return;
 		}
+		
+		trace(title + "-" + message, ERROR, pos);
 
 		var text:FlxText = new FlxText(0, 0, 1280, title + "\n\n" + message, 32);
 		text.font = Paths.font("vcr.ttf");
