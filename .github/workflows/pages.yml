@@ -58,6 +58,7 @@ jobs:
       - name: Install Haxe Libraries 📚
         run: |
             haxelib setup ~/haxelib
+            chmod +x ./build/install_libraries.sh
             ./build/install_libraries.sh
             haxelib --always set hxcpp 4.3.2
             haxelib install hxp
