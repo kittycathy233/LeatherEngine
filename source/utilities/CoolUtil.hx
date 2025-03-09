@@ -17,7 +17,6 @@ import haxe.Log;
 import haxe.Json;
 import haxe.PosInfos;
 
-
 /**
  * Helper class with lots of utilitiy functions.
  */
@@ -276,11 +275,10 @@ class CoolUtil {
 		@author Leather128
 	**/
 	public static function coolError(message:Null<String> = null, title:Null<String> = null, ?pos:PosInfos):Void {
-		
-		if(errors.exists(title + "\n\n" + message) || Lambda.count(errors) >= 10){
+		if (errors.exists(title + "\n\n" + message) || Lambda.count(errors) >= 10) {
 			return;
 		}
-		
+
 		trace(title + "-" + message, ERROR, pos);
 
 		var text:FlxText = new FlxText(0, 0, 1280, title + "\n\n" + message, 32);

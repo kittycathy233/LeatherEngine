@@ -63,6 +63,7 @@ class StageGroup extends FlxGroup {
 			stageData = cast Json.parse(Assets.getText(Paths.json("stage data/" + stage)).trim());
 		} else {
 			stageData = cast Json.parse(Assets.getText(Paths.json("stage data/stage")).trim());
+			stage = 'stage';
 		}
 
 		clear();
