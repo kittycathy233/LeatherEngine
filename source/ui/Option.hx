@@ -6,6 +6,7 @@ import utilities.DiscordClient;
 #if MODDING_ALLOWED
 import modding.PolymodHandler;
 #end
+import utilities.NoteVariables;
 import lime.app.Application;
 import states.TitleState;
 import states.MusicBeatState;
