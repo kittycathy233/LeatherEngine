@@ -310,6 +310,8 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				CoolUtil.setWindowIcon("mods/" + Options.getData("curMod") + "/_polymod_icon.png");
 				MusicBeatState.windowNamePrefix = Options.getData("curMod");
 				PolymodHandler.loadMods();
+				NoteVariables.init();
+				Options.fixBinds();
 				FlxG.resetState();
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();
