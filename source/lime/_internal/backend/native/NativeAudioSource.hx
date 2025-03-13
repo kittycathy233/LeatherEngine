@@ -27,6 +27,8 @@ class NativeAudioSource {
 
 	private static var STREAM_TIMER_FREQUENCY = 100;
 
+	private static var hasALSoftLatencyExt:Null<Bool>;
+
 	private var buffers:Array<ALBuffer>;
 
 	private var bufferTimeBlocks:Array<Float>;
@@ -84,6 +86,9 @@ class NativeAudioSource {
 	}
 
 	public function init():Void {
+		if (hasALSoftLatencyExt == null) {
+			hasALSoftLatencyExt = AL.isExtensionPresent("AL_SOFT_source_latency");
+		}
 		dataLength = 0;
 
 		format = 0;
@@ -141,83 +146,19 @@ class NativeAudioSource {
 		samples = Std.int((dataLength * 8) / (parent.buffer.channels * parent.buffer.bitsPerSample));
 	}
 
+	public function getLatency():Float {
+		if (hasALSoftLatencyExt) {
+			var offsets = AL.getSourcedvSOFT(handle, AL.SEC_OFFSET_LATENCY_SOFT, 2);
+
+			if (offsets != null) {
+				return offsets[1] * 1000;
+			}
+		}
+
+		return 0;
+	}
+
 	public function play():Void {
-		/*var pitch:Float = AL.getSourcef (handle, AL.PITCH);
-
-
-			trace(pitch);
-
-
-			AL.sourcef (handle, AL.PITCH, pitch*0.9);
-
-
-			pitch = AL.getSourcef (handle, AL.PITCH);
-
-
-			trace(pitch); */
-		/*var pos = getPosition();
-
-
-			trace(AL.DISTANCE_MODEL);
-
-
-			AL.distanceModel(AL.INVERSE_DISTANCE);
-
-
-			trace(AL.DISTANCE_MODEL);
-
-
-			AL.sourcef(handle, AL.ROLLOFF_FACTOR, 5);
-
-
-			setPosition(new Vector4(10, 10, -100));
-
-
-			pos = getPosition();
-
-
-			trace(pos); */
-		/*var filter = AL.createFilter();
-
-
-			trace(AL.getErrorString());
-
-
-
-
-
-			AL.filteri(filter, AL.FILTER_TYPE, AL.FILTER_LOWPASS);
-
-
-			trace(AL.getErrorString());
-
-
-
-
-
-			AL.filterf(filter, AL.LOWPASS_GAIN, 0.5);
-
-
-			trace(AL.getErrorString());
-
-
-
-
-
-			AL.filterf(filter, AL.LOWPASS_GAINHF, 0.5);
-
-
-			trace(AL.getErrorString());
-
-
-
-
-
-			AL.sourcei(handle, AL.DIRECT_FILTER, filter);
-
-
-			trace(AL.getErrorString()); */
-
 		if (playing || handle == null) {
 			return;
 		}
