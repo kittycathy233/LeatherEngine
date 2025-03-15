@@ -315,6 +315,10 @@
     {
       "option": "ratingTextAlign",
       "value": "left"
+    },
+    {
+      "option": "checkForUpdates",
+      "value": true
     }
   ]
 }
