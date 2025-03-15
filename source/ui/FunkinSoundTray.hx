@@ -133,14 +133,4 @@ class FunkinSoundTray extends FlxSoundTray {
 			}
 		}
 	}
-
-	override function showIncrement():Void {
-		final volume = FlxG.sound.muted ? 0 : FlxG.sound.volume;
-		showAnim(volume, silent ? null : volumeUpSound);
-	}
-
-	override function showDecrement():Void {
-		final volume = FlxG.sound.muted ? 0 : FlxG.sound.volume;
-		showAnim(volume, silent ? null : volumeDownSound);
-	}
 }
