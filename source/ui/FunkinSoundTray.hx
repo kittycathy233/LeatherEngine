@@ -109,7 +109,7 @@ class FunkinSoundTray extends FlxSoundTray {
 	 *
 	 * @param	up Whether the volume is increasing.
 	 */
-	override public function show(up:Bool = false):Void {
+	override public function showAnim(volume:Float, ?sound:FlxSoundAsset, duration = 1.0, label = "VOLUME"):Void {
 		_timer = 1;
 		lerpYPos = 10;
 		visible = true;
@@ -121,11 +121,6 @@ class FunkinSoundTray extends FlxSoundTray {
 		}
 
 		if (!silent) {
-			var sound = up ? volumeUpSound : volumeDownSound;
-
-			if (globalVolume == 10)
-				sound = volumeMaxSound;
-
 			if (sound != null)
 				FlxG.sound.load(sound).play();
 		}
@@ -137,5 +132,15 @@ class FunkinSoundTray extends FlxSoundTray {
 				_bars[i].visible = false;
 			}
 		}
+	}
+
+	override function showIncrement():Void {
+		final volume = FlxG.sound.muted ? 0 : FlxG.sound.volume;
+		showAnim(volume, silent ? null : volumeUpSound);
+	}
+
+	override function showDecrement():Void {
+		final volume = FlxG.sound.muted ? 0 : FlxG.sound.volume;
+		showAnim(volume, silent ? null : volumeDownSound);
 	}
 }
