@@ -3136,7 +3136,7 @@ class LuaScript extends Script {
 					funnyCustomShader.setInt(property, Std.parseInt(value));
 				}
 			} else {
-				trace('Shader named $id doesn\'t exist!');
+				trace('Shader named $id doesn\'t exist!', ERROR);
 			}
 		});
 
