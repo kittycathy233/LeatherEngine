@@ -378,7 +378,7 @@ class HUDAdjustment extends MusicBeatState {
 				Math.round(_ratingText.y - initRatingTextY)
 			], "ratingTextOffset");
 			Options.setData(_ratingText.alignment, "ratingTextAlign");
-			FlxG.switchState((Main.previousState is substates.PauseSubState.PauseOptions ? substates.PauseSubState.PauseOptions.new : OptionsMenu.new));
+			FlxG.switchState((Main.previousState is substates.PauseSubState.PauseOptions ? () -> new substates.PauseSubState.PauseOptions() : () -> new OptionsMenu()));
 		}
 		if (FlxG.keys.justPressed.SPACE) {
 			Options.setData([0, 0], "ratingsOffset");

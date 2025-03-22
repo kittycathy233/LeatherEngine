@@ -2426,7 +2426,7 @@ class PlayState extends MusicBeatState {
 				vocals.stop();
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
-				FlxG.switchState(ChartingState.new);
+				FlxG.switchState(() -> new ChartingState());
 				#if DISCORD_ALLOWED
 				DiscordClient.changePresence("Chart Editor", null, null, true);
 				#end
@@ -2704,7 +2704,7 @@ class PlayState extends MusicBeatState {
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
 
-				FlxG.switchState(StoryMenuState.new);
+				FlxG.switchState(() -> new StoryMenuState());
 
 				if (SONG.validScore)
 					Highscore.saveWeekScore(campaignScore, storyDifficultyStr, (groupWeek != "" ? groupWeek + "Week" : "week") + Std.string(storyWeek));
@@ -2736,7 +2736,7 @@ class PlayState extends MusicBeatState {
 
 				switchedStates = true;
 				PlayState.loadChartEvents = true;
-				LoadingState.loadAndSwitchState(PlayState.new);
+				LoadingState.loadAndSwitchState(() -> new PlayState());
 			}
 		} else {
 			switchedStates = true;

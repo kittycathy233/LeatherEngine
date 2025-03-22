@@ -29,7 +29,7 @@ class Main extends Sprite {
 
 	public static var previousState:FlxState;
 
-	public static var onCrash(default, null):FlxTypedSignal<UncaughtErrorEvent -> Void> = new FlxTypedSignal<UncaughtErrorEvent -> Void>();
+	public static var onCrash(default, null):FlxTypedSignal<UncaughtErrorEvent->Void> = new FlxTypedSignal<UncaughtErrorEvent->Void>();
 
 	public function new() {
 		super();
@@ -50,6 +50,10 @@ class Main extends Sprite {
 
 		FlxG.signals.preStateSwitch.add(() -> {
 			Main.previousState = FlxG.state;
+		});
+
+		FlxG.signals.preStateCreate.add((state) -> {
+			CoolUtil.clearMemory();
 		});
 
 		// FlxG.game._customSoundTray wants just the class, it calls new from

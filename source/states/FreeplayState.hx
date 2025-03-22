@@ -400,7 +400,7 @@ class FreeplayState extends MusicBeatState {
 				stop_loading_songs = true;
 				#end
 
-				FlxG.switchState(MainMenuState.new);
+				FlxG.switchState(() -> new MainMenuState());
 			}
 
 			#if PRELOAD_ALL

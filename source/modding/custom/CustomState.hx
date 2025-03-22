@@ -23,7 +23,7 @@ class CustomState extends MusicBeatState{
         }
         else{
             trace('Could not find script at path ${script}', ERROR);
-            FlxG.switchState(TitleState.new);
+            FlxG.switchState(() -> new TitleState());
         }
         super();
     }

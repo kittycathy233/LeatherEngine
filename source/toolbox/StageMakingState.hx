@@ -132,7 +132,7 @@ class StageMakingState extends MusicBeatState {
 
 		var tabs = [{name: 'Editor', label: 'Editor'}, {name: 'Object', label: 'Object'}];
 
-		UI_box = new FlxUITabMenu(null, /*tabs*/null, false);
+		UI_box = new FlxUITabMenu(null, /*tabs*/[], false);
 
 		UI_box.resize(300, 400);
 		UI_box.x = 10;
@@ -713,7 +713,7 @@ class StageMakingState extends MusicBeatState {
 				stageCam.zoom -= 0.1;
 
 			if (FlxG.keys.justPressed.ESCAPE)
-				FlxG.switchState(OptionsMenu.new);
+				FlxG.switchState(() -> new OptionsMenu());
 		}
 
 		// zoom lock

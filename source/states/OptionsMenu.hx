@@ -47,7 +47,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Bigger Info Text", "biggerInfoText"),
 			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], "timeBarStyle"),
 			new PageOption("Screen Effects", "Screen Effects"),
-			new GameStateOption("Change Hud Settings", ui.HUDAdjustment.new)
+			new GameStateOption("Change Hud Settings", () -> new ui.HUDAdjustment())
 		],
 		"Misc" => [
 			new PageOption("Back", "Categories"),
@@ -203,7 +203,7 @@ class OptionsMenu extends MusicBeatState {
 			return;
 		}
 
-		FlxG.switchState(MainMenuState.new);
+		FlxG.switchState(() -> new MainMenuState());
 	}
 
 	public override function update(elapsed:Float) {
