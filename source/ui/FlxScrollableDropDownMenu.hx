@@ -8,6 +8,7 @@ import flixel.addons.ui.FlxUI9SliceSprite;
 
 /**
  * A FlxUIDropDownMenu that is extended to have scrolling capabilities.
+ * Based on code by larsiusprime
  */
 class FlxScrollableDropDownMenu extends FlxUIDropDownMenu  {
 
