@@ -432,7 +432,6 @@ class CoolUtil {
 		if (Options.getData('memoryLeaks')) {
 			return;
 		}
-		trace("clearing cached assets", DEBUG);
 		// Remove cached assets (prevents memory leaks that i can prevent)
 		lime.utils.Assets.cache.clear();
 		openfl.utils.Assets.cache.clear();

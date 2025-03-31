@@ -109,6 +109,32 @@ class Note extends FlxSkewedSprite {
 	 */
 	public static var beats:Array<Int> = [4, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192];
 
+	public static function applyColorQuants(notes:Array<Note>) {
+		if (!Options.getData('colorQuantization')) {
+			return;
+		}
+		var col:Array<Int> = [255, 0, 0];
+		for (note in notes) {
+			if (!note.isSustainNote && note.affectedbycolor) {
+				var noteBeat:Int = Math.floor(((note.strumTime / ( Conductor.stepCrochet * 4)) * 48) + 0.5);
+				for (beat in 0...beats.length - 1) {
+					if ((noteBeat % (192 / beats[beat]) == 0)) {
+						col = quantColors[beat];
+						break;
+					}
+				}
+				note.colorSwap.r = col[0];
+				note.colorSwap.g = col[1];
+				note.colorSwap.b = col[2];
+				for (sustain in note.sustains) {
+					sustain.colorSwap.r = note.colorSwap.r;
+					sustain.colorSwap.g = note.colorSwap.g;
+					sustain.colorSwap.b = note.colorSwap.b;
+				}
+			}
+		}
+	}
+
 	public static function getFrames(note:Note):FlxAtlasFrames {
 		if (PlayState.instance.types.contains(note.arrow_Type)) {
 			if (Assets.exists(Paths.image('ui skins/' + note.song.ui_Skin + "/arrows/" + note.arrow_Type, 'shared'))) {

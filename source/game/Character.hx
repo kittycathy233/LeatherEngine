@@ -149,6 +149,10 @@ class Character extends FlxSprite {
 		if (Assets.exists(Paths.hx("data/character data/" + curCharacter + "/script"))) {
 			script.call("createCharacterPost", [curCharacter]);
 		}
+
+		animation.onFinish.add((animName) -> {
+			script?.call("onAnimationFinished", [animName]);
+		});
 	}
 
 	public function loadNamedConfiguration(characterName:String) {
@@ -446,7 +450,7 @@ class Character extends FlxSprite {
 		super.update(elapsed);
 	}
 
-	private var danced:Bool = false;
+	public var danced:Bool = false;
 
 	public var lastAnim:String = '';
 

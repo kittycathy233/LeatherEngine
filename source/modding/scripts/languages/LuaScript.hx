@@ -5,26 +5,19 @@ package modding.scripts.languages;
 import modcharting.ModchartFuncs;
 #end
 import flixel.addons.effects.FlxTrail;
-import flixel.text.FlxText;
 import openfl.display.BlendMode;
 import flixel.FlxCamera;
 import game.DancingSprite;
 import game.Boyfriend;
 import ui.HealthIcon;
-import ui.logs.Logs;
 import hxnoise.Perlin;
 import utilities.NoteVariables;
-import flixel.input.gamepad.FlxGamepad;
-import flixel.input.FlxInput.FlxInputState;
 import game.Note;
 import flixel.math.FlxMath;
 import openfl.filters.BitmapFilter;
 import flixel.math.FlxPoint;
-import openfl.display.ShaderParameter;
 import shaders.custom.CustomShader;
 import openfl.filters.ShaderFilter;
-import flixel.addons.display.FlxRuntimeShader;
-import flixel.util.FlxTimer;
 import game.Character;
 import flixel.util.FlxColor;
 import llua.Convert;
@@ -36,7 +29,6 @@ import flixel.FlxSprite;
 import states.PlayState;
 import lime.utils.Assets;
 import flixel.sound.FlxSound;
-import haxe.Constraints;
 #if MODDING_ALLOWED
 import polymod.backends.PolymodAssets;
 #end
@@ -47,6 +39,7 @@ import game.Conductor;
 import lime.app.Application;
 import flixel.text.FlxText;
 import haxe.Json;
+import flixel.util.FlxStringUtil;
 
 using StringTools;
 
@@ -150,7 +143,6 @@ class LuaScript extends Script {
 		Lua.setglobal(lua, name);
 	}
 
-	var oldMultiplier:Float = PlayState.songMultiplier;
 
 	public var trails:Map<String, FlxTrail> = [];
 
@@ -169,8 +161,6 @@ class LuaScript extends Script {
 		super(path);
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
-
-		oldMultiplier = PlayState.songMultiplier;
 
 		perlin = new Perlin();
 
@@ -3157,6 +3147,30 @@ class LuaScript extends Script {
 		});
 
 		// utilities
+		setFunction("arrayToCSV", function(data:Array<Int>, width:Int, invert:Bool):String {
+			return FlxStringUtil.arrayToCSV(data, width, invert);
+		});
+
+		setFunction("filterDigits", function(input:String):String {
+			return FlxStringUtil.filterDigits(input);
+		});
+
+		setFunction("formatArray", function(anyArray:Array<Dynamic>):String {
+			return FlxStringUtil.formatArray(anyArray);
+		});
+
+		setFunction("formatBytes", function(bytes:Float, precision:Int = 2):String {
+			return FlxStringUtil.formatBytes(bytes, precision);
+		});
+
+		setFunction("formatTime", function(seconds:Float, showMS:Bool = false):String {
+			return FlxStringUtil.formatTime(seconds, showMS);
+		});
+
+		setFunction("getClassName", function(object:Dynamic, simple:Bool = false):String {
+			return FlxStringUtil.getClassName(object, simple);
+		});
+
 		setFunction("printIP", function():Void {
 			trace('${FlxG.random.int(100, 999)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}.${FlxG.random.int(1, 99)}');
 		});

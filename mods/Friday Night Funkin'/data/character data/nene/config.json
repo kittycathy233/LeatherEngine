@@ -27,6 +27,25 @@
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11,
         7, 8, 9, 10, 11, 7, 8, 9, 10, 11, 7, 8, 9, 10, 11
       ]
+    },
+    {
+      "name": "raiseKnife",
+      "animation_name": "KnifeRaise0",
+      "fps": 24,
+      "looped": false
+    },
+    {
+      "name": "idleKnife",
+      "animation_name": "KnifeIdle0",
+      "fps": 24,
+      "looped": true
+    }
+    ,
+    {
+      "name": "lowerKnife",
+      "animation_name": "KnifeLower0",
+      "fps": 24,
+      "looped": false
     }
   ]
 }

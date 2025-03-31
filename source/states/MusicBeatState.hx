@@ -113,7 +113,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			multi = PlayState.songMultiplier;
 
 		Conductor.recalculateStuff(multi);
-
+		
 		curStep = lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 
 		updateBeat();

@@ -87,7 +87,6 @@ function updatePost(elapsed:Float) {
 		object.alpha = character.alpha;
 		object.shader = character.shader;
 		object.color = character.color;
-		object.colorTransform = character.colorTransform;
 		object.scrollFactor = character.scrollFactor;
 	}
 

@@ -575,9 +575,9 @@ class PlayState extends MusicBeatState {
 	var tweenManager:FlxTweenManager;
 
 	override function create() {
-		tweenManager = new FlxTweenManager();
 		// set instance because duh
 		instance = this;
+		tweenManager = new FlxTweenManager();
 
 		FlxG.mouse.visible = false;
 
@@ -1096,33 +1096,8 @@ class PlayState extends MusicBeatState {
 			call("onEventLoaded", [event[0], event[1], event[2], event[3]]);
 		}
 
-		// see https://discord.com/channels/929608653173051392/1034954605253107844/1163134784277590056
-		// based on a lua script by TheZoroForce240
-		if (Options.getData('colorQuantization')) {
-			var col:Array<Int> = [142, 142, 142];
-			for (note in unspawnNotes) {
-				if (!note.isSustainNote && note.affectedbycolor) {
-					var quantStrumTime:Float = note.strumTime;
-					var currentStepCrochet:Float = Conductor.stepCrochet;
-					var noteBeat:Int = Math.floor(((quantStrumTime / (currentStepCrochet * 4)) * 48) + 0.5);
-					for (beat in 0...Note.beats.length - 1) {
-						if ((noteBeat % (192 / Note.beats[beat]) == 0)) {
-							noteBeat = Note.beats[beat];
-							col = Note.quantColors[beat];
-							break;
-						}
-					}
-					note.colorSwap.r = col[0];
-					note.colorSwap.g = col[1];
-					note.colorSwap.b = col[2];
-					for (sustain in note.sustains) {
-						sustain.colorSwap.r = note.colorSwap.r;
-						sustain.colorSwap.g = note.colorSwap.g;
-						sustain.colorSwap.b = note.colorSwap.b;
-					}
-				}
-			}
-		}
+		Note.applyColorQuants(unspawnNotes);
+	
 
 		super.create();
 
@@ -1278,7 +1253,9 @@ class PlayState extends MusicBeatState {
 	static var startOnTime:Float = 0;
 
 	function startCountdown():Void {
-		call("startCountdown", []);
+		if(curStep < -20){
+			curStep = -20;
+		}
 
 		inCutscene = false;
 		paused = false;
@@ -1316,7 +1293,7 @@ class PlayState extends MusicBeatState {
 		#if LUA_ALLOWED
 		for (script in scripts) {
 			if (script is LuaScript) {
-				script.setup();
+				script?.setup();
 			}
 		}
 
@@ -1351,7 +1328,7 @@ class PlayState extends MusicBeatState {
 		call("start", [SONG.song.toLowerCase()], BOTH);
 		#end
 
-		startTimer.start(Conductor.crochet / 1000, function(tmr:FlxTimer) {
+		startTimer.start(Conductor.crochet / 1000, (tmr:FlxTimer) -> {
 			call("countdownTick", [swagCounter]);
 			if (dad.otherCharacters == null) {
 				dad.dance();
@@ -1920,7 +1897,6 @@ class PlayState extends MusicBeatState {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		tweenManager.update(elapsed);
-
 		#if (flixel < "6.0.0")
 		FlxG.camera.followLerp = (elapsed * 2.4) * cameraSpeed;
 		#else
@@ -3524,8 +3500,11 @@ class PlayState extends MusicBeatState {
 				FlxTween.color(timeBar.bar, Conductor.crochet * 0.002, timeBar.bar.color, target);
 			}
 
-			if (SONG.notes[Math.floor(curStep / Conductor.stepsPerSection)].changeBPM)
+			if (SONG.notes[Math.floor(curStep / Conductor.stepsPerSection)].changeBPM){
 				Conductor.changeBPM(SONG.notes[Math.floor(curStep / Conductor.stepsPerSection)].bpm, songMultiplier);
+				Note.applyColorQuants(notes.members);
+				Note.applyColorQuants(unspawnNotes);
+			}
 		}
 
 		// Dad doesnt interupt his own notes
