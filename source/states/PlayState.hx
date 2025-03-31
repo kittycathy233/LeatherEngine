@@ -1910,8 +1910,8 @@ class PlayState extends MusicBeatState {
 		iconP2.scale.set(FlxMath.lerp(iconP2.scale.x, iconP2.startSize, iconLerp * songMultiplier),
 			FlxMath.lerp(iconP2.scale.y, iconP2.startSize, iconLerp * songMultiplier));
 
-		iconP1.scale.set(Math.min(iconP1.scale.x, iconP1.startSize + 0.2), Math.min(iconP1.scale.y, iconP1.startSize + 0.2));
-		iconP2.scale.set(Math.min(iconP2.scale.x, iconP2.startSize + 0.2), Math.min(iconP2.scale.y, iconP2.startSize + 0.2));
+		iconP1.scale.set(Math.min(iconP1.scale.x, iconP1.startSize + 0.2 * iconP1.startSize), Math.min(iconP1.scale.y, iconP1.startSize + 0.2 * iconP1.startSize));
+		iconP2.scale.set(Math.min(iconP2.scale.x, iconP2.startSize + 0.2 * iconP2.startSize), Math.min(iconP2.scale.y, iconP2.startSize + 0.2 * iconP2.startSize));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -3541,11 +3541,8 @@ class PlayState extends MusicBeatState {
 			camHUD.zoom += 0.03 * cameraZoomStrength;
 		}
 
-		iconP1.scale.add(0.2, 0.2);
-		iconP2.scale.add(0.2, 0.2);
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+		iconP1.scale.add(0.2 * iconP1.startSize, 0.2 * iconP1.startSize);
+		iconP2.scale.add(0.2 * iconP2.startSize, 0.2 * iconP2.startSize);
 
 		var iconOffset:Int = 26;
 

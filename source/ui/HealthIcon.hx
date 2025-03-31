@@ -56,15 +56,16 @@ class HealthIcon extends TrackerSprite {
 			animation.addByPrefix('lose', '${char}-lose0', iconConfig.fps, true, isPlayer);
 			animation.addByPrefix('win', '${char}-win0', iconConfig.fps, true, isPlayer);
 		} else {
-			var dummy:FlxSprite = new FlxSprite().loadGraphic(Paths.gpuBitmap('icons/$iconPath'));
-			
-			if (dummy.height != 150) // damn psych engine edge cases >:(
+			var dummy:FlxSprite = new FlxSprite().loadGraphic(Paths.gpuBitmap('icons/$iconPath'));			
+			if (dummy.height == 32) // damn pixel icons >:(
+				loadGraphic(Paths.gpuBitmap('icons/$iconPath'), true, 32, 32);
+			else if (dummy.height != 150) // damn psych engine edge cases >:(
 				loadGraphic(Paths.gpuBitmap('icons/$iconPath'), true, Std.int(dummy.width / 2), Std.int(dummy.height));
 			else
 				loadGraphic(Paths.gpuBitmap('icons/$iconPath'), true, 150, 150);
 			
-			var winFrame:Int = (dummy.width >= 450 ? 2 : 0);
-			var loseFrame:Int = (dummy.width >= 300 ? 1 : 0);
+			var winFrame:Int = (dummy.width >= dummy.height * 3 ? 2 : 0);
+			var loseFrame:Int = (dummy.width >= dummy.height * 2 ? 1 : 0);
 			
 			dummy.destroy();
 			dummy = null;
@@ -78,7 +79,10 @@ class HealthIcon extends TrackerSprite {
 		scale.set(iconConfig.scale, iconConfig.scale);
 		offsetX = iconConfig.offset[0];
 		offsetY = iconConfig.offset[1];
-		antialiasing = (iconConfig.antialiasing || !char.endsWith('-pixel'));
+		antialiasing = iconConfig.antialiasing;
+		if(char.endsWith('-pixel')){
+			antialiasing = false;
+		}
 		startSize = scale.x;
 		updateHitbox();
 		centerOffsets();

@@ -318,12 +318,14 @@ class FreeplayState extends MusicBeatState {
 			if (i == lastSelectedSong)
 				continue;
 
-			iconArray[i].scale.set(iconArray[i].startSize, iconArray[i].startSize);
+			var _icon:HealthIcon = iconArray[i];
+
+			_icon.scale.set(_icon.startSize, _icon.startSize);
 		}
 
-		if (lastSelectedSong != -1 && iconArray[lastSelectedSong] != null)
-			iconArray[lastSelectedSong].scale.set(FlxMath.lerp(iconArray[lastSelectedSong].scale.x, iconArray[lastSelectedSong].startSize, elapsed * 9),
-				FlxMath.lerp(iconArray[lastSelectedSong].scale.y, 1, elapsed * 9));
+		if (lastSelectedSong != -1 && scaleIcon != null)
+			scaleIcon.scale.set(FlxMath.lerp(scaleIcon.scale.x, scaleIcon.startSize, elapsed * 9),
+				FlxMath.lerp(scaleIcon.scale.y, scaleIcon.startSize, elapsed * 9));
 
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, 0.4));
 
@@ -438,6 +440,7 @@ class FreeplayState extends MusicBeatState {
 				vocals.play();
 
 				lastSelectedSong = curSelected;
+				scaleIcon = iconArray[lastSelectedSong];
 			}
 			#end
 
@@ -625,12 +628,14 @@ class FreeplayState extends MusicBeatState {
 		call("destroyFreeplayVocalsPost", [destroyInst]);
 	}
 
+	var scaleIcon:HealthIcon;
+
 	override function beatHit() {
 		call("beatHit");
 		super.beatHit();
 
-		if (lastSelectedSong != -1 && iconArray[lastSelectedSong] != null)
-			iconArray[lastSelectedSong].scale.add(0.2, 0.2);
+		if (lastSelectedSong >= 0 && scaleIcon != null)
+			scaleIcon.scale.add(0.2 * scaleIcon.startSize, 0.2 * scaleIcon.startSize);
 		call("beatHitPost");
 	}
 }
