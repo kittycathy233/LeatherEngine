@@ -1,6 +1,7 @@
 package game;
 
-import game.Note.JsonData;
+import game.Note;
+import game.StrumNote;
 import haxe.Json;
 import openfl.Assets;
 import shaders.NoteColors;
@@ -11,14 +12,14 @@ import states.PlayState;
 import flixel.FlxSprite;
 
 class NoteSplash extends FlxSprite {
-	public var target:FlxSprite;
-	
+	public var target:StrumNote;
+
 	public var colorSwap:ColorSwap;
-	public var noteColor:Array<Int> = [255,0,0];
+	public var noteColor:Array<Int> = [255, 0, 0];
 	public var affectedbycolor:Bool = false;
 	public var jsonData:JsonData;
 
-	public function new(?X:Float = 0, ?Y:Float = 0){
+	public function new(?X:Float = 0, ?Y:Float = 0) {
 		super(X, Y);
 
 		colorSwap = new ColorSwap();
@@ -32,23 +33,22 @@ class NoteSplash extends FlxSprite {
 				frames = Paths.getSparrowAtlas("ui skins/default/arrows/Note_Splashes");
 		}
 
-		if(Assets.exists(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config"))){
-			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config")));	
+		if (Assets.exists(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config"))) {
+			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + PlayState.SONG.ui_Skin + "/config")));
 			for (value in jsonData.values) {
 				this.affectedbycolor = value.affectedbycolor;
 			}
 		}
 	}
 
-	public function setup_splash(noteData:Int, target:FlxSprite, ?isPlayer:Bool = false) {
-
+	public function setup_splash(noteData:Int, target:StrumNote, isPlayer:Bool = false) {
 		var localKeyCount:Int = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		this.target = target;
 		graphic.destroyOnNoUse = false;
 
-		animation.addByPrefix("default", "note splash " + NoteVariables.animationDirections[localKeyCount - 1][noteData] + "0", FlxG.random.int(22, 26),
-			false);
+		animation.addByPrefix("default", "note splash "
+			+ NoteVariables.animationDirections[localKeyCount - 1][noteData] + "0", FlxG.random.int(22, 26), false);
 		animation.play("default", true);
 
 		setGraphicSize(target.width * 2.5);
@@ -58,11 +58,10 @@ class NoteSplash extends FlxSprite {
 		updateHitbox();
 		centerOffsets();
 
-
 		shader = affectedbycolor ? colorSwap.shader : null;
 
 		noteColor = NoteColors.getNoteColor(NoteVariables.animationDirections[PlayState.SONG.keyCount - 1][noteData]);
-		if(colorSwap != null && noteColor != null){
+		if (colorSwap != null && noteColor != null) {
 			colorSwap.r = noteColor[0];
 			colorSwap.g = noteColor[1];
 			colorSwap.b = noteColor[2];
