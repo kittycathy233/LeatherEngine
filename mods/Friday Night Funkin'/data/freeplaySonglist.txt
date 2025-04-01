@@ -20,7 +20,7 @@ Thorns:spirit:6:Easy,Normal,Hard,Erect,Nightmare:#FF3C6E
 Ugh:tankman:7:Easy,Normal,Hard,Erect,Nightmare:#F6B604
 Guns:tankman:7:Easy,Normal,Hard:#F6B604
 Stress:tankman:7:Easy,Normal,Hard:#F6B604
-Darnell:darnell:END1:Easy,Normal,Hard:#735EB0
+Darnell:darnell:END1:Easy,Normal,Hard,Erect,Nightmare:#735EB0
 Lit Up:darnell:END1:Easy,Normal,Hard:#735EB0
 2Hot:darnell:END1:Easy,Normal,Hard:#735EB0
 Blazin:darnell:END1:Easy,Normal,Hard:#735EB0
