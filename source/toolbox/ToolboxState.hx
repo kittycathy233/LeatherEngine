@@ -38,7 +38,7 @@ class ToolboxState extends MusicBeatState {
 		],
 		"Documentation" => [
 			new OpenUrlOption("Wiki", "Wiki", "https://github.com/Leather128/LeatherEngine/wiki"),
-			new OpenUrlOption("HScript Api", "HScript Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
+			new OpenUrlOption("Haxe Api", "Haxe Api", "https://vortex2oblivion.github.io/Leather-Engine-Docs/"),
 			new OpenUrlOption("Lua Api", "Lua Api", "https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/wiki/Lua-api-documentation-(WIP)"),
 			new OpenUrlOption("Polymod Docs", "Polymod Docs", "https://polymod.io/docs/")
 		]

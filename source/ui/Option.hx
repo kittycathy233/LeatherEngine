@@ -416,7 +416,7 @@ class OpenUrlOption extends Option {
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
-			CoolUtil.openURL(Url);
+			FlxG.openURL(Url);
 		}
 	}
 }

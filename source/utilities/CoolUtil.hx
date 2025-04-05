@@ -86,14 +86,6 @@ class CoolUtil {
 		return dumbArray;
 	}
 
-	public static inline function openURL(url:String) {
-		#if linux
-		Sys.command('/usr/bin/xdg-open', [url, "&"]);
-		#else
-		FlxG.openURL(url);
-		#end
-	}
-
 	public static function coolTextCase(text:String):String {
 		var returnText:String = "";
 
