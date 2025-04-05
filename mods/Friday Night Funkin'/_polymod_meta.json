@@ -4,8 +4,5 @@
   "author": "Ninjamuffin99, PhantomArcade, KawaiiSprite, EvilSk8r",
   "api_version": "0.5.0",
   "mod_version": "0.5.3",
-  "license": "Apache 2.0",
-  "metadata": {
-    "canBeDisabled": "false"
-  }
+  "license": "Apache 2.0"
 }

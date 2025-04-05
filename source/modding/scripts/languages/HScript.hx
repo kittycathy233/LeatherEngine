@@ -62,7 +62,7 @@ class HScript extends Script {
 				else
 					Reflect.callMethod(null, real_func, args);
 			} catch (e) {
-				trace(name + extension + ": " + e.details(), ERROR);
+				trace('$name.$extension' + ": " + e.details(), ERROR);
 				trace("ERROR Caused in " + func + " with " + Std.string(args) + " args", ERROR);
 				return false;
 			}

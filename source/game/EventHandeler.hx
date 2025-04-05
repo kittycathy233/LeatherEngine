@@ -421,6 +421,17 @@ class EventHandeler {
 				}
 			case 'zoomcamera':
 				game.defaultCamZoom = Std.parseFloat(event[2]);
+			case 'playanimation':
+				var character:Character = PlayState.getCharFromEvent(event[2]);
+
+				var anim:String = "idle";
+
+				var splitShit:Array<String> = event[3].split(',');
+
+				if (splitShit[0] != "")
+					anim = splitShit[0];
+
+				character.playAnim(anim, splitShit[1] == "true");
 		}
 	}
 }

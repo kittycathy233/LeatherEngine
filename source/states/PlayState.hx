@@ -1368,6 +1368,7 @@ class PlayState extends MusicBeatState {
 					ready.updateHitbox();
 
 					ready.screenCenter();
+					ready.zIndex = FlxMath.MAX_VALUE_INT;
 					add(ready);
 
 					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
@@ -1386,6 +1387,7 @@ class PlayState extends MusicBeatState {
 					set.updateHitbox();
 
 					set.screenCenter();
+					set.zIndex = FlxMath.MAX_VALUE_INT;
 					add(set);
 
 					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
@@ -1404,6 +1406,7 @@ class PlayState extends MusicBeatState {
 					go.updateHitbox();
 
 					go.screenCenter();
+					go.zIndex = FlxMath.MAX_VALUE_INT;
 					add(go);
 
 					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
