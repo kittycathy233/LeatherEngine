@@ -112,8 +112,6 @@
 
 	<haxedef name="openfl_enable_experimental_update_queue" />
 
-	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
-
 	<haxeflag name="-dce" value="no" />
 	<haxeflag name="--macro" value="include('flixel', true, [ 'flixel.addons.editors.spine.*', 'flixel.addons.nape.*', 'flixel.addons.tile.FlxRayCastTilemap', 'flixel.addons.weapon.FlxWeapon', 'flixel.system.macros.*' ])" />
 	<haxeflag name="--macro" value="include('game')" />
