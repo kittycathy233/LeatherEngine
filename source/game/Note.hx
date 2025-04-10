@@ -297,7 +297,7 @@ class Note extends FlxSkewedSprite {
 	 * @param note the note to calculate
 	 * @return The Y value. NOTE: Will return the negative value if downscroll is enabled.
 	 */
-	public static function calculateY(note:Note):Float {
+	public static inline function calculateY(note:Note):Float {
 		return (Options.getData("downscroll") ? 1 : -1) * (0.45 * (Conductor.songPosition - note.strumTime) * FlxMath.roundDecimal(note.speed, 2));
 	}
 
