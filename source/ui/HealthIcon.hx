@@ -74,7 +74,7 @@ class HealthIcon extends TrackerSprite {
 			animation.add('lose', [loseFrame], 0, false, isPlayer);
 			animation.add('neutral', [0], 0, false, isPlayer);
 		}
-		animation.play('win');
+		animation.play('neutral');
 
 		scale.set(iconConfig.scale, iconConfig.scale);
 		offsetX = iconConfig.offset[0];
