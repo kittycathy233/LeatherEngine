@@ -43,6 +43,7 @@ class OptionsMenu extends MusicBeatState {
 			new PageOption("Info Display", "Info Display"),
 			new PageOption("Optimizations", "Optimizations"),
 			new GameSubStateOption("Max FPS", substates.MaxFPSMenu),
+			new BoolOption("VSync", "vSync"),
 			new BoolOption("Bigger Score Text", "biggerScoreInfo"),
 			new BoolOption("Bigger Info Text", "biggerInfoText"),
 			new StringSaveOption("Time Bar Style", ["leather engine", "psych engine", "old kade engine"], "timeBarStyle"),
