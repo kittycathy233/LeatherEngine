@@ -5,6 +5,7 @@
 
 	<!-- Application Settings -->
 	<!-- Change things about the exported file, such as executable name or version number. -->
+	<!-- You likely will want to change these if you're making a source mod. -->
 	<app
 		title="Leather Engine"
 		file="LeatherEngine"
@@ -103,7 +104,7 @@
 
 	<assets path="version.txt" />
 	<!--https://github.com/FunkinCrew/Funkin/pull/3318-->
-	<assets path="alsoft.ini" if="windows" /> <!--thi is important i think-->
+	<assets path="alsoft.ini" if="windows" />
 	<assets path="alsoft.ini" rename="alsoft.conf" unless="windows" />
 
 	<assets path="crash/bin/Crash-windows.exe" if="windows" rename="Crash.exe" />
@@ -140,9 +141,6 @@
 	<haxelib name="fnf-modcharting-tools" if="MODCHARTING_TOOLS" unless="hl" />
 	<haxelib name="funkin.vis" />
 	<haxelib name="grig.audio" />
-
-	<!-- totally not stolen from psych engine -->
-	<define name="LINC_LUA_RELATIVE_DYNAMIC_LIB" /> <!-- i think this is important -->
 
 	<!-- Compiler Arguments -->
 	<define name="no-deprecation-warnings" />

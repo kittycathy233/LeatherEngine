@@ -1,5 +1,6 @@
 package utilities;
 
+import lime.app.Application;
 import haxe.Json;
 import openfl.Assets;
 import flixel.util.FlxSave;
@@ -22,7 +23,7 @@ typedef DefaultOption = {
  */
 class Options {
 	public inline static final bindNamePrefix:String = "leather_engine-";
-	public inline static final bindPath:String = "leather128";
+	public static var bindPath:String;
 
 	public static var saves:Map<String, FlxSave> = [];
 
@@ -32,6 +33,7 @@ class Options {
 	 * Inititaizes savedata when starting the game.
 	 */
 	public static function init() {
+		bindPath = Application.current.meta.get('company');
 		createSave("main", "options");
 		createSave("binds", "binds");
 		createSave("scores", "scores");
@@ -42,7 +44,7 @@ class Options {
 		defaultOptions = Json.parse(Assets.getText(Paths.json("defaultOptions")));
 
 		for (option in defaultOptions.options) {
-			var saveKey = option.save != null ? option.save : "main";
+			var saveKey = option.save ?? "main";
 			var dataKey = option.option;
 
 			if (Reflect.getProperty(Reflect.getProperty(saves.get(saveKey), "data"), dataKey) == null)
