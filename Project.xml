@@ -23,30 +23,23 @@
 		<define name="LUA_ALLOWED" /> <!--  Allows support for Lua scripting -->
 	</section>
 
-	<define name="MODDING_ALLOWED" /> <!-- Allows mod
-	loading -->
+	<define name="MODDING_ALLOWED" /> <!-- Allows mod loading -->
 
 	<!-- 
 	Allows for all flixel classes to be used in scripts.
 	If you remove this it will HEAVILY speed up compile times, at the cost of limited class
 	availability in HScript.
 	-->
-	<define
-		name="COMPILE_ALL_CLASSES" />
+	<define name="COMPILE_ALL_CLASSES" />
 
-	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classes
-	to be used in HScript -->
+	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classe to be used in HScript -->
 
-	<define
-		name="CHECK_FOR_UPDATES" /> <!-- Allows the game to connect to GitHub to check for an
-	update loading -->
+	<define name="CHECK_FOR_UPDATES" /> <!-- Allows the game to connect to GitHub to check for an update loading -->
 
-	<define name="MODCHARTING_TOOLS" /> <!--  Allows for Modcharting
-	Tools to be used. -->
+	<define name="MODCHARTING_TOOLS" /> <!--  Allows for Modcharting Tools to be used. -->
 
 	<!-- REMOVE this line to enable a 32 bit export. -->
-	<define name="BIT_64"
-		unless="32bit" />
+	<define name="BIT_64" unless="32bit" />
 
 	<!-- You can ignore the stuff below this line unless you know what you're doing -->
 
@@ -86,8 +79,7 @@
 	<!-- Library settings -->
 
 	<define name="PRELOAD_ALL" />
-	<define
-		name="NO_PRELOAD_ALL" unless="PRELOAD_ALL" />
+	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL" />
 
 	<section if="PRELOAD_ALL">
 		<library name="stages" preload="true" />
@@ -102,39 +94,29 @@
 	</section>
 
 
-	<assets path="assets/songs"
-		library="songs" />
+	<assets path="assets/songs" library="songs" />
 	<assets path="assets/stages" library="stages" />
-	<assets
-		path="assets/shared" library="shared" />
-	<assets path="assets/preload/fonts"
-		rename="assets/fonts" library="fonts" />
+	<assets path="assets/shared" library="shared" />
+	<assets path="assets/preload/fonts" rename="assets/fonts" library="fonts" />
 
 	<assets path="CHANGELOG.md" rename='changelog.txt' />
 
-	<assets
-		path="version.txt" />
+	<assets path="version.txt" />
 	<!--https://github.com/FunkinCrew/Funkin/pull/3318-->
-	<assets path="alsoft.ini" if="windows" /> <!--this
-	is important i think-->
-	<assets path="alsoft.ini"
-		rename="alsoft.conf" unless="windows" />
+	<assets path="alsoft.ini" if="windows" /> <!--thi is important i think-->
+	<assets path="alsoft.ini" rename="alsoft.conf" unless="windows" />
 
-	<assets path="crash/bin/Crash-windows.exe"
-		if="windows" rename="Crash.exe" />
-	<assets path="crash/bin/Crash-linux.x86_64" if="linux"
-		rename="Crash.x86_64" />
+	<assets path="crash/bin/Crash-windows.exe" if="windows" rename="Crash.exe" />
 
-	<assets path="build/linux_dependencies.txt"
-		rename='linux_dependencies.txt' if="linux" />
+	<assets path="crash/bin/Crash-linux.x86_64" if="linux" rename="Crash.x86_64" />
+
+	<assets path="build/linux_dependencies.txt" rename='linux_dependencies.txt' if="linux" />
 
 
 	<!-- Export Settings. -->
-	<set name="BUILD_DIR" value="export/debug"
-		if="debug" />
+	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set
-		name="BUILD_DIR" value="export/32bit" if="32bit" />
+	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 
 	<!-- Code Settings -->
 
@@ -145,34 +127,26 @@
 	<source path="source" />
 
 	<!-- Libraries -->
-	<haxelib
-		name="flixel" />
+	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="flixel-ui" />
-	<haxelib
-		name="hscript-improved" />
+	<haxelib name="hscript-improved" />
 	<haxelib name="scriptless-polymod" if="MODDING_ALLOWED" />
-	<haxelib
-		name="flxanimate" />
+	<haxelib name="flxanimate" />
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED" />
-	<haxelib
-		name="linc_luajit" if="LUA_ALLOWED" version="git" />
-	<haxelib name="hxvlc"
-		if="VIDEOS_ALLOWED" />
+	<haxelib name="linc_luajit" if="LUA_ALLOWED" version="git" />
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" />
 	<haxelib name="hxNoise" />
-	<haxelib name="fnf-modcharting-tools"
-		if="MODCHARTING_TOOLS" unless="hl" />
+	<haxelib name="fnf-modcharting-tools" if="MODCHARTING_TOOLS" unless="hl" />
 	<haxelib name="funkin.vis" />
 	<haxelib name="grig.audio" />
 
 	<!-- totally not stolen from psych engine -->
-	<define
-		name="LINC_LUA_RELATIVE_DYNAMIC_LIB" /> <!-- i think this is important -->
+	<define name="LINC_LUA_RELATIVE_DYNAMIC_LIB" /> <!-- i think this is important -->
 
 	<!-- Compiler Arguments -->
 	<define name="no-deprecation-warnings" />
-	<define
-		name="message.reporting" value="pretty" />
+	<define name="message.reporting" value="pretty" />
 
 	<!-- Engine Defines -->
 	<section if="COMPILE_ALL_CLASSES">
@@ -185,43 +159,35 @@
 	</section>
 
 	<define name="hscript" />
-	<define
-		name="hscriptPos" />
+	<define name="hscriptPos" />
 
 	<define name="LEATHER" if="MODCHARTING_TOOLS" />
 
 	<!-- Flixel Defines -->
-	<define
-		name="FLX_NO_FOCUS_LOST_SCREEN" />
+	<define name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<define name="FLX_NO_DEBUG" unless="debug" />
-	<define
-		name="FLX_NO_HEALTH" />
+	<define name="FLX_NO_HEALTH" />
 
 	<!-- OpenFL Defines -->
 	<define name="openfl_enable_experimental_update_queue" />
 
 	<!-- Discord Defines-->
-	<define
-		name="DISCORD_DISABLE_IO_THREAD" if="DISCORD_ALLOWED" />
+	<define name="DISCORD_DISABLE_IO_THREAD" if="DISCORD_ALLOWED" />
 
 	<!-- HXVLC Defines. -->
 	<!-- Show debug traces for hxvlc -->
-	<define name="HXVLC_VERBOSE"
-		value="2" if="VIDEOS_ALLOWED debug" />
+	<define name="HXVLC_VERBOSE" value="2" if="VIDEOS_ALLOWED debug" />
 	<define name="HXVLC_LOGGING" if="VIDEOS_ALLOWED debug" />
 
 	<!-- HXCPP Defines -->
 	<!-- Aways enable Null Object Reference check for crash dialog -->
-	<define
-		name="HXCPP_CHECK_POINTER" if="release" />
+	<define name="HXCPP_CHECK_POINTER" if="release" />
 	<define name="HXCPP_STACK_LINE" if="release" />
-	<define
-		name="HXCPP_STACK_TRACE" if="release" />
+	<define name="HXCPP_STACK_TRACE" if="release" />
 	<define name="HXCPP_GC_GENERATIONAL" />
 
 	<!-- Target-Specific Defines. -->
-	<define
-		name="NO_PRECOMPILED_HEADERS" if="linux" />
+	<define name="NO_PRECOMPILED_HEADERS" if="linux" />
 
 	<!-- Window Icon Path -->
 	<icon path="art/icon.png" />
