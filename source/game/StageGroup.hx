@@ -98,77 +98,83 @@ class StageGroup extends FlxGroup {
 
 						var null_Object_Name_Loop:Int = 0;
 
-						for (Object in stageData.objects) {
-							var Sprite:FlxSprite = Object.dances ? new DancingSprite(Object.position[0],
-								Object.position[1]) : new FlxSprite(Object.position[0], Object.position[1]);
+						for (object in stageData.objects) {
+							var sprite:FlxSprite = object.dances ? new DancingSprite(object.position[0],
+								object.position[1]) : new FlxSprite(object.position[0], object.position[1]);
 
 							if (Options.getData("shaders"))
-								Sprite.shader = colorSwap.shader;
+								sprite.shader = colorSwap.shader;
 
-							if (Object.color != null && Object.color != [])
-								Sprite.color = FlxColor.fromRGB(Object.color[0], Object.color[1], Object.color[2]);
+							if (object.color != null && object.color != [])
+								sprite.color = FlxColor.fromRGB(object.color[0], object.color[1], object.color[2]);
 
-							Sprite.antialiasing = Object.antialiased && Options.getData("antialiasing");
-							Sprite.scrollFactor.set(Object.scroll_Factor[0], Object.scroll_Factor[1]);
+							sprite.antialiasing = object.antialiased && Options.getData("antialiasing");
+							sprite.scrollFactor.set(object.scroll_Factor[0], object.scroll_Factor[1]);
 
-							if (Object.object_Name != null && Object.object_Name != "")
-								stageObjects.push([Object.object_Name, Sprite, Object]);
+							if (object.object_Name != null && object.object_Name != "")
+								stageObjects.push([object.object_Name, sprite, object]);
 							else {
-								stageObjects.push(["undefinedSprite" + null_Object_Name_Loop, Sprite, Object]);
+								stageObjects.push(["undefinedSprite" + null_Object_Name_Loop, sprite, object]);
 								null_Object_Name_Loop++;
 							}
 
-							if (Object.is_Animated) {
-								Sprite.frames = Paths.getSparrowAtlas((stageData.imageDirectory ?? stage) + "/" + Object.file_Name, "stages");
+							if (object.is_Animated) {
+								sprite.frames = Paths.getSparrowAtlas((stageData.imageDirectory ?? stage) + "/" + object.file_Name, "stages");
 
-								for (Animation in Object.animations) {
-									var Anim_Name = Animation.name;
+								for (animation in object.animations) {
+									var animName:String = animation.name;
 
-									if (Animation.name == "beatHit")
-										onBeatHit_Group.add(Sprite);
+									if (animation.name == "beatHit")
+										onBeatHit_Group.add(sprite);
 
-									if (Animation.indices == null) {
-										Sprite.animation.addByPrefix(Anim_Name, Animation.animation_name, Animation.fps, Animation.looped);
-									} else if (Animation.indices.length == 0) {
-										Sprite.animation.addByPrefix(Anim_Name, Animation.animation_name, Animation.fps, Animation.looped);
+									if (animation.indices == null) {
+										sprite.animation.addByPrefix(animName, animation.animation_name, animation.fps, animation.looped);
+									} else if (animation.indices.length == 0) {
+										sprite.animation.addByPrefix(animName, animation.animation_name, animation.fps, animation.looped);
 									} else {
-										Sprite.animation.addByIndices(Anim_Name, Animation.animation_name, Animation.indices, "", Animation.fps,
-											Animation.looped);
+										sprite.animation.addByIndices(animName, animation.animation_name, animation.indices, "", animation.fps,
+											animation.looped);
 									}
 								}
 
-								if (Object.start_Animation != "" && Object.start_Animation != null && Object.start_Animation != "null")
-									Sprite.animation.play(Object.start_Animation);
-							} else if (Object.file_Name.startsWith('#')) {
-								Sprite.makeGraphic(Std.int(Object.scale), Std.int(Object.scale), FlxColor.fromString(Object.file_Name));
+								if (object.start_Animation != "" && object.start_Animation != null && object.start_Animation != "null")
+									sprite.animation.play(object.start_Animation);
+							} else if (object.file_Name.startsWith('#')) {
+								sprite.makeGraphic(Std.int(object.scale), Std.int(object.scale), FlxColor.fromString(object.file_Name));
 							} else
-								Sprite.loadGraphic(Paths.gpuBitmap((stageData.imageDirectory ?? stage) + "/" + Object.file_Name, "stages"));
+								sprite.loadGraphic(Paths.gpuBitmap((stageData.imageDirectory ?? stage) + "/" + object.file_Name, "stages"));
 
-							if (Object.uses_Frame_Width)
-								Sprite.setGraphicSize(Sprite.frameWidth * Object.scale);
+							if (object.uses_Frame_Width)
+								sprite.setGraphicSize(sprite.frameWidth * object.scale);
 							else
-								Sprite.setGraphicSize(Sprite.width * Object.scale);
+								sprite.setGraphicSize(sprite.width * object.scale);
 
-							if (Object.updateHitbox || Object.updateHitbox == null)
-								Sprite.updateHitbox();
+							if (object.updateHitbox || object.updateHitbox == null)
+								sprite.updateHitbox();
 
-							if (Object.alpha != null)
-								Sprite.alpha = Object.alpha;
+							if (object.flipX != null)
+								sprite.flipX = object.flipX;
 
-							if (Object.zIndex != null)
-								Sprite.zIndex = Object.zIndex;
+							if (object.flipY != null)
+								sprite.flipY = object.flipY;
 
-							if (Object.layer != null) {
-								switch (Object.layer.toLowerCase()) {
+							if (object.alpha != null)
+								sprite.alpha = object.alpha;
+
+							if (object.zIndex != null)
+								sprite.zIndex = object.zIndex;
+
+							if (object.layer != null) {
+								switch (object.layer.toLowerCase()) {
 									case "foreground":
-										foregroundSprites.add(Sprite);
+										foregroundSprites.add(sprite);
 									case "gf":
-										infrontOfGFSprites.add(Sprite);
+										infrontOfGFSprites.add(sprite);
 									default:
-										add(Sprite);
+										add(sprite);
 								}
 							} else
-								add(Sprite);
+								add(sprite);
 						}
 					}
 					if (stageData.scriptName == null) {
@@ -327,7 +333,7 @@ typedef StageData = {
 }
 
 typedef StageObject = {
-	// General Sprite Object Data //
+	// General sprite object Data //
 	var position:Array<Float>;
 	var zIndex:Null<Int>;
 	var scale:Float;
@@ -340,6 +346,10 @@ typedef StageObject = {
 	var layer:Null<String>; // default is bg, but fg is possible
 	var alpha:Null<Float>;
 	var updateHitbox:Null<Bool>;
+
+	var flipX:Null<Bool>;
+	var flipY:Null<Bool>;
+
 	// Image Info //
 	var file_Name:String;
 	var is_Animated:Bool;
