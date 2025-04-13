@@ -40,6 +40,7 @@ import lime.app.Application;
 import flixel.text.FlxText;
 import haxe.Json;
 import flixel.util.FlxStringUtil;
+import openfl.display.ShaderParameter;
 
 using StringTools;
 
@@ -3110,7 +3111,11 @@ class LuaScript extends Script {
 				return;
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			if (funnyCustomShader != null) {
-				if (value is Float) {
+				var intParam:ShaderParameter<Int> = Reflect.field(funnyCustomShader.data, property);
+				if(intParam != null){
+					funnyCustomShader.setInt(property, Std.parseInt(value));
+				}
+				else if (value is Float) {
 					funnyCustomShader.setFloat(property, Std.parseFloat(value));
 				} else if (value is Bool) {
 					funnyCustomShader.setBool(property, value);
@@ -3123,7 +3128,7 @@ class LuaScript extends Script {
 						funnyCustomShader.setIntArray(property, value);
 					}
 				} else {
-					funnyCustomShader.setInt(property, Std.parseInt(value));
+					FlxG.log.warn('Shader parameter "$property" not found on shader $id.');
 				}
 			} else {
 				trace('Shader named $id doesn\'t exist!', ERROR);
