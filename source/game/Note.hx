@@ -268,7 +268,6 @@ class Note extends FlxSkewedSprite {
 			}
 
 			centerOffsets();
-			centerOrigin();
 
 			sustainScaleY = scale.y;
 		}
@@ -340,14 +339,16 @@ class Note extends FlxSkewedSprite {
 	 * Override the setter to disable rounding on clipRect
 	 * @author CCobaltDev
 	 */
-	@:noCompletion override function set_clipRect(rect:FlxRect):FlxRect {
+	@:noCompletion 
+	override function set_clipRect(rect:FlxRect):FlxRect {
 		clipRect = rect;
 		if (frames != null)
 			frame = frames.frames[animation.frameIndex];
 		return rect;
 	}
 
-	@:noCompletion function set_speed(speed:Float):Float {
+	@:noCompletion 
+	function set_speed(speed:Float):Float {
 		if (Options.getData("useCustomScrollSpeed")) {
 			speed = Options.getData("customScrollSpeed") / PlayState.songMultiplier;
 		}
@@ -357,7 +358,6 @@ class Note extends FlxSkewedSprite {
 			scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
 			updateHitbox();
 			centerOffsets();
-			centerOrigin();
 		}
 		return this.speed = speed;
 	}
