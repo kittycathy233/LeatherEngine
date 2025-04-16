@@ -241,6 +241,9 @@ class LuaScript extends Script {
 		set("strumLine1Visible", true);
 		set("strumLine2Visible", true);
 
+		// WHY DOES THIS OFFSET CURSTEP BY 500????????
+		// WHAT THE FUCK????????????????
+		// this is my fucking tf2 coconut
 		/*set("screenWidth", FlxG.stage.window.display.currentMode.width);
 		set("screenHeight", FlxG.stage.window.display.currentMode.height);*/
 		set("windowWidth", FlxG.width);
