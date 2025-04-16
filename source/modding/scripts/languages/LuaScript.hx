@@ -241,8 +241,8 @@ class LuaScript extends Script {
 		set("strumLine1Visible", true);
 		set("strumLine2Visible", true);
 
-		set("screenWidth", Application.current.window.display.currentMode.width);
-		set("screenHeight", Application.current.window.display.currentMode.height);
+		/*set("screenWidth", FlxG.stage.window.display.currentMode.width);
+		set("screenHeight", FlxG.stage.window.display.currentMode.height);*/
 		set("windowWidth", FlxG.width);
 		set("windowHeight", FlxG.height);
 
