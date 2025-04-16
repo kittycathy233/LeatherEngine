@@ -189,9 +189,6 @@ class LuaScript extends Script {
 
 		Lua.init_callbacks(lua);
 
-		if (path == null)
-			path = #if MODDING_ALLOWED PolymodAssets #else Assets #end.getPath(Paths.lua("modcharts/" + PlayState.SONG.modchartPath));
-
 		var result:Int = LuaL.dofile(lua, path); // execute le file
 
 		if (result != 0) {
@@ -365,7 +362,7 @@ class LuaScript extends Script {
 			if (!PlayState.instance.scripts.exists(event_name.toLowerCase())
 				&& Assets.exists(Paths.lua("event data/" + event_name.toLowerCase()))) {
 				PlayState.instance.scripts.set(event_name.toLowerCase(),
-					new LuaScript(#if MODDING_ALLOWED PolymodAssets #else Assets #end.getPath(Paths.lua("event data/" + event_name.toLowerCase()))));
+					new LuaScript(Paths.getModPath(Paths.lua("event data/" + event_name.toLowerCase()))));
 			}
 
 			PlayState.instance.processEvent([event_name, Conductor.songPosition, string_arg_1, string_arg_2]);
@@ -3220,9 +3217,9 @@ class LuaScript extends Script {
 			var modchart:LuaScript = null;
 
 			if (Assets.exists(Paths.lua("modcharts/" + script)))
-				modchart = new LuaScript(#if MODDING_ALLOWED PolymodAssets #else Assets #end.getPath(Paths.lua("modcharts/" + script)));
+				modchart = new LuaScript(Paths.getModPath(Paths.lua("modcharts/" + script)));
 			else if (Assets.exists(Paths.lua("scripts/" + script)))
-				modchart = new LuaScript(#if MODDING_ALLOWED PolymodAssets #else Assets #end.getPath(Paths.lua("scripts/" + script)));
+				modchart = new LuaScript(Paths.getModPath(Paths.lua("scripts/" + script)));
 
 			if (modchart == null) {
 				trace('Couldn\'t find script at either ${Paths.lua("modcharts/" + script)} OR ${Paths.lua("scripts/" + script)}!', WARNING);

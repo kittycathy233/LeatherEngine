@@ -240,4 +240,12 @@ class Paths {
 	inline static public function existsInMod(path:String, mod:String):Bool {
 		return FileSystem.exists(path.replace('assets', 'mods/$mod'));
 	}
+
+	inline static public function getModPath(path:String) {
+		#if MODDING_ALLOWED
+		return polymod.backends.PolymodAssets.getPath(path);
+		#else
+		return Assets.getPath(path);
+		#end
+	}
 }

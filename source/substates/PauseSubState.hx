@@ -122,6 +122,10 @@ class PauseSubState extends MusicBeatSubstate {
 		if (downP)
 			changeSelection(1);
 
+		if (FlxG.keys.justPressed.F6) {
+			PlayState.instance.toggleBotplay();
+		}
+
 		if (menus.get(menu)[curSelected].toLowerCase().contains("skip time")) {
 			if (controls.LEFT_P) {
 				curTime -= 1000;

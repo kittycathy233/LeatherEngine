@@ -60,6 +60,9 @@ class MusicBeatSubstate extends FlxSubState {
 		if (FlxG.keys.checkStatus(FlxKey.fromString(Options.getData("fullscreenBind", "binds")), FlxInputState.JUST_PRESSED))
 			FlxG.fullscreen = !FlxG.fullscreen;
 
+		if (FlxG.keys.justPressed.F5 && Options.getData("developer"))
+			FlxG.resetState();
+
 		Application.current.window.title = MusicBeatState.windowNamePrefix + MusicBeatState.windowNameSuffix #if debug + ' (DEBUG)' #end;
 	}
 

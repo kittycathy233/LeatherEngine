@@ -1625,8 +1625,8 @@ class ChartingState extends MusicBeatState {
 	}
 
 	function updateHeads():Void {
-		var healthIconP1:String = loadHealthIconFromCharacter(_song.player1);
-		var healthIconP2:String = loadHealthIconFromCharacter(_song.player2);
+		var healthIconP1:String = _song.player1;
+		var healthIconP2:String = _song.player2;
 
 		if (_song.notes[curSection].mustHitSection) {
 			leftIcon.setupIcon(healthIconP1);

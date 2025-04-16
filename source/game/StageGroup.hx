@@ -186,11 +186,14 @@ class StageGroup extends FlxGroup {
 							for (object in stageObjects) {
 								stageScript.set(object[0], object[1]);
 							}
-						} else if (Assets.exists(Paths.lua("stage data/" + stageData.scriptName))) {
+						} 
+						#if LUA_ALLOWED
+						else if (Assets.exists(Paths.lua("stage data/" + stageData.scriptName))) {
 							stageScript = new LuaScript(#if MODDING_ALLOWED PolymodAssets #else Assets #end
 								.getPath(Paths.lua("stage data/" + stageData.scriptName)));
 							stageScript.executeOn = STAGE;
 						}
+						#end
 					}
 				}
 		}
