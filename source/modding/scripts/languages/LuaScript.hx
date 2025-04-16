@@ -158,8 +158,8 @@ class LuaScript extends Script {
 		Lua_helper.add_callback(lua, name, func);
 	}
 
-	public function new(path:String) {
-		super(path);
+	public function new(path:String, executeOn:ExecuteOn = BOTH) {
+		super(path, executeOn);
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 
@@ -340,11 +340,11 @@ class LuaScript extends Script {
 		});
 
 		// callbacks
-		setFunction("trace", function(str:Dynamic = "", ?printType:String = "LOG") {
+		setFunction("trace", function(str:Dynamic, printType:String = "LOG") {
 			trace(str, printType.toUpperCase());
 		});
 
-		setFunction("print", function(str:Dynamic = "", ?printType:String = "LOG") {
+		setFunction("print", function(str:Dynamic, printType:String = "LOG") {
 			trace(str, printType.toUpperCase());
 		});
 

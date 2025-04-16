@@ -1,5 +1,6 @@
 package modding.custom;
 
+import modding.scripts.ExecuteOn;
 import openfl.utils.Assets;
 import flixel.FlxG;
 import modding.scripts.languages.HScript;
@@ -46,7 +47,8 @@ class CustomState extends MusicBeatState{
 		super.stepHit();
 		call("stepHitPost");
     }
-    public inline function call(func:String, ?args:Array<Dynamic>) {
+    override public function call(func:String, ?args:Array<Any>, executeOn:ExecuteOn = BOTH) {
+        super.call(func, args);
 		script?.call(func, args);
 	}
 }

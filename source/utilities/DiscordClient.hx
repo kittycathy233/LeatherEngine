@@ -82,6 +82,7 @@ class DiscordClient {
 		trace("Discord: Shutting down...");
 		Discord.Shutdown();
 		active = false;
+		trace("Discord: Shut down.");
 	}
 
 	private static function _onReady(request:RawConstPointer<DiscordUser>) {

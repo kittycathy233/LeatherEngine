@@ -21,14 +21,16 @@ class MusicBeatSubstate extends FlxSubState {
 	public var curBeat:Int = 0;
 	public var controls(get, never):Controls;
 
+	#if HSCRIPT_ALLOWED
 	public var stateScript:HScript;
+	#end
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
 	override public function create() {
 		super.create();
-		#if sys
+		#if HSCRIPT_ALLOWED
 		var statePath:String = Type.getClassName(Type.getClass(this)).replace(".", "/");
 		if (sys.FileSystem.exists('mods/${Options.getData("curMod")}/classes/${statePath}.hx')) {
 			stateScript = new HScript('mods/${Options.getData("curMod")}/classes/${statePath}.hx');

@@ -56,7 +56,9 @@ class Character extends FlxSprite {
 
 	public var singDuration:Float = 4.0;
 
+	#if HSCRIPT_ALLOWED
 	public var script:HScript;
+	#end
 
 	public var singAnimPrefix:String = 'sing';
 
@@ -146,6 +148,7 @@ class Character extends FlxSprite {
 		} else {
 			visible = false;
 		}
+		#if HSCRIPT_ALLOWED
 		if (Assets.exists(Paths.hx("data/character data/" + curCharacter + "/script"))) {
 			script.call("createCharacterPost", [curCharacter]);
 		}
@@ -153,6 +156,7 @@ class Character extends FlxSprite {
 		animation.onFinish.add((animName) -> {
 			script?.call("onAnimationFinished", [animName]);
 		});
+		#end
 	}
 
 	public function loadNamedConfiguration(characterName:String) {
@@ -161,6 +165,7 @@ class Character extends FlxSprite {
 				characterName = "bf";
 				curCharacter = characterName;
 			}
+			#if HSCRIPT_ALLOWED
 			if (Assets.exists(Paths.hx("data/character data/" + characterName + "/script"))) {
 				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
 
@@ -168,6 +173,7 @@ class Character extends FlxSprite {
 				PlayState.instance.scripts.set(characterName, script);
 				script.call("createCharacter", [curCharacter]);
 			}
+			#end
 
 			if (Options.getData("optimizedChars") && Assets.exists(Paths.json("character data/optimized_" + characterName + "/config")))
 				characterName = "optimized_" + characterName;
@@ -490,7 +496,9 @@ class Character extends FlxSprite {
 	 * FOR GF DANCING SHIT
 	 */
 	public function dance(altAnim:String = '', force:Bool = false) {
+		#if HSCRIPT_ALLOWED
 		script?.call("dance", [altAnim, force]);
+		#end
 		if (shouldDance) {
 			if (!debugMode && curCharacter != '' && hasAnims() && (force || (!playFullAnim && !preventDanceForAnim))) {
 				var alt:String = '';

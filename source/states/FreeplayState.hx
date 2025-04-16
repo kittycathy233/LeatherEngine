@@ -93,11 +93,6 @@ class FreeplayState extends MusicBeatState {
 	**/
 	public static var instance:FreeplayState = null;
 
-	public inline function call(func:String, ?args:Array<Dynamic>) {
-		if (stateScript != null)
-			stateScript.call(func, args);
-	}
-
 	private var initSonglist:Array<String> = [];
 
 	override function create() {

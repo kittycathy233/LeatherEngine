@@ -55,10 +55,6 @@ class TitleState extends MusicBeatState {
 
 	public static var instance:TitleState = null;
 
-	public inline function call(func:String, ?args:Array<Dynamic>) {
-		if (stateScript != null)
-			stateScript.call(func, args);
-	}
 
 	override public function create():Void {
 		call('create');

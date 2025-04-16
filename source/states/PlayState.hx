@@ -930,11 +930,13 @@ class PlayState extends MusicBeatState {
 		for (folder in foldersToCheck) {
 			if (FileSystem.exists(folder)) {
 				for (file in FileSystem.readDirectory(folder)) {
+					#if HSCRIPT_ALLOWED
 					if (file.endsWith('.hx')) {
 						scripts.set('$folder/$file.hx', new HScript('$folder$file'));
 					}
+					#end
 					#if LUA_ALLOWED
-					else if (file.endsWith('.lua')) {
+					if (file.endsWith('.lua')) {
 						scripts.set('$folder$file.lua', new LuaScript('$folder$file'));
 					}
 					#end
@@ -1072,6 +1074,7 @@ class PlayState extends MusicBeatState {
 
 			switch (cutscene.type.toLowerCase()) {
 				case "script":
+					#if HSCRIPT_ALLOWED
 					var cutsceneScript:HScript = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
 
 					for (object in stage.stageObjects) {
@@ -1079,6 +1082,9 @@ class PlayState extends MusicBeatState {
 					}
 					scripts.set(cutscene.scriptPath, cutsceneScript);
 					cutsceneScript.call("startCutscene");
+					#else
+					throw "HScript is not enabled!";
+					#end
 				case "video":
 					startVideo(cutscene.videoPath, cutscene.videoExt, false);
 
@@ -1155,12 +1161,16 @@ class PlayState extends MusicBeatState {
 
 					switch (cutscene.type.toLowerCase()) {
 						case "script":
+							#if HSCRIPT_ALLOWED
 							var cutsceneScript:HScript = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
 							for (object in stage.stageObjects) {
 								cutsceneScript.interp.variables.set(object[0], object[1]);
 							}
 							scripts.set(cutscene.scriptPath, cutsceneScript);
 							cutsceneScript.call("startCutscene");
+							#else
+							throw "HScript is not enabled!";
+							#end
 						case "video":
 							startVideo(cutscene.videoPath, cutscene.videoExt, endSongVar);
 
@@ -1225,12 +1235,16 @@ class PlayState extends MusicBeatState {
 
 			switch (cutscene.type.toLowerCase()) {
 				case "script":
+					#if HSCRIPT_ALLOWED
 					var cutsceneScript:HScript = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
 					for (object in stage.stageObjects) {
 						cutsceneScript.interp.variables.set(object[0], object[1]);
 					}
 					scripts.set(cutscene.scriptPath, cutsceneScript);
 					cutsceneScript.call("startCutscene");
+					#else
+					throw "HScript is not enabled!";
+					#end
 				case "video":
 					startVideo(cutscene.videoPath, cutscene.videoExt, endSongVar);
 
@@ -2630,12 +2644,16 @@ class PlayState extends MusicBeatState {
 
 				switch (cutscene.type.toLowerCase()) {
 					case "script":
+						#if HSCRIPT_ALLOWED
 						var cutsceneScript:HScript = new HScript(Paths.hx('data/${cutscene.scriptPath}'));
 						for (object in stage.stageObjects) {
 							cutsceneScript.interp.variables.set(object[0], object[1]);
 						}
 						scripts.set(cutscene.scriptPath, cutsceneScript);
 						cutsceneScript.call("startCutscene");
+						#else
+						throw "HScript is not enabled!";
+						#end
 					case "video":
 						startVideo(cutscene.videoPath, cutscene.videoExt, true);
 
@@ -3978,10 +3996,11 @@ class PlayState extends MusicBeatState {
 		}
 	}
 
-	function call(name:String, ?args:Array<Any>, ?executeOn:ExecuteOn = BOTH) {
+	override function call(func:String, ?args:Array<Any>, executeOn:ExecuteOn = BOTH) {
+		super.call(func, args);
 		for (script in scripts) {
 			if ((script.executeOn == executeOn || executeOn == BOTH)) {
-				script.call(name, args);
+				script.call(func, args);
 			}
 		}
 	}
@@ -4179,9 +4198,11 @@ class PlayState extends MusicBeatState {
 				}
 				#end
 
+				#if HSCRIPT_ALLOWED
 				if (!scripts.exists(event[0].toLowerCase()) && Assets.exists(Paths.hx("data/event data/" + event[0].toLowerCase()))) {
 					scripts.set(event[0].toLowerCase(), new HScript(Paths.hx("data/event data/" + event[0].toLowerCase())));
 				}
+				#end
 			}
 
 			events.sort((a, b) -> Std.int(a[1] - b[1]));
@@ -4198,9 +4219,11 @@ class PlayState extends MusicBeatState {
 			scripts.set(noteType.toLowerCase(), new LuaScript(Paths.getModPath(Paths.lua("arrow types/" + noteType))));
 		}
 		#end
+		#if HSCRIPT_ALLOWED
 		if (Assets.exists(Paths.hx("data/arrow types/" + noteType))) {
 			scripts.set(noteType.toLowerCase(), new HScript(Paths.hx("data/arrow types/" + noteType)));
 		}
+		#end
 	}
 
 	function getCorrectKeyCount(player:Bool) {

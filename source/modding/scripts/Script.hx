@@ -2,11 +2,6 @@ package modding.scripts;
 
 import haxe.io.Path;
 import haxe.exceptions.NotImplementedException;
-import states.PlayState;
-import game.Conductor;
-import flixel.FlxG;
-import utilities.CoolUtil;
-import lime.app.Application;
 
 /**
 	Base class for any scripting languages to inherit from.
@@ -32,13 +27,13 @@ class Script {
 
     public var createPost:Bool = false;
 
-	public function new(path:String) {
+	public function new(path:String, executeOn:ExecuteOn = BOTH) {
 		trace('Loading script at path \'${path}\'');
         this.path = path;
 		var _path:Path = new Path(path);
         this.name = _path.file;
 		this.extension = _path.ext;
-		this.executeOn = BOTH;
+		this.executeOn = executeOn;
 		_path = null; // We dont need this anymore
 	}
 

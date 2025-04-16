@@ -1,5 +1,6 @@
 package states;
 
+import modding.scripts.ExecuteOn;
 import modding.scripts.languages.HScript;
 import flixel.FlxState;
 import flixel.math.FlxMath;
@@ -31,18 +32,26 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 	public static var fullscreenBind:String = "F11";
 
+	#if HSCRIPT_ALLOWED
 	public var stateScript:HScript;
+	#end
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
 	override public function create() {
 		super.create();
-		#if sys
+		#if HSCRIPT_ALLOWED
 		var statePath:String = Type.getClassName(Type.getClass(this)).replace(".", "/");
 		if (sys.FileSystem.exists('mods/${Options.getData("curMod")}/classes/${statePath}.hx')) {
 			stateScript = new HScript('mods/${Options.getData("curMod")}/classes/${statePath}.hx');
 		}
+		#end
+	}
+
+	public function call(func:String, ?args:Array<Any>, executeOn:ExecuteOn = BOTH) {
+		#if HSCRIPT_ALLOWED
+		stateScript?.call(func, args);
 		#end
 	}
 	override function update(elapsed:Float) {

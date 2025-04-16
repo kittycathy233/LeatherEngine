@@ -1,5 +1,6 @@
 package modding.scripts.languages;
 
+#if HSCRIPT_ALLOWED
 import haxe.PosInfos;
 import states.PlayState;
 import openfl.utils.Assets;
@@ -30,12 +31,11 @@ class HScript extends Script {
 
 
 	public function new(path:String, executeOn:ExecuteOn = BOTH) {
-		super(path);
+		super(path, executeOn);
 		// parser settings
 		parser.allowJSON = true;
 		parser.allowTypes = true;
 		parser.allowMetadata = true;
-		this.executeOn = executeOn;
 		// parser.resumeErrors = true;
 
 		// load text
@@ -78,9 +78,7 @@ class HScript extends Script {
 		interp.variables.set(variable, value);
 	}
 
-	override public function destroy(){
-		
-	}
+	override public function destroy(){}
 
 	override public function setup() {
 		// global class shit
@@ -219,3 +217,4 @@ class HScript extends Script {
 		});
 	}
 }
+#end

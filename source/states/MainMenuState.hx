@@ -42,11 +42,6 @@ class MainMenuState extends MusicBeatState {
 	public var camFollow:FlxObject;
 	public var bg:FlxSprite;
 
-	public inline function call(func:String, ?args:Array<Dynamic>) {
-		if (stateScript != null) {
-			stateScript.call(func, args);
-		}
-	}
 
 	public override function create() {
 		instance = this;
