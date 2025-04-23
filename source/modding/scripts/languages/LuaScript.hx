@@ -341,11 +341,11 @@ class LuaScript extends Script {
 
 		// callbacks
 		setFunction("trace", function(str:Dynamic, printType:String = "LOG") {
-			trace(str, printType.toUpperCase());
+			trace('$path: $str', printType.toUpperCase());
 		});
 
 		setFunction("print", function(str:Dynamic, printType:String = "LOG") {
-			trace(str, printType.toUpperCase());
+			trace('$path: $str', printType.toUpperCase());
 		});
 
 		setFunction("flashCamera", function(camera:String = "", color:String = "#FFFFFF", time:Float = 1, force:Bool = false) {

@@ -11,6 +11,7 @@ function startCutscene() {
 	senpaiEvil.scrollFactor.set();
 	senpaiEvil.updateHitbox();
 	senpaiEvil.screenCenter();
+	senpaiEvil.antialiasing = false;
 
 	new FlxTimer().start(0.3, function(tmr:FlxTimer) {
 			PlayState.instance.inCutscene = true;

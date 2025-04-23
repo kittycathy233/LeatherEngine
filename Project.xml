@@ -20,29 +20,27 @@
 
 	<define name="VIDEOS_ALLOWED" /> <!--  Allows support for video files -->
 	<define name="DISCORD_ALLOWED" /> <!--  Allows support for Discord Rich Presence -->
+	<define name="MODDING_ALLOWED" /> <!-- Allows mod loading -->
+	<define name="MODCHARTING_TOOLS" /> <!--  Allows for Modcharting Tools to be used. -->
 	<define name="LUA_ALLOWED" /> <!--  Allows support for Lua scripting -->
 	<define name="HSCRIPT_ALLOWED" /> <!--  Allows support for Haxe scripting (HScript) -->
-
-	<define name="MODDING_ALLOWED" /> <!-- Allows mod loading -->
 
 	<!-- 
 	Allows for all flixel classes to be used in scripts.
 	If you remove this it will HEAVILY speed up compile times, at the cost of limited class
 	availability in HScript.
+	If you remove the HSCRIPT_ALLOWED define, it is higly reccomended to remove this as well.
 	-->
 	<define name="COMPILE_ALL_CLASSES" />
 
-	<define name="CUSTOM_CLASSES" /> <!-- Allows for custom classe to be used in HScript -->
+	<define name="CUSTOM_CLASSES" if="HSCRIPT_ALLOWED" /> <!-- Allows for custom classe to be used in HScript -->
 
 	<define name="CHECK_FOR_UPDATES" /> <!-- Allows the game to connect to GitHub to check for an update loading -->
-
-	<define name="MODCHARTING_TOOLS" /> <!--  Allows for Modcharting Tools to be used. -->
 
 	<!-- REMOVE this line to enable a 32 bit export. -->
 	<define name="BIT_64" unless="32bit" />
 
 	<!-- You can ignore the stuff below this line unless you know what you're doing -->
-
 	<app preloader="flixel.system.FlxPreloader" />
 
 	<!-- Window Settings -->

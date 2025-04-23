@@ -10,14 +10,15 @@ import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.util.FlxSignal;
 
 using StringTools;
 
 class DialogueBox extends FlxSpriteGroup
 {
-	public var cutscene_Data:Cutscene;
+	public var cutsceneData:Cutscene;
 	public var current_Section:DialogueSection;
-	public var section_Index:Int = 0;
+	public var sectionIndex:Int = 0;
 
 	public var box:FlxSprite;
 
@@ -25,7 +26,7 @@ class DialogueBox extends FlxSpriteGroup
 	public var portraitLeft:DialoguePortrait;
 
 	public var dialogue:FlxTypeText;
-	public var dialogue_Shadow:FlxText;
+	public var dialogueShadow:FlxText;
 
 	public var alphabet:Alphabet;
 
@@ -38,22 +39,26 @@ class DialogueBox extends FlxSpriteGroup
 
 	public var music:FlxSound;
 
+	public var onDialogueFinish:FlxSignal;
+
 	public function new(cutscene:Cutscene)
 	{
-		cutscene_Data = cutscene;
+		cutsceneData = cutscene;
 
 		super();
 
-		if(cutscene_Data.introSound != null){
-			FlxG.sound.play(Paths.sound(cutscene_Data.introSound, "shared"));
+		onDialogueFinish = new FlxSignal();
+
+		if(cutsceneData.introSound != null){
+			FlxG.sound.play(Paths.sound(cutsceneData.introSound, "shared"));
 		}
 
-		if(cutscene_Data.bgFade != false)
+		if(cutsceneData.bgFade != false)
 		{
 			var color:FlxColor = FlxColor.WHITE;
 
-			if(cutscene_Data.bgColor != null)
-				color = FlxColor.fromString(cutscene_Data.bgColor);
+			if(cutsceneData.bgColor != null)
+				color = FlxColor.fromString(cutsceneData.bgColor);
 
 			bgFade = new FlxSprite(-200, -200).makeGraphic(Std.int(FlxG.width * 1.3), Std.int(FlxG.height * 1.3), color);
 			bgFade.scrollFactor.set();
@@ -71,9 +76,9 @@ class DialogueBox extends FlxSpriteGroup
 
 		loadAssets();
 
-		if(cutscene_Data.dialogueMusic != null)
+		if(cutsceneData.dialogueMusic != null)
 		{
-			music = FlxG.sound.load(Paths.music(cutscene_Data.dialogueMusic, "shared"), 1, true);
+			music = FlxG.sound.load(Paths.music(cutsceneData.dialogueMusic, "shared"), 1, true);
 			music.play();
 			music.fadeIn(1, 0, 0.8);
 		}
@@ -83,16 +88,16 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		super.update(elapsed);
 
-		if(dialogue_Shadow != null)
-			dialogue_Shadow.text = dialogue.text;
+		if(dialogueShadow != null)
+			dialogueShadow.text = dialogue.text;
 
 		if(FlxG.keys.justPressed.ENTER)
 		{
 			FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
-			section_Index++;
+			sectionIndex++;
 
-			if(section_Index < cutscene_Data.dialogueSections.length)
+			if(sectionIndex < cutsceneData.dialogueSections.length)
 				loadAssets();
 			else
 			{
@@ -119,8 +124,8 @@ class DialogueBox extends FlxSpriteGroup
 						if(dialogue != null)
 							dialogue.alpha -= 1 / 5;
 	
-						if(dialogue_Shadow != null)
-							dialogue_Shadow.alpha = dialogue.alpha;
+						if(dialogueShadow != null)
+							dialogueShadow.alpha = dialogue.alpha;
 	
 						if(alphabet != null)
 							alphabet.alpha -= 1 / 5;
@@ -131,7 +136,7 @@ class DialogueBox extends FlxSpriteGroup
 	
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)
 					{
-						finish_Function();
+						onDialogueFinish.dispatch();
 						kill();
 					});
 				}
@@ -142,18 +147,18 @@ class DialogueBox extends FlxSpriteGroup
 	public function loadAssets(?new_Cutscene:Cutscene) {
 		// incase this is ever used lmao (i dont think it will be, but whatevs)
 		if(new_Cutscene != null)
-			cutscene_Data = new_Cutscene;
+			cutsceneData = new_Cutscene;
 
-		current_Section = cutscene_Data.dialogueSections[section_Index];
+		current_Section = cutsceneData.dialogueSections[sectionIndex];
 
 		if(box == null)
 		{
 			box = new FlxSprite();
-			box.frames = Paths.getSparrowAtlas("cutscenes/" + cutscene_Data.dialogueBox, "shared");
+			box.frames = Paths.getSparrowAtlas("cutscenes/" + cutsceneData.dialogueBox, "shared");
 			box.scrollFactor.set(0,0);
 			box.updateHitbox();
 
-			box.setGraphicSize(box.width * cutscene_Data.dialogueBoxSize);
+			box.setGraphicSize(box.width * cutsceneData.dialogueBoxSize);
 			box.updateHitbox();
 		}
 
@@ -173,8 +178,8 @@ class DialogueBox extends FlxSpriteGroup
 		if(current_Section.box_Antialiased != null)
 			box.antialiasing = current_Section.box_Antialiased != false;
 
-		if(cutscene_Data.dialogueBoxSize == null)
-			cutscene_Data.dialogueBoxSize = 1;
+		if(cutsceneData.dialogueBoxSize == null)
+			cutsceneData.dialogueBoxSize = 1;
 
 		box.updateHitbox();
 
@@ -196,8 +201,7 @@ class DialogueBox extends FlxSpriteGroup
 			(box.y - portraitRight.height) + current_Section.rightPortrait.y
 		);
 
-		if(current_Section.rightPortrait.antialiased == null)
-			portraitRight.antialiasing = current_Section.rightPortrait.antialiased;
+		portraitRight.antialiasing = current_Section.rightPortrait.antialiased ?? Options.getData("antialiasing");
 
 		if(portraitLeft == null)
 			portraitLeft = new DialoguePortrait();
@@ -214,8 +218,7 @@ class DialogueBox extends FlxSpriteGroup
 			(box.y - portraitLeft.height) + current_Section.leftPortrait.y
 		);
 
-		if(current_Section.leftPortrait.antialiased == null)
-			portraitLeft.antialiasing = current_Section.leftPortrait.antialiased;
+		portraitLeft.antialiasing = current_Section.leftPortrait.antialiased ?? Options.getData("antialiasing");
 
 		switch(current_Section.side)
 		{
@@ -223,13 +226,13 @@ class DialogueBox extends FlxSpriteGroup
 				portraitLeft.visible = true;
 				portraitRight.visible = false;
 
-				if(cutscene_Data.dialogueBoxFlips)
+				if(cutsceneData.dialogueBoxFlips)
 					box.flipX = true;
 			case "right":
 				portraitRight.visible = true;
 				portraitLeft.visible = false;
 
-				if(cutscene_Data.dialogueBoxFlips)
+				if(cutsceneData.dialogueBoxFlips)
 					box.flipX = false;
 		}
 
@@ -269,8 +272,8 @@ class DialogueBox extends FlxSpriteGroup
 			add(hand);
 		}
 
-		if(dialogue_Shadow != null)
-			remove(dialogue_Shadow);
+		if(dialogueShadow != null)
+			remove(dialogueShadow);
 
 		if(dialogue != null)
 			remove(dialogue);
@@ -282,16 +285,16 @@ class DialogueBox extends FlxSpriteGroup
 		{
 			if(current_Section.dialogue.hasShadow)
 			{
-				dialogue_Shadow = new FlxText(
+				dialogueShadow = new FlxText(
 					box.x + current_Section.dialogue.box_Offset[0] + current_Section.dialogue.shadowOffset,
 					box.y + current_Section.dialogue.box_Offset[1] + current_Section.dialogue.shadowOffset,
 					Std.int(FlxG.width * 0.6), "",
 					current_Section.dialogue.size
 				);
 	
-				dialogue_Shadow.font = Paths.font(current_Section.dialogue.font);
-				dialogue_Shadow.color = FlxColor.fromString(current_Section.dialogue.shadowColor);
-				add(dialogue_Shadow);
+				dialogueShadow.font = Paths.font(current_Section.dialogue.font);
+				dialogueShadow.color = FlxColor.fromString(current_Section.dialogue.shadowColor);
+				add(dialogueShadow);
 			}
 	
 			dialogue = new FlxTypeText(
@@ -325,8 +328,6 @@ class DialogueBox extends FlxSpriteGroup
 			add(alphabet);
 		}
 	}
-
-	dynamic public function finish_Function() {}
 }
 
 class DialoguePortrait extends FlxSprite

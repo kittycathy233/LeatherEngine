@@ -1091,8 +1091,9 @@ class PlayState extends MusicBeatState {
 				case "dialogue":
 					var box:DialogueBox = new DialogueBox(cutscene);
 					box.scrollFactor.set();
-					box.finish_Function = () -> bruhDialogue(false);
+					box.onDialogueFinish.add(() -> bruhDialogue(false));
 					box.cameras = [camHUD];
+					box.zIndex = FlxMath.MAX_VALUE_INT;
 					startDialogue(box, false);
 				default:
 					startCountdown();
@@ -1177,9 +1178,9 @@ class PlayState extends MusicBeatState {
 						case "dialogue":
 							var box:DialogueBox = new DialogueBox(cutscene);
 							box.scrollFactor.set();
-							box.finish_Function = () -> bruhDialogue(endSongVar);
+							box.onDialogueFinish.add(() -> bruhDialogue(endSongVar));
 							box.cameras = [camHUD];
-
+							box.zIndex = FlxMath.MAX_VALUE_INT;
 							startDialogue(box, endSongVar);
 
 						default:
@@ -1251,9 +1252,9 @@ class PlayState extends MusicBeatState {
 				case "dialogue":
 					var box:DialogueBox = new DialogueBox(cutscene);
 					box.scrollFactor.set();
-					box.finish_Function = () -> bruhDialogue(endSongVar);
+					box.onDialogueFinish.add(() -> bruhDialogue(endSongVar));
 					box.cameras = [camHUD];
-
+					box.zIndex = FlxMath.MAX_VALUE_INT;
 					startDialogue(box, endSongVar);
 
 				default:
@@ -2660,8 +2661,9 @@ class PlayState extends MusicBeatState {
 					case "dialogue":
 						var box:DialogueBox = new DialogueBox(cutscene);
 						box.scrollFactor.set();
-						box.finish_Function = () -> bruhDialogue(true);
+						box.onDialogueFinish.add(() -> bruhDialogue(true));
 						box.cameras = [camHUD];
+						box.zIndex = FlxMath.MAX_VALUE_INT;
 						startDialogue(box, true);
 					default:
 						persistentUpdate = false;
