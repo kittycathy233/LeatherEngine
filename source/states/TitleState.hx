@@ -108,8 +108,10 @@ class TitleState extends MusicBeatState {
 			super.create();
 
 			#if DISCORD_ALLOWED
-			if (!DiscordClient.started && Options.getData("discordRPC"))
+			if (Options.getData("discordRPC"))
 				DiscordClient.startup();
+
+			DiscordClient.loadModPresence();
 
 			Application.current.onExit.add(function(exitCode) {
 				DiscordClient.shutdown();

@@ -92,8 +92,10 @@ class BoolOption extends Option {
 				Main.toggleMem(optionChecked);
 			#if DISCORD_ALLOWED
 			case "discordRPC":
-				if (optionChecked && !DiscordClient.active)
+				if (optionChecked && !DiscordClient.active){
 					DiscordClient.startup();
+					DiscordClient.loadModPresence();
+				}
 				else if (!optionChecked && DiscordClient.active)
 					DiscordClient.shutdown();
 			#end
@@ -315,6 +317,9 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				PolymodHandler.loadMods();
 				NoteVariables.init();
 				Options.fixBinds();
+				#if DISCORD_ALLOWED
+				DiscordClient.loadModPresence();
+				#end
 				FlxG.resetState();
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();
