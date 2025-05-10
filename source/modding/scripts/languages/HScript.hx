@@ -147,6 +147,8 @@ class HScript extends Script {
 			set('ModchartFile', modcharting.ModchartFile);
 		}
 		#end
+
+		set("NdllLoader", utilities.NdllLoader);
 		// function shits
 
 		set("import", function(class_name:String) {

@@ -146,13 +146,11 @@ class DiscordClient {
 			var discordData:DiscordData = cast Json.parse(File.getContent(jsonPath));
 			ID = discordData.ID;
 			changePresence("", null, null, null, null, discordData.key, discordData.text);
-			trace('Found mod presence at $jsonPath');
 			return true;
 		} else {
 			ID = defaultID;
 			changePresence();
 		}
-		trace("didnt find mod presence");
 		return false;
 	}
 
