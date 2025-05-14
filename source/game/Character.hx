@@ -206,6 +206,9 @@ class Character extends FlxSprite {
 				looped: animation.loop,
 				indices: animation.indices
 			});
+			if(animation.anim.startsWith("dance")){
+				returnCharacter.dancesLeftAndRight = true;
+			}
 			addOffset(animation.anim, (isPlayer ? -1 : 1) * (animation.offsets[0] ?? 0), animation.offsets[1] ?? 0);
 		}
 		return returnCharacter;
