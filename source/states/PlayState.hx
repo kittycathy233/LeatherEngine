@@ -1543,6 +1543,9 @@ class PlayState extends MusicBeatState {
 
 		if (SONG.needsVoices) {
 			for (character in ['player', 'opponent', boyfriend.curCharacter, dad.curCharacter]) {
+				if(vocals.members.length >= 2){
+					break;
+				}
 				var soundPath:String = Paths.voices(PlayState.SONG.song, SONG.specialAudioName ?? storyDifficultyStr.toLowerCase(), character,
 					boyfriend.curCharacter);
 				if (!addedVocals.contains(soundPath)) {

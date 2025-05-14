@@ -194,6 +194,8 @@ class Character extends FlxSprite {
 			defaultFlipX: psychCharacter.flip_x,
 			positionOffset: psychCharacter.position,
 			cameraOffset: psychCharacter.camera_position,
+			offsetsFlipWhenPlayer: true,
+			offsetsFlipWhenEnemy: false,
 			animations: []
 		};
 		for (animation in psychCharacter.animations) {
@@ -204,7 +206,7 @@ class Character extends FlxSprite {
 				looped: animation.loop,
 				indices: animation.indices
 			});
-			addOffset(animation.anim, animation.offsets[0] ?? 0, animation.offsets[1] ?? 0);
+			addOffset(animation.anim, (isPlayer ? -1 : 1) * (animation.offsets[0] ?? 0), animation.offsets[1] ?? 0);
 		}
 		return returnCharacter;
 	}
