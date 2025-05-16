@@ -106,6 +106,7 @@ class HScript extends Script {
 		set('ShaderFilter', openfl.filters.ShaderFilter);
 		set('Json', haxe.Json);
 		set("FlxSpriteGroup", flixel.group.FlxSpriteGroup);
+		set("FlxEmitter", flixel.effects.particles.FlxEmitter);
 		set("FlxAnimate", flxanimate.FlxAnimate);
 		set("FlxAtlasSprite", game.FlxAtlasSprite);
 		set("Map", haxe.ds.StringMap);

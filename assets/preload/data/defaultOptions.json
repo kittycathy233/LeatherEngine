@@ -70,7 +70,7 @@
     },
     {
       "option": "lowQuality",
-      "value": true
+      "value": false
     },
     {
       "option": "healthIcons",
