@@ -69,6 +69,10 @@
       "value": true
     },
     {
+      "option": "lowQuality",
+      "value": true
+    },
+    {
       "option": "healthIcons",
       "value": true
     },
@@ -98,7 +102,12 @@
     },
     {
       "option": "judgementTimings",
-      "value": [25, 50, 70, 100]
+      "value": [
+        25,
+        50,
+        70,
+        100
+      ]
     },
     {
       "option": "antiMash",
@@ -302,19 +311,31 @@
     },
     {
       "option": "ratingsOffset",
-      "value": [0, 0]
+      "value": [
+        0,
+        0
+      ]
     },
     {
       "option": "accuracyTextOffset",
-      "value": [0, 0]
+      "value": [
+        0,
+        0
+      ]
     },
     {
       "option": "comboOffset",
-      "value": [0, 0]
+      "value": [
+        0,
+        0
+      ]
     },
     {
       "option": "ratingTextOffset",
-      "value": [0, 0]
+      "value": [
+        0,
+        0
+      ]
     },
     {
       "option": "ratingTextAlign",
