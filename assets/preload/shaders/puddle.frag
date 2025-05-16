@@ -6,5 +6,5 @@ void main()
   color.r = color.a;
   color.g = color.a;
   color.b = color.a;
-  gl_FragColor = color;
+  ofl_FragColor = color;
 }

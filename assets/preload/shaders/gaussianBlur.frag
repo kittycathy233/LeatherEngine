@@ -110,5 +110,5 @@
 			blurred /= float(steps * steps);
 
 			// return the final blurred color
-			gl_FragColor = blurredShit;
+			ofl_FragColor = blurredShit;
     }

@@ -35,5 +35,5 @@ vec2 sineWave(vec2 pt)
 void main()
 {
     vec2 uv = sineWave(openfl_TextureCoordv);
-    gl_FragColor = texture2D(bitmap, uv);
+    ofl_FragColor = texture2D(bitmap, uv);
 }

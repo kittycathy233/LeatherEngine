@@ -41,6 +41,6 @@ vec4 flixel_texture2DExtra(sampler2D bitmap, vec2 coord) {
 }
 
 void main() {
-    gl_FragColor = flixel_texture2DExtra(bitmap, openfl_TextureCoordv);
-    // gl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
+    ofl_FragColor = flixel_texture2DExtra(bitmap, openfl_TextureCoordv);
+    // ofl_FragColor = vec4(1.0, 0.0, 1.0, 1.0);
 }

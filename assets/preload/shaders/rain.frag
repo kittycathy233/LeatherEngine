@@ -217,5 +217,5 @@ void main() {
 	color = mix(color, rainColor, 0.1 * rainSum);
 
 	// alpha 1.0 doesn't really matter for camGame
-	gl_FragColor = vec4(color, 1.0);
+	ofl_FragColor = vec4(color, 1.0);
 }

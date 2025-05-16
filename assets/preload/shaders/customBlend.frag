@@ -40,5 +40,5 @@ void main() {
 	vec4 bg = sampleBitmapScreen(screenCoord);
 	vec4 src = texture2D(source, screenCoord);
 	vec3 res = blend(bg.rgb, src.rgb);
-	gl_FragColor = vec4(mix(bg.rgb, res.rgb, src.a), mix(bg.a, 1.0, src.a));
+	ofl_FragColor = vec4(mix(bg.rgb, res.rgb, src.a), mix(bg.a, 1.0, src.a));
 }

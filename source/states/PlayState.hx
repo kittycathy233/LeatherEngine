@@ -189,6 +189,11 @@ class PlayState extends MusicBeatState {
 	var centerCamera:Bool = false;
 
 	/**
+	 * Should the camera be locked?
+	 */
+	var lockedCamera:Bool = false;
+
+	/**
 		Copy of `camFollow` used for transitioning between songs smoother.
 	**/
 	static var prevCamFollow:FlxObject;
@@ -2049,47 +2054,49 @@ class PlayState extends MusicBeatState {
 				}
 			}
 
-			if (centerCamera) {
-				var midPos:FlxPoint = boyfriend.getMainCharacter().getMidpoint();
-				midPos.x += stage.p1_Cam_Offset.x;
-				midPos.y += stage.p1_Cam_Offset.y;
-				camFollow.setPosition(midPos.x
-					- 100
-					+ boyfriend.getMainCharacter().cameraOffset[0],
-					midPos.y
-					- 100
-					+ boyfriend.getMainCharacter().cameraOffset[1]);
-				midPos = dad.getMainCharacter().getMidpoint();
-				midPos.x += stage.p2_Cam_Offset.x;
-				midPos.y += stage.p2_Cam_Offset.y;
-				camFollow.x += midPos.x + 150 + dad.getMainCharacter().cameraOffset[0];
-				camFollow.y += midPos.y - 100 + dad.getMainCharacter().cameraOffset[1];
-				camFollow.x *= 0.5;
-				camFollow.y *= 0.5;
-				if (PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
-					if (Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().hasAnims()) {
-						switch (boyfriend.getMainCharacter().curAnimName().toLowerCase()) {
-							case "singleft":
-								camFollow.x -= 50;
-							case "singright":
-								camFollow.x += 50;
-							case "singup":
-								camFollow.y -= 50;
-							case "singdown":
-								camFollow.y += 50;
+			if(!lockedCamera){
+				if (centerCamera) {
+					var midPos:FlxPoint = boyfriend.getMainCharacter().getMidpoint();
+					midPos.x += stage.p1_Cam_Offset.x;
+					midPos.y += stage.p1_Cam_Offset.y;
+					camFollow.setPosition(midPos.x
+						- 100
+						+ boyfriend.getMainCharacter().cameraOffset[0],
+						midPos.y
+						- 100
+						+ boyfriend.getMainCharacter().cameraOffset[1]);
+					midPos = dad.getMainCharacter().getMidpoint();
+					midPos.x += stage.p2_Cam_Offset.x;
+					midPos.y += stage.p2_Cam_Offset.y;
+					camFollow.x += midPos.x + 150 + dad.getMainCharacter().cameraOffset[0];
+					camFollow.y += midPos.y - 100 + dad.getMainCharacter().cameraOffset[1];
+					camFollow.x *= 0.5;
+					camFollow.y *= 0.5;
+					if (PlayState.SONG.notes[Std.int(curStep / Conductor.stepsPerSection)].mustHitSection) {
+						if (Options.getData("cameraTracksDirections") && boyfriend.getMainCharacter().hasAnims()) {
+							switch (boyfriend.getMainCharacter().curAnimName().toLowerCase()) {
+								case "singleft":
+									camFollow.x -= 50;
+								case "singright":
+									camFollow.x += 50;
+								case "singup":
+									camFollow.y -= 50;
+								case "singdown":
+									camFollow.y += 50;
+							}
 						}
-					}
-				} else {
-					if (Options.getData("cameraTracksDirections") && dad.getMainCharacter().hasAnims()) {
-						switch (dad.getMainCharacter().curAnimName().toLowerCase()) {
-							case "singleft":
-								camFollow.x -= 50;
-							case "singright":
-								camFollow.x += 50;
-							case "singup":
-								camFollow.y -= 50;
-							case "singdown":
-								camFollow.y += 50;
+					} else {
+						if (Options.getData("cameraTracksDirections") && dad.getMainCharacter().hasAnims()) {
+							switch (dad.getMainCharacter().curAnimName().toLowerCase()) {
+								case "singleft":
+									camFollow.x -= 50;
+								case "singright":
+									camFollow.x += 50;
+								case "singup":
+									camFollow.y -= 50;
+								case "singdown":
+									camFollow.y += 50;
+							}
 						}
 					}
 				}
@@ -2577,7 +2584,7 @@ class PlayState extends MusicBeatState {
 				midPos.x += stage.p2_Cam_Offset.x;
 				midPos.y += stage.p2_Cam_Offset.y;
 
-				if (!paused)
+				if (!paused && !lockedCamera)
 					camFollow.setPosition(midPos.x + 150 + dad.getMainCharacter().cameraOffset[0], midPos.y - 100 + dad.getMainCharacter().cameraOffset[1]);
 
 				switch (dad.curCharacter) {
@@ -2611,7 +2618,7 @@ class PlayState extends MusicBeatState {
 				midPos.x += stage.p1_Cam_Offset.x;
 				midPos.y += stage.p1_Cam_Offset.y;
 
-				if (!paused)
+				if (!paused && ! lockedCamera)
 					camFollow.setPosition(midPos.x
 						- 100
 						+ boyfriend.getMainCharacter().cameraOffset[0],

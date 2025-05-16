@@ -238,5 +238,5 @@ void main() {
 	// Calculate the color to use for this pixel.
 	mainImage(resultColor, texCoord);
 
-	gl_FragColor = resultColor;
+	ofl_FragColor = resultColor;
 }

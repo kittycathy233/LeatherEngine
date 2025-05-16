@@ -21,5 +21,5 @@ void main() {
 	color = max(color, vec4(0.0, 0.0, 0.0, 0.0));
 
   // Return the value.
-	gl_FragColor = color;
+	ofl_FragColor = color;
 }

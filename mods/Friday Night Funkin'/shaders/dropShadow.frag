@@ -169,5 +169,5 @@ void main() {
 
     outColor = createDropShadow(outColor, thr, useMask);
 
-    gl_FragColor = vec4(outColor.rgb * col.a, col.a);
+    ofl_FragColor = vec4(outColor.rgb * col.a, col.a);
 }
