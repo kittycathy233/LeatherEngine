@@ -45,7 +45,7 @@ vec2 screenToBitmap(vec2 screenCoord)
 
 vec4 sampleBitmapScreen(vec2 screenCoord)
 {
-	return texture2D(bitmap, screenToBitmap(screenCoord));
+	return texture(bitmap, screenToBitmap(screenCoord));
 }
 
 vec4 sampleBitmapWorld(vec2 worldCoord)

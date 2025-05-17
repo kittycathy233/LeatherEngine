@@ -12,7 +12,7 @@ vec4 flixel_texture2DExtra(sampler2D bitmap, vec2 coord) {
                 coord[0] - mod(coord[0], pixelization / openfl_TextureSize[0]),
                 coord[1] - mod(coord[1], pixelization / openfl_TextureSize[1])
             );
-            return texture2D(bitmap, newColor);
+            return texture(bitmap, newColor);
         }
         else
         {
@@ -23,7 +23,7 @@ vec4 flixel_texture2DExtra(sampler2D bitmap, vec2 coord) {
                     coord[0] + (i / openfl_TextureSize[0]) - mod(coord[0], pixelization / openfl_TextureSize[0]),
                     coord[1] + (i / openfl_TextureSize[1]) - mod(coord[1], pixelization / openfl_TextureSize[1])
                 );
-                vec4 toAdd = texture2D(bitmap, newColor);
+                vec4 toAdd = texture(bitmap, newColor);
                 color[0] += toAdd[0];
                 color[1] += toAdd[1];
                 color[2] += toAdd[2];
@@ -37,7 +37,7 @@ vec4 flixel_texture2DExtra(sampler2D bitmap, vec2 coord) {
             return color;
         }
     }
-    return texture2D(bitmap, coord);
+    return texture(bitmap, coord);
 }
 
 void main() {
