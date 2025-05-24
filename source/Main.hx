@@ -23,7 +23,6 @@ import sys.io.File;
 import sys.io.Process;
 
 class Main extends Sprite {
-	public static var game:FlxGame;
 	public static var display:SimpleInfoDisplay;
 	public static var logsOverlay:Logs;
 
@@ -46,8 +45,6 @@ class Main extends Sprite {
 		Log.trace = CoolUtil.haxe_print;
 		OpenFLLog.throwErrors = false;
 
-		game = new FlxGame(1280, 720, TitleState, 60, 60, true);
-
 		FlxG.signals.preStateSwitch.add(() -> {
 			Main.previousState = FlxG.state;
 		});
@@ -56,13 +53,7 @@ class Main extends Sprite {
 			CoolUtil.clearMemory();
 		});
 
-		// FlxG.game._customSoundTray wants just the class, it calls new from
-		// create() in there, which gets called when it's added to stage
-		// which is why it needs to be added before addChild(game) here
-		@:privateAccess
-		game._customSoundTray = ui.FunkinSoundTray;
-
-		addChild(game);
+		addChild(new FlxGame(1280, 720, TitleState, 60, 60, true));
 		logsOverlay = new Logs();
 		logsOverlay.visible = false;
 		addChild(logsOverlay);
