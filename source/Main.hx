@@ -28,17 +28,18 @@ class Main extends Sprite {
 
 	public static var previousState:FlxState;
 
-	public static var onCrash(default, null):FlxTypedSignal<UncaughtErrorEvent->Void> = new FlxTypedSignal<UncaughtErrorEvent->Void>();
+	public static var onUncaughtError(default, null):FlxTypedSignal<UncaughtErrorEvent->Void> = new FlxTypedSignal<UncaughtErrorEvent->Void>();
+	public static var onCriticalError(default, null):FlxTypedSignal<String->Void> = new FlxTypedSignal<String->Void>();
 
 	public function new() {
 		super();
 
 		#if sys
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, _onCrash);
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, _onUncaughtError);
 		#end
 
 		#if cpp
-		untyped __global__.__hxcpp_set_critical_error_handler(_onCrash); // this is important i guess?
+		untyped __global__.__hxcpp_set_critical_error_handler(_onCriticalError); // this is important i guess?
 		#end
 
 		CoolUtil.haxe_trace = Log.trace;
@@ -120,8 +121,8 @@ class Main extends Sprite {
 	 * @see https://github.com/gedehari/IzzyEngine/blob/master/source/Main.hx
 	 * @param e
 	 */
-	private function _onCrash(e:UncaughtErrorEvent):Void {
-		onCrash.dispatch(e);
+	private function _onUncaughtError(e:UncaughtErrorEvent):Void {
+		onUncaughtError.dispatch(e);
 		var error:String = "";
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
@@ -183,6 +184,56 @@ class Main extends Sprite {
 		Sys.exit(1);
 	}
 	#end
+
+	private static function _onCriticalError(message:String):Void {
+		try {
+			onCriticalError.dispatch(message);
+			var path:String;
+			var error:String = "";
+			var date:String = Date.now().toString();
+
+			date = StringTools.replace(date, " ", "_");
+			date = StringTools.replace(date, ":", "'");
+
+			error = "Critical Error:\n" + message;
+			path = Sys.getCwd() + "crash/" + "crash-critical" + '-on-' + date + ".txt";
+
+			if (!FileSystem.exists("./crash/")) {
+				FileSystem.createDirectory("./crash/");
+			}
+
+			File.saveContent(path, error + "\n");
+
+			Sys.println(error);
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+
+			var crashPath:String = "Crash" #if linux + '.x86_64' #end#if windows + ".exe" #end;
+
+			if (FileSystem.exists("./" + crashPath)) {
+				Sys.println("Found crash dialog: " + crashPath);
+
+				#if linux
+				crashPath = "./" + crashPath;
+				new Process('chmod', ['+x', crashPath]); // make sure we can run the file lol
+				#end
+				FlxG.stage.window.visible = false;
+				new Process(crashPath, ['--crash_path="' + path + '"']);
+				// trace(process.exitCode());
+			} else {
+				Sys.println("No crash dialog found! Making a simple alert instead...");
+				FlxG.stage.window.alert(message, "Critical Error!");
+			}
+		} catch (e:Dynamic) {
+			Sys.println('Error while handling crash: $e');
+
+			Sys.println('Message: $message');
+		}
+		#if sys
+		Sys.sleep(1); // wait a few moments of margin to process.
+		// Exit the game. Since it threw an error, we use a non-zero exit code.
+		openfl.Lib.application.window.close();
+		#end
+	}
 }
 /*
 																 .:^^.
