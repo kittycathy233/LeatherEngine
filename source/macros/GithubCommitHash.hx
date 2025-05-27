@@ -15,7 +15,8 @@ class GithubCommitHash {
 		if (process.exitCode() != 0) {
 			var message:String = process.stderr.readAll().toString();
 			var pos:Position = Context.currentPos();
-			Context.error("Cannot execute `git rev-parse HEAD`. " + message, pos);
+			Context.warning("Cannot execute `git rev-parse HEAD`. " + message, pos);
+			return macro $v{"unknown"};
 		}
 
 		// read the output of the process
