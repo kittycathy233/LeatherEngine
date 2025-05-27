@@ -105,7 +105,7 @@ class FreeplayState extends MusicBeatState {
 		var black:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 
 		#if MODDING_ALLOWED
-		//CoolUtil.convertFromFreeplaySongList();
+		CoolUtil.convertFromFreeplaySongList();
 		#end
 
 		#if NO_PRELOAD_ALL
