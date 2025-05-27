@@ -1,0 +1,13 @@
+{
+	"songs": [
+		{
+			"difficulties": [
+				"Normal"
+			],
+			"icon": "bf-pixel",
+			"name": "Test",
+			"color": "#7BD6F6",
+			"week": 0
+		}
+	]
+}

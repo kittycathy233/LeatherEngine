@@ -1,5 +1,8 @@
 package utilities;
 
+import states.FreeplayState.SongMetadata;
+import sys.FileSystem;
+import haxe.ds.Vector;
 import game.SongLoader.FNFCMetadata;
 #if sys
 import sys.io.File;
@@ -475,6 +478,62 @@ class CoolUtil {
 		#if sys
 		openfl.system.System.gc();
 		#end
+	}
+
+	public static function convertFromFreeplaySongList() {
+		final possibleLocations:Array<String> = [
+			"data/freeplaySonglist.txt",
+			"data/freeplaySongList.txt",
+			"_append/data/freeplaySongList.txt",
+			"_append/data/freeplaySonglist.txt"
+		];
+
+		inline function parseFreeplaySongList(list:Array<String>):Array<SongMetadata> {
+			var songs:Array<SongMetadata> = [];
+			for (i in 0...list.length) {
+				if (list[i].trim() != "") {
+					var listArray:Array<String> = list[i].split(":");
+
+					var week:Int = Std.parseInt(listArray[2]);
+					var icon:String = listArray[1];
+					var song:String = listArray[0];
+
+					var diffsStr:String = listArray[3];
+					var diffs:Array<String> = ["easy", "normal", "hard"];
+
+					var color:String = listArray[4] ?? "#00FF00";
+
+					if (diffsStr != null)
+						diffs = diffsStr.split(",");
+
+					songs.push({
+						name: song,
+						week: week,
+						icon: icon,
+						difficulties: diffs,
+						color: color
+					});
+				}
+			}
+			return songs;
+		}
+
+		var curMod:String = Options.getData("curMod");
+
+		if (FileSystem.exists('./mods/$curMod/data/freeplay.json')) {
+			return;
+		}
+
+		for (location in possibleLocations) {
+			var pathToCheck:String = './mods/$curMod/$location';
+			if (FileSystem.exists(pathToCheck)) {
+				if (!FileSystem.exists('./mods/$curMod/data/')) {
+					FileSystem.createDirectory('./mods/$curMod/data');
+				}
+				File.saveContent('./mods/$curMod/data/freeplay.json', Json.stringify({songs: parseFreeplaySongList(coolTextFileSys(pathToCheck))}, "\t"));
+				break;
+			}
+		}
 	}
 }
 

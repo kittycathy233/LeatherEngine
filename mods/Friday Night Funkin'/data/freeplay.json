@@ -1,0 +1,320 @@
+{
+    "songs": [
+        {
+            "name": "tutorial",
+            "icon": "gf",
+            "color": "#B72863",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 0
+        },
+        {
+            "name": "boppebo",
+            "icon": "dad",
+            "color": "#C96ED4",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 1
+        },
+        {
+            "name": "fresh",
+            "icon": "dad",
+            "color": "#C96ED4",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 1
+        },
+        {
+            "name": "dad battle",
+            "icon": "dad",
+            "color": "#C96ED4",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 1
+        },
+        {
+            "name": "spookeez",
+            "icon": "spooky",
+            "color": "#DD8B13",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 2
+        },
+        {
+            "name": "south",
+            "icon": "spooky",
+            "color": "#DD8B13",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 2
+        },
+        {
+            "name": "monster",
+            "icon": "monster",
+            "color": "#F5FF6B",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 2
+        },
+        {
+            "name": "pico",
+            "icon": "pico",
+            "color": "#CAE46C",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 3
+        },
+        {
+            "name": "philly nice",
+            "icon": "pico",
+            "color": "#CAE46C",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 3
+        },
+        {
+            "name": "blammed",
+            "icon": "pico",
+            "color": "#CAE46C",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 3
+        },
+        {
+            "name": "satin panties",
+            "icon": "mom",
+            "color": "#E46AA1",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 4
+        },
+        {
+            "name": "high",
+            "icon": "mom",
+            "color": "#E46AA1",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 4
+        },
+        {
+            "name": "m.i.l.f",
+            "icon": "mom",
+            "color": "#E46AA1",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 4
+        },
+        {
+            "name": "cocoa",
+            "icon": "parents-christmas",
+            "color": "#E46AA1",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 5
+        },
+        {
+            "name": "eggnog",
+            "icon": "parents-christmas",
+            "color": "#E46AA1",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 5
+        },
+        {
+            "name": "winter horrorland",
+            "icon": "monster",
+            "color": "#F5FF6B",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 5
+        },
+        {
+            "name": "senpai",
+            "icon": "senpai",
+            "color": "#FFAA6F",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 6
+        },
+        {
+            "name": "roses",
+            "icon": "senpai-angry",
+            "color": "#FFAA6F",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 6
+        },
+        {
+            "name": "thorns",
+            "icon": "spirit",
+            "color": "#FF3C6E",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 6
+        },
+        {
+            "name": "ugh",
+            "icon": "tankman",
+            "color": "#F6B604",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": 7
+        },
+        {
+            "name": "guns",
+            "icon": "tankman",
+            "color": "#F6B604",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 7
+        },
+        {
+            "name": "stress",
+            "icon": "tankman",
+            "color": "#F6B604",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": 7
+        },
+        {
+            "name": "darnell",
+            "icon": "darnell",
+            "color": "#735EB0",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard",
+                "erect",
+                "nightmare"
+            ],
+            "week": -1
+        },
+        {
+            "name": "lit up",
+            "icon": "darnell",
+            "color": "#735EB0",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": -1
+        },
+        {
+            "name": "2hot",
+            "icon": "darnell",
+            "color": "#735EB0",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": -1
+        },
+        {
+            "name": "blazin",
+            "icon": "darnell",
+            "color": "#735EB0",
+            "difficulties": [
+                "easy",
+                "normal",
+                "hard"
+            ],
+            "week": -1
+        }
+    ]
+}
