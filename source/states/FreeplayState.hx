@@ -20,6 +20,7 @@ import lime.app.Application;
 import flixel.tweens.FlxTween;
 import game.SongLoader;
 import game.Highscore;
+import game.FreeplayMetadata;
 import ui.HealthIcon;
 import ui.Alphabet;
 import flixel.FlxG;
@@ -35,7 +36,7 @@ using StringTools;
 using utilities.BackgroundUtil;
 
 class FreeplayState extends MusicBeatState {
-	public var songs:Array<SongMetadata> = [];
+	public var songs:Array<FreeplayMetadata> = [];
 
 	public var selector:FlxText;
 
@@ -104,7 +105,7 @@ class FreeplayState extends MusicBeatState {
 		var black:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 
 		#if MODDING_ALLOWED
-		CoolUtil.convertFromFreeplaySongList();
+		//CoolUtil.convertFromFreeplaySongList();
 		#end
 
 		#if NO_PRELOAD_ALL
@@ -257,7 +258,7 @@ class FreeplayState extends MusicBeatState {
 
 	/*public function addSong(songName:String, weekNum:Int, songCharacter:String) {
 		call("addSong", [songName, weekNum, songCharacter]);
-		songs.push(new SongMetadata(songName, weekNum, songCharacter));
+		songs.push(new FreeplayMetadata(songName, weekNum, songCharacter));
 		call("addSongPost", [songName, weekNum, songCharacter]);
 	}*/
 
@@ -368,7 +369,7 @@ class FreeplayState extends MusicBeatState {
 				FlxG.switchState(() -> new MainMenuState());
 			}
 
-			var curSong:SongMetadata = songs[curSelected];
+			var curSong:FreeplayMetadata = songs[curSelected];
 
 			#if PRELOAD_ALL
 			if (FlxG.keys.justPressed.SPACE) {
@@ -479,7 +480,7 @@ class FreeplayState extends MusicBeatState {
 
 		
 		if (songs.length != 0) {
-			var curSong:SongMetadata = songs[curSelected];
+			var curSong:FreeplayMetadata = songs[curSelected];
 			intendedScore = Highscore.getScore(curSong.name, curDiffString);
 			curRank = Highscore.getSongRank(curSong.name, curDiffString);
 		}
@@ -505,7 +506,7 @@ class FreeplayState extends MusicBeatState {
 		// Scroll Sound
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		var curSong:SongMetadata = songs[curSelected];
+		var curSong:FreeplayMetadata = songs[curSelected];
 
 		// Song Inst
 		if (Options.getData("freeplayMusic") && curSelected <= 0) {
@@ -608,12 +609,4 @@ class FreeplayState extends MusicBeatState {
 			scaleIcon.scale.add(0.2 * scaleIcon.startSize, 0.2 * scaleIcon.startSize);
 		call("beatHitPost");
 	}
-}
-
-typedef SongMetadata =  {
-	public var name:String;
-	public var icon:String;
-	public var difficulties:Array<String>;
-	public var color:String;
-	public var week:Int;
 }

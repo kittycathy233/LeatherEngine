@@ -1,12 +1,9 @@
 package utilities;
 
-import states.FreeplayState.SongMetadata;
 import sys.FileSystem;
-import haxe.ds.Vector;
 import game.SongLoader.FNFCMetadata;
-#if sys
+import game.FreeplayMetadata;
 import sys.io.File;
-#end
 import flixel.FlxG;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
@@ -488,8 +485,8 @@ class CoolUtil {
 			"_append/data/freeplaySonglist.txt"
 		];
 
-		inline function parseFreeplaySongList(list:Array<String>):Array<SongMetadata> {
-			var songs:Array<SongMetadata> = [];
+		inline function parseFreeplaySongList(list:Array<String>):Array<FreeplayMetadata> {
+			var songs:Array<FreeplayMetadata> = [];
 			for (i in 0...list.length) {
 				if (list[i].trim() != "") {
 					var listArray:Array<String> = list[i].split(":");
