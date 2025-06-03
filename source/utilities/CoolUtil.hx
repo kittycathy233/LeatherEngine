@@ -2,7 +2,7 @@ package utilities;
 
 import sys.FileSystem;
 import game.SongLoader.FNFCMetadata;
-import game.FreeplayMetadata;
+import game.FreeplaySong;
 import sys.io.File;
 import flixel.FlxG;
 import flixel.text.FlxText;
@@ -485,8 +485,8 @@ class CoolUtil {
 			"_append/data/freeplaySonglist.txt"
 		];
 
-		inline function parseFreeplaySongList(list:Array<String>):Array<FreeplayMetadata> {
-			var songs:Array<FreeplayMetadata> = [];
+		inline function parseFreeplaySongList(list:Array<String>):Array<FreeplaySong> {
+			var songs:Array<FreeplaySong> = [];
 			for (i in 0...list.length) {
 				if (list[i].trim() != "") {
 					var listArray:Array<String> = list[i].split(":");
@@ -508,7 +508,17 @@ class CoolUtil {
 						week: week,
 						icon: icon,
 						difficulties: diffs,
-						color: color
+						color: color,
+						metadata: {
+							composer: "",
+							charter: "",
+							modcharter: ""
+						},
+						menuConfig: {
+							canBeEntered: true,
+							showStats: true
+						},
+						extraData: {}
 					});
 				}
 			}
@@ -527,7 +537,9 @@ class CoolUtil {
 				if (!FileSystem.exists('./mods/$curMod/data/')) {
 					FileSystem.createDirectory('./mods/$curMod/data');
 				}
-				File.saveContent('./mods/$curMod/data/freeplay.json', Json.stringify({songs: parseFreeplaySongList(coolTextFileSys(pathToCheck))}, "\t"));
+				File.saveContent('./mods/$curMod/data/freeplay.json', Json.stringify({
+					songs: parseFreeplaySongList(coolTextFileSys(pathToCheck)),
+				}, "\t"));
 				break;
 			}
 		}

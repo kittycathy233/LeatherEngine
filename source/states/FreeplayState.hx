@@ -20,7 +20,7 @@ import lime.app.Application;
 import flixel.tweens.FlxTween;
 import game.SongLoader;
 import game.Highscore;
-import game.FreeplayMetadata;
+import game.FreeplaySong;
 import ui.HealthIcon;
 import ui.Alphabet;
 import flixel.FlxG;
@@ -36,7 +36,7 @@ using StringTools;
 using utilities.BackgroundUtil;
 
 class FreeplayState extends MusicBeatState {
-	public var songs:Array<FreeplayMetadata> = [];
+	public var songs:Array<FreeplaySong> = [];
 
 	public var selector:FlxText;
 
@@ -258,7 +258,7 @@ class FreeplayState extends MusicBeatState {
 
 	/*public function addSong(songName:String, weekNum:Int, songCharacter:String) {
 		call("addSong", [songName, weekNum, songCharacter]);
-		songs.push(new FreeplayMetadata(songName, weekNum, songCharacter));
+		songs.push(new FreeplaySong(songName, weekNum, songCharacter));
 		call("addSongPost", [songName, weekNum, songCharacter]);
 	}*/
 
@@ -369,7 +369,7 @@ class FreeplayState extends MusicBeatState {
 				FlxG.switchState(() -> new MainMenuState());
 			}
 
-			var curSong:FreeplayMetadata = songs[curSelected];
+			var curSong:FreeplaySong = songs[curSelected];
 
 			#if PRELOAD_ALL
 			if (FlxG.keys.justPressed.SPACE) {
@@ -420,7 +420,7 @@ class FreeplayState extends MusicBeatState {
 				changeSelection();
 			}
 
-			if (FlxG.keys.justPressed.ENTER && canEnterSong) {
+			if (FlxG.keys.justPressed.ENTER) {
 				playSong(curSong.name, curDiffString);
 			}
 		}
@@ -435,8 +435,11 @@ class FreeplayState extends MusicBeatState {
 		 * @param diff
 		 */
 	public function playSong(songName:String, diff:String) {
+		if(!canEnterSong){
+			return;
+		}
 		if (!CoolUtil.songExists(songName, diff, mix)) {
-			CoolUtil.coolError(songName.toLowerCase() + " doesn't match with any song audio files!\nTry fixing it's name in freeplaySonglist.txt",
+			CoolUtil.coolError(songName.toLowerCase() + " doesn't match with any song audio files!\nTry fixing it's name in freeplay.json",
 				"Leather Engine's No Crash, We Help Fix Stuff Tool");
 			return;
 		}
@@ -480,7 +483,7 @@ class FreeplayState extends MusicBeatState {
 
 		
 		if (songs.length != 0) {
-			var curSong:FreeplayMetadata = songs[curSelected];
+			var curSong:FreeplaySong = songs[curSelected];
 			intendedScore = Highscore.getScore(curSong.name, curDiffString);
 			curRank = Highscore.getSongRank(curSong.name, curDiffString);
 		}
@@ -506,7 +509,9 @@ class FreeplayState extends MusicBeatState {
 		// Scroll Sound
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		var curSong:FreeplayMetadata = songs[curSelected];
+		var curSong:FreeplaySong = songs[curSelected];
+
+		scoreBG.visible = scoreText.visible = diffText.visible = speedText.visible = (curSong?.menuConfig?.showStats) ?? true;
 
 		// Song Inst
 		if (Options.getData("freeplayMusic") && curSelected <= 0) {
@@ -575,6 +580,7 @@ class FreeplayState extends MusicBeatState {
 				bg.color = FlxColor.fromString(curSong.color);
 			}
 		}
+		canEnterSong = (curSong?.menuConfig?.canBeEntered) ?? true;
 		call("changeSelectionPost", [change]);
 	}
 
