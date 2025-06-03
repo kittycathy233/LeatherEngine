@@ -5,13 +5,97 @@ All notable changes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.0] - unreleased
+## [1.0.0] - unreleased
 
 ### Added
+ - Updated Haxe to 4.3.7
+ - Start using Swordcube lime,flixel,openfl forks for better performance.
+ - Use VRAM sprites whenever possible
+ - `freeplay.json` to replace `freeplaySonglist.txt`
+ - Removed use of deprecated functions from codebase.
+ - Chart editor uses sustain graphics for hold notes.
+ - Rewritten scripting backend, allowing for easier management of Lua and HScript simletaneously. 
+ - Scaled sprites are no longer rounded.
+ - Crash log stack traces can now be clicked, allowing for jumping to the line for easier engine debugging.
+ - Input text has more features (highlighting, etc).
  - Split vocal files per character
+ - A revamped HUD config menu.
+ - The ability for notes to carry thier own scroll speeds.
+ - Functions for setting note speed with Lua.
+ - Functions for setting note colors with Lua.
+ - Support for animated winning / losing icons.
+ - The ability to toggle botplay by hitting the F6 key.
+ - A toggle to show the commit hash in the info display (off by default).
+ - Priting to the console with trace/print will now show the file name and line number (HScript only).
+ - `getUnspawnedNoteType()` function to Lua.
+ - Add a `dead` variable to `PlayState`
+ - Performance improvements to outlined text.
+ - Add `attack` and `pre-attack` animations to bf.
+ - Made shader error messages more descriptive in Lua.
+ - Clear progess warning on stage editor.
+ - Organized and documented `Project.xml`
+ - `HSCRIPT_ALLOWED` define to `Project.xml`
+ - `CHECK_FOR_UPDATES` define to `Project.xml`
+ - `COMPILE_ALL_CLASSES` define to `Project.xml`
+ - Softcoded all stages
+ - `backgroundColor` property for stages.
+ - `imageDirectory` property for stages.
+ - `dances` property for stage objects.
+ - `flipX` and `flipY` propert for stage objects.
+ - `zIndex` property for stage objects and characters
+ - Improved Discord RPC support.
+ - Suppor for reading psych engine characters.
+ - The ability to click on the title screen to enter the game.
+ - `onError` `onDisconnect` `onReady` signals to Discord RPC.
+ - `onUncaughtError` and `onCritcalError` signals.
+ - Added a cap to the amount of popup errors can appear at once.
+ - New VSlice pixel note splashes and icons.
+ - Allow for engine classes to be extended with HScript.
+ - VSync option.
+ - Check for Updates option.
+ - NdllLoader class.
+ - Low Quality option.
+ - New toolbox graphic
+ - Warning for commit hash macro failing.
+ - FlxStringUtil functions to Lua
+ - `pause()` and `resume()` functions to Lua for sounds.
 ### Fixed
  - Characters that dance left and right not playing the dance right animation
  - Blazin crashing
+ - Improved sustain rendering
+ - Disabled cliprect rounding on sustains for a sharper cliprect.
+ - Sustains not rendering with modcharting tools and VRAM sprites
+ - Sustains not clipping properly on the opponent side with modcharting tools
+ - Antialiasing not properly applying / unapplying to noteskins in the chart editor.
+ - Change UI Skin event not properly working on pixel skins.
+ - Changing keycounts with modcharting tools
+ - Note sustains scale properly when changing speeds.
+ - Vocals not stopping on state reset.
+ - Shaders should no longer throw an error when failing to compile, sending the info to the console instead.
+ - Icons not loading when not being a multiple of 150x150.
+ - Lua scripts causing a game crash when destroyed.
+ - State background color not resetting to black when changed.
+ - Holes in the event sprite graphic.
+ - Copy/Paste events not properly working.
+ - Events being invisible in the chart editor when no notes are in a section.
+ - `getRenderedNoteType()` function in Lua returning the wrong value.
+ - Some graphics not being properly antialiased.
+ - Custom Discord RPC not working.
+ - Stage script not properly being loaded on change stage event.
+ - Chart editor not changing sections when scrolling.
+ - Some typing in extern classes.
+ - Mods menu allowing you to disable your current mod.
+ - Custom mania data per mod not loading
+ - Songs not starting sometimes.
+ - Webpages not opening on Linux.
+ - Cutscenes being above the notes.
+ - `setShaderProperty` not working with integer values.
+### Removed
+ - Unused screenshot keybind graphic.
+ - Fakeout death screen
+ - VSlice sound tray
+ - FPS lil buddies.
+ - Unused `Project.xml` defines.
 
 ## [0.5.0pre] - 11/9/2024
 

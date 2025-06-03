@@ -1,6 +1,6 @@
 # Leather Engine
 
-![](https://img.shields.io/github/repo-size/Vortex2Oblivion/LeatherEngine-Extended-Support) ![](https://badgen.net/github/open-issues/Vortex2Oblivion/LeatherEngine-Extended-Support) ![](https://badgen.net/badge/license/GPL-3.0/green)
+![Repo Size](https://img.shields.io/github/repo-size/Vortex2Oblivion/LeatherEngine-Extended-Support) ![Open Issues](https://badgen.net/github/open-issues/Vortex2Oblivion/LeatherEngine-Extended-Support) ![License](https://badgen.net/badge/license/GPL-3.0/green)
 [![CI build](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions/workflows/workflow.yml/badge.svg)](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions/workflows/workflow.yml)
 [![github-pages](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions/workflows/pages.yml/badge.svg)](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/actions/workflows/pages.yml)
 [![Discord](https://img.shields.io/discord/1142524994258215053.svg?logo=discord)](https://discord.gg/fnuhPNqzdZ)
@@ -19,7 +19,7 @@ This is the repository for Leather Engine, an engine created for making and play
 
 ## Build Instructions
 
-### IMPORTANT:
+### IMPORTANT
 
 For build instructions go to [BUILD.md](https://github.com/Vortex2Oblivion/LeatherEngine-Extended-Support/blob/main/build/BUILD.md)
 
