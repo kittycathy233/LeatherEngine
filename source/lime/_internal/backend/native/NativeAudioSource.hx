@@ -476,7 +476,7 @@ class NativeAudioSource {
 		return Std.int(samples / parent.buffer.sampleRate * 1000) - parent.offset;
 	}
 
-	public function setLength(value:Int):Int {
+	public function setLength(value:Float):Float {
 		if (playing && length != value) {
 			if (timer != null) {
 				timer.stop();
