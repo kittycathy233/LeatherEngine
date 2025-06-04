@@ -1186,10 +1186,18 @@ class LuaScript extends Script {
 			return PlayState.instance.unspawnNotes[id].singAnimPrefix;
 		});
 
+		setFunction("getUnspawnedNoteSingAnimSuffix", function(id:Int) {
+			return PlayState.instance.unspawnNotes[id].singAnimSuffix;
+		});
+
 		setFunction("setUnspawnedNoteSingAnimPrefix", function(id:Int, prefix:String) {
 			PlayState.instance.unspawnNotes[id].singAnimPrefix = prefix;
 		});
 
+		setFunction("setUnspawnedNoteSingAnimSuffix", function(id:Int, suffix:String) {
+			PlayState.instance.unspawnNotes[id].singAnimSuffix = suffix;
+		});
+	
 		setFunction("setUnspawnedNoteXOffset", function(id:Int, offset:Float) {
 			PlayState.instance.unspawnNotes[id].xOffset = offset;
 		});

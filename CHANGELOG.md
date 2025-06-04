@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Warning for commit hash macro failing.
  - FlxStringUtil functions to Lua
  - `pause()` and `resume()` functions to Lua for sounds.
+ - `alt animation` notetype.
 ### Fixed
  - Characters that dance left and right not playing the dance right animation
  - Blazin crashing
