@@ -8,15 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - unreleased
 
 ### Added
- - Updated Haxe to 4.3.7
- - Start using Swordcube lime,flixel,openfl forks for better performance.
- - Use VRAM sprites whenever possible
- - `freeplay.json` to replace `freeplaySonglist.txt`
- - Removed use of deprecated functions from codebase.
- - Chart editor uses sustain graphics for hold notes.
- - Rewritten scripting backend, allowing for easier management of Lua and HScript simletaneously. 
- - Scaled sprites are no longer rounded.
- - Crash log stack traces can now be clicked, allowing for jumping to the line for easier engine debugging.
  - Input text has more features (highlighting, etc).
  - Split vocal files per character
  - A revamped HUD config menu.
@@ -26,7 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Support for animated winning / losing icons.
  - The ability to toggle botplay by hitting the F6 key.
  - A toggle to show the commit hash in the info display (off by default).
- - Priting to the console with trace/print will now show the file name and line number (HScript only).
  - `getUnspawnedNoteType()` function to Lua.
  - Add a `dead` variable to `PlayState`
  - Performance improvements to outlined text.
@@ -37,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - `HSCRIPT_ALLOWED` define to `Project.xml`
  - `CHECK_FOR_UPDATES` define to `Project.xml`
  - `COMPILE_ALL_CLASSES` define to `Project.xml`
- - Softcoded all stages
  - `backgroundColor` property for stages.
  - `imageDirectory` property for stages.
  - `dances` property for stage objects.
@@ -48,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - The ability to click on the title screen to enter the game.
  - `onError` `onDisconnect` `onReady` signals to Discord RPC.
  - `onUncaughtError` and `onCritcalError` signals.
- - Added a cap to the amount of popup errors can appear at once.
  - New VSlice pixel note splashes and icons.
  - Allow for engine classes to be extended with HScript.
  - VSync option.
@@ -60,6 +48,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - FlxStringUtil functions to Lua
  - `pause()` and `resume()` functions to Lua for sounds.
  - `alt animation` notetype.
+### Changed
+ - Updated Haxe to 4.3.7
+ - Start using Swordcube lime,flixel,openfl forks for better performance.
+ - Use VRAM sprites whenever possible
+ - `freeplay.json` to replace `freeplaySonglist.txt`
+ - Removed use of deprecated functions from codebase.
+ - Chart editor uses sustain graphics for hold notes.
+ - Rewritten scripting backend, allowing for easier management of Lua and HScript simletaneously. 
+ - Scaled sprites are no longer rounded.
+ - Optimized window title bars
+ - popup errors now have a cap
+ - Crash log stack traces can now be clicked, allowing for jumping to the line for easier engine debugging.
+ - Priting to the console with trace/print will now show the file name and line number (HScript only).
+- Softcoded all stages
 ### Fixed
  - Characters that dance left and right not playing the dance right animation
  - Blazin crashing
