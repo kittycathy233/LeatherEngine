@@ -93,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Webpages not opening on Linux.
  - Cutscenes being above the notes.
  - `setShaderProperty` not working with integer values.
+ - Story mode crashing when switching songs on Linux.
 ### Removed
  - Unused screenshot keybind graphic.
  - Fakeout death screen

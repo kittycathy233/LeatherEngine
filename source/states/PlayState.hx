@@ -1538,8 +1538,8 @@ class PlayState extends MusicBeatState {
 	var maniaChanges:Array<Dynamic> = [];
 
 	// https://github.com/TheZoroForce240/LeatherEngine/blob/main/source/states/PlayState.hx#L1432
-	var currentParsingKeyCount:Int = SONG.keyCount;
-	var currentParsingPlayerKeyCount:Int = SONG.playerKeyCount;
+	var currentParsingKeyCount:Int = SONG?.keyCount ?? 4;
+	var currentParsingPlayerKeyCount:Int = SONG?.playerKeyCount ?? 4;
 
 	var addedVocals:Array<String> = [];
 

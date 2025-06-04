@@ -60,9 +60,15 @@ class SongLoader {
 			chartSuffix += '-${mix.toLowerCase()}';
 		}
 		var metaPath:String = Paths.json('song data/$songName/$songName-metadata$chartSuffix');
+		trace(metaPath);
 		if (!Assets.exists(metaPath)) {
-			trace('You can\'t load an FNFC chart without putting in the metadata!', ERROR);
-			return null;
+			if(Assets.exists(metaPath.toLowerCase())){
+				metaPath = metaPath.toLowerCase();
+			}
+			else{
+				trace('You can\'t load an FNFC chart without putting in the metadata!', ERROR);
+				return null;
+			}
 		}
 
 		var metadata:FNFCMetadata = cast Json.parse(Assets.getText(metaPath).trim());
