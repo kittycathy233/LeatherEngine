@@ -86,7 +86,6 @@ class HealthIcon extends TrackerSprite {
 		startSize = scale.x;
 		updateHitbox();
 		centerOffsets();
-		centerOrigin();
 	}
 }
 
