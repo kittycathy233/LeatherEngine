@@ -5,6 +5,9 @@
  *          http://creativecommons.org/licenses/by/3.0/deed.en_US
  */
 
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #if defined(_WIN32)
 #include <windows.h>
 #include <psapi.h>
@@ -112,3 +115,4 @@ size_t getCurrentRSS( )
     return (size_t)0L;          /* Unsupported. */
 #endif
 }
+#endif
