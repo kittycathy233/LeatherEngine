@@ -1701,10 +1701,7 @@ class PlayState extends MusicBeatState {
 
 	function generateStaticArrows(pos:Float, ?isPlayer:Bool = false, ?showReminders:Bool = true):Void {
 		call("generateStaticArrows", [pos, isPlayer, showReminders]);
-		var usedKeyCount:Int = SONG.keyCount;
-
-		if (isPlayer)
-			usedKeyCount = SONG.playerKeyCount;
+		var usedKeyCount:Int = isPlayer ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount;
 
 		for (i in 0...usedKeyCount) {
 			var babyArrow:StrumNote = new StrumNote(0, strumLine.y, i, null, null, null, usedKeyCount, pos);
