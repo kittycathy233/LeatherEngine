@@ -238,8 +238,8 @@
       "value": false
     },
     {
-      "option": "gpuCaching",
-      "value": false
+      "option": "vramSprites",
+      "value": true
     },
     {
       "option": "flixelStartupScreen",
