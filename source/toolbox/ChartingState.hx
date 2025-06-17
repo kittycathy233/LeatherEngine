@@ -1461,6 +1461,10 @@ class ChartingState extends MusicBeatState {
 			+ curStep
 			+ "\nCurBeat: "
 			+ curBeat
+			+ "\nCurDecStep: "
+			+ FlxMath.roundDecimal(curDecStep, 2)
+			+ "\nCurDecBeat: "
+			+  FlxMath.roundDecimal(curDecBeat, 2)
 			+ "\nNote Snap: "
 			+ beatSnap
 			+ (FlxG.keys.pressed.SHIFT ? "\n(DISABLED)" : "\n(CONTROL + ARROWS)")
