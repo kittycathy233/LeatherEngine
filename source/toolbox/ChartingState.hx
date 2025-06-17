@@ -189,6 +189,8 @@ class ChartingState extends MusicBeatState {
 		else
 			_song = SongLoader.loadFromJson("normal", "tutorial");
 
+		MusicBeatState.windowNameSuffix = " - " + (_song?.song ?? "Unknown Song") + " (Chart Editor)";
+
 		for (event in PlayState.instance.baseEvents) {
 			events.push(event);
 		}
