@@ -60,7 +60,6 @@ class SongLoader {
 			chartSuffix += '-${mix.toLowerCase()}';
 		}
 		var metaPath:String = Paths.json('song data/$songName/$songName-metadata$chartSuffix');
-		trace(metaPath);
 		if (!Assets.exists(metaPath)) {
 			if(Assets.exists(metaPath.toLowerCase())){
 				metaPath = metaPath.toLowerCase();
