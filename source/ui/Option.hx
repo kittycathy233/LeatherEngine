@@ -320,7 +320,12 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				#if DISCORD_ALLOWED
 				DiscordClient.loadModPresence();
 				#end
-				FlxG.resetState();
+				if(FlxG.state is modding.custom.CustomState){
+					FlxG.switchState(() -> new TitleState());
+				}
+				else{
+					FlxG.resetState();
+				}
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
 					TitleState.playTitleMusic();
 			}
