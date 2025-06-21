@@ -57,18 +57,6 @@ class FreeplayState extends MusicBeatState {
 
 	public static var songsReady:Bool = false;
 
-	public static var coolColors:Array<Int> = [
-		0xFF7F1833,
-		0xFF7C689E,
-		-14535868,
-		0xFFA8E060,
-		0xFFFF87FF,
-		0xFF8EE8FF,
-		0xFFFF8CCD,
-		0xFFFF9900,
-		0xFF735EB0
-	];
-
 	public var bg:FlxSprite;
 	public var selectedColor:Int = 0xFF7F1833;
 	public var scoreBG:FlxSprite;

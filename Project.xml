@@ -29,9 +29,8 @@
 	Allows for all flixel classes to be used in scripts.
 	If you remove this it will HEAVILY speed up compile times, at the cost of limited class
 	availability in HScript.
-	If you remove the HSCRIPT_ALLOWED define, it is higly reccomended to remove this as well.
 	-->
-	<define name="COMPILE_ALL_CLASSES" />
+	<define name="COMPILE_ALL_CLASSES" if="HSCRIPT_ALLOWED" />
 
 	<define name="CUSTOM_CLASSES" if="HSCRIPT_ALLOWED" /> <!-- Allows for custom classe to be used in HScript -->
 

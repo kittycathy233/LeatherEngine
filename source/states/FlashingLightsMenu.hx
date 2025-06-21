@@ -17,6 +17,7 @@ class FlashingLightsMenu extends MusicBeatState {
 			32);
 		text.font = Paths.font('vcr.ttf');
 		text.screenCenter();
+		text.alignment = CENTER;
 		add(text);
 	}
 
