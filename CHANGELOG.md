@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - `alt animation` notetype.
  - Middescroll and Downscroll toggles to modchart editor
  - XMModifier to modchart editor.
+ - YawModifier and PitchModifier to modchart editor
+ - ColorTransformRed ColorTransformBlue and ColorTransformGreen to modchart editor.
 ### Changed
  - Updated Haxe to 4.3.7
  - Start using Swordcube lime,flixel,openfl forks for better performance.
