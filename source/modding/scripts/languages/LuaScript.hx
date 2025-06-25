@@ -144,7 +144,6 @@ class LuaScript extends Script {
 		Lua.setglobal(lua, name);
 	}
 
-
 	public var trails:Map<String, FlxTrail> = [];
 
 	public var perlin:Perlin;
@@ -245,7 +244,7 @@ class LuaScript extends Script {
 		// WHAT THE FUCK????????????????
 		// this is my fucking tf2 coconut
 		/*set("screenWidth", FlxG.stage.window.display.currentMode.width);
-		set("screenHeight", FlxG.stage.window.display.currentMode.height);*/
+			set("screenHeight", FlxG.stage.window.display.currentMode.height); */
 		set("windowWidth", FlxG.width);
 		set("windowHeight", FlxG.height);
 
@@ -364,8 +363,12 @@ class LuaScript extends Script {
 
 			if (!PlayState.instance.scripts.exists(event_name.toLowerCase())
 				&& Assets.exists(Paths.lua("event data/" + event_name.toLowerCase()))) {
-				PlayState.instance.scripts.set(event_name.toLowerCase(),
-					new LuaScript(Paths.getModPath(Paths.lua("event data/" + event_name.toLowerCase()))));
+				var script = new LuaScript(Paths.getModPath(Paths.lua("event data/" + event_name.toLowerCase())));
+				script.call("create", []);
+				if (createPost) {
+					script.call("createPost", []);
+				}
+				PlayState.instance.scripts.set(event_name.toLowerCase(), script);
 			}
 
 			PlayState.instance.processEvent([event_name, Conductor.songPosition, string_arg_1, string_arg_2]);
@@ -1197,7 +1200,7 @@ class LuaScript extends Script {
 		setFunction("setUnspawnedNoteSingAnimSuffix", function(id:Int, suffix:String) {
 			PlayState.instance.unspawnNotes[id].singAnimSuffix = suffix;
 		});
-	
+
 		setFunction("setUnspawnedNoteXOffset", function(id:Int, offset:Float) {
 			PlayState.instance.unspawnNotes[id].xOffset = offset;
 		});
@@ -3120,10 +3123,9 @@ class LuaScript extends Script {
 			var funnyCustomShader:CustomShader = lua_Custom_Shaders.get(id);
 			if (funnyCustomShader != null) {
 				var intParam:ShaderParameter<Int> = Reflect.field(funnyCustomShader.data, property);
-				if(intParam != null){
+				if (intParam != null) {
 					funnyCustomShader.setInt(property, Std.parseInt(value));
-				}
-				else if (value is Float) {
+				} else if (value is Float) {
 					funnyCustomShader.setFloat(property, Std.parseFloat(value));
 				} else if (value is Bool) {
 					funnyCustomShader.setBool(property, value);
