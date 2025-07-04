@@ -1,5 +1,6 @@
 package states;
 
+import modding.helpers.FlxTweenUtil;
 import haxe.Json;
 import substates.ResultsSubstate;
 import substates.ResultsSubstate.SaveScoreData;
@@ -2421,6 +2422,12 @@ class PlayState extends MusicBeatState {
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
+
+			#if LUA_ALLOWED
+			for(tween in LuaScript.lua_Tweens){
+				FlxTweenUtil.pauseTween(tween);
+			}
+			#end
 
 			call('onPause', []);
 			openSubState(new PauseSubState());

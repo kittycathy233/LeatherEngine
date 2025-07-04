@@ -18,6 +18,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.utils.Assets;
 import ui.Option;
+import modding.helpers.FlxTweenUtil;
 
 using StringTools;
 
@@ -164,6 +165,11 @@ class PauseSubState extends MusicBeatSubstate {
 					FlxG.sound.list.remove(pauseMusic);
 					FlxG.cameras.remove(pauseCamera);
 					PlayState.instance.call("onResume", []);
+					#if LUA_ALLOWED
+					for(tween in modding.scripts.languages.LuaScript.lua_Tweens){
+						FlxTweenUtil.resumeTween(tween);
+					}
+					#end
 					close();
 				case "restart song":
 					menu = "restart";

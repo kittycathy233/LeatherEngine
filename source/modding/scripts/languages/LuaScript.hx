@@ -1,5 +1,6 @@
 package modding.scripts.languages;
 
+import modding.helpers.FlxTweenUtil;
 #if LUA_ALLOWED
 #if MODCHARTING_TOOLS
 import modcharting.ModchartFuncs;
@@ -70,6 +71,7 @@ class LuaScript extends Script {
 	public static var lua_Custom_Shaders:Map<String, CustomShader> = [];
 	public static var lua_Cameras:Map<String, LuaCamera> = [];
 	public static var lua_Jsons:Map<String, Dynamic> = [];
+	public static var lua_Tweens:Map<String, FlxTween> = [];
 
 	function getActorByName(id:String):Dynamic {
 		// lua objects or what ever
@@ -85,6 +87,8 @@ class LuaScript extends Script {
 			return lua_Cameras.get(id).cam;
 		else if (lua_Jsons.exists(id))
 			return lua_Jsons.get(id);
+		else if (lua_Tweens.exists(id))
+			return lua_Tweens.get(id);
 
 		if (Reflect.getProperty(PlayState.instance, id) != null)
 			return Reflect.getProperty(PlayState.instance, id);
@@ -2172,20 +2176,77 @@ class LuaScript extends Script {
 
 		setFunction("tween", function(obj:String, properties:Dynamic, duration:Float, ease:String, ?startDelay:Float = 0.0, ?onComplete:Dynamic) {
 			var spr:Dynamic = getActorByName(obj);
-
 			if (spr != null) {
-				FlxTween.tween(spr, properties, duration, {
+				lua_Tweens.set('$obj.$properties', FlxTween.tween(spr, properties, duration, {
 					ease: easeFromString(ease),
 					onComplete: function(twn) {
-						if (onComplete != null)
+						lua_Tweens.remove('$obj.$properties');
+						if (onComplete != null){
 							onComplete();
+						}
 					},
 					startDelay: startDelay,
-				});
+				}));
 			} else {
 				trace('Object named $obj doesn\'t exist!', ERROR);
 			}
 		});
+
+		setFunction("tweenCancel", function(tween:String) {
+			var twn:FlxTween = lua_Tweens.get(tween);
+			if (twn != null) {
+				twn.cancel();
+				lua_Tweens.remove(tween);
+			} else {
+				trace('Tween $tween doesn\'t exist!', ERROR);
+			}
+		});
+
+		setFunction("tweenPause", function(tween:String) {
+			var twn:FlxTween = lua_Tweens.get(tween);
+			if (twn != null) {
+				FlxTweenUtil.pauseTween(twn);
+			} else {
+				trace('Tween $tween doesn\'t exist!', ERROR);
+			}
+		});
+
+		setFunction("tweenResume", function(tween:String) {
+			var twn:FlxTween = lua_Tweens.get(tween);
+			if (twn != null) {
+				FlxTweenUtil.resumeTween(twn);
+			} else {
+				trace('Tween $tween doesn\'t exist!', ERROR);
+			}
+		});
+
+		setFunction("cancelTweensOf", function(object:String, ?fieldPaths:Array<String>) {
+			var obj:Dynamic = getActorByName(object);
+			if (obj != null) {
+				FlxTween.cancelTweensOf(obj, fieldPaths);
+			} else {
+				trace('Object $object doesn\'t exist!', ERROR);
+			}
+		});
+
+		setFunction("pauseTweensOf", function(object:String, ?fieldPaths:Array<String>) {
+			var obj:Dynamic = getActorByName(object);
+			if (obj != null) {
+				FlxTweenUtil.pauseTweensOf(obj, fieldPaths);
+			} else {
+				trace('Object $object doesn\'t exist!', ERROR);
+			}
+		});
+
+		setFunction("resumeTweensOf", function(object:String, ?fieldPaths:Array<String>) {
+			var obj:Dynamic = getActorByName(object);
+			if (obj != null) {
+				FlxTweenUtil.resumeTweensOf(obj, fieldPaths);
+			} else {
+				trace('Object $object doesn\'t exist!', ERROR);
+			}
+		});
+
 
 		setFunction("tweenCameraPos", function(toX:Int, toY:Int, time:Float, onComplete:String = "") {
 			PlayState.instance.tweenManager.tween(FlxG.camera, {x: toX, y: toY}, time, {
