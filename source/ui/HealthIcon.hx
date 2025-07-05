@@ -16,7 +16,7 @@ class HealthIcon extends TrackerSprite {
 
 	public var startSize:Float = 1;
 
-	public var char:String = "placeholder";
+	public var char(default, null):String = "placeholder";
 
 	public function new(char:String = 'placeholder', isPlayer:Bool = false) {
 		super(null, 10, -30, RIGHT);

@@ -1,5 +1,8 @@
 package toolbox;
 
+import flixel.math.FlxMath;
+import flixel.addons.ui.FlxUINumericStepper;
+import flixel.util.FlxAxes;
 import flixel.input.FlxInput;
 import ui.HealthIcon;
 import flixel.ui.FlxBar;
@@ -91,6 +94,9 @@ class CharacterCreator extends MusicBeatState {
 
 	static var lastState:String = "OptionsMenu";
 
+	var globalOffsetXStepper:FlxUINumericStepper;
+	var globalOffsetYStepper:FlxUINumericStepper;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -119,7 +125,6 @@ class CharacterCreator extends MusicBeatState {
 		gridBG.scrollFactor.set(0, 0);
 		gridBG.cameras = [gridCam];
 		add(gridBG);
-
 
 		ghost = new Character(0, 0, daAnim);
 		ghost.debugMode = true;
@@ -340,11 +345,8 @@ class CharacterCreator extends MusicBeatState {
 		configButton.scrollFactor.set();
 		configButton.cameras = [camHUD];
 		add(configButton);
-		
 
-		tabs = new FlxUITabMenu(null, [
-			{name: 'Character', label: 'Character'}
-		], true);
+		tabs = new FlxUITabMenu(null, [{name: 'Character', label: 'Character'}], true);
 		tabs.resize(300, 400);
 		tabs.x = 900;
 		tabs.screenCenter(Y);
@@ -356,7 +358,22 @@ class CharacterCreator extends MusicBeatState {
 		tabCharacter.name = "Character";
 
 
-		var checkAntialiasing:FlxUICheckBox = new FlxUICheckBox(10, 250, null, null, "Antialasing");
+		globalOffsetXStepper = new FlxUINumericStepper(10, 50,
+			1, char.positioningOffset[0], -9999, 9999);
+		
+		globalOffsetXStepper.value = char.positioningOffset[0];
+		globalOffsetXStepper.name = "globalOffsetX";
+
+		globalOffsetYStepper = new FlxUINumericStepper(globalOffsetXStepper.x, globalOffsetXStepper.y + 20,
+			1, char.positioningOffset[1], -9999, 9999);
+		
+		globalOffsetYStepper.value = char.positioningOffset[0];
+		globalOffsetYStepper.name = "globalOffsetY";
+
+		tabCharacter.add(globalOffsetXStepper);
+		tabCharacter.add(globalOffsetYStepper);
+
+		var checkAntialiasing:FlxUICheckBox = new FlxUICheckBox(10, 100, null, null, "Antialasing");
 		checkAntialiasing.checked = char.antialiasing;
 		checkAntialiasing.callback = () -> {
 			char.config.antialiasing = ghost.config.antialiasing = char.antialiasing = ghost.antialiasing = checkAntialiasing.checked;
@@ -384,29 +401,111 @@ class CharacterCreator extends MusicBeatState {
 		});
 		tabCharacter.add(spriteSheetTextInput);
 
-		var healthBar:FlxSprite = new FlxSprite(10, 350).makeGraphic(280, 9, char.barColor);
+		var healthBar:FlxSprite = new FlxSprite(10, 350).makeGraphic(280, 9, FlxColor.WHITE);
 		healthBar.antialiasing = false;
+		healthBar.color = char.barColor;
 		tabCharacter.add(healthBar);
 
-		var icon:HealthIcon = new HealthIcon(char.curCharacter);
+		var icon:HealthIcon = new HealthIcon(char.icon);
 		icon.scale.set(icon.scale.x * 0.47, icon.scale.y * 0.47);
-		icon.updateHitbox();	
+		icon.updateHitbox();
 		icon.x = 10 - icon.width / 2;
 		icon.y = 350 - (icon.height / 2);
 		tabCharacter.add(icon);
 
-		var r:FlxInputText = new FlxInputText(healthBar.x, healthBar.y - 50, 30, Std.string(char.config.barColor[0]));
+		var r:FlxInputText = new FlxInputText(healthBar.x, healthBar.y - 50, 22, Std.string(char.config.barColor[0]));
 		r.onTextChange.add((text, change) -> {
 			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
 			char.config.barColor[0] = num;
-			healthBar.color.red = num;
-			trace(num, DEBUG);
+			healthBar.color = FlxColor.fromRGB(char.config.barColor[0], char.config.barColor[1], char.config.barColor[2]);
+		});
+		r.onFocusChange.add((focused) -> {
+			if (!focused) {
+				r.text = Std.string(Math.floor(Math.max(0, Math.min(Std.parseInt(r.text), 255))));
+			}
 		});
 		tabCharacter.add(r);
-		
+
+		var g:FlxInputText = new FlxInputText(r.x + 25, r.y, 22, Std.string(char.config.barColor[1]));
+		g.onTextChange.add((text, change) -> {
+			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
+			char.config.barColor[1] = num;
+			healthBar.color = FlxColor.fromRGB(char.config.barColor[0], char.config.barColor[1], char.config.barColor[2]);
+		});
+		g.onFocusChange.add((focused) -> {
+			if (!focused) {
+				g.text = Std.string(Math.floor(Math.max(0, Math.min(Std.parseInt(g.text), 255))));
+			}
+		});
+		tabCharacter.add(g);
+
+		var b:FlxInputText = new FlxInputText(g.x + 25, g.y, 22, Std.string(char.config.barColor[2]));
+		b.onTextChange.add((text, change) -> {
+			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
+			char.config.barColor[2] = num;
+			healthBar.color = FlxColor.fromRGB(char.config.barColor[0], char.config.barColor[1], char.config.barColor[2]);
+		});
+		b.onFocusChange.add((focused) -> {
+			if (!focused) {
+				b.text = Std.string(Math.floor(Math.max(0, Math.min(Std.parseInt(b.text), 255))));
+			}
+		});
+		tabCharacter.add(b);
+
+		var rgbInfo:FlxText = new FlxText(b.x + 25, b.y, 0, "Health Bar Color (RGB)");
+		tabCharacter.add(rgbInfo);
+
+		var match:FlxButton = new FlxButton(rgbInfo.x + rgbInfo.width, rgbInfo.y, "Get Dominant Color", () -> {
+			var color:FlxColor = CoolUtil.dominantColor(icon);
+			var red:String = Std.string(color.red);
+			var green:String = Std.string(color.green);
+			var blue:String = Std.string(color.blue);
+			r.onTextChange.dispatch(red, INPUT_ACTION);
+			g.onTextChange.dispatch(green, INPUT_ACTION);
+			b.onTextChange.dispatch(blue, INPUT_ACTION);
+			r.text = red;
+			g.text = green;
+			b.text = blue;
+		});
+		match.scale.y = 1.667;
+		match.label.offset.y += 5;
+		tabCharacter.add(match);
+
+		var iconName:FlxInputText = new FlxInputText(r.x, r.y - 25, 100, icon.char);
+		iconName.onTextChange.add((text, change) -> {
+			char.icon = text;
+			icon.setupIcon(text);
+			icon.scale.set(icon.scale.x * 0.47, icon.scale.y * 0.47);
+			icon.updateHitbox();
+		});
+		tabCharacter.add(iconName);
+
 		tabs.addGroup(tabCharacter);
 
 		super.create();
+	}
+
+	
+	inline function fixOffsets() {
+		char.playAnim(animList[curAnim], true);
+		var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+		char.setPosition(position[0], position[1]);
+		genBoyOffsets(false);
+	}
+
+	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
+		if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)){
+			var stepper:FlxUINumericStepper = cast sender;
+			var name:String = stepper.name;
+			switch(name){
+				case "globalOffsetX":
+					char.positioningOffset[0] == data;
+					fixOffsets();
+				case "globalOffsetY":
+					char.positioningOffset[1] == data;
+					fixOffsets();
+			}
+		}
 	}
 
 	function genBoyOffsets(pushList:Bool = true):Void {
@@ -424,6 +523,8 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
+		char.positioningOffset[0] = globalOffsetXStepper.value;
+		char.positioningOffset[1] = globalOffsetYStepper.value;
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
 		if (FlxG.keys.pressed.Q && charCam.zoom >= 0.1)
@@ -565,7 +666,7 @@ class CharacterCreator extends MusicBeatState {
 		}
 	}
 
-	function saveConfig(){
+	function saveConfig() {
 		var config:CharacterConfig = cast {
 			imagePath: "",
 			animations: [],
