@@ -450,18 +450,33 @@ class CharacterCreator extends MusicBeatState {
 
 		var dances:FlxUICheckBox = new FlxUICheckBox(checkFlipX.x, checkFlipX.y + 25, null, null, "Dances Left/Right");
 		dances.checked = char.config.dancesLeftAndRight;
-		checkFlipX.callback = () -> {
+		dances.callback = () -> {
 			char.config.dancesLeftAndRight = dances.checked;
 		}
 
 		tabCharacter.add(dances);
 
-		scaleStepper = new FlxUINumericStepper(dances.x, dances.y + 80,
+		scaleStepper = new FlxUINumericStepper(dances.x, dances.y + 35,
 			0.1, (char.config.graphicSize) ?? 1, 0.1, 10, 1);
 		
 		scaleStepper.value = (char.config.graphicSize) ?? 1;
 		scaleStepper.name = "scale";
 		tabCharacter.add(scaleStepper);
+
+		var scaleLabel:FlxText = new FlxText(scaleStepper.x + scaleStepper.width + 2, scaleStepper.y);
+		scaleLabel.text = "Scale";
+		tabCharacter.add(scaleLabel);
+
+		var singDurationStepper:FlxUINumericStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20,
+			0.1, (char.config.singDuration) ?? 4, 0.1, 10, 1);
+		
+		singDurationStepper.value = (char.config.singDuration) ?? 4;
+		singDurationStepper.name = "singDuration";
+		tabCharacter.add(singDurationStepper);
+
+		var singDurationLabel:FlxText = new FlxText(singDurationStepper.x + singDurationStepper.width + 2, singDurationStepper.y);
+		singDurationLabel.text = "Sing Duration";
+		tabCharacter.add(singDurationLabel);
 
 		var spriteSheetTextInput:FlxInputText = new FlxInputText(10, 10, 100, char.config.imagePath);
 		spriteSheetTextInput.onTextChange.add((text, change) -> {
@@ -555,6 +570,10 @@ class CharacterCreator extends MusicBeatState {
 		});
 		tabCharacter.add(iconName);
 
+		var iconNameLabel:FlxText = new FlxText(iconName.x + iconName.fieldWidth + 2, iconName.y);
+		iconNameLabel.text = "Icon Name";
+		tabCharacter.add(iconNameLabel);
+
 		tabs.addGroup(tabCharacter);
 
 		super.create();
@@ -585,6 +604,8 @@ class CharacterCreator extends MusicBeatState {
 					char.cameraOffset[1] = data;
 				case "scale":
 					char.config.graphicsSize = char.scale.x = char.scale.y = data;
+				case "singDuration":
+					char.config.singDuration = data;
 			}
 		}
 	}
@@ -756,11 +777,12 @@ class CharacterCreator extends MusicBeatState {
 			imagePath: char.config.imagePath,
 			animations: [],
 			defaultFlipX: char.config.defaultFlipX,
-			dancesLeftAndRight: false,
+			dancesLeftAndRight: char.config.dancesLeftAndRight,
 			barColor: char.config.barColor,
 			positionOffset: char.positioningOffset,
 			cameraOffset: char.cameraOffset,
-			singDuration: 4
+			singDuration: char.config.singDuration,
+			healthIcon: char.icon
 		}
 		_file = new FileReference();
 		_file.addEventListener(Event.COMPLETE, onSaveComplete);
