@@ -61,6 +61,7 @@ class CharacterCreator extends MusicBeatState {
 	var tabs:FlxUITabMenu;
 
 	var cross:FlxSprite;
+	var scaleStepper:FlxUINumericStepper;
 
 	function new(daAnim:String = 'spooky', selectedStage:String) {
 		super();
@@ -447,6 +448,21 @@ class CharacterCreator extends MusicBeatState {
 
 		tabCharacter.add(checkFlipX);
 
+		var dances:FlxUICheckBox = new FlxUICheckBox(checkFlipX.x, checkFlipX.y + 25, null, null, "Dances Left/Right");
+		dances.checked = char.config.dancesLeftAndRight;
+		checkFlipX.callback = () -> {
+			char.config.dancesLeftAndRight = dances.checked;
+		}
+
+		tabCharacter.add(dances);
+
+		scaleStepper = new FlxUINumericStepper(dances.x, dances.y + 80,
+			0.1, (char.config.graphicSize) ?? 1, 0.1, 10, 1);
+		
+		scaleStepper.value = (char.config.graphicSize) ?? 1;
+		scaleStepper.name = "scale";
+		tabCharacter.add(scaleStepper);
+
 		var spriteSheetTextInput:FlxInputText = new FlxInputText(10, 10, 100, char.config.imagePath);
 		spriteSheetTextInput.onTextChange.add((text, change) -> {
 			char.config.imagePath = text;
@@ -558,15 +574,17 @@ class CharacterCreator extends MusicBeatState {
 			var name:String = stepper.name;
 			switch(name){
 				case "globalOffsetX":
-					char.positioningOffset[0] == data;
+					char.positioningOffset[0] = data;
 					fixOffsets();
 				case "globalOffsetY":
-					char.positioningOffset[1] == data;
+					char.positioningOffset[1] = data;
 					fixOffsets();
 				case "cameraOffsetX":
-					char.cameraOffset[0] == data;
+					char.cameraOffset[0] = data;
 				case "cameraOffsetY":
-					char.cameraOffset[1] == data;
+					char.cameraOffset[1] = data;
+				case "scale":
+					char.config.graphicsSize = char.scale.x = char.scale.y = data;
 			}
 		}
 	}
@@ -586,11 +604,11 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
-		char.positioningOffset[0] = globalOffsetXStepper.value;
+		/*char.positioningOffset[0] = globalOffsetXStepper.value;
 		char.positioningOffset[1] = globalOffsetYStepper.value;
 
 		char.cameraOffset[0] = cameraOffsetXStepper.value;
-		char.cameraOffset[1] = cameraOffsetYStepper.value;
+		char.cameraOffset[1] = cameraOffsetYStepper.value;*/
 		cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
