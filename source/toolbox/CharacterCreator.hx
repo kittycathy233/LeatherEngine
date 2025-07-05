@@ -104,6 +104,9 @@ class CharacterCreator extends MusicBeatState {
 	var globalOffsetXStepper:FlxUINumericStepper;
 	var globalOffsetYStepper:FlxUINumericStepper;
 
+	var cameraOffsetXStepper:FlxUINumericStepper;
+	var cameraOffsetYStepper:FlxUINumericStepper;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -158,8 +161,11 @@ class CharacterCreator extends MusicBeatState {
 		}, FlxColor.WHITE);
 		add(cross);*/
 
-		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(Icon.cross);
+		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(Paths.gpuBitmap("cursorCross"));
 		cross.antialiasing = false;
+		cross.scale.set(3, 3);
+		cross.updateHitbox();
+		cross.pixelPerfectRender = true;
 		add(cross);
 
 		animText = new FlxText(4, 4, 0, "BRUH BRUH BRUH: [0,0]", 20);
@@ -167,7 +173,7 @@ class CharacterCreator extends MusicBeatState {
 		animText.scrollFactor.set();
 		animText.color = FlxColor.WHITE;
 		animText.borderColor = FlxColor.BLACK;
-		animText.borderStyle = OUTLINE_FAST;
+		animText.borderStyle = OUTLINE;
 		animText.borderSize = 2;
 		animText.cameras = [camHUD];
 		add(animText);
@@ -178,7 +184,7 @@ class CharacterCreator extends MusicBeatState {
 		moveText.scrollFactor.set();
 		moveText.color = FlxColor.WHITE;
 		moveText.borderColor = FlxColor.BLACK;
-		moveText.borderStyle = OUTLINE_FAST;
+		moveText.borderStyle = OUTLINE;
 		moveText.borderSize = 2;
 		moveText.alignment = RIGHT;
 		moveText.cameras = [camHUD];
@@ -392,11 +398,35 @@ class CharacterCreator extends MusicBeatState {
 		globalOffsetYStepper = new FlxUINumericStepper(globalOffsetXStepper.x, globalOffsetXStepper.y + 20,
 			1, char.positioningOffset[1], -9999, 9999);
 		
-		globalOffsetYStepper.value = char.positioningOffset[0];
+		globalOffsetYStepper.value = char.positioningOffset[1];
 		globalOffsetYStepper.name = "globalOffsetY";
 
 		tabCharacter.add(globalOffsetXStepper);
 		tabCharacter.add(globalOffsetYStepper);
+
+		cameraOffsetXStepper = new FlxUINumericStepper(globalOffsetXStepper.x + 80, globalOffsetXStepper.y,
+			1, char.cameraOffset[0], -9999, 9999);
+		
+		cameraOffsetXStepper.value = char.cameraOffset[0];
+		cameraOffsetXStepper.name = "cameraOffsetX";
+
+		cameraOffsetYStepper = new FlxUINumericStepper(cameraOffsetXStepper.x, globalOffsetYStepper.y,
+			1, char.cameraOffset[1], -9999, 9999);
+		
+		cameraOffsetYStepper.value = char.cameraOffset[1];
+		cameraOffsetYStepper.name = "cameraOffsetY";
+
+		tabCharacter.add(cameraOffsetXStepper);
+		tabCharacter.add(cameraOffsetYStepper);
+
+		var infoPos:FlxText = new FlxText(globalOffsetXStepper.x , globalOffsetXStepper.y - 20, 0, "Position");
+		infoPos.alignment = CENTER;
+		tabCharacter.add(infoPos);
+
+
+		var infoCamera:FlxText = new FlxText(cameraOffsetXStepper.x , cameraOffsetXStepper.y - 20, 0, "Camera");
+		infoCamera.alignment = CENTER;
+		tabCharacter.add(infoCamera);
 
 		var checkAntialiasing:FlxUICheckBox = new FlxUICheckBox(10, 100, null, null, "Antialasing");
 		checkAntialiasing.checked = char.antialiasing;
@@ -425,6 +455,10 @@ class CharacterCreator extends MusicBeatState {
 			char.playAnim("idle", true);
 		});
 		tabCharacter.add(spriteSheetTextInput);
+
+		var spriteSheetTextInputLabel:FlxText = new FlxText(spriteSheetTextInput.x + spriteSheetTextInput.fieldWidth + 2, spriteSheetTextInput.y);
+		spriteSheetTextInputLabel.text = "Image Path";
+		tabCharacter.add(spriteSheetTextInputLabel);
 
 		var healthBar:FlxSprite = new FlxSprite(10, 350).makeGraphic(280, 9, FlxColor.WHITE);
 		healthBar.antialiasing = false;
@@ -529,6 +563,10 @@ class CharacterCreator extends MusicBeatState {
 				case "globalOffsetY":
 					char.positioningOffset[1] == data;
 					fixOffsets();
+				case "cameraOffsetX":
+					char.cameraOffset[0] == data;
+				case "cameraOffsetY":
+					char.cameraOffset[1] == data;
 			}
 		}
 	}
@@ -550,6 +588,10 @@ class CharacterCreator extends MusicBeatState {
 	override function update(elapsed:Float) {
 		char.positioningOffset[0] = globalOffsetXStepper.value;
 		char.positioningOffset[1] = globalOffsetYStepper.value;
+
+		char.cameraOffset[0] = cameraOffsetXStepper.value;
+		char.cameraOffset[1] = cameraOffsetYStepper.value;
+		cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
 		if (FlxG.keys.pressed.Q && charCam.zoom >= 0.1)
@@ -699,7 +741,7 @@ class CharacterCreator extends MusicBeatState {
 			dancesLeftAndRight: false,
 			barColor: char.config.barColor,
 			positionOffset: char.positioningOffset,
-			cameraOffset: [0, 0],
+			cameraOffset: char.cameraOffset,
 			singDuration: 4
 		}
 		_file = new FileReference();
