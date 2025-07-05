@@ -1,5 +1,10 @@
 package toolbox;
 
+import flixel.system.debug.Icon;
+import openfl.display.CapsStyle;
+import flixel.math.FlxPoint;
+import openfl.display.JointStyle;
+import flixel.addons.display.shapes.FlxShapeCross;
 import flixel.math.FlxMath;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.util.FlxAxes;
@@ -54,6 +59,8 @@ class CharacterCreator extends MusicBeatState {
 	var _file:FileReference;
 
 	var tabs:FlxUITabMenu;
+
+	var cross:FlxSprite;
 
 	function new(daAnim:String = 'spooky', selectedStage:String) {
 		super();
@@ -137,6 +144,24 @@ class CharacterCreator extends MusicBeatState {
 		reloadStage();
 		add(ghost);
 		add(char);
+
+		var midPos:FlxPoint = char.getMidpoint();
+		midPos.x += stage.p2_Cam_Offset.x;
+		midPos.y += stage.p2_Cam_Offset.y;
+
+
+		/*cross = new FlxShapeCross(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1], 10, 10, 10, 10, 10, 10, {
+			thickness: 1,
+			color: FlxColor.TRANSPARENT,
+			capsStyle: CapsStyle.SQUARE,
+			jointStyle: JointStyle.MITER
+		}, FlxColor.WHITE);
+		add(cross);*/
+
+		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(Icon.cross);
+		cross.antialiasing = false;
+		add(cross);
+
 		animText = new FlxText(4, 4, 0, "BRUH BRUH BRUH: [0,0]", 20);
 		animText.font = Paths.font("vcr.ttf");
 		animText.scrollFactor.set();
@@ -668,12 +693,12 @@ class CharacterCreator extends MusicBeatState {
 
 	function saveConfig() {
 		var config:CharacterConfig = cast {
-			imagePath: "",
+			imagePath: char.config.imagePath,
 			animations: [],
 			defaultFlipX: char.config.defaultFlipX,
 			dancesLeftAndRight: false,
-			barColor: [0, 0, 0],
-			positionOffset: [0, 0],
+			barColor: char.config.barColor,
+			positionOffset: char.positioningOffset,
 			cameraOffset: [0, 0],
 			singDuration: 4
 		}
