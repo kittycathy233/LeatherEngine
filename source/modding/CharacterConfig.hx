@@ -51,7 +51,8 @@ typedef CharacterAnimation =
 {
 	var name:String;
 	var animation_name:String;
-	var indices:Null<Array<Int>>;
 	var fps:Int;
 	var looped:Bool;
+	@:optional
+	var indices:Null<Array<Int>>;
 }

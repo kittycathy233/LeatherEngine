@@ -148,7 +148,7 @@ class Character extends FlxSprite {
 		}
 		#if HSCRIPT_ALLOWED
 		if (Assets.exists(Paths.hx("data/character data/" + curCharacter + "/script"))) {
-			script.call("createCharacterPost", [curCharacter]);
+			script?.call("createCharacterPost", [curCharacter]);
 		}
 
 		animation.onFinish.add((animName) -> {
@@ -164,12 +164,14 @@ class Character extends FlxSprite {
 				curCharacter = characterName;
 			}
 			#if HSCRIPT_ALLOWED
-			if (Assets.exists(Paths.hx("data/character data/" + characterName + "/script"))) {
-				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
+			if(FlxG.state is PlayState){
+				if (Assets.exists(Paths.hx("data/character data/" + characterName + "/script"))) {
+					script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
 
-				script.interp.variables.set("character", this);
-				PlayState.instance.scripts.set(characterName, script);
-				script.call("createCharacter", [curCharacter]);
+					script.interp.variables.set("character", this);
+					PlayState.instance.scripts.set(characterName, script);
+					script.call("createCharacter", [curCharacter]);
+				}
 			}
 			#end
 
