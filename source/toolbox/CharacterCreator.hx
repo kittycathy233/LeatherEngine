@@ -458,7 +458,7 @@ class CharacterCreator extends MusicBeatState {
 		tabGhost.add(ghostAnimDropDown);
 		tabGhost.add(ghostDropDown);
 
-		ghostBlendCheck = new FlxUICheckBox(155, 65, null, null, "Blend Ghost");
+		ghostBlendCheck = new FlxUICheckBox(155, 65, null, null, "Highlight Ghost");
 		ghostBlendCheck.callback = () -> {
 			ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 		}
@@ -749,7 +749,12 @@ class CharacterCreator extends MusicBeatState {
 		offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
 		offsetsFlipWhenPlayer.callback = () -> {
 			char.offsetsFlipWhenPlayer = char.config.offsetsFlipWhenPlayer = offsetsFlipWhenPlayer.checked;
-			fixOffsets();
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
+			char.loadOffsetFile(char.curCharacter);
+			char.playAnim(animList[curAnim], true);
+			animList = [];
+			genBoyOffsets(true);
 		}
 		tabOffsets.add(offsetsFlipWhenPlayer);
 
@@ -758,7 +763,12 @@ class CharacterCreator extends MusicBeatState {
 		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
 		offsetsFlipWhenEnemy.callback = () -> {
 			char.offsetsFlipWhenEnemy = char.config.offsetsFlipWhenEnemy = offsetsFlipWhenEnemy.checked;
-			fixOffsets();
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
+			char.loadOffsetFile(char.curCharacter);
+			char.playAnim(animList[curAnim], true);
+			animList = [];
+			genBoyOffsets(true);
 		}
 		tabOffsets.add(offsetsFlipWhenEnemy);
 
@@ -822,6 +832,15 @@ class CharacterCreator extends MusicBeatState {
 			animText.text += "(offsets flipped)";
 	}
 
+	function genGhostOffsets(pushList:Bool = true):Void {
+		animText.text = "";
+
+		for (anim => offsets in ghost.animOffsets) {
+			if (pushList)
+				ghostAnimList.push(anim);
+		}
+	}
+
 	override function update(elapsed:Float) {
 		/*char.positioningOffset[0] = globalOffsetXStepper.value;
 			char.positioningOffset[1] = globalOffsetYStepper.value;
@@ -855,8 +874,13 @@ class CharacterCreator extends MusicBeatState {
 
 			char.loadOffsetFile(char.curCharacter);
 			char.playAnim(animList[curAnim], true);
+
+			ghost.loadOffsetFile(ghost.curCharacter);
+			ghost.playAnim(ghost.animation.curAnim.name, true);
 			animList = [];
+			ghostAnimList = [];
 			genBoyOffsets(true);
+			genGhostOffsets(true);
 		}
 
 		var shiftThing:Int = FlxG.keys.pressed.SHIFT ? 5 : 1;
