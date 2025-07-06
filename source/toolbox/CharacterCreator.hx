@@ -109,6 +109,9 @@ class CharacterCreator extends MusicBeatState {
 	var cameraOffsetXStepper:FlxUINumericStepper;
 	var cameraOffsetYStepper:FlxUINumericStepper;
 
+	var ghostAlphaSlider:FlxUISlider;
+	var ghostBlendCheck:FlxUICheckBox;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -141,7 +144,8 @@ class CharacterCreator extends MusicBeatState {
 		ghost = new Character(0, 0, daAnim);
 		ghost.debugMode = true;
 		//ghost.color = FlxColor.BLACK;
-		ghost.alpha = 0.5;
+		ghost.alpha = ghostAlphaSlider.value;
+		ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 
 		char = new Character(0, 0, daAnim);
 		char.debugMode = true;
@@ -275,7 +279,8 @@ class CharacterCreator extends MusicBeatState {
 					daAnim = curCharList[0];
 					ghost = new Character(0, 0, daAnim);
 					ghost.debugMode = true;
-					ghost.alpha = 0.5;
+					ghost.alpha = ghostAlphaSlider.value;
+					ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 					//ghost.color = FlxColor.BLACK;
 					add(ghost);
 
@@ -312,7 +317,8 @@ class CharacterCreator extends MusicBeatState {
 				ghost = new Character(0, 0, daAnim);
 				ghost.debugMode = true;
 				//ghost.color = FlxColor.BLACK;
-				ghost.alpha = 0.5;
+				ghost.alpha = ghostAlphaSlider.value;
+				ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 				add(ghost);
 
 				char = new Character(0, 0, daAnim);
@@ -387,7 +393,7 @@ class CharacterCreator extends MusicBeatState {
 		tabGhost.name = "Ghost";
 		editor.addGroup(tabGhost);
 
-		var ghostAlphaSlider:FlxUISlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
+		ghostAlphaSlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
 		ghostAlphaSlider.nameLabel.text = "Ghost Alpha";
 		ghostAlphaSlider.nameLabel.offset.y = -	8;
 		ghostAlphaSlider.valueLabel.color = FlxColor.BLACK;
@@ -404,7 +410,8 @@ class CharacterCreator extends MusicBeatState {
 				ghost = new Character(0, 0, daAnim);
 				ghost.debugMode = true;
 				//ghost.color = FlxColor.BLACK;
-				ghost.alpha = 0.5;
+				ghost.alpha = ghostAlphaSlider.value;
+				ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 				add(ghost);
 
 				var position = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
@@ -444,7 +451,7 @@ class CharacterCreator extends MusicBeatState {
 		tabGhost.add(ghostAnimDropDown);
 		tabGhost.add(ghostDropDown);
 
-		var ghostBlendCheck:FlxUICheckBox = new FlxUICheckBox(150, 50, null, null, "Blend Ghost");
+		ghostBlendCheck = new FlxUICheckBox(155, 65, null, null, "Blend Ghost");
 		ghostBlendCheck.callback = () -> {
 			ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
 		}
