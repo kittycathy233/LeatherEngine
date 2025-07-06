@@ -112,6 +112,8 @@ class CharacterCreator extends MusicBeatState {
 	var ghostAlphaSlider:FlxUISlider;
 	var ghostBlendCheck:FlxUICheckBox;
 
+	var trail:FlxUICheckBox;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -230,24 +232,24 @@ class CharacterCreator extends MusicBeatState {
 		curCharList = characters.get("default");
 
 		charDropDown = new FlxScrollableDropDownMenu(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
+			remove(char.coolTrail);
+			char.coolTrail.kill();
+			char.coolTrail.destroy();
+
 			remove(char);
 			char.kill();
 			char.destroy();
-
-			remove(ghost);
-			ghost.kill();
-			ghost.destroy();
 
 			daAnim = curCharList[Std.parseInt(character)];
 
 			char = new Character(0, 0, daAnim);
 			char.debugMode = true;
 			add(char.coolTrail);
+			char.coolTrail.visible = trail.checked = char.config.trail;
 			add(char);
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 			char.setPosition(position[0], position[1]);
-			ghost.setPosition(position[0], position[1]);
 
 			animList = [];
 			genBoyOffsets(true);
@@ -652,7 +654,7 @@ class CharacterCreator extends MusicBeatState {
 
 		tabs.addGroup(tabCharacter);
 
-		var trail:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Has Trail");
+		trail = new FlxUICheckBox(10, 10, null, null, "Has Trail");
 		char.coolTrail.visible = trail.checked = char.config.trail;
 		trail.callback = () -> {
 			char.coolTrail.visible = char.config.trail = trail.checked;

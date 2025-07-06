@@ -244,6 +244,12 @@ class Character extends FlxSprite {
 		}
 	}
 
+	override function destroy() {
+		FlxDestroyUtil.destroy(coolTrail);
+		FlxDestroyUtil.destroy(atlas);
+		super.destroy();
+	}
+
 	public function loadCharacterConfiguration(config:CharacterConfig) {
 		if (config.characters == null || config.characters.length <= 1) {
 			if (!isPlayer)
