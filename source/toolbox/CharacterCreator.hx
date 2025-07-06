@@ -144,8 +144,7 @@ class CharacterCreator extends MusicBeatState {
 		ghost = new Character(0, 0, daAnim);
 		ghost.debugMode = true;
 		//ghost.color = FlxColor.BLACK;
-		ghost.alpha = ghostAlphaSlider.value;
-		ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
+		ghost.alpha = 0.5;
 
 		char = new Character(0, 0, daAnim);
 		char.debugMode = true;
