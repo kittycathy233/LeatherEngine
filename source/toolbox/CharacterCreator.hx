@@ -1,18 +1,11 @@
 package toolbox;
 
+import flixel.addons.ui.FlxUIButton;
 import flixel.addons.effects.FlxTrail;
-import flixel.system.debug.Icon;
-import openfl.display.CapsStyle;
 import flixel.math.FlxPoint;
-import openfl.display.JointStyle;
-import flixel.addons.display.shapes.FlxShapeCross;
 import flixel.math.FlxMath;
 import flixel.addons.ui.FlxUINumericStepper;
-import flixel.util.FlxAxes;
-import flixel.input.FlxInput;
 import ui.HealthIcon;
-import flixel.ui.FlxBar;
-import openfl.utils.Assets;
 import flixel.text.FlxInputText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
@@ -36,7 +29,6 @@ import flixel.FlxG;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -61,8 +53,13 @@ class CharacterCreator extends MusicBeatState {
 
 	var tabs:FlxUITabMenu;
 
+	var editor:FlxUITabMenu;
+
 	var cross:FlxSprite;
 	var scaleStepper:FlxUINumericStepper;
+
+	var animationFramerateStepper:FlxUINumericStepper;
+	var animationLoopedCheckbox:FlxUICheckBox;
 
 	function new(daAnim:String = 'spooky', selectedStage:String) {
 		super();
@@ -383,15 +380,28 @@ class CharacterCreator extends MusicBeatState {
 
 		tabs = new FlxUITabMenu(null, [
 			{name: 'Character', label: 'Character'},
+			{name: "Trail", label: "Trail"},
+			{name: 'Animations', label: 'Animations'},
 			{name: 'Offsets', label: 'Offsets'},
-			{name: "Trail", label: "Trail"}
 		], true);
 		tabs.resize(300, 400);
 		tabs.x = 900;
 		tabs.screenCenter(Y);
+		tabs.y += 150;
 		tabs.scrollFactor.set();
 		tabs.cameras = [camHUD];
 		add(tabs);
+
+		editor = new FlxUITabMenu(null, [{name: "Editor", label: "Editor"}], true);
+		editor.resize(300, 125);
+		editor.x = 900;
+		editor.y = tabs.y - 115 -25;
+		editor.cameras = [camHUD];
+		add(editor);
+
+		var tabEditor:FlxUI = new FlxUI(null, editor);
+		tabEditor.name = "Editor";
+		editor.addGroup(tabEditor);
 
 		var tabCharacter:FlxUI = new FlxUI(null, tabs);
 		tabCharacter.name = "Character";
@@ -401,6 +411,10 @@ class CharacterCreator extends MusicBeatState {
 
 		var tabTrail:FlxUI = new FlxUI(null, tabs);
 		tabTrail.name = "Trail";
+
+		var tabAnimations:FlxUI = new FlxUI(null, tabs);
+		tabAnimations.name = "Animations";
+
 
 		globalOffsetXStepper = new FlxUINumericStepper(10, 50, 1, char.positioningOffset[0], -9999, 9999);
 
@@ -582,25 +596,6 @@ class CharacterCreator extends MusicBeatState {
 
 		tabs.addGroup(tabCharacter);
 
-		var offsetsFlipWhenPlayer:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Offsets Flip When Player");
-		offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
-		offsetsFlipWhenPlayer.callback = () -> {
-			char.offsetsFlipWhenPlayer = char.config.offsetsFlipWhenPlayer = offsetsFlipWhenPlayer.checked;
-			fixOffsets();
-		}
-		tabOffsets.add(offsetsFlipWhenPlayer);
-
-		var offsetsFlipWhenEnemy:FlxUICheckBox = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
-			"Offsets Flip When Enemy");
-		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
-		offsetsFlipWhenEnemy.callback = () -> {
-			char.offsetsFlipWhenEnemy = char.config.offsetsFlipWhenEnemy = offsetsFlipWhenEnemy.checked;
-			fixOffsets();
-		}
-		tabOffsets.add(offsetsFlipWhenEnemy);
-
-		tabs.addGroup(tabOffsets);
-
 		var trail:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Has Trail");
 		char.coolTrail.visible = trail.checked = char.config.trail;
 		trail.callback = () -> {
@@ -641,6 +636,66 @@ class CharacterCreator extends MusicBeatState {
 		tabTrail.add(trailDiffLabel);
 
 		tabs.addGroup(tabTrail);
+
+		var animationInputName:FlxInputText = new FlxInputText(10, 25, 100);
+		tabAnimations.add(animationInputName);
+
+		var animationInputNameLabel:FlxText = new FlxText(animationInputName.x, animationInputName.y - 15, 100, "Name");
+		animationInputNameLabel.alignment = CENTER;
+		tabAnimations.add(animationInputNameLabel);
+
+		var animationInputAnimationName:FlxInputText = new FlxInputText(animationInputName.x + 105, 25, 100);
+		tabAnimations.add(animationInputAnimationName);
+
+		var animationInputAnimationNameLabel:FlxText = new FlxText(animationInputAnimationName.x, animationInputAnimationName.y - 15, 100, "Animation Name");
+		animationInputAnimationNameLabel.alignment = CENTER;
+		tabAnimations.add(animationInputAnimationNameLabel);
+
+
+		animationFramerateStepper = new FlxUINumericStepper(animationInputName.x, animationInputName.y + 25, 1, 24, 1, 60);
+		animationFramerateStepper.value = 24;
+		animationFramerateStepper.name = "animationFramerate";
+		tabAnimations.add(animationFramerateStepper);
+
+		var animationFramerateStepperLabel:FlxText = new FlxText(animationFramerateStepper.x + animationFramerateStepper.width, animationFramerateStepper.y, 0, "Animation Framerate");
+		tabAnimations.add(animationFramerateStepperLabel);
+
+		animationLoopedCheckbox = new FlxUICheckBox(animationInputName.x, animationFramerateStepper.y + 25, null, null, "Animation Looped");
+		tabAnimations.add(animationLoopedCheckbox);
+
+		var addAnimation:FlxUIButton = new FlxUIButton(10, animationLoopedCheckbox.y + 25, "Add / Update Animation", () -> {
+			char.animation.addByPrefix(animationInputName.text, animationInputAnimationName.text, animationFramerateStepper.value, animationLoopedCheckbox.checked);
+			char.addOffset(animationInputName.text, 0, 0);
+			animList = [];
+			genBoyOffsets(true);
+			fixOffsets();
+		});
+		addAnimation.resize(280, addAnimation.height);
+		addAnimation.antialiasing = false;
+		addAnimation.updateHitbox();
+		addAnimation.autoCenterLabel();
+		tabAnimations.add(addAnimation);
+
+		tabs.addGroup(tabAnimations);
+
+		var offsetsFlipWhenPlayer:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Offsets Flip When Player");
+		offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
+		offsetsFlipWhenPlayer.callback = () -> {
+			char.offsetsFlipWhenPlayer = char.config.offsetsFlipWhenPlayer = offsetsFlipWhenPlayer.checked;
+			fixOffsets();
+		}
+		tabOffsets.add(offsetsFlipWhenPlayer);
+
+		var offsetsFlipWhenEnemy:FlxUICheckBox = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
+			"Offsets Flip When Enemy");
+		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
+		offsetsFlipWhenEnemy.callback = () -> {
+			char.offsetsFlipWhenEnemy = char.config.offsetsFlipWhenEnemy = offsetsFlipWhenEnemy.checked;
+			fixOffsets();
+		}
+		tabOffsets.add(offsetsFlipWhenEnemy);
+
+		tabs.addGroup(tabOffsets);
 
 		super.create();
 	}
@@ -801,27 +856,27 @@ class CharacterCreator extends MusicBeatState {
 		if (upP || rightP || downP || leftP) {
 			if (upP) {
 				char.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
-				ghost.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
+				//ghost.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
 			}
 			if (downP) {
 				char.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
-				ghost.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
+				//ghost.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
 			}
 			if (leftP) {
 				char.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
-				ghost.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
+				//ghost.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
 			}
 			if (rightP) {
 				char.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
-				ghost.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
+				//ghost.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
 			}
 
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim], true);
 		}
 
-		charCam.zoom = flixel.math.FlxMath.roundDecimal(charCam.zoom, 2) <= 0 ? 1 : charCam.zoom;
-		moveText.text = 'Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side\nCamera Zoom: ${flixel.math.FlxMath.roundDecimal(charCam.zoom, 2)}\n';
+		charCam.zoom = FlxMath.roundDecimal(charCam.zoom, 2) <= 0 ? 1 : charCam.zoom;
+		moveText.text = 'Use IJKL to move the camera\nE and Q to zoom the camera\nSHIFT for faster moving offset or camera\nZ to toggle the stage\nX to toggle playing side\nCamera Zoom: ${FlxMath.roundDecimal(charCam.zoom, 2)}\n';
 		moveText.x = FlxG.width - moveText.width - 4;
 
 		super.update(elapsed);
