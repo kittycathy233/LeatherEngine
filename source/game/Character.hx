@@ -1,5 +1,6 @@
 package game;
 
+import toolbox.CharacterCreator;
 import flxanimate.frames.FlxAnimateFrames;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
@@ -342,7 +343,7 @@ class Character extends FlxSprite {
 			if (config.positionOffset != null)
 				positioningOffset = config.positionOffset;
 
-			if (config.trail == true)
+			if (config.trail || FlxG.state is CharacterCreator)
 				coolTrail = new FlxTrail(this, null, config.trailLength, config.trailDelay, config.trailStalpha, config.trailDiff);
 
 			if (config.swapDirectionSingWhenPlayer != null)

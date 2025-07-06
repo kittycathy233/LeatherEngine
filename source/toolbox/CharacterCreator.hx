@@ -1,5 +1,6 @@
 package toolbox;
 
+import flixel.addons.effects.FlxTrail;
 import flixel.system.debug.Icon;
 import openfl.display.CapsStyle;
 import flixel.math.FlxPoint;
@@ -147,20 +148,20 @@ class CharacterCreator extends MusicBeatState {
 
 		reloadStage();
 		add(ghost);
+		add(char.coolTrail);
 		add(char);
 
 		var midPos:FlxPoint = char.getMidpoint();
 		midPos.x += stage.p2_Cam_Offset.x;
 		midPos.y += stage.p2_Cam_Offset.y;
 
-
 		/*cross = new FlxShapeCross(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1], 10, 10, 10, 10, 10, 10, {
-			thickness: 1,
-			color: FlxColor.TRANSPARENT,
-			capsStyle: CapsStyle.SQUARE,
-			jointStyle: JointStyle.MITER
-		}, FlxColor.WHITE);
-		add(cross);*/
+				thickness: 1,
+				color: FlxColor.TRANSPARENT,
+				capsStyle: CapsStyle.SQUARE,
+				jointStyle: JointStyle.MITER
+			}, FlxColor.WHITE);
+			add(cross); */
 
 		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(Paths.gpuBitmap("cursorCross"));
 		cross.antialiasing = false;
@@ -244,6 +245,7 @@ class CharacterCreator extends MusicBeatState {
 
 			char = new Character(0, 0, daAnim);
 			char.debugMode = true;
+			add(char.coolTrail);
 			add(char);
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
@@ -301,6 +303,7 @@ class CharacterCreator extends MusicBeatState {
 
 					char = new Character(0, 0, daAnim);
 					char.debugMode = true;
+					add(char.coolTrail);
 					add(char);
 
 					var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
@@ -378,7 +381,11 @@ class CharacterCreator extends MusicBeatState {
 		configButton.cameras = [camHUD];
 		add(configButton);
 
-		tabs = new FlxUITabMenu(null, [{name: 'Character', label: 'Character'}], true);
+		tabs = new FlxUITabMenu(null, [
+			{name: 'Character', label: 'Character'},
+			{name: 'Offsets', label: 'Offsets'},
+			{name: "Trail", label: "Trail"}
+		], true);
 		tabs.resize(300, 400);
 		tabs.x = 900;
 		tabs.screenCenter(Y);
@@ -389,43 +396,43 @@ class CharacterCreator extends MusicBeatState {
 		var tabCharacter:FlxUI = new FlxUI(null, tabs);
 		tabCharacter.name = "Character";
 
+		var tabOffsets:FlxUI = new FlxUI(null, tabs);
+		tabOffsets.name = "Offsets";
 
-		globalOffsetXStepper = new FlxUINumericStepper(10, 50,
-			1, char.positioningOffset[0], -9999, 9999);
-		
+		var tabTrail:FlxUI = new FlxUI(null, tabs);
+		tabTrail.name = "Trail";
+
+		globalOffsetXStepper = new FlxUINumericStepper(10, 50, 1, char.positioningOffset[0], -9999, 9999);
+
 		globalOffsetXStepper.value = char.positioningOffset[0];
 		globalOffsetXStepper.name = "globalOffsetX";
 
-		globalOffsetYStepper = new FlxUINumericStepper(globalOffsetXStepper.x, globalOffsetXStepper.y + 20,
-			1, char.positioningOffset[1], -9999, 9999);
-		
+		globalOffsetYStepper = new FlxUINumericStepper(globalOffsetXStepper.x, globalOffsetXStepper.y + 20, 1, char.positioningOffset[1], -9999, 9999);
+
 		globalOffsetYStepper.value = char.positioningOffset[1];
 		globalOffsetYStepper.name = "globalOffsetY";
 
 		tabCharacter.add(globalOffsetXStepper);
 		tabCharacter.add(globalOffsetYStepper);
 
-		cameraOffsetXStepper = new FlxUINumericStepper(globalOffsetXStepper.x + 80, globalOffsetXStepper.y,
-			1, char.cameraOffset[0], -9999, 9999);
-		
+		cameraOffsetXStepper = new FlxUINumericStepper(globalOffsetXStepper.x + 80, globalOffsetXStepper.y, 1, char.cameraOffset[0], -9999, 9999);
+
 		cameraOffsetXStepper.value = char.cameraOffset[0];
 		cameraOffsetXStepper.name = "cameraOffsetX";
 
-		cameraOffsetYStepper = new FlxUINumericStepper(cameraOffsetXStepper.x, globalOffsetYStepper.y,
-			1, char.cameraOffset[1], -9999, 9999);
-		
+		cameraOffsetYStepper = new FlxUINumericStepper(cameraOffsetXStepper.x, globalOffsetYStepper.y, 1, char.cameraOffset[1], -9999, 9999);
+
 		cameraOffsetYStepper.value = char.cameraOffset[1];
 		cameraOffsetYStepper.name = "cameraOffsetY";
 
 		tabCharacter.add(cameraOffsetXStepper);
 		tabCharacter.add(cameraOffsetYStepper);
 
-		var infoPos:FlxText = new FlxText(globalOffsetXStepper.x , globalOffsetXStepper.y - 20, 0, "Position");
+		var infoPos:FlxText = new FlxText(globalOffsetXStepper.x, globalOffsetXStepper.y - 20, 0, "Position");
 		infoPos.alignment = CENTER;
 		tabCharacter.add(infoPos);
 
-
-		var infoCamera:FlxText = new FlxText(cameraOffsetXStepper.x , cameraOffsetXStepper.y - 20, 0, "Camera");
+		var infoCamera:FlxText = new FlxText(cameraOffsetXStepper.x, cameraOffsetXStepper.y - 20, 0, "Camera");
 		infoCamera.alignment = CENTER;
 		tabCharacter.add(infoCamera);
 
@@ -456,9 +463,8 @@ class CharacterCreator extends MusicBeatState {
 
 		tabCharacter.add(dances);
 
-		scaleStepper = new FlxUINumericStepper(dances.x, dances.y + 35,
-			0.1, (char.config.graphicSize) ?? 1, 0.1, 10, 1);
-		
+		scaleStepper = new FlxUINumericStepper(dances.x, dances.y + 35, 0.1, (char.config.graphicSize) ?? 1, 0.1, 10, 1);
+
 		scaleStepper.value = (char.config.graphicSize) ?? 1;
 		scaleStepper.name = "scale";
 		tabCharacter.add(scaleStepper);
@@ -467,9 +473,9 @@ class CharacterCreator extends MusicBeatState {
 		scaleLabel.text = "Scale";
 		tabCharacter.add(scaleLabel);
 
-		var singDurationStepper:FlxUINumericStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20,
-			0.1, (char.config.singDuration) ?? 4, 0.1, 10, 1);
-		
+		var singDurationStepper:FlxUINumericStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20, 0.1, (char.config.singDuration) ?? 4, 0.1,
+			10, 1);
+
 		singDurationStepper.value = (char.config.singDuration) ?? 4;
 		singDurationStepper.name = "singDuration";
 		tabCharacter.add(singDurationStepper);
@@ -576,10 +582,69 @@ class CharacterCreator extends MusicBeatState {
 
 		tabs.addGroup(tabCharacter);
 
+		var offsetsFlipWhenPlayer:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Offsets Flip When Player");
+		offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
+		offsetsFlipWhenPlayer.callback = () -> {
+			char.offsetsFlipWhenPlayer = char.config.offsetsFlipWhenPlayer = offsetsFlipWhenPlayer.checked;
+			fixOffsets();
+		}
+		tabOffsets.add(offsetsFlipWhenPlayer);
+
+		var offsetsFlipWhenEnemy:FlxUICheckBox = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
+			"Offsets Flip When Enemy");
+		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
+		offsetsFlipWhenEnemy.callback = () -> {
+			char.offsetsFlipWhenEnemy = char.config.offsetsFlipWhenEnemy = offsetsFlipWhenEnemy.checked;
+			fixOffsets();
+		}
+		tabOffsets.add(offsetsFlipWhenEnemy);
+
+		tabs.addGroup(tabOffsets);
+
+		var trail:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Has Trail");
+		char.coolTrail.visible = trail.checked = char.config.trail;
+		trail.callback = () -> {
+			char.coolTrail.visible = char.config.trail = trail.checked;
+		}
+		tabTrail.add(trail);
+
+		var trailLength:FlxUINumericStepper = new FlxUINumericStepper(trail.x, trail.y + 25, 1, (char.config.trailLength ?? 10), 1, 100);
+		trailLength.value = (char.config.trailLength) ?? 1;
+		trailLength.name = "trailLength";
+		tabTrail.add(trailLength);
+
+		var trailDelay:FlxUINumericStepper = new FlxUINumericStepper(trailLength.x, trailLength.y + 25, 1, (char.config.trailDelay ?? 3), 0, 100);
+		trailDelay.value = (char.config.trailDelay) ?? 3;
+		trailDelay.name = "trailDelay";
+		tabTrail.add(trailDelay);
+
+		var trailAlpha:FlxUINumericStepper = new FlxUINumericStepper(trailDelay.x, trailDelay.y + 25, 0.1, (char.config.trailStalpha ?? 0.4), 0.1, 1, 1);
+		trailAlpha.value = (char.config.trailStalpha) ?? 0.4;
+		trailAlpha.name = "trailAlpha";
+		tabTrail.add(trailAlpha);
+
+		var trailDiff:FlxUINumericStepper = new FlxUINumericStepper(trailAlpha.x, trailAlpha.y + 25, 0.01, (char.config.trailStalpha ?? 0.4), 0.01, 100, 2);
+		trailDiff.value = (char.config.trailDiff) ?? 0.05;
+		trailDiff.name = "trailDiff";
+		tabTrail.add(trailDiff);
+
+		var trailLengthLabel:FlxText = new FlxText(trailLength.x + trailLength.width, trailLength.y, 0, "Trail Length");
+		tabTrail.add(trailLengthLabel);
+
+		var trailDelayLabel:FlxText = new FlxText(trailDelay.x + trailDelay.width, trailDelay.y, 0, "Trail Delay");
+		tabTrail.add(trailDelayLabel);
+
+		var trailAlphaLabel:FlxText = new FlxText(trailAlpha.x + trailAlpha.width, trailAlpha.y, 0, "Trail Alpha");
+		tabTrail.add(trailAlphaLabel);
+
+		var trailDiffLabel:FlxText = new FlxText(trailDiff.x + trailDiff.width, trailDiff.y, 0, "Trail Difference");
+		tabTrail.add(trailDiffLabel);
+
+		tabs.addGroup(tabTrail);
+
 		super.create();
 	}
 
-	
 	inline function fixOffsets() {
 		char.playAnim(animList[curAnim], true);
 		var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
@@ -588,10 +653,10 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
-		if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)){
+		if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			var stepper:FlxUINumericStepper = cast sender;
 			var name:String = stepper.name;
-			switch(name){
+			switch (name) {
 				case "globalOffsetX":
 					char.positioningOffset[0] = data;
 					fixOffsets();
@@ -606,6 +671,17 @@ class CharacterCreator extends MusicBeatState {
 					char.config.graphicsSize = char.scale.x = char.scale.y = data;
 				case "singDuration":
 					char.config.singDuration = data;
+				case "trailLength":
+					char.config.trailLength = data;
+					char.coolTrail = new FlxTrail(char, null, char.config.trailLength, char.config.trailDelay, char.config.trailStalpha, char.config.trailDiff);
+				case "trailDelay":
+					char.coolTrail.delay = char.config.trailDelay = data;
+				case "trailAlpha":
+					@:privateAccess
+					char.coolTrail._transp = char.config.trailStalpha = data;
+				case "trailDiff":
+					@:privateAccess
+					char.coolTrail._difference = char.config.trailDiff = data;
 			}
 		}
 	}
@@ -626,10 +702,10 @@ class CharacterCreator extends MusicBeatState {
 
 	override function update(elapsed:Float) {
 		/*char.positioningOffset[0] = globalOffsetXStepper.value;
-		char.positioningOffset[1] = globalOffsetYStepper.value;
+			char.positioningOffset[1] = globalOffsetYStepper.value;
 
-		char.cameraOffset[0] = cameraOffsetXStepper.value;
-		char.cameraOffset[1] = cameraOffsetYStepper.value;*/
+			char.cameraOffset[0] = cameraOffsetXStepper.value;
+			char.cameraOffset[1] = cameraOffsetYStepper.value; */
 		cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
@@ -775,14 +851,22 @@ class CharacterCreator extends MusicBeatState {
 	function saveConfig() {
 		var config:CharacterConfig = cast {
 			imagePath: char.config.imagePath,
-			animations: [],
+			healthIcon: char.icon,
+			barColor: char.config.barColor,
 			defaultFlipX: char.config.defaultFlipX,
 			dancesLeftAndRight: char.config.dancesLeftAndRight,
-			barColor: char.config.barColor,
 			positionOffset: char.positioningOffset,
 			cameraOffset: char.cameraOffset,
 			singDuration: char.config.singDuration,
-			healthIcon: char.icon
+			antialiasing: char.antialiasing,
+			offsetsFlipWhenPlayer: char.offsetsFlipWhenPlayer,
+			offsetsFlipWhenEnemy: char.offsetsFlipWhenEnemy,
+			trail: char.config.trail,
+			trailLength: char.config.trailLength,
+			trailDelay: char.config.trailLength,
+			trailStalpha: char.config.trailStalpha,
+			trailDiff: char.config.trailDiff,
+			animations: [],
 		}
 		_file = new FileReference();
 		_file.addEventListener(Event.COMPLETE, onSaveComplete);
@@ -849,10 +933,14 @@ class CharacterCreator extends MusicBeatState {
 		}
 
 		if (char.otherCharacters == null) {
+			remove(char.coolTrail);
+			add(char.coolTrail);
 			remove(char);
 			add(char);
 		} else {
 			for (character in char.otherCharacters) {
+				remove(character.coolTrail);
+				add(character.coolTrail);
 				remove(character);
 				add(character);
 			}
