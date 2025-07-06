@@ -143,7 +143,7 @@ class CharacterCreator extends MusicBeatState {
 
 		ghost = new Character(0, 0, daAnim);
 		ghost.debugMode = true;
-		//ghost.color = FlxColor.BLACK;
+		// ghost.color = FlxColor.BLACK;
 		ghost.alpha = 0.5;
 
 		char = new Character(0, 0, daAnim);
@@ -280,7 +280,9 @@ class CharacterCreator extends MusicBeatState {
 					ghost.debugMode = true;
 					ghost.alpha = ghostAlphaSlider.value;
 					ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
-					//ghost.color = FlxColor.BLACK;
+					@:privateAccess
+					ghostAlphaSlider._object = ghost;
+					// ghost.color = FlxColor.BLACK;
 					add(ghost);
 
 					char = new Character(0, 0, daAnim);
@@ -315,9 +317,11 @@ class CharacterCreator extends MusicBeatState {
 
 				ghost = new Character(0, 0, daAnim);
 				ghost.debugMode = true;
-				//ghost.color = FlxColor.BLACK;
+				// ghost.color = FlxColor.BLACK;
 				ghost.alpha = ghostAlphaSlider.value;
 				ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
+				@:privateAccess
+				ghostAlphaSlider._object = ghost;
 				add(ghost);
 
 				char = new Character(0, 0, daAnim);
@@ -394,7 +398,7 @@ class CharacterCreator extends MusicBeatState {
 
 		ghostAlphaSlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
 		ghostAlphaSlider.nameLabel.text = "Ghost Alpha";
-		ghostAlphaSlider.nameLabel.offset.y = -	8;
+		ghostAlphaSlider.nameLabel.offset.y = -8;
 		ghostAlphaSlider.valueLabel.color = FlxColor.BLACK;
 		tabGhost.add(ghostAlphaSlider);
 
@@ -408,9 +412,11 @@ class CharacterCreator extends MusicBeatState {
 
 				ghost = new Character(0, 0, daAnim);
 				ghost.debugMode = true;
-				//ghost.color = FlxColor.BLACK;
+				// ghost.color = FlxColor.BLACK;
 				ghost.alpha = ghostAlphaSlider.value;
 				ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
+				@:privateAccess
+				ghostAlphaSlider._object = ghost;
 				add(ghost);
 
 				var position = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
@@ -427,13 +433,13 @@ class CharacterCreator extends MusicBeatState {
 				ghostAnimDropDown.kill();
 				ghostAnimDropDown.destroy();
 				ghostAnimDropDown = new FlxScrollableDropDownMenu(10, 35, FlxUIDropDownMenu.makeStrIdLabelArray(ghostAnimList, true),
-				function(animName:String) {
-					ghost.playAnim(ghostAnimList[Std.parseInt(animName)], true);
-					
-					var position = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
-					ghost.setPosition(position[0], position[1]);
-				});
-				
+					function(animName:String) {
+						ghost.playAnim(ghostAnimList[Std.parseInt(animName)], true);
+
+						var position = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
+						ghost.setPosition(position[0], position[1]);
+					});
+
 				tabGhost.add(ghostAnimDropDown);
 				ghost.playAnim(ghostAnimList[0], true);
 
@@ -714,7 +720,7 @@ class CharacterCreator extends MusicBeatState {
 		tabAnimations.add(animationLoopedCheckbox);
 
 		var addAnimation:FlxUIButton = new FlxUIButton(10, animationLoopedCheckbox.y + 25, "Add / Update Animation", () -> {
-			if(animationInputName.text != "" && animationInputAnimationName.text != ""){
+			if (animationInputName.text != "" && animationInputAnimationName.text != "") {
 				char.animation.addByPrefix(animationInputName.text, animationInputAnimationName.text, animationFramerateStepper.value,
 					animationLoopedCheckbox.checked);
 				char.config.animations.push({
