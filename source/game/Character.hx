@@ -238,6 +238,7 @@ class Character extends FlxSprite {
 			atlas.antialiasing = antialiasing;
 			atlas.color = color;
 			atlas.colorTransform = colorTransform;
+			atlas.blend = blend;
 			atlas.draw();
 		} else {
 			super.draw();

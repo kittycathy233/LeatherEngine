@@ -114,6 +114,20 @@ class CharacterCreator extends MusicBeatState {
 
 	var trail:FlxUICheckBox;
 
+	var singDurationStepper:FlxUINumericStepper;
+
+	var icon:HealthIcon;
+
+	var iconName:FlxInputText;
+
+	var healthBar:FlxSprite;
+
+	var r:FlxInputText;
+	var g:FlxInputText;
+	var b:FlxInputText;
+
+	var spriteSheetTextInput:FlxInputText;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -253,6 +267,22 @@ class CharacterCreator extends MusicBeatState {
 
 			animList = [];
 			genBoyOffsets(true);
+
+			iconName.text = char.icon ?? char.curCharacter;
+			iconName.onTextChange.dispatch(iconName.text, INPUT_ACTION);
+
+			healthBar.color = char.barColor;
+
+			var healthColorArray:Array<Int> = char.config.barColor ?? [0, 128 ,0];
+			r.text = Std.string(healthColorArray[0]);
+			g.text = Std.string(healthColorArray[1]);
+			b.text = Std.string(healthColorArray[2]);
+			r.onTextChange.dispatch(r.text, INPUT_ACTION);
+			g.onTextChange.dispatch(g.text, INPUT_ACTION);
+			b.onTextChange.dispatch(b.text, INPUT_ACTION);
+
+			spriteSheetTextInput.text = char.config.imagePath ?? "";
+			spriteSheetTextInput.onTextChange.dispatch(spriteSheetTextInput.text, INPUT_ACTION);
 		});
 
 		charDropDown.selectedLabel = daAnim;
@@ -545,7 +575,7 @@ class CharacterCreator extends MusicBeatState {
 		scaleLabel.text = "Scale";
 		tabCharacter.add(scaleLabel);
 
-		var singDurationStepper:FlxUINumericStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20, 0.1, (char.config.singDuration) ?? 4, 0.1,
+		singDurationStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20, 0.1, (char.config.singDuration) ?? 4, 0.1,
 			10, 1);
 
 		singDurationStepper.value = (char.config.singDuration) ?? 4;
@@ -556,12 +586,14 @@ class CharacterCreator extends MusicBeatState {
 		singDurationLabel.text = "Sing Duration";
 		tabCharacter.add(singDurationLabel);
 
-		var spriteSheetTextInput:FlxInputText = new FlxInputText(10, 10, 100, char.config.imagePath);
+		spriteSheetTextInput = new FlxInputText(10, 10, 100, char.config.imagePath);
 		spriteSheetTextInput.onTextChange.add((text, change) -> {
 			char.config.imagePath = text;
 			char.config.defaultFlipX = checkFlipX.checked;
 			char.loadCharacterConfiguration(char.config);
 			char.playAnim("idle", true);
+			char.updateHitbox();
+			char.centerOrigin();
 		});
 		tabCharacter.add(spriteSheetTextInput);
 
@@ -569,19 +601,19 @@ class CharacterCreator extends MusicBeatState {
 		spriteSheetTextInputLabel.text = "Image Path";
 		tabCharacter.add(spriteSheetTextInputLabel);
 
-		var healthBar:FlxSprite = new FlxSprite(10, 350).makeGraphic(280, 9, FlxColor.WHITE);
+		healthBar = new FlxSprite(10, 350).makeGraphic(280, 9, FlxColor.WHITE);
 		healthBar.antialiasing = false;
 		healthBar.color = char.barColor;
 		tabCharacter.add(healthBar);
 
-		var icon:HealthIcon = new HealthIcon(char.icon);
+		icon = new HealthIcon(char.icon);
 		icon.scale.set(icon.scale.x * 0.47, icon.scale.y * 0.47);
 		icon.updateHitbox();
 		icon.x = 10 - icon.width / 2;
 		icon.y = 350 - (icon.height / 2);
 		tabCharacter.add(icon);
 
-		var r:FlxInputText = new FlxInputText(healthBar.x, healthBar.y - 50, 22, Std.string(char.config.barColor[0]));
+		r = new FlxInputText(healthBar.x, healthBar.y - 50, 22, Std.string(char.config.barColor[0]));
 		r.onTextChange.add((text, change) -> {
 			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
 			char.config.barColor[0] = num;
@@ -594,7 +626,7 @@ class CharacterCreator extends MusicBeatState {
 		});
 		tabCharacter.add(r);
 
-		var g:FlxInputText = new FlxInputText(r.x + 25, r.y, 22, Std.string(char.config.barColor[1]));
+		g = new FlxInputText(r.x + 25, r.y, 22, Std.string(char.config.barColor[1]));
 		g.onTextChange.add((text, change) -> {
 			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
 			char.config.barColor[1] = num;
@@ -607,7 +639,7 @@ class CharacterCreator extends MusicBeatState {
 		});
 		tabCharacter.add(g);
 
-		var b:FlxInputText = new FlxInputText(g.x + 25, g.y, 22, Std.string(char.config.barColor[2]));
+		b = new FlxInputText(g.x + 25, g.y, 22, Std.string(char.config.barColor[2]));
 		b.onTextChange.add((text, change) -> {
 			var num:Int = Math.floor(Math.max(0, Math.min(Std.parseInt(text), 255)));
 			char.config.barColor[2] = num;
@@ -639,7 +671,7 @@ class CharacterCreator extends MusicBeatState {
 		match.label.offset.y += 5;
 		tabCharacter.add(match);
 
-		var iconName:FlxInputText = new FlxInputText(r.x, r.y - 25, 100, icon.char);
+		iconName = new FlxInputText(r.x, r.y - 25, 100, icon.char);
 		iconName.onTextChange.add((text, change) -> {
 			char.icon = text;
 			icon.setupIcon(text);
@@ -833,8 +865,6 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	function genGhostOffsets(pushList:Bool = true):Void {
-		animText.text = "";
-
 		for (anim => offsets in ghost.animOffsets) {
 			if (pushList)
 				ghostAnimList.push(anim);
@@ -869,8 +899,9 @@ class CharacterCreator extends MusicBeatState {
 			ghost.flipX = !ghost.flipX;
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			var positionGhost = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
 			char.setPosition(position[0], position[1]);
-			ghost.setPosition(position[0], position[1]);
+			ghost.setPosition(positionGhost[0], positionGhost[1]);
 
 			char.loadOffsetFile(char.curCharacter);
 			char.playAnim(animList[curAnim], true);
@@ -881,6 +912,7 @@ class CharacterCreator extends MusicBeatState {
 			ghostAnimList = [];
 			genBoyOffsets(true);
 			genGhostOffsets(true);
+
 		}
 
 		var shiftThing:Int = FlxG.keys.pressed.SHIFT ? 5 : 1;
