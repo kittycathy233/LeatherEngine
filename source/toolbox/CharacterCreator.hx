@@ -128,6 +128,8 @@ class CharacterCreator extends MusicBeatState {
 
 	var spriteSheetTextInput:FlxInputText;
 
+	var checkFlipX:FlxUICheckBox;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -339,32 +341,18 @@ class CharacterCreator extends MusicBeatState {
 			FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stageName:String) {
 				stageName = stages[Std.parseInt(stageName)];
 				reloadStage();
-				remove(ghost);
-				ghost.kill();
-				ghost.destroy();
-				remove(char);
-				char.kill();
-				char.destroy();
 				daAnim = curCharList[0];
-
-				ghost = new Character(0, 0, daAnim);
-				ghost.debugMode = true;
-				// ghost.color = FlxColor.BLACK;
-				ghost.alpha = ghostAlphaSlider.value;
-				ghost.blend = ghostBlendCheck.checked ? BlendMode.ADD : BlendMode.NORMAL;
-				@:privateAccess
-				ghostAlphaSlider._object = ghost;
-				add(ghost);
-
-				char = new Character(0, 0, daAnim);
-				char.debugMode = true;
-				add(char);
 
 				var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 				char.setPosition(position[0], position[1]);
 
+				var positionGhost = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
+				ghost.setPosition(positionGhost[0], positionGhost[1]);
+
 				animList = [];
 				genBoyOffsets(true);
+				ghostAnimList = [];
+				genGhostOffsets(true);
 		});
 
 		stageDropdown.selectedLabel = stageName;
@@ -548,7 +536,7 @@ class CharacterCreator extends MusicBeatState {
 
 		tabCharacter.add(checkAntialiasing);
 
-		var checkFlipX:FlxUICheckBox = new FlxUICheckBox(checkAntialiasing.x, checkAntialiasing.y + 25, null, null, "Flip X");
+		checkFlipX = new FlxUICheckBox(checkAntialiasing.x, checkAntialiasing.y + 25, null, null, "Flip X");
 		checkFlipX.checked = char.config.defaultFlipX;
 		checkFlipX.callback = () -> {
 			char.config.defaultFlipX = checkFlipX.checked;
@@ -872,11 +860,6 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
-		/*char.positioningOffset[0] = globalOffsetXStepper.value;
-			char.positioningOffset[1] = globalOffsetYStepper.value;
-
-			char.cameraOffset[0] = cameraOffsetXStepper.value;
-			char.cameraOffset[1] = cameraOffsetYStepper.value; */
 		cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
