@@ -130,6 +130,8 @@ class CharacterCreator extends MusicBeatState {
 
 	var checkFlipX:FlxUICheckBox;
 
+	var checkAntialiasing:FlxUICheckBox;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -248,10 +250,6 @@ class CharacterCreator extends MusicBeatState {
 		curCharList = characters.get("default");
 
 		charDropDown = new FlxScrollableDropDownMenu(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
-			remove(char.coolTrail);
-			char.coolTrail.kill();
-			char.coolTrail.destroy();
-
 			remove(char);
 			char.kill();
 			char.destroy();
@@ -259,23 +257,28 @@ class CharacterCreator extends MusicBeatState {
 			daAnim = curCharList[Std.parseInt(character)];
 
 			char = new Character(0, 0, daAnim);
+			// char.coolTrail = new FlxTrail(char, null, char.config.trailLength, char.config.trailDelay, char.config.trailStalpha, char.config.trailDiff);
 			char.debugMode = true;
-			add(char.coolTrail);
 			char.coolTrail.visible = trail.checked = char.config.trail;
 			add(char);
+
+			animList = [];
+			genBoyOffsets(true);
+			char.playAnim(animList[curAnim], true);
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 			char.setPosition(position[0], position[1]);
 
-			animList = [];
-			genBoyOffsets(true);
+			genBoyOffsets(false);
+
+			char.playAnim(animList[curAnim], true);
 
 			iconName.text = char.icon ?? char.curCharacter;
 			iconName.onTextChange.dispatch(iconName.text, INPUT_ACTION);
 
 			healthBar.color = char.barColor;
 
-			var healthColorArray:Array<Int> = char.config.barColor ?? [0, 128 ,0];
+			var healthColorArray:Array<Int> = char.config.barColor ?? [0, 128, 0];
 			r.text = Std.string(healthColorArray[0]);
 			g.text = Std.string(healthColorArray[1]);
 			b.text = Std.string(healthColorArray[2]);
@@ -285,6 +288,17 @@ class CharacterCreator extends MusicBeatState {
 
 			spriteSheetTextInput.text = char.config.imagePath ?? "";
 			spriteSheetTextInput.onTextChange.dispatch(spriteSheetTextInput.text, INPUT_ACTION);
+
+			checkFlipX.checked = char.config.defaultFlipX;
+			checkAntialiasing.checked = char.antialiasing;
+			singDurationStepper.value = char.singDuration;
+			scaleStepper.value = char.scale.x;
+
+			globalOffsetXStepper.value = char.positioningOffset[0];
+			globalOffsetYStepper.value = char.positioningOffset[1];
+
+			cameraOffsetXStepper.value = char.cameraOffset[0];
+			cameraOffsetYStepper.value = char.cameraOffset[1];
 		});
 
 		charDropDown.selectedLabel = daAnim;
@@ -482,6 +496,16 @@ class CharacterCreator extends MusicBeatState {
 		}
 		tabGhost.add(ghostBlendCheck);
 
+		var ghostCopyButton:FlxUIButton = new FlxUIButton(220, 15, "Copy\nCharacter", () -> {
+			for (anim => offsets in char.animOffsets) {
+				ghostAnimList.push(anim);
+			}
+			ghostAnimList = animList;
+			ghost.playAnim(ghost.animation.curAnim.name, true);
+		});
+		ghostCopyButton.resize(75, ghostCopyButton.height + 5);
+		tabGhost.add(ghostCopyButton);
+
 		var tabCharacter:FlxUI = new FlxUI(null, tabs);
 		tabCharacter.name = "Character";
 
@@ -528,7 +552,7 @@ class CharacterCreator extends MusicBeatState {
 		infoCamera.alignment = CENTER;
 		tabCharacter.add(infoCamera);
 
-		var checkAntialiasing:FlxUICheckBox = new FlxUICheckBox(10, 100, null, null, "Antialasing");
+		checkAntialiasing = new FlxUICheckBox(10, 100, null, null, "Antialasing");
 		checkAntialiasing.checked = char.antialiasing;
 		checkAntialiasing.callback = () -> {
 			char.config.antialiasing = char.antialiasing = checkAntialiasing.checked;
@@ -563,8 +587,7 @@ class CharacterCreator extends MusicBeatState {
 		scaleLabel.text = "Scale";
 		tabCharacter.add(scaleLabel);
 
-		singDurationStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20, 0.1, (char.config.singDuration) ?? 4, 0.1,
-			10, 1);
+		singDurationStepper = new FlxUINumericStepper(scaleStepper.x, scaleStepper.y + 20, 0.1, (char.config.singDuration) ?? 4, 0.1, 10, 1);
 
 		singDurationStepper.value = (char.config.singDuration) ?? 4;
 		singDurationStepper.name = "singDuration";
@@ -577,7 +600,6 @@ class CharacterCreator extends MusicBeatState {
 		spriteSheetTextInput = new FlxInputText(10, 10, 100, char.config.imagePath);
 		spriteSheetTextInput.onTextChange.add((text, change) -> {
 			char.config.imagePath = text;
-			char.config.defaultFlipX = checkFlipX.checked;
 			char.loadCharacterConfiguration(char.config);
 			char.playAnim("idle", true);
 			char.updateHitbox();
@@ -696,7 +718,7 @@ class CharacterCreator extends MusicBeatState {
 		trailAlpha.name = "trailAlpha";
 		tabTrail.add(trailAlpha);
 
-		var trailDiff:FlxUINumericStepper = new FlxUINumericStepper(trailAlpha.x, trailAlpha.y + 25, 0.01, (char.config.trailStalpha ?? 0.4), 0.01, 100, 2);
+		var trailDiff:FlxUINumericStepper = new FlxUINumericStepper(trailAlpha.x, trailAlpha.y + 25, 0.01, (char.config.trailDiff ?? 0.05), 0.01, 100, 2);
 		trailDiff.value = (char.config.trailDiff) ?? 0.05;
 		trailDiff.name = "trailDiff";
 		tabTrail.add(trailDiff);
@@ -860,7 +882,11 @@ class CharacterCreator extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
-		cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
+		if (char.isPlayer) {
+			cross.setPosition(char.getMidpoint().x - 100 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
+		} else {
+			cross.setPosition(char.getMidpoint().x + 150 + char.cameraOffset[0], char.getMidpoint().y - 100 + char.cameraOffset[1]);
+		}
 		if (FlxG.keys.pressed.E && charCam.zoom < 2)
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
 		if (FlxG.keys.pressed.Q && charCam.zoom >= 0.1)
@@ -878,24 +904,23 @@ class CharacterCreator extends MusicBeatState {
 			char.isPlayer = !char.isPlayer;
 			char.flipX = !char.flipX;
 
-			ghost.isPlayer = !ghost.isPlayer;
-			ghost.flipX = !ghost.flipX;
+			/*ghost.isPlayer = char.isPlayer;
+				ghost.flipX = char.flipX; */
 
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
-			var positionGhost = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
+			// var positionGhost = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
 			char.setPosition(position[0], position[1]);
-			ghost.setPosition(positionGhost[0], positionGhost[1]);
+			/*ghost.setPosition(positionGhost[0], positionGhost[1]);*/
 
 			char.loadOffsetFile(char.curCharacter);
 			char.playAnim(animList[curAnim], true);
 
-			ghost.loadOffsetFile(ghost.curCharacter);
-			ghost.playAnim(ghost.animation.curAnim.name, true);
+			/*ghost.loadOffsetFile(ghost.curCharacter);
+				ghost.playAnim(ghost.animation.curAnim.name, true); */
 			animList = [];
-			ghostAnimList = [];
+			// ghostAnimList = [];
 			genBoyOffsets(true);
-			genGhostOffsets(true);
-
+			// genGhostOffsets(true);
 		}
 
 		var shiftThing:Int = FlxG.keys.pressed.SHIFT ? 5 : 1;

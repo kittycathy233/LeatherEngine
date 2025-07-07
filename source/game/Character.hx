@@ -352,8 +352,9 @@ class Character extends FlxSprite {
 			if (config.positionOffset != null)
 				positioningOffset = config.positionOffset;
 
-			if (config.trail || FlxG.state is CharacterCreator)
-				coolTrail = new FlxTrail(this, null, config.trailLength, config.trailDelay, config.trailStalpha, config.trailDiff);
+			if (config.trail || FlxG.state is CharacterCreator){
+				coolTrail = new FlxTrail(this, null, config.trailLength ?? 10, config.trailDelay ?? 3, config.trailStalpha ?? 0.4, config.trailDiff ?? 0.05);
+			}
 
 			if (config.swapDirectionSingWhenPlayer != null)
 				swapLeftAndRightSingPlayer = config.swapDirectionSingWhenPlayer;
