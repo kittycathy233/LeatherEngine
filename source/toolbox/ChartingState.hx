@@ -103,7 +103,8 @@ class ChartingState extends MusicBeatState {
 
 	static var loadedAutosave:Bool = false;
 
-	static var hitsounds:Bool = false;
+	static var playerHitsounds:Bool = false;
+	static var enemyHitsounds:Bool = false;
 
 	var eventList:Array<String> = [];
 	var eventListData:Array<Array<String>> = [];
@@ -231,10 +232,10 @@ class ChartingState extends MusicBeatState {
 		add(curRenderedEvents);
 
 		var tabs = [
-			{name: "Song", label: 'Song'},
-			{name: "Chart", label: 'Chart'},
 			{name: "Art", label: 'Art'},
-			{name: "Events", label: "Events"}
+			{name: "Chart", label: 'Chart'},
+			{name: "Events", label: "Events"},
+			{name: "Song", label: 'Song'}
 		];
 
 		for (event in CoolUtil.coolTextFile(Paths.txt("eventList"))) {
@@ -356,14 +357,21 @@ class ChartingState extends MusicBeatState {
 			_song.needsVoices = check_voices.checked;
 		};
 
-		var hitsoundsBox:FlxUICheckBox = new FlxUICheckBox(check_voices.x + check_voices.width, check_voices.y, null, null, "Play hitsounds", 100);
-		hitsoundsBox.checked = hitsounds;
+		var playerHitsoundsBox:FlxUICheckBox = new FlxUICheckBox(check_voices.x + check_voices.width , check_voices.y, null, null, "Player\nHitsounds", 100);
+		playerHitsoundsBox.checked = playerHitsounds;
 
-		hitsoundsBox.callback = function() {
-			hitsounds = hitsoundsBox.checked;
+		playerHitsoundsBox.callback = function() {
+			playerHitsounds = playerHitsoundsBox.checked;
 		};
 
-		var quantBox:FlxUICheckBox = new FlxUICheckBox(hitsoundsBox.x, hitsoundsBox.y + hitsoundsBox.height + 2, null, null, "Color Quants", 100);
+		var enemyHitsoundsBox:FlxUICheckBox = new FlxUICheckBox(playerHitsoundsBox.x , playerHitsoundsBox.y + playerHitsoundsBox.height +2, null, null, "Enemy\nHitsounds", 100);
+		enemyHitsoundsBox.checked = enemyHitsounds;
+
+		enemyHitsoundsBox.callback = function() {
+			enemyHitsounds = enemyHitsoundsBox.checked;
+		};
+
+		var quantBox:FlxUICheckBox = new FlxUICheckBox(enemyHitsoundsBox.x + 25, enemyHitsoundsBox.y + enemyHitsoundsBox.height + 2, null, null, "Color Quants", 100);
 		colorQuantization = quantBox.checked = Options.getData("colorQuantization");
 
 		quantBox.callback = function() {
@@ -510,7 +518,8 @@ class ChartingState extends MusicBeatState {
 		tab_group_song.add(UI_songTitle);
 		tab_group_song.add(UI_songDiff);
 		tab_group_song.add(check_voices);
-		tab_group_song.add(hitsoundsBox);
+		tab_group_song.add(playerHitsoundsBox);
+		tab_group_song.add(enemyHitsoundsBox);
 		tab_group_song.add(quantBox);
 		tab_group_song.add(check_mute_inst);
 		tab_group_song.add(check_mute_vocals);
@@ -1226,7 +1235,7 @@ class ChartingState extends MusicBeatState {
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * Conductor.stepsPerSection));
 		cameraShitThing.y = strumLine.y;
 
-		if (hitsounds) {
+		if (playerHitsounds || enemyHitsounds) {
 			curRenderedNotes.forEach(function(note:Note) {
 				if (FlxG.sound.music.playing) {
 					FlxG.overlap(strumLine, note, function(_, _) {
@@ -1239,9 +1248,13 @@ class ChartingState extends MusicBeatState {
 							if (note.rawNoteData % (_song.keyCount + _song.playerKeyCount) < _song.keyCount
 								&& _song.notes[curSection].mustHitSection
 								|| note.rawNoteData % (_song.keyCount + _song.playerKeyCount) >= _song.keyCount && !_song.notes[curSection].mustHitSection) {
-								FlxG.sound.play(Paths.sound('CLAP'));
+									if(playerHitsounds){
+										FlxG.sound.play(Paths.sound('CLAP'));
+									}
 							} else {
-								FlxG.sound.play(Paths.sound('SNAP'));
+								if(enemyHitsounds){
+									FlxG.sound.play(Paths.sound('SNAP'));
+								}
 							}
 						}
 					});

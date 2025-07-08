@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Auto Open Charter option.
  - Input text has more features (highlighting, etc).
  - Split vocal files per character
+ - Seperate player and enemy hitsounds checkbox in charter.
  - A revamped HUD config menu.
  - The ability for notes to carry thier own scroll speeds.
  - Functions for setting note speed with Lua.
