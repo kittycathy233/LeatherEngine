@@ -427,62 +427,78 @@ class FreeplayState extends MusicBeatState {
 				CoolUtil.coolError(songName.toLowerCase() + " doesn't seem to exist!\nTry fixing it's name in freeplay.json",
 					"Leather Engine's No Crash, We Help Fix Stuff Tool");
 			} else {
-				#if MODDING_ALLOWED
-				var modPath:String = 'mods/${Options.getData('curMod')}';
-				if (!FileSystem.exists('$modPath/data')) {
-					FileSystem.createDirectory('$modPath/data');
-				}
-				if (!FileSystem.exists('$modPath/data/song data')) {
-					FileSystem.createDirectory('$modPath/data/song data');
-				}
-				if (!FileSystem.exists('$modPath/data/song data/${songName.toLowerCase()}')) {
-					FileSystem.createDirectory('$modPath/data/song data/${songName.toLowerCase()}');
-				}
-				File.saveContent('$modPath/data/song data/${songName.toLowerCase()}/${songName.toLowerCase()}-${diff.toLowerCase()}.json', Json.stringify({
-					song: {
-						validScore: true,
-						keyCount: 4,
-						playerKeyCount: 4,
-						chartOffset: 0.0,
-						timescale: [4, 4],
-						needsVoices: true,
-						song: songName,
-						bpm: 100,
-						player1: 'bf',
-						player2: 'dad',
-						gf: 'gf',
-						stage: 'stage',
-						speed: 1,
-						ui_Skin: 'default',
-						notes: [
-							{
-								sectionNotes: [],
-								lengthInSteps: 16,
-								mustHitSection: true,
-								bpm: 0.0,
-								changeBPM: false,
-								altAnim: false,
-								timeScale: [0, 0],
-								changeTimeScale: false
-							}
-						],
-						specialAudioName: null,
-						player3: null,
-						modchartingTools: false,
-						modchartPath: null,
-						mania: null,
-						gfVersion: null,
-						events: [],
-						endCutscene: '',
-						cutscene: '',
-						moveCamera: false,
-						chartType: LEGACY
+				if (Options.getData("developer")) {
+					#if MODDING_ALLOWED
+					var modPath:String = 'mods/${Options.getData('curMod')}';
+					if (!FileSystem.exists('$modPath/data')) {
+						FileSystem.createDirectory('$modPath/data');
 					}
-				}, '\t'));
-				PlayState.SONG = SongLoader.loadFromJson(diff, songName.toLowerCase(), mix);
-				PlayState.instance = new PlayState();
-				FlxG.switchState(() -> new ChartingState());
-				#end
+					if (!FileSystem.exists('$modPath/data/song data')) {
+						FileSystem.createDirectory('$modPath/data/song data');
+					}
+					if (!FileSystem.exists('$modPath/data/song data/${songName.toLowerCase()}')) {
+						FileSystem.createDirectory('$modPath/data/song data/${songName.toLowerCase()}');
+					}
+					File.saveContent('$modPath/data/song data/${songName.toLowerCase()}/${songName.toLowerCase()}-${diff.toLowerCase()}.json', Json.stringify({
+						song: {
+							validScore: true,
+							keyCount: 4,
+							playerKeyCount: 4,
+							chartOffset: 0.0,
+							timescale: [4, 4],
+							needsVoices: true,
+							song: songName,
+							bpm: 100,
+							player1: 'bf',
+							player2: 'dad',
+							gf: 'gf',
+							stage: 'stage',
+							speed: 1,
+							ui_Skin: 'default',
+							notes: [
+								{
+									sectionNotes: [],
+									lengthInSteps: 16,
+									mustHitSection: true,
+									bpm: 0.0,
+									changeBPM: false,
+									altAnim: false,
+									timeScale: [0, 0],
+									changeTimeScale: false
+								}
+							],
+							specialAudioName: null,
+							player3: null,
+							modchartingTools: false,
+							modchartPath: null,
+							mania: null,
+							gfVersion: null,
+							events: [],
+							endCutscene: '',
+							cutscene: '',
+							moveCamera: false,
+							chartType: LEGACY
+						}
+					}, '\t'));
+					PlayState.SONG = SongLoader.loadFromJson(diff, songName.toLowerCase(), mix);
+					PlayState.instance = new PlayState();
+					PlayState.isStoryMode = false;
+					PlayState.songMultiplier = curSpeed;
+					PlayState.storyDifficultyStr = diff.toUpperCase();
+
+					PlayState.storyWeek = songs[curSelected].week;
+
+					#if (target.threaded)
+					stop_loading_songs = true;
+					#end
+
+					colorTween?.cancel();
+
+					PlayState.loadChartEvents = true;
+					destroyFreeplayVocals();
+					FlxG.switchState(() -> new ChartingState());
+					#end
+				}
 			}
 			return;
 		}

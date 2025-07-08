@@ -6,18 +6,14 @@ import utilities.DiscordClient;
 #if MODDING_ALLOWED
 import modding.PolymodHandler;
 #end
-import modding.scripts.languages.HScript;
-import flixel.system.debug.interaction.tools.Tool;
 import utilities.Options;
 import flixel.util.FlxTimer;
-import utilities.MusicUtilities;
 import lime.utils.Assets;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.effects.FlxFlicker;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -234,7 +230,7 @@ class MainMenuState extends MusicBeatState {
 			#end
 
 			case 'toolbox':
-				FlxG.switchState(() -> new toolbox.ToolboxState());
+				FlxG.switchState(() -> new toolbox.ToolboxState("Categories", 0x00FF6A));
 		}
 		call("changeState");
 	}

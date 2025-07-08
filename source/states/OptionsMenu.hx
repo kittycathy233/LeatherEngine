@@ -1,5 +1,6 @@
 package states;
 
+import flixel.util.FlxColor;
 import utilities.MusicUtilities;
 import ui.Option;
 import flixel.FlxG;
@@ -156,11 +157,20 @@ class OptionsMenu extends MusicBeatState {
 
 	public static var playing:Bool = false;
 
+	private var defaultPage:String;
+	private var backgroundColor:FlxColor;
+
+	override public function new(defaultPage:String = "Categories", backgroundColor:FlxColor = 0xFFea71fd) {
+		this.defaultPage = defaultPage;
+		this.backgroundColor = backgroundColor;
+		super();
+	}
+
 	public override function create():Void {
 		MusicBeatState.windowNameSuffix = "";
 		instance = this;
 
-		menuBG = new FlxSprite().makeBackground(0xFFea71fd);
+		menuBG = new FlxSprite().makeBackground(backgroundColor);
 		menuBG.scale.set(1.1, 1.1);
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
@@ -170,7 +180,7 @@ class OptionsMenu extends MusicBeatState {
 
 		add(page);
 
-		loadPage("Categories");
+		loadPage(defaultPage);
 
 		FlxG.sound.playMusic(MusicUtilities.getOptionsMusic(), 0.7, true);
 		OptionsMenu.playing = true;
@@ -201,8 +211,12 @@ class OptionsMenu extends MusicBeatState {
 	}
 
 	public function goBack() {
-		if (pageName != "Categories") {
-			loadPage(cast(page.members[0], PageOption).pageName);
+		if (pageName != defaultPage) {
+			try {
+				loadPage(cast(page.members[0], PageOption).pageName);
+			} catch (e) {
+				trace(e.details(), ERROR);
+			}
 			return;
 		}
 
