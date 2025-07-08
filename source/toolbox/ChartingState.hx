@@ -191,7 +191,7 @@ class ChartingState extends MusicBeatState {
 
 		MusicBeatState.windowNameSuffix = " - " + (_song?.song ?? "Unknown Song") + " (Chart Editor)";
 
-		for (event in PlayState.instance.baseEvents) {
+		for (event in (PlayState.instance.baseEvents) ?? []) {
 			events.push(event);
 		}
 

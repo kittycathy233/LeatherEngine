@@ -344,6 +344,10 @@
     {
       "option": "checkForUpdates",
       "value": true
+    },
+    {
+      "option": "autoOpenCharter",
+      "value": false
     }
   ]
 }

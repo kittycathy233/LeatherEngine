@@ -142,7 +142,8 @@ class OptionsMenu extends MusicBeatState {
 		],
 		"Developer Options" => [
 			new PageOption("Back", "Categories"),
-			new BoolOption("Developer Mode", "developer")
+			new BoolOption("Developer Mode", "developer"),
+			new DeveloperOption("Auto Open Charter", "autoOpenCharter")
 		]
 	];
 
@@ -156,10 +157,8 @@ class OptionsMenu extends MusicBeatState {
 	public static var playing:Bool = false;
 
 	public override function create():Void {
-
 		MusicBeatState.windowNameSuffix = "";
 		instance = this;
-
 
 		menuBG = new FlxSprite().makeBackground(0xFFea71fd);
 		menuBG.scale.set(1.1, 1.1);
@@ -187,7 +186,9 @@ class OptionsMenu extends MusicBeatState {
 		curPage.clear();
 
 		for (x in instance.pages.get(loadedPageName).copy()) {
-			curPage.add(x);
+			if (x != null) {
+				curPage.add(x);
+			}
 		}
 
 		inMenu = false;
@@ -258,6 +259,11 @@ class OptionsMenu extends MusicBeatState {
 			} else {
 				for (item in x.members) {
 					item.alpha = 1;
+				}
+			}
+			if (x is DeveloperOption && !Options.getData("developer")) {
+				for (item in x.members) {
+					item.alpha *= 0.5;
 				}
 			}
 		}

@@ -342,20 +342,20 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
  */
 class StringSaveOption extends Option {
 	// VARIABLES //
-	var Current_Mode:String = "option 2";
+	var currentMode:String = "option 2";
 	var Modes:Array<String> = ["option 1", "option 2", "option 3"];
 	var Cool_Name:String;
-	var Save_Data_Name:String;
+	var saveDataName:String;
 
-	override public function new(_optionName:String = "String Switcher", _Modes:Array<String>, _Save_Data_Name:String = "hitsound") {
+	override public function new(_optionName:String = "String Switcher", _Modes:Array<String>, _saveDataName:String = "hitsound") {
 		super(_optionName, null);
 
 		// SETTING VALUES //
 		this.Modes = _Modes;
-		this.Save_Data_Name = _Save_Data_Name;
-		this.Current_Mode = Options.getData(Save_Data_Name);
+		this.saveDataName = _saveDataName;
+		this.currentMode = Options.getData(saveDataName);
 		this.Cool_Name = _optionName;
-		this.optionName = Cool_Name + " " + Current_Mode;
+		this.optionName = Cool_Name + " " + currentMode;
 
 		// CREATING OTHER OBJECTS //
 		remove(alphabetText);
@@ -371,7 +371,7 @@ class StringSaveOption extends Option {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
-			var prevIndex = Modes.indexOf(Current_Mode);
+			var prevIndex = Modes.indexOf(currentMode);
 
 			if (prevIndex != -1) {
 				if (prevIndex + 1 > Modes.length - 1)
@@ -381,9 +381,9 @@ class StringSaveOption extends Option {
 			} else
 				prevIndex = 0;
 
-			Current_Mode = Modes[prevIndex];
+			currentMode = Modes[prevIndex];
 
-			this.optionName = Cool_Name + " " + Current_Mode;
+			this.optionName = Cool_Name + " " + currentMode;
 
 			remove(alphabetText);
 			alphabetText.kill();
@@ -393,19 +393,28 @@ class StringSaveOption extends Option {
 			alphabetText.isMenuItem = true;
 			add(alphabetText);
 
-			SetDataIGuess();
+			setData();
 		}
 	}
 
-	function SetDataIGuess() {
-		Options.setData(Current_Mode, Save_Data_Name);
+	function setData() {
+		Options.setData(currentMode, saveDataName);
 	}
 }
 
 class DisplayFontOption extends StringSaveOption {
-	override function SetDataIGuess() {
-		super.SetDataIGuess();
+	override function setData() {
+		super.setData();
 		Main.changeFont(Options.getData("infoDisplayFont"));
+	}
+}
+
+class DeveloperOption extends BoolOption {
+	override function changeValue() {
+		if(!Options.getData("developer")){
+			return;
+		}
+		super.changeValue();
 	}
 }
 

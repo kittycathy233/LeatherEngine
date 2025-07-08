@@ -410,11 +410,11 @@ class PlayState extends MusicBeatState {
 	var binds:Array<String>;
 
 	// wack ass ui shit i need to fucking change like oh god i hate this shit mate
-	var ui_settings:Array<String>;
-	var mania_size:Array<String>;
-	var mania_offset:Array<String>;
-	var mania_gap:Array<String>;
-	var types:Array<String>;
+	var ui_settings:Array<String> = [];
+	var mania_size:Array<String> = [];
+	var mania_offset:Array<String> = [];
+	var mania_gap:Array<String> = [];
+	var types:Array<String> = [];
 
 	// this sucks too, sorry i'm not documentating this bullshit that ima replace at some point with nice clean yummy jsons
 	// - leather128

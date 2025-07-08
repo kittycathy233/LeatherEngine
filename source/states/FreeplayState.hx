@@ -1,5 +1,6 @@
 package states;
 
+import toolbox.ChartingState;
 import sys.io.File;
 import sys.FileSystem;
 import haxe.Json;
@@ -9,14 +10,11 @@ import sys.thread.Thread;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
 #end
-import modding.scripts.languages.HScript;
-import modding.ModList;
 import game.Conductor;
 import utilities.Options;
 import flixel.util.FlxTimer;
 import substates.ResetScoreSubstate;
 import flixel.sound.FlxSound;
-import lime.app.Application;
 import flixel.tweens.FlxTween;
 import game.SongLoader;
 import game.Highscore;
@@ -30,7 +28,6 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
-import flixel.tweens.FlxEase;
 
 using StringTools;
 using utilities.BackgroundUtil;
@@ -119,7 +116,7 @@ class FreeplayState extends MusicBeatState {
 			TitleState.playTitleMusic();
 
 		var path:String = #if MODDING_ALLOWED 'mods/${Options.getData("curMod")}/data/freeplay.json'; #else 'assets/data/freeplay.json'; #end
-		if(FileSystem.exists(path)){
+		if (FileSystem.exists(path)) {
 			songs = cast Json.parse(File.getContent(path)).songs;
 		}
 
@@ -245,11 +242,10 @@ class FreeplayState extends MusicBeatState {
 	public var infoText:FlxText;
 
 	/*public function addSong(songName:String, weekNum:Int, songCharacter:String) {
-		call("addSong", [songName, weekNum, songCharacter]);
-		songs.push(new FreeplaySong(songName, weekNum, songCharacter));
-		call("addSongPost", [songName, weekNum, songCharacter]);
-	}*/
-
+			call("addSong", [songName, weekNum, songCharacter]);
+			songs.push(new FreeplaySong(songName, weekNum, songCharacter));
+			call("addSongPost", [songName, weekNum, songCharacter]);
+		}*/
 	override function update(elapsed:Float) {
 		call("update", [elapsed]);
 		#if sys
@@ -316,7 +312,7 @@ class FreeplayState extends MusicBeatState {
 		var downP = controls.DOWN_P;
 
 		if (songsReady) {
-			if(songs.length > 1){
+			if (songs.length > 1) {
 				if (-1 * Math.floor(FlxG.mouse.wheel) != 0 && !shift)
 					changeSelection(-1 * Math.floor(FlxG.mouse.wheel));
 				else if (-1 * (Math.floor(FlxG.mouse.wheel) / 10) != 0 && shift)
@@ -423,12 +419,71 @@ class FreeplayState extends MusicBeatState {
 		 * @param diff
 		 */
 	public function playSong(songName:String, diff:String) {
-		if(!canEnterSong){
+		if (!canEnterSong) {
 			return;
 		}
 		if (!CoolUtil.songExists(songName, diff, mix)) {
-			CoolUtil.coolError(songName.toLowerCase() + " doesn't match with any song audio files!\nTry fixing it's name in freeplay.json",
-				"Leather Engine's No Crash, We Help Fix Stuff Tool");
+			if (!Options.getData("autoOpenCharter")) {
+				CoolUtil.coolError(songName.toLowerCase() + " doesn't seem to exist!\nTry fixing it's name in freeplay.json",
+					"Leather Engine's No Crash, We Help Fix Stuff Tool");
+			} else {
+				#if MODDING_ALLOWED
+				var modPath:String = 'mods/${Options.getData('curMod')}';
+				if (!FileSystem.exists('$modPath/data')) {
+					FileSystem.createDirectory('$modPath/data');
+				}
+				if (!FileSystem.exists('$modPath/data/song data')) {
+					FileSystem.createDirectory('$modPath/data/song data');
+				}
+				if (!FileSystem.exists('$modPath/data/song data/${songName.toLowerCase()}')) {
+					FileSystem.createDirectory('$modPath/data/song data/${songName.toLowerCase()}');
+				}
+				File.saveContent('$modPath/data/song data/${songName.toLowerCase()}/${songName.toLowerCase()}-${diff.toLowerCase()}.json', Json.stringify({
+					song: {
+						validScore: true,
+						keyCount: 4,
+						playerKeyCount: 4,
+						chartOffset: 0.0,
+						timescale: [4, 4],
+						needsVoices: true,
+						song: songName,
+						bpm: 100,
+						player1: 'bf',
+						player2: 'dad',
+						gf: 'gf',
+						stage: 'stage',
+						speed: 1,
+						ui_Skin: 'default',
+						notes: [
+							{
+								sectionNotes: [],
+								lengthInSteps: 16,
+								mustHitSection: true,
+								bpm: 0.0,
+								changeBPM: false,
+								altAnim: false,
+								timeScale: [0, 0],
+								changeTimeScale: false
+							}
+						],
+						specialAudioName: null,
+						player3: null,
+						modchartingTools: false,
+						modchartPath: null,
+						mania: null,
+						gfVersion: null,
+						events: [],
+						endCutscene: '',
+						cutscene: '',
+						moveCamera: false,
+						chartType: LEGACY
+					}
+				}, '\t'));
+				PlayState.SONG = SongLoader.loadFromJson(diff, songName.toLowerCase(), mix);
+				PlayState.instance = new PlayState();
+				FlxG.switchState(() -> new ChartingState());
+				#end
+			}
 			return;
 		}
 		PlayState.SONG = SongLoader.loadFromJson(diff, songName.toLowerCase(), mix);
@@ -469,7 +524,6 @@ class FreeplayState extends MusicBeatState {
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, curDiffArray.length - 1);
 		curDiffString = curDiffArray[curDifficulty].toUpperCase();
 
-		
 		if (songs.length != 0) {
 			var curSong:FreeplaySong = songs[curSelected];
 			intendedScore = Highscore.getScore(curSong.name, curDiffString);
