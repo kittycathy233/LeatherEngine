@@ -197,7 +197,7 @@ class CharacterCreator extends MusicBeatState {
 			}, FlxColor.WHITE);
 			add(cross); */
 
-		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(Paths.gpuBitmap("cursorCross"));
+		cross = new FlxSprite(midPos.x + 150 + char.cameraOffset[0], midPos.y - 100 + char.cameraOffset[1]).loadGraphic(new ui.Cross(11, 11));
 		cross.antialiasing = false;
 		cross.scale.set(3, 3);
 		cross.updateHitbox();
