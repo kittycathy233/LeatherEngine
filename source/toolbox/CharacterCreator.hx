@@ -132,6 +132,9 @@ class CharacterCreator extends MusicBeatState {
 
 	var checkAntialiasing:FlxUICheckBox;
 
+	var offsetsFlipWhenPlayer:FlxUICheckBox;
+	var offsetsFlipWhenEnemy:FlxUICheckBox;
+
 	override function create() {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
@@ -249,7 +252,7 @@ class CharacterCreator extends MusicBeatState {
 
 		curCharList = characters.get("default");
 
-		charDropDown = new FlxScrollableDropDownMenu(10, 500, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
+		charDropDown = new FlxScrollableDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(curCharList, true), function(character:String) {
 			remove(char);
 			char.kill();
 			char.destroy();
@@ -259,7 +262,7 @@ class CharacterCreator extends MusicBeatState {
 			char = new Character(0, 0, daAnim);
 			// char.coolTrail = new FlxTrail(char, null, char.config.trailLength, char.config.trailDelay, char.config.trailStalpha, char.config.trailDiff);
 			char.debugMode = true;
-			char.coolTrail.visible = trail.checked = char.config.trail;
+			//char.coolTrail.visible = trail.checked = char.config.trail;
 			add(char);
 
 			animList = [];
@@ -299,14 +302,16 @@ class CharacterCreator extends MusicBeatState {
 
 			cameraOffsetXStepper.value = char.cameraOffset[0];
 			cameraOffsetYStepper.value = char.cameraOffset[1];
+
+			offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
+			offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
 		});
 
 		charDropDown.selectedLabel = daAnim;
 		charDropDown.scrollFactor.set();
 		charDropDown.cameras = [camHUD];
-		add(charDropDown);
 
-		modDropDown = new FlxScrollableDropDownMenu(charDropDown.x + charDropDown.width + 1, charDropDown.y,
+		modDropDown = new FlxScrollableDropDownMenu(charDropDown.x, charDropDown.y + 30 + 1,
 			FlxUIDropDownMenu.makeStrIdLabelArray(modList, true), function(modID:String) {
 				var mod:String = modList[Std.parseInt(modID)];
 
@@ -349,9 +354,7 @@ class CharacterCreator extends MusicBeatState {
 		modDropDown.selectedLabel = "default";
 		modDropDown.scrollFactor.set();
 		modDropDown.cameras = [camHUD];
-		add(modDropDown);
-
-		stageDropdown = new FlxScrollableDropDownMenu(modDropDown.x + modDropDown.width + 1, modDropDown.y,
+		stageDropdown = new FlxScrollableDropDownMenu(modDropDown.x, modDropDown.y + 30 + 1,
 			FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stageName:String) {
 				stageName = stages[Std.parseInt(stageName)];
 				reloadStage();
@@ -372,7 +375,6 @@ class CharacterCreator extends MusicBeatState {
 		stageDropdown.selectedLabel = stageName;
 		stageDropdown.scrollFactor.set();
 		stageDropdown.cameras = [camHUD];
-		add(stageDropdown);
 
 		for (anim => offsets in ghost.animOffsets) {
 			ghostAnimList.push(anim);
@@ -429,6 +431,12 @@ class CharacterCreator extends MusicBeatState {
 		var tabGhost:FlxUI = new FlxUI(null, editor);
 		tabGhost.name = "Ghost";
 		editor.addGroup(tabGhost);
+
+		tabEditor.add(stageDropdown);
+		tabEditor.add(modDropDown);
+		tabEditor.add(charDropDown);
+
+
 
 		ghostAlphaSlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
 		ghostAlphaSlider.nameLabel.text = "Ghost Alpha";
@@ -787,7 +795,7 @@ class CharacterCreator extends MusicBeatState {
 
 		tabs.addGroup(tabAnimations);
 
-		var offsetsFlipWhenPlayer:FlxUICheckBox = new FlxUICheckBox(10, 10, null, null, "Offsets Flip When Player");
+		offsetsFlipWhenPlayer = new FlxUICheckBox(10, 10, null, null, "Offsets Flip When Player");
 		offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
 		offsetsFlipWhenPlayer.callback = () -> {
 			char.offsetsFlipWhenPlayer = char.config.offsetsFlipWhenPlayer = offsetsFlipWhenPlayer.checked;
@@ -800,7 +808,7 @@ class CharacterCreator extends MusicBeatState {
 		}
 		tabOffsets.add(offsetsFlipWhenPlayer);
 
-		var offsetsFlipWhenEnemy:FlxUICheckBox = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
+		offsetsFlipWhenEnemy = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
 			"Offsets Flip When Enemy");
 		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
 		offsetsFlipWhenEnemy.callback = () -> {
