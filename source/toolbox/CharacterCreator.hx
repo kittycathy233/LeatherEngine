@@ -361,7 +361,15 @@ class CharacterCreator extends MusicBeatState {
 		stageDropdown = new FlxScrollableDropDownMenu(modDropDown.x, modDropDown.y + 30 + 1, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
 			function(stageName:String) {
 				stageName = stages[Std.parseInt(stageName)];
-				reloadStage();
+				stage.clear();
+				stage.infrontOfGFSprites.clear();
+				stage.foregroundSprites.clear();
+				stage = new StageGroup(stageName);
+				addBehind(stage, ghost);
+				add(stage.infrontOfGFSprites);
+				add(stage.foregroundSprites);
+
+				//reloadStage();
 				daAnim = curCharList[0];
 
 				var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
@@ -402,7 +410,7 @@ class CharacterCreator extends MusicBeatState {
 		offsetButton.autoCenterLabel();
 		offsetButton.updateHitbox();
 		offsetButton.antialiasing = false;
-		configButton = new FlxButton(200, 10, "Save Character", function() {
+		configButton = new FlxButton(180, 10, "Save Character", function() {
 			saveConfig();
 		});
 		configButton.scrollFactor.set();
@@ -440,6 +448,15 @@ class CharacterCreator extends MusicBeatState {
 		tabEditor.add(stageDropdown);
 		tabEditor.add(modDropDown);
 		tabEditor.add(charDropDown);
+
+		var stageDropdownLabel:FlxText = new FlxText(135, stageDropdown.y - 185, 0, "Stage");
+		tabEditor.add(stageDropdownLabel);
+
+		var modDropDownLabel:FlxText = new FlxText(135, modDropDown.y - 185, 0, "Mod Group");
+		tabEditor.add(modDropDownLabel);
+
+		var charDropDownLabel:FlxText = new FlxText(135, charDropDown.y - 185, 0, "Current Character");
+		tabEditor.add(charDropDownLabel);
 
 		ghostAlphaSlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
 		ghostAlphaSlider.nameLabel.text = "Ghost Alpha";
@@ -491,6 +508,7 @@ class CharacterCreator extends MusicBeatState {
 				var position = stage.getCharacterPos(ghost.isPlayer ? 0 : 1, ghost);
 				ghost.setPosition(position[0], position[1]);
 			});
+		ghostDropDown.selectedLabel = char.curCharacter;
 
 		var ghostDropdownLabel:FlxText = new FlxText(135, 10, 0, "Ghost Character");
 		tabGhost.add(ghostDropdownLabel);
@@ -942,7 +960,7 @@ class CharacterCreator extends MusicBeatState {
 			charCam.zoom += elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
 		if (FlxG.keys.pressed.Q && charCam.zoom >= 0.1)
 			charCam.zoom -= elapsed * charCam.zoom * (FlxG.keys.pressed.SHIFT ? 0.1 : 1);
-		if (FlxG.mouse.wheel != 0 && charCam.zoom >= 0.1 && charCam.zoom < 2)
+		if (FlxG.mouse.wheel != 0 && charCam.zoom >= 0.1 && charCam.zoom <= 2)
 			charCam.zoom += FlxG.keys.pressed.SHIFT ? FlxG.mouse.wheel / 100.0 : FlxG.mouse.wheel / 10.0;
 
 		if (charCam.zoom > 2)

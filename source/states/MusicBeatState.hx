@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxBasic;
 import modding.scripts.ExecuteOn;
 import modding.scripts.languages.HScript;
 import flixel.input.FlxInput.FlxInputState;
@@ -45,6 +46,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 		stateScript?.call(func, args);
 		#end
 	}
+
 	override function update(elapsed:Float) {
 		var oldStep:Int = curStep;
 
@@ -113,7 +115,7 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 			multi = PlayState.songMultiplier;
 
 		Conductor.recalculateStuff(multi);
-		
+
 		var value:Float = (Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet;
 		curDecStep = value;
 		curStep = Math.floor(curDecStep);
@@ -129,13 +131,22 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 
 	public function beatHit():Void {/* do literally nothing dumbass */}
 
+	/**
+	 * Adds `behind` behind `obj`
+	 * @param behind The object to add behind
+	 * @param obj The object that will be in front
+	 */
+	function addBehind(behind:FlxBasic, obj:FlxBasic) {
+		insert(members.indexOf(obj), behind);
+	}
+
 	@:noCompletion
 	inline static function set_windowNameSuffix(value:String):String {
 		windowNameSuffix = value;
 		_refreshWindowName();
 		return value;
 	}
-	
+
 	@:noCompletion
 	inline static function set_windowNamePrefix(value:String):String {
 		windowNamePrefix = value;
@@ -147,9 +158,8 @@ class MusicBeatState extends #if MODCHARTING_TOOLS modcharting.ModchartMusicBeat
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-
 	@:noCompletion
-	inline static function _refreshWindowName():Void{
+	inline static function _refreshWindowName():Void {
 		FlxG.stage.window.title = windowNamePrefix + windowNameSuffix #if debug + ' (DEBUG)' #end;
 	}
 }
