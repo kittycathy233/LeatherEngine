@@ -63,6 +63,7 @@ class CharacterCreator extends MusicBeatState {
 
 	var animationFramerateStepper:FlxUINumericStepper;
 	var animationLoopedCheckbox:FlxUICheckBox;
+	var removeAnimation:FlxUIButton;
 
 	function new(daAnim:String = 'spooky', selectedStage:String) {
 		super();
@@ -78,7 +79,7 @@ class CharacterCreator extends MusicBeatState {
 	var modList:Array<String> = ["default"];
 	var curCharList:Array<String>;
 
-	var offsetButton:FlxButton;
+	var offsetButton:FlxUIButton;
 	var configButton:FlxButton;
 	var charDropDown:FlxScrollableDropDownMenu;
 	var modDropDown:FlxScrollableDropDownMenu;
@@ -134,6 +135,8 @@ class CharacterCreator extends MusicBeatState {
 
 	var offsetsFlipWhenPlayer:FlxUICheckBox;
 	var offsetsFlipWhenEnemy:FlxUICheckBox;
+
+	var addAnimation:FlxUIButton;
 
 	override function create() {
 		#if DISCORD_ALLOWED
@@ -390,19 +393,20 @@ class CharacterCreator extends MusicBeatState {
 		ghostAnimDropDown.scrollFactor.set();
 		ghostAnimDropDown.cameras = [camHUD];
 
-		offsetButton = new FlxButton(charDropDown.x, charDropDown.y - 30, "Save Offsets", function() {
+		offsetButton = new FlxUIButton(10, 100, "Save Offsets", function() {
 			saveOffsets();
 		});
 		offsetButton.scrollFactor.set();
 		offsetButton.cameras = [camHUD];
-		add(offsetButton);
-
-		configButton = new FlxButton(offsetButton.x, offsetButton.y - 30, "Save Character", function() {
+		offsetButton.resize(280, offsetButton.height);
+		offsetButton.autoCenterLabel();
+		offsetButton.updateHitbox();
+		offsetButton.antialiasing = false;
+		configButton = new FlxButton(200, 10, "Save Character", function() {
 			saveConfig();
 		});
 		configButton.scrollFactor.set();
 		configButton.cameras = [camHUD];
-		add(configButton);
 
 		tabs = new FlxUITabMenu(null, [
 			{name: 'Character', label: 'Character'},
@@ -507,8 +511,7 @@ class CharacterCreator extends MusicBeatState {
 			ghostAnimList = [];
 			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
 			ghost.setPosition(position[0], position[1]);
-			@:privateAccess
-			ghost.animation._animations.clear();
+			ghost.animation.destroyAnimations();
 			ghost.loadCharacterConfiguration(char.config);
 			ghost.flipX = char.flipX;
 			for (anim => offsets in char.animOffsets) {
@@ -712,6 +715,8 @@ class CharacterCreator extends MusicBeatState {
 		iconNameLabel.text = "Icon Name";
 		tabCharacter.add(iconNameLabel);
 
+		tabCharacter.add(configButton);
+
 		tabs.addGroup(tabCharacter);
 
 		trail = new FlxUICheckBox(10, 10, null, null, "Has Trail");
@@ -781,7 +786,7 @@ class CharacterCreator extends MusicBeatState {
 		animationLoopedCheckbox = new FlxUICheckBox(animationInputName.x, animationFramerateStepper.y + 25, null, null, "Animation Looped");
 		tabAnimations.add(animationLoopedCheckbox);
 
-		var addAnimation:FlxUIButton = new FlxUIButton(10, animationLoopedCheckbox.y + 25, "Add / Update Animation", () -> {
+		addAnimation = new FlxUIButton(10, animationLoopedCheckbox.y + 25, "Add / Update Animation", () -> {
 			if (animationInputName.text != "" && animationInputAnimationName.text != "") {
 				char.animation.addByPrefix(animationInputName.text, animationInputAnimationName.text, animationFramerateStepper.value,
 					animationLoopedCheckbox.checked);
@@ -802,6 +807,28 @@ class CharacterCreator extends MusicBeatState {
 		addAnimation.updateHitbox();
 		addAnimation.autoCenterLabel();
 		tabAnimations.add(addAnimation);
+
+		removeAnimation = new FlxUIButton(addAnimation.x, addAnimation.y + addAnimation.height + 2, "Remove Animation", () -> {
+			if (animationInputName.text != "") {
+				char.animation.remove(animationInputName.text);
+
+				for(animation in char.config.animations){
+					if(animation.name == animationInputName.text){
+						char.config.animations.remove(animation);
+						break;
+					}
+				}
+				char.animOffsets.remove(animationInputName.text);
+				animList = [];
+				genBoyOffsets(true);
+				fixOffsets();
+			}
+		});
+		removeAnimation.resize(280, removeAnimation.height);
+		removeAnimation.antialiasing = false;
+		removeAnimation.updateHitbox();
+		removeAnimation.autoCenterLabel();
+		tabAnimations.add(removeAnimation);
 
 		tabs.addGroup(tabAnimations);
 
@@ -830,6 +857,8 @@ class CharacterCreator extends MusicBeatState {
 			genBoyOffsets(true);
 		}
 		tabOffsets.add(offsetsFlipWhenEnemy);
+
+		tabOffsets.add(offsetButton);
 
 		tabs.addGroup(tabOffsets);
 
