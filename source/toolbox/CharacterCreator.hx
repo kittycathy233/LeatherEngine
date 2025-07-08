@@ -139,6 +139,7 @@ class CharacterCreator extends MusicBeatState {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A Character", null, null, true);
 		#end
+		Main.display.visible = false;
 		FlxG.mouse.visible = true;
 
 		gridCam = new FlxCamera();
@@ -262,7 +263,7 @@ class CharacterCreator extends MusicBeatState {
 			char = new Character(0, 0, daAnim);
 			// char.coolTrail = new FlxTrail(char, null, char.config.trailLength, char.config.trailDelay, char.config.trailStalpha, char.config.trailDiff);
 			char.debugMode = true;
-			//char.coolTrail.visible = trail.checked = char.config.trail;
+			// char.coolTrail.visible = trail.checked = char.config.trail;
 			add(char);
 
 			animList = [];
@@ -311,8 +312,8 @@ class CharacterCreator extends MusicBeatState {
 		charDropDown.scrollFactor.set();
 		charDropDown.cameras = [camHUD];
 
-		modDropDown = new FlxScrollableDropDownMenu(charDropDown.x, charDropDown.y + 30 + 1,
-			FlxUIDropDownMenu.makeStrIdLabelArray(modList, true), function(modID:String) {
+		modDropDown = new FlxScrollableDropDownMenu(charDropDown.x, charDropDown.y + 30 + 1, FlxUIDropDownMenu.makeStrIdLabelArray(modList, true),
+			function(modID:String) {
 				var mod:String = modList[Std.parseInt(modID)];
 
 				if (characters.exists(mod)) {
@@ -349,13 +350,13 @@ class CharacterCreator extends MusicBeatState {
 					animList = [];
 					genBoyOffsets(true);
 				}
-		});
+			});
 
 		modDropDown.selectedLabel = "default";
 		modDropDown.scrollFactor.set();
 		modDropDown.cameras = [camHUD];
-		stageDropdown = new FlxScrollableDropDownMenu(modDropDown.x, modDropDown.y + 30 + 1,
-			FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stageName:String) {
+		stageDropdown = new FlxScrollableDropDownMenu(modDropDown.x, modDropDown.y + 30 + 1, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true),
+			function(stageName:String) {
 				stageName = stages[Std.parseInt(stageName)];
 				reloadStage();
 				daAnim = curCharList[0];
@@ -370,7 +371,7 @@ class CharacterCreator extends MusicBeatState {
 				genBoyOffsets(true);
 				ghostAnimList = [];
 				genGhostOffsets(true);
-		});
+			});
 
 		stageDropdown.selectedLabel = stageName;
 		stageDropdown.scrollFactor.set();
@@ -435,8 +436,6 @@ class CharacterCreator extends MusicBeatState {
 		tabEditor.add(stageDropdown);
 		tabEditor.add(modDropDown);
 		tabEditor.add(charDropDown);
-
-
 
 		ghostAlphaSlider = new FlxUISlider(ghost, "alpha", 10, 50, 0, 1, 130);
 		ghostAlphaSlider.nameLabel.text = "Ghost Alpha";
@@ -505,11 +504,20 @@ class CharacterCreator extends MusicBeatState {
 		tabGhost.add(ghostBlendCheck);
 
 		var ghostCopyButton:FlxUIButton = new FlxUIButton(220, 15, "Copy\nCharacter", () -> {
+			ghostAnimList = [];
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			ghost.setPosition(position[0], position[1]);
+			@:privateAccess
+			ghost.animation._animations.clear();
+			ghost.loadCharacterConfiguration(char.config);
+			ghost.flipX = char.flipX;
 			for (anim => offsets in char.animOffsets) {
 				ghostAnimList.push(anim);
 			}
 			ghostAnimList = animList;
-			ghost.playAnim(ghost.animation.curAnim.name, true);
+			try {
+				ghost.playAnim(ghost.animation.curAnim.name, true);
+			} catch (e) {}
 		});
 		ghostCopyButton.resize(75, ghostCopyButton.height + 5);
 		tabGhost.add(ghostCopyButton);
@@ -612,6 +620,8 @@ class CharacterCreator extends MusicBeatState {
 			char.playAnim("idle", true);
 			char.updateHitbox();
 			char.centerOrigin();
+			var position = stage.getCharacterPos(char.isPlayer ? 0 : 1, char);
+			char.setPosition(position[0], position[1]);
 		});
 		tabCharacter.add(spriteSheetTextInput);
 
@@ -808,8 +818,7 @@ class CharacterCreator extends MusicBeatState {
 		}
 		tabOffsets.add(offsetsFlipWhenPlayer);
 
-		offsetsFlipWhenEnemy = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null,
-			"Offsets Flip When Enemy");
+		offsetsFlipWhenEnemy = new FlxUICheckBox(offsetsFlipWhenPlayer.x, offsetsFlipWhenPlayer.y + 25, null, null, "Offsets Flip When Enemy");
 		offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
 		offsetsFlipWhenEnemy.callback = () -> {
 			char.offsetsFlipWhenEnemy = char.config.offsetsFlipWhenEnemy = offsetsFlipWhenEnemy.checked;
@@ -825,6 +834,11 @@ class CharacterCreator extends MusicBeatState {
 		tabs.addGroup(tabOffsets);
 
 		super.create();
+	}
+
+	override function destroy() {
+		Main.display.visible = true;
+		super.destroy();
 	}
 
 	inline function fixOffsets() {
