@@ -114,6 +114,10 @@ class CharacterCreator extends MusicBeatState {
 	var ghostBlendCheck:FlxUICheckBox;
 
 	var trail:FlxUICheckBox;
+	var trailLength:FlxUINumericStepper;
+	var trailDelay:FlxUINumericStepper;
+	var trailAlpha:FlxUINumericStepper;
+	var trailDiff:FlxUINumericStepper;
 
 	var singDurationStepper:FlxUINumericStepper;
 
@@ -309,6 +313,12 @@ class CharacterCreator extends MusicBeatState {
 
 			offsetsFlipWhenPlayer.checked = char.offsetsFlipWhenPlayer;
 			offsetsFlipWhenEnemy.checked = char.offsetsFlipWhenEnemy;
+
+			trail.checked = char.config.trail ?? false;
+			trailLength.value = char.config.trailLength ?? 10;
+			trailDelay.value = char.config.trailDelay ?? 3;
+			trailAlpha.value = char.config.trailStalpha ?? 0.4;
+			trailDiff.value = char.config.trailDiff ?? 0.05;
 		});
 
 		charDropDown.selectedLabel = daAnim;
@@ -744,22 +754,22 @@ class CharacterCreator extends MusicBeatState {
 		}
 		tabTrail.add(trail);
 
-		var trailLength:FlxUINumericStepper = new FlxUINumericStepper(trail.x, trail.y + 25, 1, (char.config.trailLength ?? 10), 1, 100);
+		trailLength = new FlxUINumericStepper(trail.x, trail.y + 25, 1, (char.config.trailLength ?? 10), 1, 100);
 		trailLength.value = (char.config.trailLength) ?? 1;
 		trailLength.name = "trailLength";
 		tabTrail.add(trailLength);
 
-		var trailDelay:FlxUINumericStepper = new FlxUINumericStepper(trailLength.x, trailLength.y + 25, 1, (char.config.trailDelay ?? 3), 0, 100);
+		trailDelay = new FlxUINumericStepper(trailLength.x, trailLength.y + 25, 1, (char.config.trailDelay ?? 3), 0, 100);
 		trailDelay.value = (char.config.trailDelay) ?? 3;
 		trailDelay.name = "trailDelay";
 		tabTrail.add(trailDelay);
 
-		var trailAlpha:FlxUINumericStepper = new FlxUINumericStepper(trailDelay.x, trailDelay.y + 25, 0.1, (char.config.trailStalpha ?? 0.4), 0.1, 1, 1);
+		trailAlpha = new FlxUINumericStepper(trailDelay.x, trailDelay.y + 25, 0.1, (char.config.trailStalpha ?? 0.4), 0.1, 1, 1);
 		trailAlpha.value = (char.config.trailStalpha) ?? 0.4;
 		trailAlpha.name = "trailAlpha";
 		tabTrail.add(trailAlpha);
 
-		var trailDiff:FlxUINumericStepper = new FlxUINumericStepper(trailAlpha.x, trailAlpha.y + 25, 0.01, (char.config.trailDiff ?? 0.05), 0.01, 100, 2);
+		trailDiff = new FlxUINumericStepper(trailAlpha.x, trailAlpha.y + 25, 0.01, (char.config.trailDiff ?? 0.05), 0.01, 100, 2);
 		trailDiff.value = (char.config.trailDiff) ?? 0.05;
 		trailDiff.name = "trailDiff";
 		tabTrail.add(trailDiff);
