@@ -28,7 +28,8 @@
       "scale": 0.9,
       "antialiased": true,
       "file_Name": "stagecurtains",
-      "is_Animated": false
+      "is_Animated": false,
+      "layer": "foreground"
     }
   ]
 }

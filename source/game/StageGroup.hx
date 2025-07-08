@@ -1,5 +1,6 @@
 package game;
 
+import flixel.util.FlxDestroyUtil;
 import modding.scripts.Script;
 #if MODDING_ALLOWED
 import polymod.backends.PolymodAssets;
@@ -292,6 +293,12 @@ class StageGroup extends FlxGroup {
 		colorSwap = new ColorSwapHSV();
 		stage = stageName;
 		updateStage();
+	}
+
+	override function destroy() {
+		super.destroy();
+		FlxDestroyUtil.destroy(infrontOfGFSprites);
+		FlxDestroyUtil.destroy(foregroundSprites);
 	}
 
 	public function beatHit() {

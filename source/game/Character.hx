@@ -1,5 +1,6 @@
 package game;
 
+import toolbox.CharacterCreator;
 import flxanimate.frames.FlxAnimateFrames;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
@@ -147,7 +148,7 @@ class Character extends FlxSprite {
 		}
 		#if HSCRIPT_ALLOWED
 		if (Assets.exists(Paths.hx("data/character data/" + curCharacter + "/script"))) {
-			script.call("createCharacterPost", [curCharacter]);
+			script?.call("createCharacterPost", [curCharacter]);
 		}
 
 		animation.onFinish.add((animName) -> {
@@ -163,12 +164,14 @@ class Character extends FlxSprite {
 				curCharacter = characterName;
 			}
 			#if HSCRIPT_ALLOWED
-			if (Assets.exists(Paths.hx("data/character data/" + characterName + "/script"))) {
-				script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
+			if(FlxG.state is PlayState){
+				if (Assets.exists(Paths.hx("data/character data/" + characterName + "/script"))) {
+					script = new HScript(Paths.hx("data/character data/" + characterName + "/script"));
 
-				script.interp.variables.set("character", this);
-				PlayState.instance.scripts.set(characterName, script);
-				script.call("createCharacter", [curCharacter]);
+					script.interp.variables.set("character", this);
+					PlayState.instance.scripts.set(characterName, script);
+					script.call("createCharacter", [curCharacter]);
+				}
 			}
 			#end
 
@@ -235,10 +238,17 @@ class Character extends FlxSprite {
 			atlas.antialiasing = antialiasing;
 			atlas.color = color;
 			atlas.colorTransform = colorTransform;
+			atlas.blend = blend;
 			atlas.draw();
 		} else {
 			super.draw();
 		}
+	}
+
+	override function destroy() {
+		FlxDestroyUtil.destroy(coolTrail);
+		FlxDestroyUtil.destroy(atlas);
+		super.destroy();
 	}
 
 	public function loadCharacterConfiguration(config:CharacterConfig) {
@@ -342,8 +352,9 @@ class Character extends FlxSprite {
 			if (config.positionOffset != null)
 				positioningOffset = config.positionOffset;
 
-			if (config.trail == true)
-				coolTrail = new FlxTrail(this, null, config.trailLength, config.trailDelay, config.trailStalpha, config.trailDiff);
+			if (config.trail || FlxG.state is CharacterCreator){
+				coolTrail = new FlxTrail(this, null, config.trailLength ?? 10, config.trailDelay ?? 3, config.trailStalpha ?? 0.4, config.trailDiff ?? 0.05);
+			}
 
 			if (config.swapDirectionSingWhenPlayer != null)
 				swapLeftAndRightSingPlayer = config.swapDirectionSingWhenPlayer;

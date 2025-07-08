@@ -84,7 +84,9 @@ class ToolboxState extends MusicBeatState {
 		curPage.clear();
 
 		for (x in instance.pages.get(pageName).copy()) {
-			curPage.add(x);
+			if(x != null){
+				curPage.add(x);
+			}
 		}
 
 		inMenu = false;

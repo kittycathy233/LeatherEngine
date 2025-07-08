@@ -5,7 +5,10 @@ typedef CharacterConfig =
 	var imagePath:String;
 	var animations:Array<CharacterAnimation>;
 	var defaultFlipX:Bool;
+
+	@:optional
 	var defaultFlipY:Bool;
+
 	var dancesLeftAndRight:Bool;
 	var graphicsSize:Null<Float>;
 	var graphicSize:Null<Float>;
@@ -34,6 +37,7 @@ typedef CharacterConfig =
 	/**
 	 * Any extra spritesheets to be with the main sheet.
 	 */
+	@:optional
 	var extraSheets:Array<String>;
 }
 
@@ -47,7 +51,8 @@ typedef CharacterAnimation =
 {
 	var name:String;
 	var animation_name:String;
-	var indices:Null<Array<Int>>;
 	var fps:Int;
 	var looped:Bool;
+	@:optional
+	var indices:Null<Array<Int>>;
 }
