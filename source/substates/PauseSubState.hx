@@ -55,6 +55,9 @@ class PauseSubState extends MusicBeatSubstate {
 			optionsArray.insert(optionsArray.length - 1, "Skip Time");
 			menus.set("default", optionsArray);
 		}
+		if(Options.getData("developer") && PlayState.isStoryMode){
+			optionsArray.insert(2, "Skip Song");
+		}
 
 		pauseMusic.volume = 0;
 		pauseMusic.play();
@@ -174,6 +177,20 @@ class PauseSubState extends MusicBeatSubstate {
 				case "restart song":
 					menu = "restart";
 					updateAlphabets();
+				case "skip song":
+					PlayState.SONG.validScore = false;
+					pauseMusic.stop();
+					pauseMusic.destroy();
+					FlxG.sound.list.remove(pauseMusic);
+					FlxG.cameras.remove(pauseCamera);
+					PlayState.instance.call("onResume", []);
+					#if LUA_ALLOWED
+					for(tween in modding.scripts.languages.LuaScript.lua_Tweens){
+						FlxTweenUtil.resumeTween(tween);
+					}
+					#end
+					close();
+					PlayState.instance.endSong();
 				case "no cutscenes":
 					PlayState.SONG.speed = PlayState.previousScrollSpeed;
 					PlayState.playCutscenes = true;

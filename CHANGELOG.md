@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
  - Revamped Character Editor
+ - Skip Song option in story mode when developer mode is active.
  - Input text has more features (highlighting, etc).
  - Split vocal files per character
  - A revamped HUD config menu.
