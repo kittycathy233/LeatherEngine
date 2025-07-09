@@ -1,5 +1,6 @@
 package game;
 
+import openfl.utils.Assets;
 import states.PlayState;
 import flixel.FlxG;
 
@@ -16,6 +17,9 @@ class Boyfriend extends Character
 
 	public function new(x:Float, y:Float, ?char:String = 'bf', ?isDeathCharacter:Bool = false)
 	{
+		if(isDeathCharacter && !Assets.exists(Paths.json('character data/$char'))){
+			char = 'bf-dead';
+		}
 		super(x, y, char, true, isDeathCharacter);
 	}
 

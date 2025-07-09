@@ -73,6 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - Characters that dance left and right not playing the dance right animation
  - Blazin crashing
+ - Crash when trying to load an invalid game over character
  - Improved sustain rendering
  - Disabled cliprect rounding on sustains for a sharper cliprect.
  - Sustains not rendering with modcharting tools and VRAM sprites
