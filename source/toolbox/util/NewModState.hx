@@ -106,7 +106,7 @@ class NewModState extends MusicBeatState {
 		UI_box.addGroup(tab_Group_mod);
 		UI_box.scrollFactor.set();
 
-		modName = new FlxInputText(400, 250);
+		modName = new FlxInputText(400, 250, 100);
 		add(modName);
 
 		modNameText = new FlxText();
@@ -141,7 +141,7 @@ class NewModState extends MusicBeatState {
 		modIcon.y = modNameText.y + 100;
 		add(modIcon);
 
-		description = new FlxInputText(modName.x + 300, modName.y);
+		description = new FlxInputText(modName.x + 300, modName.y, 100);
 		add(description);
 
 		descriptionText = new FlxText();
@@ -152,7 +152,7 @@ class NewModState extends MusicBeatState {
 		descriptionText.text = "Description";
 		add(descriptionText);
 
-		author = new FlxInputText(description.x, description.y + 45);
+		author = new FlxInputText(description.x, description.y + 45, 100);
 		add(author);
 
 		authorText = new FlxText();
@@ -163,7 +163,7 @@ class NewModState extends MusicBeatState {
 		authorText.text = "Author";
 		add(authorText);
 
-		modVersion = new FlxInputText(authorText.x, authorText.y + 120);
+		modVersion = new FlxInputText(authorText.x, authorText.y + 120, 100);
 		modVersion.text = "1.0.0";
 		add(modVersion);
 
@@ -175,7 +175,7 @@ class NewModState extends MusicBeatState {
 		modVersionText.text = "Mod Version\n(Must follow *.*.*)";
 		add(modVersionText);
 
-		rpc_id = new FlxInputText(description.x, modName.y + 300);
+		rpc_id = new FlxInputText(description.x, modName.y + 300, 100);
 		add(rpc_id);
 
 		rpc_idText = new FlxText();

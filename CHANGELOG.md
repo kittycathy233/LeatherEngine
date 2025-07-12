@@ -103,6 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Cutscenes being above the notes.
  - `setShaderProperty` not working with integer values.
  - Story mode crashing when switching songs on Linux.
+ - New Mod Menu inputs being the wrong width by default
 ### Removed
  - Unused screenshot keybind graphic.
  - Fakeout death screen
