@@ -98,7 +98,6 @@
 
 	<assets path="CHANGELOG.md" rename='changelog.txt' />
 
-	<assets path="version.txt" />
 	<!--https://github.com/FunkinCrew/Funkin/pull/3318-->
 	<assets path="alsoft.ini" if="windows" />
 	<assets path="alsoft.ini" rename="alsoft.conf" unless="windows" />
