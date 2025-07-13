@@ -2,6 +2,7 @@
 
 echo Installing all required libraries.
 
+haxelib --global update haxelib
 haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
 haxelib install format
 haxelib install hxp
@@ -11,7 +12,7 @@ haxelib --skip-dependencies git flixel https://github.com/swordcubes-grave-of-sh
 haxelib --skip-dependencies git flixel-addons https://github.com/swordcubes-grave-of-shite/flixel-addons dev
 haxelib git flixel-ui https://github.com/HaxeFlixel/flixel-ui
 haxelib git linc_luajit https://github.com/Leather128/linc_luajit.git
-haxelib git hscript-improved https://github.com/FNF-CNE-Devs/hscript-improved codename-dev
+haxelib git hscript-improved https://github.com/CodenameCrew/hscript-improved codename-dev
 haxelib git scriptless-polymod https://github.com/Vortex2Oblivion/scriptless-polymod
 haxelib git hxNoise https://github.com/whuop/hxNoise
 haxelib git hxvlc https://github.com/Vortex2Oblivion/hxvlc
