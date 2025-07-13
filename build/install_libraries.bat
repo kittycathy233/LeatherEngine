@@ -1,7 +1,6 @@
 @echo off
 echo Installing all required libraries.
 
-haxelib --global update haxelib
 haxelib git hxcpp https://github.com/Vortex2Oblivion/hxcpp-compiled
 haxelib install format
 haxelib install hxp

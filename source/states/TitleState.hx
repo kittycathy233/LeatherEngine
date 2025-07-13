@@ -1,5 +1,6 @@
 package states;
 
+import thx.Weekday;
 import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
@@ -162,7 +163,7 @@ class TitleState extends MusicBeatState {
 
 			var now:Date = Date.now();
 
-			if (((now.getDay() == 5 && now.getHours() >= 18) || Options.getData("nightMusic"))) {
+			if (((now.getDay() == Weekday.Friday && now.getHours() >= 18) || Options.getData("nightMusic"))) {
 				Conductor.changeBPM(117);
 			}
 

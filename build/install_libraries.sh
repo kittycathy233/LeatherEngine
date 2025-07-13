@@ -2,7 +2,6 @@
 
 echo Installing all required libraries.
 
-haxelib --global update haxelib
 haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp
 haxelib install format
 haxelib install hxp
