@@ -48,7 +48,8 @@
 
 --no-output
 
--D doc-gen
+--define doc-gen
+--define message.reporting=pretty
 
 -xml docs/doc.xml
 --cpp docs-bin/

@@ -36,9 +36,12 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 
 	public var jsonData:JsonData;
 
+	public static var cachedConfig(default, never):Map<String, JsonData> = [];
+
 	public var modAngle:Float = 0;
 
-	public function new(x:Float, y:Float, noteData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int, ?isPlayer:Float) {
+	public function new(x:Float, y:Float, noteData:Int, ?ui_Skin:String, ?ui_settings:Array<String>, ?mania_size:Array<String>, ?keyCount:Int,
+			?isPlayer:Float) {
 		super(x, y);
 		if (ui_Skin == null)
 			ui_Skin = PlayState.SONG.ui_Skin;
@@ -52,7 +55,6 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 		if (keyCount == null)
 			keyCount = PlayState.SONG.keyCount;
 
-		
 		this.noteData = noteData;
 		this.ui_Skin = ui_Skin;
 		this.ui_settings = ui_settings;
@@ -60,15 +62,24 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 		this.keyCount = keyCount;
 		this.isPlayer = isPlayer;
 
-		if (Assets.exists(Paths.json("ui skins/" + ui_Skin + "/config"))) {
-			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + ui_Skin + "/config")));
+		inline function setValues() {
 			for (value in jsonData.values) {
 				this.affectedbycolor = value.affectedbycolor;
 			}
 		}
 
-		frames = Assets.exists(Paths.image("ui skins/" + ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/' + ui_Skin
-			+ "/arrows/strums") : Paths.getSparrowAtlas('ui skins/' + ui_Skin + "/arrows/default");
+		if (Assets.exists(Paths.json("ui skins/" + ui_Skin + "/config")) && !cachedConfig.exists(ui_Skin)) {
+			jsonData = Json.parse(Assets.getText(Paths.json("ui skins/" + ui_Skin + "/config")));
+			setValues();
+			cachedConfig.set(ui_Skin, jsonData);
+		} else if (cachedConfig.exists(ui_Skin)) {
+			jsonData = cachedConfig.get(ui_Skin);
+			setValues();
+		}
+
+		frames = Assets.exists(Paths.image("ui skins/" + ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/' + ui_Skin +
+			"/arrows/strums") : Paths.getSparrowAtlas('ui skins/'
+			+ ui_Skin + "/arrows/default");
 
 		var animation_Base_Name:String = NoteVariables.maniaDirections[keyCount - 1][Std.int(Math.abs(noteData))].toLowerCase();
 
@@ -76,14 +87,13 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 		animation.addByPrefix('pressed', NoteVariables.animationDirections[keyCount - 1][noteData] + ' press', 24, false);
 		animation.addByPrefix('confirm', NoteVariables.animationDirections[keyCount - 1][noteData] + ' confirm', 24, false);
 
-
 		antialiasing = ui_settings[3] == "true";
 
 		setGraphicSize((width * Std.parseFloat(ui_settings[0])) * (Std.parseFloat(ui_settings[2]) - (Std.parseFloat(mania_size[keyCount - 1]))));
 		updateHitbox();
 		noteColor = NoteColors.getNoteColor(NoteVariables.animationDirections[keyCount - 1][noteData]);
 		shader = affectedbycolor ? colorSwap.shader : null;
-		
+
 		if (affectedbycolor && PlayState.instance != null && colorSwap != null) {
 			if (noteColor != null) {
 				colorSwap.r = noteColor[0];
@@ -95,7 +105,7 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 	}
 
 	override function update(elapsed:Float) {
-		angle = modAngle;
+		#if MODCHARTING_TOOLS angle3D.z #else angle #end = modAngle;
 		if (resetAnim > 0) {
 			resetAnim -= elapsed;
 

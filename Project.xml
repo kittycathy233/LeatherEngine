@@ -154,8 +154,6 @@
 
 	<define name="hscriptPos" if="HSCRIPT_ALLOWED" />
 
-	<define name="LEATHER" if="MODCHARTING_TOOLS" />
-
 	<!-- Flixel Defines -->
 	<define name="FLX_NO_FOCUS_LOST_SCREEN" />
 	<define name="FLX_NO_DEBUG" unless="debug" />
