@@ -36,7 +36,7 @@ import game.Cutscene;
 import game.Highscore;
 import game.Note;
 import game.NoteSplash;
-import game.Section.SwagSection;
+import game.SongLoader.Section as SwagSection;
 import game.SongLoader;
 import game.SoundGroup;
 import game.StageGroup;
@@ -2471,7 +2471,7 @@ class PlayState extends MusicBeatState {
 				vocals.stop();
 				SONG.keyCount = ogKeyCount;
 				SONG.playerKeyCount = ogPlayerKeyCount;
-				FlxG.switchState(modcharting.ModchartEditorState.new);
+				FlxG.switchState(() -> new modcharting.ModchartEditorState());
 				#if DISCORD_ALLOWED
 				DiscordClient.changePresence("In The Modchart Editor", null, null, true);
 				#end

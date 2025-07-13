@@ -49,13 +49,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Low Quality option.
  - New toolbox graphic
  - Warning for commit hash macro failing.
- - FlxStringUtil functions to Lua
+ - FlxStringUtil functions to Lua.
  - `pause()` and `resume()` functions to Lua for sounds.
  - `alt animation` notetype.
  - Middescroll and Downscroll toggles to modchart editor
  - XMModifier to modchart editor.
- - YawModifier and PitchModifier to modchart editor
+ - YawModifier and PitchModifier to modchart editor.
  - ColorTransformRed ColorTransformBlue and ColorTransformGreen to modchart editor.
+ - StrumBounceXModifier, StrumBounceYModifier, StrumBounceZModifier to modchart editor.
 ### Changed
  - Updated Haxe to 4.3.7
  - Start using Swordcube lime,flixel,openfl forks for better performance.
@@ -110,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - VSlice sound tray
  - FPS lil buddies.
  - Unused `Project.xml` defines.
+ - Some deprecated compatability classes
 
 ## [0.5.0pre] - 11/9/2024
 

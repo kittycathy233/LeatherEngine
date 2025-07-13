@@ -130,7 +130,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 	}
 
 	override function create():Void {
-		if ((PlayState.storyPlaylist.length > 1  && PlayState.isStoryMode) || Options.getData("skipResultsScreen")) {
+		if ((PlayState.storyPlaylist.length > 1 && PlayState.isStoryMode) || Options.getData("skipResultsScreen")) {
 			PlayState.instance.finishSongStuffs();
 			return;
 		}
@@ -291,8 +291,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 			cast(difficulty, FlxBitmapText).text = params?.difficultyId ?? 'Normal';
 			cast(difficulty, FlxBitmapText).letterSpacing = -15;
 			difficulty.angle = -4.4;
-		}
-		else
+		} else
 			difficulty.loadGraphic(Paths.gpuBitmap("resultScreen/" + diffSpr));
 		add(difficulty);
 
@@ -309,7 +308,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 
 		// maskShaderSongName.swagMaskX = difficulty.x - 15;
 		maskShaderDifficulty.swagMaskX = difficulty.x - 15;
-		if(difficulty is FlxBitmapText){
+		if (difficulty is FlxBitmapText) {
 			maskShaderDifficulty.swagMaskX += difficulty.width;
 		}
 
@@ -336,15 +335,14 @@ class ResultsSubstate extends MusicBeatSubstate {
 		resultsAnim.visible = false;
 		// resultsAnim.zIndex = 1200;
 		add(resultsAnim);
-		try{
+		try {
 			new FlxTimer().start(6 / 24, _ -> {
-				resultsAnim.visible = true;
-				resultsAnim.animation.play("result");
+				try {
+					resultsAnim.visible = true;
+					resultsAnim?.animation?.play("result");
+				} catch (e) {}
 			});
-		}
-		catch(e){
-			
-		}
+		} catch (e) {}
 
 		ratingsPopin.animation.addByPrefix("idle", "Categories", 24, false);
 		ratingsPopin.visible = false;
