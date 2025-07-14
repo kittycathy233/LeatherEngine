@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Hitting SHIFT while ENTER to leave the chart editor now skips to that time.
 
+## Fixed
+ - Softlock on the title screen when check for updates is disabled
+
 ## [1.0.0] - 7/13/25
 
 ### Added

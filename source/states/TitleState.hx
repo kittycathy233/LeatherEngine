@@ -56,7 +56,6 @@ class TitleState extends MusicBeatState {
 
 	public static var instance:TitleState = null;
 
-
 	override public function create():Void {
 		call('create');
 		MusicBeatState.windowNameSuffix = "";
@@ -306,7 +305,7 @@ class TitleState extends MusicBeatState {
 
 			call("checkForUpdate");
 			#if CHECK_FOR_UPDATES
-			if(Options.getData("checkForUpdates")){
+			if (Options.getData("checkForUpdates")) {
 				new FlxTimer().start(2, (tmr:FlxTimer) -> {
 					var http:Http = new Http("https://raw.githubusercontent.com/Vortex2Oblivion/LeatherEngine/main/version.txt");
 					http.onData = (data:String) -> {
@@ -321,13 +320,21 @@ class TitleState extends MusicBeatState {
 					}
 
 					http.onError = (error:String) -> {
-						trace('$error', ERROR);
+						trace(error, ERROR);
 						FlxG.switchState(() -> new MainMenuState()); // fail so we go anyway
 					}
 
 					http.request();
 				});
+			} else {
+				new FlxTimer().start(2, (tmr:FlxTimer) -> {
+					FlxG.switchState(() -> new MainMenuState());
+				});
 			}
+			#else
+			new FlxTimer().start(2, (tmr:FlxTimer) -> {
+				FlxG.switchState(() -> new MainMenuState());
+			});
 			#end
 		}
 
