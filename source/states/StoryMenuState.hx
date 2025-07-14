@@ -77,7 +77,7 @@ class StoryMenuState extends MusicBeatState {
 	}
 
 	override function update(elapsed:Float) {
-		#if sys
+		#if MODDING_ALLOWED
 		if (FlxG.keys.justPressed.TAB) {
 			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;

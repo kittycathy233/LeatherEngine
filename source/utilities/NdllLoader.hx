@@ -1,6 +1,5 @@
 package utilities;
 
-import polymod.backends.PolymodAssets;
 import lime.system.CFFI;
 
 class NdllLoader {
@@ -13,7 +12,7 @@ class NdllLoader {
 	 * @return Dynamic
 	 */
 	public static function load(ndll:String, func:String, args:Int, lazy:Bool = false):Dynamic {
-		return CFFI.load(PolymodAssets.getPath('assets/ndlls/$ndll.ndll'), func, args, lazy);
+		return CFFI.load(Paths.getModPath('assets/ndlls/$ndll.ndll'), func, args, lazy);
 	}
     
     /**

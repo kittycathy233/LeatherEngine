@@ -1,6 +1,5 @@
 package states;
 
-import thx.Weekday;
 import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
@@ -85,9 +84,9 @@ class TitleState extends MusicBeatState {
 			#if MODDING_ALLOWED
 			ModList.load();
 			PolymodHandler.loadMods();
-			#end
 			MusicBeatState.windowNamePrefix = Options.getData("curMod");
 			CoolUtil.setWindowIcon("mods/" + Options.getData("curMod") + "/_polymod_icon.png");
+			#end
 			NoteVariables.init();
 			Options.fixBinds();
 			FlxG.drawFramerate = Options.getData("maxFPS");
@@ -162,7 +161,7 @@ class TitleState extends MusicBeatState {
 
 			var now:Date = Date.now();
 
-			if (((now.getDay() == Weekday.Friday && now.getHours() >= 18) || Options.getData("nightMusic"))) {
+			if (((now.getDay() == 5 && now.getHours() >= 18) || Options.getData("nightMusic"))) {
 				Conductor.changeBPM(117);
 			}
 

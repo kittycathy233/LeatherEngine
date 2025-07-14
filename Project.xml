@@ -21,9 +21,13 @@
 	<define name="VIDEOS_ALLOWED" /> <!--  Allows support for video files -->
 	<define name="DISCORD_ALLOWED" /> <!--  Allows support for Discord Rich Presence -->
 	<define name="MODDING_ALLOWED" /> <!-- Allows mod loading -->
+
 	<define name="MODCHARTING_TOOLS" /> <!--  Allows for Modcharting Tools to be used. -->
+
 	<define name="LUA_ALLOWED" /> <!--  Allows support for Lua scripting -->
 	<define name="HSCRIPT_ALLOWED" /> <!--  Allows support for Haxe scripting (HScript) -->
+	
+	<define name="CHECK_FOR_UPDATES" /> <!-- Allows the game to connect to GitHub to check for an update -->
 
 	<!-- 
 	Allows for all flixel classes to be used in scripts.
@@ -34,7 +38,6 @@
 
 	<define name="CUSTOM_CLASSES" if="HSCRIPT_ALLOWED" /> <!-- Allows for custom classe to be used in HScript -->
 
-	<define name="CHECK_FOR_UPDATES" /> <!-- Allows the game to connect to GitHub to check for an update loading -->
 
 	<!-- REMOVE this line to enable a 32 bit export. -->
 	<define name="BIT_64" unless="32bit" />

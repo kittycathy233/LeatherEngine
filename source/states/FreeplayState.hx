@@ -248,7 +248,7 @@ class FreeplayState extends MusicBeatState {
 		}*/
 	override function update(elapsed:Float) {
 		call("update", [elapsed]);
-		#if sys
+		#if MODDING_ALLOWED
 		if (FlxG.keys.justPressed.TAB) {
 			openSubState(new modding.SwitchModSubstate());
 			persistentUpdate = false;

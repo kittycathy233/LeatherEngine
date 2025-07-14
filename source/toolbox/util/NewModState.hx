@@ -1,6 +1,6 @@
 package toolbox.util;
 
-#if sys
+#if MODDING_ALLOWED
 import sys.io.File;
 import openfl.display.BitmapData;
 import flixel.addons.ui.FlxUI;

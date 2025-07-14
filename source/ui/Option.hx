@@ -205,7 +205,7 @@ class CharacterCreatorOption extends Option {
 	}
 }
 
-#if sys
+#if MODDING_ALLOWED
 /**
  * Option for enabling and disabling mods.
  */
