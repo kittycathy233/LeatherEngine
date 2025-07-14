@@ -1,5 +1,8 @@
 package ui;
 
+import openfl.events.Event;
+import flixel.math.FlxMath;
+import lime.system.System;
 import macros.GithubCommitHash;
 import flixel.util.FlxStringUtil;
 import flixel.FlxG;
@@ -32,23 +35,32 @@ class SimpleInfoDisplay extends TextField {
 		selectable = false;
 		defaultTextFormat = new TextFormat(font ?? Assets.getFont(Paths.font("vcr.ttf")).fontName, (font == "_sans" ? 12 : 14), color);
 
-		FlxG.signals.postDraw.add(update);
-
 		width = FlxG.width;
 		height = FlxG.height;
+
+		addEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
-	public function update():Void {
-		framerateTimer += FlxG.elapsed;
+	private var _framesPassed:Int = 0;
+	private var _previousTime:Float = 0;
+	private var _updateClock:Float = 999999;
 
-		if (framerateTimer >= 1) {
-			framerateTimer = 0;
+	/**
+	 * @see https://github.com/swordcube/friday-again-garfie-baby/blob/main/source/funkin/backend/StatsDisplay.hx#L46
+	 */
+	private function onEnterFrame(e:Event):Void {
+		_framesPassed++;
 
-			framerate = framesCounted;
-			framesCounted = 0;
+		final deltaTime:Float = Math.max(System.getTimerPrecise() - _previousTime, 0);
+		_updateClock += deltaTime;
+
+		if (_updateClock >= 1000) {
+			framerate = (FlxG.drawFramerate > 0) ? FlxMath.minInt(_framesPassed, FlxG.drawFramerate) : _framesPassed;
+
+			_framesPassed = 0;
+			_updateClock = 0;
 		}
-
-		framesCounted++;
+		_previousTime = System.getTimerPrecise();
 
 		if (!visible) {
 			return;
