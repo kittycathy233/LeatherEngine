@@ -1336,6 +1336,9 @@ class ChartingState extends MusicBeatState {
 				PlayState.loadChartEvents = false;
 				LoadingState.loadAndSwitchState(() -> new PlayState());
 				PlayState.chartingMode = true;
+				if(FlxG.keys.pressed.SHIFT){
+					PlayState.startOnTime = Conductor.songPosition;
+				}
 			}
 
 			if (FlxG.keys.justPressed.E)
