@@ -2125,8 +2125,24 @@ class ChartingState extends MusicBeatState {
 		var fileOpen:FileDialog = new FileDialog();
 		fileOpen.browse(OPEN, "json", Sys.getCwd(), "Select A Chart File");
 		fileOpen.onSelect.add((data) -> {
-			PlayState.SONG = SongLoader.parseLegacy(Json.parse(File.getContent(data)));
-			FlxG.resetState();
+			try{
+				var parsedJson:Dynamic = SongLoader.parseLegacy(Json.parse(File.getContent(data)));
+				if(!Reflect.hasField(parsedJson, "song")){
+					CoolUtil.coolError('Leather Engine Chart Editor', 'Invalid chart at path $data');
+				}
+				else{
+					if(Reflect.hasField(parsedJson.song, "events") && !Reflect.hasField(parsedJson.song, "notes")){
+						CoolUtil.coolError('Leather Engine Chart Editor', 'Invalid chart at path $data\nDid you try and load an events file?');
+					}
+					else{
+						PlayState.SONG = parsedJson;
+						FlxG.resetState();
+					}
+				}
+			}
+			catch(e){
+				CoolUtil.coolError('Leather Engine Chart Editor', 'Invalid chart at path $data');
+			}
 		});
 	}
 
