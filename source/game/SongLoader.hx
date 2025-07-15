@@ -154,7 +154,7 @@ class SongLoader {
 		return output;
 	}
 
-	public static function parseLegacy(parsedJSON:Dynamic, songName:String, force:Bool = false):SongData {
+	public static function parseLegacy(parsedJSON:Dynamic, ?songName:String, force:Bool = false):SongData {
 		var song:SongData = cast parsedJSON.song;
 		song.validScore = true;
 

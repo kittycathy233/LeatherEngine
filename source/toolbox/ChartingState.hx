@@ -1,5 +1,7 @@
 package toolbox;
 
+import sys.io.File;
+import lime.ui.FileDialog;
 import game.SoundGroup;
 import flixel.util.FlxTimer;
 import flixel.FlxObject;
@@ -101,7 +103,6 @@ class ChartingState extends MusicBeatState {
 
 	var current_Note_Character:Int = 0;
 
-	static var loadedAutosave:Bool = false;
 
 	static var playerHitsounds:Bool = false;
 	static var enemyHitsounds:Bool = false;
@@ -198,7 +199,7 @@ class ChartingState extends MusicBeatState {
 
 		_song.events = [];
 
-		if (PlayState.songMultiplier != 1 && !loadedAutosave)
+		if (PlayState.songMultiplier != 1)
 			_song.speed = PlayState.previousScrollSpeed;
 
 		FlxG.mouse.visible = true;
@@ -267,8 +268,6 @@ class ChartingState extends MusicBeatState {
 		new FlxTimer().start(Options.getData("backupDuration") * 60, _backup, 0);
 
 		super.create();
-
-		loadedAutosave = false;
 	}
 
 	private function _backup(_) {
@@ -466,9 +465,9 @@ class ChartingState extends MusicBeatState {
 			loadJson(_song.song.toLowerCase(), difficulty.toLowerCase());
 		});
 
-		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSong.x, reloadSong.y + reloadSong.height + 10, 'Load Autosave', loadAutosave);
+		var loadChartBtn:FlxButton = new FlxButton(reloadSong.x, reloadSong.y + reloadSong.height + 10, 'Load Chart', loadChart);
 
-		var restart = new FlxButton(loadAutosaveBtn.x + loadAutosaveBtn.width + 10, loadAutosaveBtn.y, "Reset Chart", function() {
+		var restart = new FlxButton(loadChartBtn.x + loadChartBtn.width + 10, loadChartBtn.y, "Reset Chart", function() {
 			for (ii in 0..._song.notes.length) {
 				for (i in 0..._song.notes[ii].sectionNotes.length) {
 					_song.notes[ii].sectionNotes = [];
@@ -478,7 +477,7 @@ class ChartingState extends MusicBeatState {
 			resetSection(true);
 		});
 
-		var resetEvents = new FlxButton(loadAutosaveBtn.x, restart.y + restart.height + 10, "Reset Events", function() {
+		var resetEvents = new FlxButton(loadChartBtn.x, restart.y + restart.height + 10, "Reset Events", function() {
 			events = [];
 
 			updateGrid();
@@ -532,7 +531,7 @@ class ChartingState extends MusicBeatState {
 		tab_group_song.add(saveEventsButton);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
-		tab_group_song.add(loadAutosaveBtn);
+		tab_group_song.add(loadChartBtn);
 		tab_group_song.add(restart);
 		tab_group_song.add(resetEvents);
 		tab_group_song.add(stepperBPM);
@@ -2094,8 +2093,6 @@ class ChartingState extends MusicBeatState {
 
 		updateGrid();
 		updateNoteUI();
-
-		autosaveSong();
 	}
 
 	inline function getStrumTime(yPos:Float):Float {
@@ -2124,15 +2121,13 @@ class ChartingState extends MusicBeatState {
 		FlxG.resetState();
 	}
 
-	function loadAutosave():Void {
-		loadedAutosave = true;
-		@:privateAccess
-		PlayState.SONG = SongLoader.parseLegacy(Options.getData("save", "autosave"), 'autosave');
-		FlxG.resetState();
-	}
-
-	function autosaveSong():Void {
-		Options.setData(Json.stringify({"song": _song}), "save", "autosave");
+	function loadChart():Void {
+		var fileOpen:FileDialog = new FileDialog();
+		fileOpen.browse(OPEN, "json", Sys.getCwd(), "Select A Chart File");
+		fileOpen.onSelect.add((data) -> {
+			PlayState.SONG = SongLoader.parseLegacy(Json.parse(File.getContent(data)));
+			FlxG.resetState();
+		});
 	}
 
 	private function saveLevel(saveEvents:Bool = false) {

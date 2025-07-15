@@ -92,11 +92,10 @@ class BoolOption extends Option {
 				Main.toggleMem(optionChecked);
 			#if DISCORD_ALLOWED
 			case "discordRPC":
-				if (optionChecked && !DiscordClient.active){
+				if (optionChecked && !DiscordClient.active) {
 					DiscordClient.startup();
 					DiscordClient.loadModPresence();
-				}
-				else if (!optionChecked && DiscordClient.active)
+				} else if (!optionChecked && DiscordClient.active)
 					DiscordClient.shutdown();
 			#end
 			case "versionDisplay":
@@ -320,10 +319,9 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 				#if DISCORD_ALLOWED
 				DiscordClient.loadModPresence();
 				#end
-				if(FlxG.state is modding.custom.CustomState){
+				if (FlxG.state is modding.custom.CustomState) {
 					FlxG.switchState(() -> new TitleState());
-				}
-				else{
+				} else {
 					FlxG.resetState();
 				}
 				if (FlxG.sound.music == null || FlxG.sound.music.playing != true)
@@ -402,6 +400,63 @@ class StringSaveOption extends Option {
 	}
 }
 
+class StepperSaveOption extends Option {
+	public var min(default, null):Float;
+	public var max(default, null):Float;
+
+	public var step(default, null):Float;
+	public var currentValue(default, null):Float;
+	override public function new(displayName:String, min:Float, max:Float, saveString:String, step:Float = 1) {
+		super(displayName, saveString);
+		if(max < min){
+			throw "Max value must not be less than min value.";
+		}
+		if(max == min){
+			throw "Min value must not equal max value.";
+		}
+		this.min = min;
+		this.max = max;
+		this.step = step;
+		currentValue = Options.getData(saveString);
+
+		remove(alphabetText);
+		alphabetText.kill();
+		alphabetText.destroy();
+
+		alphabetText = new Alphabet(20, 20, '$optionName: $currentValue', true);
+		alphabetText.isMenuItem = true;
+		add(alphabetText);
+	}
+	private var prevValue:Float;
+	override function update(elapsed:Float) {
+		super.update(elapsed);
+		if(Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu){
+			prevValue = currentValue;
+			if(FlxG.keys.anyJustPressed([LEFT, A])){
+				currentValue = Math.max(min, currentValue - step);
+				setData();
+			}
+			else if(FlxG.keys.anyJustPressed([RIGHT, D])){
+				currentValue = Math.min(max, currentValue + step);
+				setData();
+			}
+		}
+	}
+	inline function setData(){
+		if(prevValue == currentValue){
+			return;
+		}
+		Options.setData(currentValue, optionValue);
+		remove(alphabetText);
+		alphabetText.kill();
+		alphabetText.destroy();
+
+		alphabetText = new Alphabet(20, 20, '$optionName: $currentValue', true);
+		alphabetText.isMenuItem = true;
+		add(alphabetText);
+	}
+}
+
 class DisplayFontOption extends StringSaveOption {
 	override function setData() {
 		super.setData();
@@ -411,7 +466,7 @@ class DisplayFontOption extends StringSaveOption {
 
 class DeveloperOption extends BoolOption {
 	override function changeValue() {
-		if(!Options.getData("developer")){
+		if (!Options.getData("developer")) {
 			return;
 		}
 		super.changeValue();

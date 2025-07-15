@@ -31,7 +31,7 @@ class ModList {
 	}
 
 	/**
-	 * Returns an ``Array`` of all active mods
+	 * Returns an `Array` of all active mods
 	 * NOTE: Will prioritize the current selected mod over all other mods.
 	 * @param modsToCheck 
 	 * @return The array of mods

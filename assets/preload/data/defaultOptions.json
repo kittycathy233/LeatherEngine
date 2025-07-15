@@ -283,7 +283,7 @@
     },
     {
       "option": "backupDuration",
-      "value": 10
+      "value": 5
     },
     {
       "option": "shaders",

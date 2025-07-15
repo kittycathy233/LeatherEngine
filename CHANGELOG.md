@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Hitting SHIFT while ENTER to leave the chart editor now skips to that time.
 
+### Changed
+ - Charts are backed up every 5 minutes now as opposed to 10
+ - Reworked autosave button in chart editor, it is now a button that can let you load an actual chart.
+
 ## Fixed
  - Softlock on the title screen when check for updates is disabled
  - `MODDING_ALLOWED` define not working properly.
