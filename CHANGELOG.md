@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Softlock on the title screen when check for updates is disabled
  - `MODDING_ALLOWED` define not working properly.
  - FPS counter sometimes being inaccurate
+ - Specific vocal tracks per character not loading properly if the character is invalid.
 
 ## [1.0.0] - 7/13/25
 
