@@ -61,10 +61,9 @@ class SongLoader {
 		}
 		var metaPath:String = Paths.json('song data/$songName/$songName-metadata$chartSuffix');
 		if (!Assets.exists(metaPath)) {
-			if(Assets.exists(metaPath.toLowerCase())){
+			if (Assets.exists(metaPath.toLowerCase())) {
 				metaPath = metaPath.toLowerCase();
-			}
-			else{
+			} else {
 				trace('You can\'t load an FNFC chart without putting in the metadata!', ERROR);
 				return null;
 			}
@@ -146,6 +145,13 @@ class SongLoader {
 					output.events.push(['change camera zoom strength', event.t, event.v.intensity, event.v.rate]);
 				case 'playanimation':
 					output.events.push([event.e, event.t, event.v.target, '${event.v.anim},${event.v.force}']);
+				case 'scrollspeed':
+					output.events.push([
+						event.e,
+						event.t,
+						'${event.v.duration},${event.v.scroll}',
+						'${event.v.strumline},${event.v.ease},${event.v.absolute}'
+					]);
 				default:
 					output.events.push([event.e, event.t, Std.string(event.v), '']);
 			}

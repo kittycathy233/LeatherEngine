@@ -69,6 +69,8 @@ class Note extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxSkewed
 
 	public var speed(default, set):Float = 1;
 
+	public var originalSpeed(default, null):Float;
+
 	public var playedHitSound:Bool = false;
 
 	#if MODCHARTING_TOOLS
@@ -182,6 +184,7 @@ class Note extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxSkewed
 
 		this.song = song;
 		speed = song.speed;
+		originalSpeed = speed;
 
 		x += 100;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?

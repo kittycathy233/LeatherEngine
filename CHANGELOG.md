@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
  - Hitting SHIFT while ENTER to leave the chart editor now skips to that time.
+ - Support for Scroll Speed events for VSlice charts.
 
 ### Changed
  - Charts are backed up every 5 minutes now as opposed to 10

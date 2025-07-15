@@ -2178,7 +2178,7 @@ class LuaScript extends Script {
 			var spr:Dynamic = getActorByName(obj);
 			if (spr != null) {
 				lua_Tweens.set('$obj.$properties', FlxTween.tween(spr, properties, duration, {
-					ease: easeFromString(ease),
+					ease: CoolUtil.easeFromString(ease),
 					onComplete: function(twn) {
 						lua_Tweens.remove('$obj.$properties');
 						if (onComplete != null){
@@ -2644,7 +2644,7 @@ class LuaScript extends Script {
 		setFunction("tweenScaleX", function(id:String, toScale:Float, time:Float, easeStr:String = "", onComplete:String = "") {
 			if (getActorByName(id) != null)
 				PlayState.instance.tweenManager.tween(getActorByName(id).scale, {x: toScale}, time, {
-					ease: easeFromString(easeStr),
+					ease: CoolUtil.easeFromString(easeStr),
 					onComplete: function(flxTween:FlxTween) {
 						if (onComplete != '' && onComplete != null) {
 							call(onComplete, [id]);
@@ -2655,7 +2655,7 @@ class LuaScript extends Script {
 		setFunction("tweenScaleY", function(id:String, toScale:Float, time:Float, easeStr:String = "", onComplete:String = "") {
 			if (getActorByName(id) != null)
 				PlayState.instance.tweenManager.tween(getActorByName(id).scale, {y: toScale}, time, {
-					ease: easeFromString(easeStr),
+					ease: CoolUtil.easeFromString(easeStr),
 					onComplete: function(flxTween:FlxTween) {
 						if (onComplete != '' && onComplete != null) {
 							call(onComplete, [id]);
@@ -2666,7 +2666,7 @@ class LuaScript extends Script {
 
 		setFunction("tweenActorProperty", function(id:String, prop:String, value:Dynamic, time:Float, easeStr:String = "linear") {
 			var actor = getActorByName(id);
-			var ease = easeFromString(easeStr);
+			var ease = CoolUtil.easeFromString(easeStr);
 
 			if (actor != null && Reflect.getProperty(actor, prop) != null) {
 				var startVal = Reflect.getProperty(actor, prop);
@@ -2935,7 +2935,7 @@ class LuaScript extends Script {
 
 		setFunction("tweenStageColorSwap", function(prop:String, value:Dynamic, time:Float, easeStr:String = "linear") {
 			var actor = PlayState.instance.stage.colorSwap;
-			var ease = easeFromString(easeStr);
+			var ease = CoolUtil.easeFromString(easeStr);
 
 			if (actor != null) {
 				var startVal = Reflect.getProperty(actor, prop);
@@ -3103,7 +3103,7 @@ class LuaScript extends Script {
 			function(id:String, property:String, value:Float, duration:Float, ease:String = "linear", startDelay:Float = 0.0, ?onComplete:Dynamic) {
 				var shader:CustomShader = lua_Custom_Shaders.get(id);
 				if (shader != null) {
-					shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
+					shader.tween(property, value, duration, CoolUtil.easeFromString(ease), startDelay, onComplete);
 				} else {
 					trace('Shader named $id doesn\'t exist!', ERROR);
 				}
@@ -3212,7 +3212,7 @@ class LuaScript extends Script {
 					return;
 				var shader:CustomShader = lua_Custom_Shaders.get(id);
 				if (shader != null) {
-					shader.tween(property, value, duration, easeFromString(ease), startDelay, onComplete);
+					shader.tween(property, value, duration, CoolUtil.easeFromString(ease), startDelay, onComplete);
 				} else {
 					trace('Shader named $id doesn\'t exist!', ERROR);
 				}
@@ -3719,83 +3719,9 @@ class LuaScript extends Script {
 		return BlendMode.fromString(blend.toLowerCase());
 	}
 
-	public static function easeFromString(?ease:String = ''):Float->Float {
-		switch (ease.toLowerCase().trim()) {
-			case 'backin':
-				return FlxEase.backIn;
-			case 'backinout':
-				return FlxEase.backInOut;
-			case 'backout':
-				return FlxEase.backOut;
-			case 'bouncein':
-				return FlxEase.bounceIn;
-			case 'bounceinout':
-				return FlxEase.bounceInOut;
-			case 'bounceout':
-				return FlxEase.bounceOut;
-			case 'circin':
-				return FlxEase.circIn;
-			case 'circinout':
-				return FlxEase.circInOut;
-			case 'circout':
-				return FlxEase.circOut;
-			case 'cubein':
-				return FlxEase.cubeIn;
-			case 'cubeinout':
-				return FlxEase.cubeInOut;
-			case 'cubeout':
-				return FlxEase.cubeOut;
-			case 'elasticin':
-				return FlxEase.elasticIn;
-			case 'elasticinout':
-				return FlxEase.elasticInOut;
-			case 'elasticout':
-				return FlxEase.elasticOut;
-			case 'expoin':
-				return FlxEase.expoIn;
-			case 'expoinout':
-				return FlxEase.expoInOut;
-			case 'expoout':
-				return FlxEase.expoOut;
-			case 'quadin':
-				return FlxEase.quadIn;
-			case 'quadinout':
-				return FlxEase.quadInOut;
-			case 'quadout':
-				return FlxEase.quadOut;
-			case 'quartin':
-				return FlxEase.quartIn;
-			case 'quartinout':
-				return FlxEase.quartInOut;
-			case 'quartout':
-				return FlxEase.quartOut;
-			case 'quintin':
-				return FlxEase.quintIn;
-			case 'quintinout':
-				return FlxEase.quintInOut;
-			case 'quintout':
-				return FlxEase.quintOut;
-			case 'sinein':
-				return FlxEase.sineIn;
-			case 'sineinout':
-				return FlxEase.sineInOut;
-			case 'sineout':
-				return FlxEase.sineOut;
-			case 'smoothstepin':
-				return FlxEase.smoothStepIn;
-			case 'smoothstepinout':
-				return FlxEase.smoothStepInOut;
-			case 'smoothstepout':
-				return FlxEase.smoothStepOut;
-			case 'smootherstepin':
-				return FlxEase.smootherStepIn;
-			case 'smootherstepinout':
-				return FlxEase.smootherStepInOut;
-			case 'smootherstepout':
-				return FlxEase.smootherStepOut;
-		}
-
-		return FlxEase.linear;
+	@:deprecated("Use CoolUtil.easeFromString instead!")
+	public static inline function easeFromString(ease:String = 'linear'):EaseFunction {
+		return CoolUtil.easeFromString(ease);
 	}
 }
 #end

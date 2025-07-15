@@ -194,7 +194,7 @@ class EventHandeler {
 						game.stage.infrontOfGFSprites.visible = false;
 					}
 
-					if(game.scripts.exists(game.stage.stage)){
+					if (game.scripts.exists(game.stage.stage)) {
 						game.scripts.get(game.stage.stage).call("onDestroy", []);
 						game.scripts.remove(game.stage.stage);
 					}
@@ -222,8 +222,8 @@ class EventHandeler {
 					game.call("createStage", [game.stage.stage]);
 
 					#if LUA_ALLOWED
-					if (game.stage.stageScript != null){
-						if(game.stage.stageScript is LuaScript)
+					if (game.stage.stageScript != null) {
+						if (game.stage.stageScript is LuaScript)
 							game.stage.stageScript.setup();
 					}
 					#end
@@ -248,7 +248,7 @@ class EventHandeler {
 				PlayState.strumLineNotes.clear();
 
 				#if MODCHARTING_TOOLS
-				if(game.playfieldRenderer != null){
+				if (game.playfieldRenderer != null) {
 					game.playfieldRenderer = new modcharting.PlayfieldRenderer(PlayState.strumLineNotes, game.notes, game);
 				}
 				#end
@@ -353,7 +353,7 @@ class EventHandeler {
 					note.frames = Note.getFrames(note);
 
 					var lmaoStuff:Float = Std.parseFloat(game.ui_settings[0]) * (Std.parseFloat(game.ui_settings[2])
-						- (Std.parseFloat(game.mania_size[( note.mustPress ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount) - 1])));
+						- (Std.parseFloat(game.mania_size[(note.mustPress ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount) - 1])));
 
 					if (note.isSustainNote)
 						note.scale.set(lmaoStuff,
@@ -374,7 +374,6 @@ class EventHandeler {
 					note.shader = note.affectedbycolor ? note.colorSwap.shader : null;
 
 					note.animation.play(oldAnim);
-
 				}
 
 				for (note in game.unspawnNotes) {
@@ -382,7 +381,7 @@ class EventHandeler {
 					note.frames = Note.getFrames(note);
 
 					var lmaoStuff:Float = Std.parseFloat(game.ui_settings[0]) * (Std.parseFloat(game.ui_settings[2])
-						- (Std.parseFloat(game.mania_size[( note.mustPress ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount) - 1])));
+						- (Std.parseFloat(game.mania_size[(note.mustPress ? PlayState.SONG.playerKeyCount : PlayState.SONG.keyCount) - 1])));
 
 					if (note.isSustainNote)
 						note.scale.set(lmaoStuff,
@@ -394,7 +393,6 @@ class EventHandeler {
 
 					note.antialiasing = game.ui_settings[3] == "true" && Options.getData("antialiasing");
 
-					
 					var localKeyCount:Int = note.mustPress ? note.song.playerKeyCount : note.song.keyCount;
 
 					note.animation.addByPrefix("default", NoteVariables.animationDirections[localKeyCount - 1][note.noteData] + "0", 24);
@@ -432,6 +430,26 @@ class EventHandeler {
 					anim = splitShit[0];
 
 				character.playAnim(anim, splitShit[1] == "true");
+			case 'scrollspeed':
+				var splitValue1:Array<String> = event[2].split(',');
+				var splitValue2:Array<String> = event[3].split(',');
+				var duration:Float = Std.parseFloat(splitValue1[0]);
+
+				if (duration == Math.NaN)
+					duration = 0;
+
+				var speed:Float = Std.parseFloat(splitValue1[1]);
+				var absolute:Bool = splitValue2[2] == "true";
+
+				for (notes in [game.notes.members, game.unspawnNotes]) {
+					for (note in notes) {
+						if (!absolute) {
+							FlxTween.tween(note, {speed: note.originalSpeed * speed}, duration, {ease: CoolUtil.easeFromString(splitValue2[1])});
+						} else {
+							FlxTween.tween(note, {speed: speed}, duration, {ease: CoolUtil.easeFromString(splitValue2[1])});
+						}
+					}
+				}
 		}
 	}
 }
