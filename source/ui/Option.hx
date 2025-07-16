@@ -403,6 +403,15 @@ class StringSaveOption extends Option {
 	}
 }
 
+class StepperSaveDeveloperOption extends StepperSaveOption{
+	override function setData() {
+		if(!Options.getData("developer")){
+			return;
+		}
+		super.setData();
+	}
+}
+
 class StepperSaveOption extends Option {
 	public var min(default, null):Float;
 	public var max(default, null):Float;
@@ -416,6 +425,9 @@ class StepperSaveOption extends Option {
 		}
 		if(max == min){
 			throw "Min value must not equal max value.";
+		}
+		if(step <= 0){
+			throw "Step must be greater than 0.";
 		}
 		this.min = min;
 		this.max = max;
@@ -445,7 +457,7 @@ class StepperSaveOption extends Option {
 			}
 		}
 	}
-	inline function setData(){
+	function setData(){
 		if(prevValue == currentValue){
 			return;
 		}

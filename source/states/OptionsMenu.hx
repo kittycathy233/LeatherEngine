@@ -146,7 +146,7 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Developer Mode", "developer"),
 			new DeveloperOption("Throw Exception On Error", "throwExceptionOnError"),
 			new DeveloperOption("Auto Open Charter", "autoOpenCharter"),
-			new StepperSaveOption("Chart Backup Interval", 1, 10, "backupDuration"),
+			new StepperSaveDeveloperOption("Chart Backup Interval", 1, 10, "backupDuration"),
 		]
 	];
 
@@ -277,7 +277,7 @@ class OptionsMenu extends MusicBeatState {
 					item.alpha = 1;
 				}
 			}
-			if (x is DeveloperOption && !Options.getData("developer")) {
+			if ((x is DeveloperOption || x is StepperSaveDeveloperOption) && !Options.getData("developer")) {
 				for (item in x.members) {
 					item.alpha *= 0.5;
 				}
