@@ -24,6 +24,9 @@ jobs:
         with:
           haxe-version: 4.3.7
 
+      - name: Update Packages
+        run: sudo apt-get update --fix-missing
+
       # Runs a set of commands using the runners shell
       - name: Install libvlc
         run: sudo apt-get install -y libvlc-dev libvlccore-dev
