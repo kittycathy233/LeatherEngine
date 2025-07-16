@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Charts are backed up every 5 minutes now as opposed to 10
  - Reworked autosave button in chart editor, it is now a button that can let you load an actual chart.
  - MS popup text is now always antialiased by default
+ - Results screen no longer always rounds down accuracy.
 
 ## Fixed
  - Softlock on the title screen when check for updates is disabled

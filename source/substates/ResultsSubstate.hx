@@ -496,7 +496,7 @@ class ResultsSubstate extends MusicBeatSubstate {
 		bgFlash.visible = true;
 		FlxTween.tween(bgFlash, {alpha: 0}, 5 / 24);
 		var clearPercentFloat = (params.scoreData.tallies.sick + params.scoreData.tallies.good) / params.scoreData.tallies.totalNotes * 100;
-		clearPercentTarget = Math.floor(clearPercentFloat);
+		clearPercentTarget = Math.round(clearPercentFloat);
 		// Prevent off-by-one errors.
 
 		if (Math.isNaN(clearPercentFloat) || clearPercentFloat < 0) {
