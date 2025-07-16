@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
--->
 <TextureAtlas imagePath="Note_Splashes.png" width="353" height="49">
 	<SubTexture name="note splash up0000" x="1" y="1" width="29" height="28" frameX="-9" frameY="-9"
 		frameWidth="48" frameHeight="48" />

@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
--->
 <TextureAtlas imagePath="resultGirlfriendGOOD.png" width="2118" height="292">
 	<SubTexture name="Girlfriend Good Anim0000" x="1" y="1" width="222" height="226" frameX="-42" frameY="-128" frameWidth="264" frameHeight="354"/>
 	<SubTexture name="Girlfriend Good Anim0001" x="224" y="1" width="210" height="290" frameX="-18" frameY="-45" frameWidth="264" frameHeight="354"/>
