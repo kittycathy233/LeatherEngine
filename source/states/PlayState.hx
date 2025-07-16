@@ -1381,7 +1381,7 @@ class PlayState extends MusicBeatState {
 					character.dance();
 				}
 			}
-			var introPath:String = Assets.exists(Paths.image('ui skins/${SONG.ui_Skin}/countdown')) ? 'ui skins/${SONG.ui_Skin}/countdown' : 'ui skins/default/countdown';
+			var introPath:String = Assets.exists('assets/shared/images/ui skins/${SONG.ui_Skin}/countdown') ? 'ui skins/${SONG.ui_Skin}/countdown' : 'ui skins/default/countdown';
 
 			var altSuffix:String = SONG.ui_Skin == 'pixel' ? "-pixel" : "";
 
@@ -2884,7 +2884,6 @@ class PlayState extends MusicBeatState {
 			accuracyText.borderStyle = FlxTextBorderStyle.OUTLINE_FAST;
 			accuracyText.borderSize = 1;
 			accuracyText.font = Paths.font("vcr.ttf");
-			accuracyText.antialiasing = ui_settings[3] == "true" && Options.getData("antialiasing");
 
 			ratingsGroup.add(accuracyText);
 		}

@@ -144,10 +144,8 @@ class Note extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxSkewed
 		var skin:String = Assets.exists('assets/shared/images/ui skins/${note.song.ui_Skin}') ? note.song.ui_Skin : 'default';
 		var uiSkinPathBase:String ='ui skins/$skin/arrows/';
 		var uiSkinPathNote:String = '$uiSkinPathBase${note.arrow_Type}';
-		if (PlayState.instance.types.contains(note.arrow_Type)) {
-			if (Assets.exists(Paths.image(uiSkinPathNote, 'shared'))) {
-				return Paths.getSparrowAtlas(uiSkinPathNote, 'shared', disallowGPU);
-			}
+		if (Assets.exists(Paths.image(uiSkinPathNote, 'shared'))) {
+			return Paths.getSparrowAtlas(uiSkinPathNote, 'shared', disallowGPU);
 		}
 		return Paths.getSparrowAtlas('ui skins/${skin}/arrows/default', 'shared', disallowGPU);
 	}

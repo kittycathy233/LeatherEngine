@@ -45,6 +45,10 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 		super(x, y);
 		if (ui_Skin == null)
 			ui_Skin = PlayState.SONG.ui_Skin;
+		if(!Assets.exists('assets/data/ui skins/$ui_Skin')){
+			ui_Skin = 'default';
+		}
+
 
 		if (ui_settings == null)
 			ui_settings = PlayState.instance.ui_settings;
