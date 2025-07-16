@@ -1,5 +1,6 @@
 package ui.logs;
 
+import flixel.system.debug.log.LogStyle;
 import openfl.text.TextField;
 import lime.app.Application;
 import openfl.events.Event;
@@ -75,6 +76,9 @@ class Logs extends Sprite {
 	public static inline function error(message:Dynamic) {
 		if (Logs.instance != null)
 			Logs.instance.addLog(message, PrintType.ERROR);
+		if (LogStyle.ERROR.throwException) {
+			throw message;
+		}
 	}
 
 	public function addLog(message:String, ?logType:PrintType) {

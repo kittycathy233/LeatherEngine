@@ -347,16 +347,17 @@ class CoolUtil {
 	**/
 	public static function print(message:String, ?type:PrintType = LOG, ?pos_infos:PosInfos):Void {
 		untyped __cpp__("std::cout << {0}", '${Log.formatOutput('${messageFromPrintType(type)} $message', pos_infos)}\n');
+		final formattedMessage:String = Log.formatOutput(message, pos_infos);
 		EntryPoint.runInMainThread(() -> {
 			switch (type) {
 				case DEBUG:
-					Logs.debug(Log.formatOutput(message, pos_infos));
+					Logs.debug(formattedMessage);
 				case WARNING:
-					Logs.warn(Log.formatOutput(message, pos_infos));
+					Logs.warn(formattedMessage);
 				case ERROR:
-					Logs.error(Log.formatOutput(message, pos_infos));
+					Logs.error(formattedMessage);
 				default:
-					Logs.log(Log.formatOutput(message, pos_infos));
+					Logs.log(formattedMessage);
 			}
 		});
 	}

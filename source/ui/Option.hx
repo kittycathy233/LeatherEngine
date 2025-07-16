@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.system.debug.log.LogStyle;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
 #end
@@ -113,6 +114,8 @@ class BoolOption extends Option {
 				}
 			case "vSync":
 				FlxG.stage.window.vsync = optionChecked;
+			case "throwExceptionOnError":
+				LogStyle.ERROR.throwException = optionChecked;
 		}
 	}
 }

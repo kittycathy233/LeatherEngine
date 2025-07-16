@@ -1,5 +1,6 @@
 package states;
 
+import flixel.system.debug.log.LogStyle;
 import flixel.math.FlxMath;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
@@ -71,6 +72,8 @@ class TitleState extends MusicBeatState {
 
 			Options.init();
 			Options.fixBinds();
+
+			LogStyle.ERROR.throwException = Options.getData("throwExceptionOnError");
 
 			FlxSprite.defaultAntialiasing = Options.getData("antialiasing");
 

@@ -144,6 +144,7 @@ class OptionsMenu extends MusicBeatState {
 		"Developer Options" => [
 			new PageOption("Back", "Categories"),
 			new BoolOption("Developer Mode", "developer"),
+			new DeveloperOption("Throw Exception On Error", "throwExceptionOnError"),
 			new DeveloperOption("Auto Open Charter", "autoOpenCharter"),
 			new StepperSaveOption("Chart Backup Interval", 1, 10, "backupDuration"),
 		]
