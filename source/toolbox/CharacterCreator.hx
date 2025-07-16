@@ -1116,6 +1116,7 @@ class CharacterCreator extends MusicBeatState {
 	function saveConfig() {
 		var config:CharacterConfig = cast {
 			imagePath: char.config.imagePath,
+			extraSheets: char.config.extraSheets,
 			healthIcon: char.icon,
 			barColor: char.config.barColor,
 			defaultFlipX: char.config.defaultFlipX,

@@ -77,9 +77,22 @@ class StrumNote extends #if MODCHARTING_TOOLS modcharting.FlxSprite3D #else FlxS
 			setValues();
 		}
 
-		frames = Assets.exists(Paths.image("ui skins/" + ui_Skin + "/arrows/strums")) ? Paths.getSparrowAtlas('ui skins/' + ui_Skin +
-			"/arrows/strums") : Paths.getSparrowAtlas('ui skins/'
-			+ ui_Skin + "/arrows/default");
+		var spritesheetPath:String;
+		if(Assets.exists(Paths.image('ui skins/$ui_Skin/arrows/strums', 'shared'))){
+			spritesheetPath = 'ui skins/$ui_Skin/arrows/strums';
+		}
+		else if(Assets.exists(Paths.image('ui skins/$ui_Skin/arrows/default', 'shared'))){
+			spritesheetPath = 'ui skins/$ui_Skin/arrows/default';
+		}
+		// Check for if source mod has custom spritesheet without strums.
+		else if(Assets.exists(Paths.image('ui skins/default/arrows/strums', 'shared'))){
+			spritesheetPath = 'ui skins/strums/arrows/strums';
+		}
+		else{
+			spritesheetPath = 'ui skins/strums/arrows/default';
+		}
+
+		frames = Paths.getSparrowAtlas(spritesheetPath, 'shared');
 
 		var animation_Base_Name:String = NoteVariables.maniaDirections[keyCount - 1][Std.int(Math.abs(noteData))].toLowerCase();
 

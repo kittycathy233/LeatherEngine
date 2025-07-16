@@ -708,31 +708,30 @@ class PlayState extends MusicBeatState {
 			SONG.ui_Skin = Options.getData("uiSkin");
 
 		// bull shit
-		ui_settings = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/config"));
-		mania_size = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniasize"));
-		mania_offset = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniaoffset"));
+		
+		var uiSkinConfigPath:String = Assets.exists('assets/data/ui skins/${SONG.ui_Skin}') ? 'ui skins/${SONG.ui_Skin}' : 'ui skins/default';
 
-		// if the file exists, use it dammit
-		if (Assets.exists(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniagap")))
-			mania_gap = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/maniagap"));
-		else
-			mania_gap = CoolUtil.coolTextFile(Paths.txt("ui skins/default/maniagap"));
+		// who in the fuck thought this system was a good idea?
+		ui_settings = CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/config'));
+		mania_size = CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/maniasize'));
+		mania_offset = CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/maniaoffset'));
 
-		types = CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/types"));
+		mania_gap = CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/maniagap'));
 
-		arrow_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("ui skins/" + SONG.ui_Skin + "/default")));
+		types = CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/types'));
+
+		arrow_Configs.set("default", CoolUtil.coolTextFile(Paths.txt('$uiSkinConfigPath/default')));
 		type_Configs.set("default", CoolUtil.coolTextFile(Paths.txt("arrow types/default")));
 
-		// preload ratings
-		uiMap.set("marvelous", Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/ratings/marvelous"));
-		uiMap.set("sick", Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/ratings/sick"));
-		uiMap.set("good", Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/ratings/good"));
-		uiMap.set("bad", Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/ratings/bad"));
-		uiMap.set("shit", Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/ratings/shit"));
+		var uiSkinImagePath:String = Assets.exists('assets/shared/images/ui skins/${SONG.ui_Skin}') ? 'ui skins/${SONG.ui_Skin}' : 'ui skins/default';
 
+		// preload ratings
+		for(rating in ['marvelous', 'sick', 'good', 'bad', 'shit']){
+			uiMap.set(rating, Paths.gpuBitmap('$uiSkinImagePath/ratings/$rating'));
+		}
 		// preload numbers
 		for (i in 0...10)
-			uiMap.set(Std.string(i), Paths.gpuBitmap("ui skins/" + SONG.ui_Skin + "/numbers/num" + Std.string(i)));
+			uiMap.set('$i', Paths.gpuBitmap('$uiSkinImagePath/numbers/num$i'));
 
 		curStage = SONG.stage;
 
@@ -997,7 +996,8 @@ class PlayState extends MusicBeatState {
 		add(notes);
 
 		// health bar
-		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.gpuBitmap('ui skins/' + SONG.ui_Skin + '/other/healthBar'));
+		var healthBarPath:String = Assets.exists(Paths.image('ui skins/${SONG.ui_Skin}/other/healthBar')) ? 'ui skins/${SONG.ui_Skin}/other/healthBar' : 'ui skins/default/other/healthBar';
+		healthBarBG = new FlxSprite(0, healthBarPosY).loadGraphic(Paths.gpuBitmap(healthBarPath));
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
 		healthBarBG.pixelPerfectPosition = true;
@@ -1381,7 +1381,7 @@ class PlayState extends MusicBeatState {
 					character.dance();
 				}
 			}
-			var introPath:String = 'ui skins/${SONG.ui_Skin}/countdown';
+			var introPath:String = Assets.exists(Paths.image('ui skins/${SONG.ui_Skin}/countdown')) ? 'ui skins/${SONG.ui_Skin}/countdown' : 'ui skins/default/countdown';
 
 			var altSuffix:String = SONG.ui_Skin == 'pixel' ? "-pixel" : "";
 
