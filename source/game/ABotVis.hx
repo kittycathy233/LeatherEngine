@@ -56,11 +56,9 @@ class ABotVis extends FlxSpriteGroup {
 		// analyzer.maxDb = -35;
 	}
 
-    static inline function min(x:Int, y:Int):Int
-        {
-          return x > y ? y : x;
-        }
-      
+	static inline function min(x:Int, y:Int):Int {
+		return x > y ? y : x;
+	}
 
 	override function update(elapsed:Float) {
 		#if desktop
