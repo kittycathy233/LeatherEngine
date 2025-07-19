@@ -572,10 +572,10 @@ class FreeplayState extends MusicBeatState {
 		scoreBG.visible = scoreText.visible = diffText.visible = speedText.visible = (curSong?.menuConfig?.showStats) ?? true;
 
 		// Song Inst
-		if (Options.getData("freeplayMusic") && curSelected <= 0) {
+		if (Options.getData("freeplayMusic") && curSelected >= 0) {
 			FlxG.sound.playMusic(Paths.inst(curSong.name, curDiffString.toLowerCase()), 0.7);
 
-			if (vocals.active && vocals.playing)
+			if (vocals != null && vocals.active && vocals.playing)
 				destroyFreeplayVocals(false);
 		}
 
