@@ -92,7 +92,7 @@ class SongLoader {
 					sectionNotes: [],
 					lengthInSteps: 16,
 					mustHitSection: true,
-					bpm: 0.0,
+					bpm: metadata.timeChanges[0].bpm,
 					changeBPM: false,
 					altAnim: false,
 					timeScale: [0, 0],
@@ -131,6 +131,7 @@ class SongLoader {
 		for (note in notes) {
 			output.notes[0].sectionNotes.push([note.t, note.d, note.l, 0, note.k ?? 'default']);
 		}
+
 
 		// engine specific shit
 
