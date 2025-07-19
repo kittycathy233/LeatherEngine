@@ -126,7 +126,7 @@ class ChartingState extends MusicBeatState {
 			Assets.loadLibrary("shared").onComplete(function(_) {});
 		#end
 
-		menuBG = new FlxSprite().makeBackground(0x3D3D3D);
+		menuBG = new FlxSprite().makeBackground(0xFF3D3D3D);
 
 		menuBG.updateHitbox();
 		menuBG.screenCenter();

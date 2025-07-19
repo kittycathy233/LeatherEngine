@@ -64,7 +64,9 @@ class OptionsMenu extends MusicBeatState {
 			new BoolOption("Disable Debug Menus", "disableDebugMenus", "Disable debug menus, such as the chart editor."),
 			new BoolOption("Invisible Notes", "invisibleNotes", "Makes notes invisible.\n(why would you want this?)"),
 			new BoolOption("Auto Pause", "autoPause", "Will the game automatically pause when losing focus."),
+			#if (target.threaded)
 			new BoolOption("Load Asynchronously", "loadAsynchronously", "Loads some elements of the game will be loaded\nasyncrnously to speed up load times."),
+			#end
 			new BoolOption("Flixel Splash Screen", "flixelStartupScreen", "Toggles the haxeflixel startup splash screen."),
 			new BoolOption("Skip Results", "skipResultsScreen", "When toggled, the results screen will be skipped."),
 			#if CHECK_FOR_UPDATES

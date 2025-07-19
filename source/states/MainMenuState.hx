@@ -69,7 +69,7 @@ class MainMenuState extends MusicBeatState {
 
 		persistentUpdate = persistentDraw = true;
 
-		bg = new FlxSprite(-80).makeBackground(0xFDE871);
+		bg = new FlxSprite(-80).makeBackground(0xFFFDE871);
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.18;
 		bg.scale.set(1.3, 1.3);
@@ -230,7 +230,7 @@ class MainMenuState extends MusicBeatState {
 			#end
 
 			case 'toolbox':
-				FlxG.switchState(() -> new toolbox.ToolboxState("Categories", 0x00FF6A));
+				FlxG.switchState(() -> new toolbox.ToolboxState("Categories", 0xFF00FF6A));
 		}
 		call("changeState");
 	}

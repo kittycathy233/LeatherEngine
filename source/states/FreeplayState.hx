@@ -128,7 +128,7 @@ class FreeplayState extends MusicBeatState {
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
-		add(bg = new FlxSprite().makeBackground(0xE1E1E1));
+		add(bg = new FlxSprite().makeBackground(0xFFE1E1E1));
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);

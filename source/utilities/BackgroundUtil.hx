@@ -22,8 +22,7 @@ class BackgroundUtil{
      */
     public static function makeBackground(sprite:FlxSprite, color:FlxColor):FlxSprite{
         if(!Options.getData("menuBGs")){
-            trace(color);
-            sprite.makeGraphic(1286, 730, color, true, "menuBG");
+            sprite.makeGraphic(1286, 730, color, true);
             return sprite;
         }
         sprite.color = color;

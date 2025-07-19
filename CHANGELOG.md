@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
  - Freeplay music option only working on the first song.
+ - Optimized menu bgs option sometimes making a black menu background.
 
 ### Removed
  - Prototype title screen option from the menu.

@@ -85,7 +85,7 @@ class NewModState extends MusicBeatState {
 		#if DISCORD_ALLOWED
 		DiscordClient.changePresence("Creating A New Mod", null, null, true);
 		#end
-		bg = new FlxSprite().makeBackground(0x00FFEA);
+		bg = new FlxSprite().makeBackground(0xFF00FFEA);
 		bg.screenCenter();
 		add(bg);
 
