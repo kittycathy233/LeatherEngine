@@ -1,5 +1,7 @@
 package game;
 
+import haxe.ds.ArraySort;
+import flixel.util.FlxSort;
 import utilities.NoteVariables;
 import haxe.Json;
 import lime.utils.Assets;
@@ -127,11 +129,24 @@ class SongLoader {
 			trace("Couldn't find the difficulty '" + difficulty + "' for the chart being loaded, sorry! (FNFC)");
 			return output;
 		}
-
+		var curSection:Int = 0;
+		var crochet:Float = ((60 / metadata.timeChanges[0].bpm) * 1000);
 		for (note in notes) {
-			output.notes[0].sectionNotes.push([note.t, note.d, note.l, 0, note.k ?? 'default']);
+			output.notes[curSection].sectionNotes.push([note.t, note.d, note.l, 0, note.k ?? 'default']);
+			if (note.t >= (curSection + 1) * (crochet * 4)) {
+				curSection++;
+				output.notes.push({
+					sectionNotes: [],
+					lengthInSteps: 16,
+					mustHitSection: true,
+					bpm: metadata.timeChanges[0].bpm,
+					changeBPM: false,
+					altAnim: false,
+					timeScale: [0, 0],
+					changeTimeScale: false
+				});
+			}
 		}
-
 
 		// engine specific shit
 
