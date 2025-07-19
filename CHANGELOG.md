@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] - Unreleased
 
+### Added
+ - Descriptions to all options in the options menu.
+
 ### Fixed
  - Freeplay music option only working on the first song.
 
+### Removed
+ - Prototype title screen option from the menu.
 
 ## [1.0.1] - 7/16/25
 

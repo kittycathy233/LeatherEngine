@@ -1,5 +1,8 @@
 package ui;
 
+import flixel.FlxSubState;
+import haxe.extern.EitherType;
+import flixel.group.FlxSpriteContainer;
 import flixel.system.debug.log.LogStyle;
 #if DISCORD_ALLOWED
 import utilities.DiscordClient;
@@ -16,7 +19,6 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import states.OptionsMenu;
 import flixel.FlxG;
-import flixel.group.FlxGroup;
 import ui.ModIcon;
 import flixel.util.typeLimit.NextState;
 import flixel.tweens.*;
@@ -24,20 +26,22 @@ import flixel.tweens.*;
 /**
  * The base option class that all options inherit from.
  */
-class Option extends FlxTypedGroup<FlxSprite> {
+class Option extends FlxSpriteContainer {
 	// variables //
-	public var alphabetText:Alphabet;
+	public var alphabetText(default, null):Alphabet;
 
 	// options //
-	public var optionName:String = "";
-	public var optionValue:String = "downscroll";
+	public var optionName(default, null):String;
+	public var optionValue(default, null):String;
+	public var optionDescription(default, null):String;
 
-	public function new(_optionName:String = "", _optionValue:String = "downscroll") {
+	public function new(optionName:String, optionValue:String, optionDescription:String = "") {
 		super();
 
 		// SETTING VALUES //
-		this.optionName = _optionName;
-		this.optionValue = _optionValue;
+		this.optionName = optionName;
+		this.optionValue = optionValue;
+		this.optionDescription = optionDescription;
 
 		// CREATING OTHER OBJECTS //
 		alphabetText = new Alphabet(20, 20, optionName, true);
@@ -51,13 +55,13 @@ class Option extends FlxTypedGroup<FlxSprite> {
  */
 class BoolOption extends Option {
 	// variables //
-	var checkbox:Checkbox;
+	public var checkbox(default, null):Checkbox;
 
 	// options //
-	public var optionChecked:Bool = false;
+	public var optionChecked(default, null):Bool = false;
 
-	override public function new(_optionName:String = "", _optionValue:String = "downscroll") {
-		super(_optionName, _optionValue);
+	override public function new(optionName:String, optionValue:String, optionDescription:String = "") {
+		super(optionName, optionValue, optionDescription);
 
 		// SETTING VALUES //
 		this.optionChecked = getObjectValue();
@@ -127,37 +131,41 @@ class PageOption extends Option {
 	// OPTIONS //
 	public var pageName:String = "Categories";
 
-	override public function new(_optionName:String = "", _pageName:String = "Categories", _Description:String = "Test Description") {
-		super(_optionName, _pageName);
+	override public function new(optionName:String, pageName:String = "Categories", optionDescription:String = "") {
+		super(optionName, pageName, optionDescription);
 
 		// SETTING VALUES //
-		this.pageName = _pageName;
+		this.pageName = pageName;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
-			OptionsMenu.instance.loadPage(pageName);
+			OptionsMenu?.instance?.loadPage(pageName ?? "Categories");
 		}
 	}
 }
 
 class GameSubStateOption extends Option {
-	public var gameSubState:Dynamic;
+	public var gameSubState:EitherType<NextState, Class<FlxSubState>>;
 
-	public function new(_optionName:String = "", _gameSubState:Dynamic) {
-		super(_optionName, null);
+	public function new(optionName:String, gameSubState:EitherType<NextState, Class<FlxSubState>>, optionDescription:String = "") {
+		super(optionName, null, optionDescription);
 
 		// SETTING VALUES //
-		this.gameSubState = _gameSubState;
+		this.gameSubState = gameSubState;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0)
-			FlxG.state.openSubState(Type.createInstance(this.gameSubState, []));
+			if (gameSubState is Class) {
+				FlxG.state.openSubState(Type.createInstance(cast gameSubState, []));
+			} else {
+				FlxG.state.openSubState(cast gameSubState);
+			}
 	}
 }
 
@@ -168,42 +176,31 @@ class GameStateOption extends Option {
 	// OPTIONS //
 	public var gameState:NextState;
 
-	public function new(_optionName:String = "", _gameState:NextState) {
-		super(_optionName, null);
+	public function new(optionName:String = "", gameState:EitherType<NextState, Class<FlxState>>, optionDescription:String = "") {
+		super(optionName, null, optionDescription);
 
 		// SETTING VALUES //
-		this.gameState = _gameState;
+		this.gameState = gameState;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
-			FlxG.switchState(gameState);
+			if (gameState is Class) {
+				FlxG.switchState(Type.createInstance(cast this.gameState, []));
+			} else {
+				FlxG.switchState(cast gameState);
+			}
 		}
 	}
 }
 
-/**
- * Thing for Animation Debug.
- */
-class CharacterCreatorOption extends Option {
-	// OPTIONS //
-	public var gameState:NextState;
+class CharacterCreatorOption extends GameStateOption {
 
-	public function new(_optionName:String = "", _gameState:NextState) {
-		super(_optionName, null);
-
-		// SETTING VALUES //
+	public function new(optionName:String = "", gameState:EitherType<NextState, Class<FlxState>>, optionDescription:String = "") {
+		super(optionName, gameState, optionDescription);
 		toolbox.CharacterCreator.lastState = "OptionsMenu";
-		this.gameState = _gameState;
-	}
-
-	override function update(elapsed:Float) {
-		super.update(elapsed);
-
-		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0)
-			FlxG.switchState(gameState);
 	}
 }
 
@@ -211,7 +208,7 @@ class CharacterCreatorOption extends Option {
 /**
  * Option for enabling and disabling mods.
  */
-class ModOption extends FlxTypedGroup<FlxSprite> {
+class ModOption extends FlxSpriteContainer {
 	// variables //
 	public var alphabetText:Alphabet;
 	public var modIcon:ModIcon;
@@ -257,16 +254,14 @@ class ModOption extends FlxTypedGroup<FlxSprite> {
 		}
 
 		if (modEnabled) {
-			alphabetText.alpha = 1;
-			modIcon.alpha = 1;
+			alpha = 1;
 		} else {
-			alphabetText.alpha = 0.6;
-			modIcon.alpha = 0.6;
+			alpha = 0.6;
 		}
 	}
 }
 
-class ChangeModOption extends FlxTypedGroup<FlxSprite> {
+class ChangeModOption extends FlxSpriteContainer {
 	// variables //
 	public var alphabetText:Alphabet;
 	public var modIcon:ModIcon;
@@ -302,8 +297,7 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 		super.update(elapsed);
 
 		if (alphabetText.targetY == 0) {
-			alphabetText.alpha = 1;
-			modIcon.alpha = 1;
+			alpha = 1;
 			if (FlxG.keys.justPressed.ENTER) {
 				Options.setData(optionValue, "curMod");
 				modEnabled = !modEnabled;
@@ -331,8 +325,7 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
 					TitleState.playTitleMusic();
 			}
 		} else {
-			alphabetText.alpha = 0.6;
-			modIcon.alpha = 0.6;
+			alpha = 0.6;
 		}
 	}
 }
@@ -343,27 +336,27 @@ class ChangeModOption extends FlxTypedGroup<FlxSprite> {
  */
 class StringSaveOption extends Option {
 	// VARIABLES //
-	var currentMode:String = "option 2";
-	var Modes:Array<String> = ["option 1", "option 2", "option 3"];
-	var Cool_Name:String;
-	var saveDataName:String;
+	public var currentMode(default, null):String;
+	public var modes(default, null):Array<String>;
+	public var displayName(default, null):String;
+	public var saveDataName(default, null):String;
 
-	override public function new(_optionName:String = "String Switcher", _Modes:Array<String>, _saveDataName:String = "hitsound") {
-		super(_optionName, null);
+	override public function new(optionName:String, modes:Array<String>, saveDataName:String, optionDescription:String = "") {
+		super(optionName, null, optionDescription);
 
 		// SETTING VALUES //
-		this.Modes = _Modes;
-		this.saveDataName = _saveDataName;
+		this.modes = modes;
+		this.saveDataName = saveDataName;
 		this.currentMode = Options.getData(saveDataName);
-		this.Cool_Name = _optionName;
-		this.optionName = Cool_Name + " " + currentMode;
+		this.displayName = optionName;
+		this.optionName = displayName + " " + currentMode;
 
 		// CREATING OTHER OBJECTS //
 		remove(alphabetText);
 		alphabetText.kill();
 		alphabetText.destroy();
 
-		alphabetText = new Alphabet(20, 20, optionName, true);
+		alphabetText = new Alphabet(20, 20, this.optionName, true);
 		alphabetText.isMenuItem = true;
 		add(alphabetText);
 	}
@@ -372,19 +365,19 @@ class StringSaveOption extends Option {
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.ENTER && Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
-			var prevIndex = Modes.indexOf(currentMode);
+			var prevIndex = modes.indexOf(currentMode);
 
 			if (prevIndex != -1) {
-				if (prevIndex + 1 > Modes.length - 1)
+				if (prevIndex + 1 > modes.length - 1)
 					prevIndex = 0;
 				else
 					prevIndex++;
 			} else
 				prevIndex = 0;
 
-			currentMode = Modes[prevIndex];
+			currentMode = modes[prevIndex];
 
-			this.optionName = Cool_Name + " " + currentMode;
+			this.optionName = displayName + " " + currentMode;
 
 			remove(alphabetText);
 			alphabetText.kill();
@@ -403,9 +396,9 @@ class StringSaveOption extends Option {
 	}
 }
 
-class StepperSaveDeveloperOption extends StepperSaveOption{
+class StepperSaveDeveloperOption extends StepperSaveOption {
 	override function setData() {
-		if(!Options.getData("developer")){
+		if (!Options.getData("developer")) {
 			return;
 		}
 		super.setData();
@@ -418,15 +411,16 @@ class StepperSaveOption extends Option {
 
 	public var step(default, null):Float;
 	public var currentValue(default, null):Float;
-	override public function new(displayName:String, min:Float, max:Float, saveString:String, step:Float = 1) {
-		super(displayName, saveString);
-		if(max < min){
+
+	override public function new(displayName:String, min:Float, max:Float, saveString:String, step:Float = 1, optionDescription:String = "") {
+		super(displayName, saveString, optionDescription);
+		if (max < min) {
 			throw "Max value must not be less than min value.";
 		}
-		if(max == min){
+		if (max == min) {
 			throw "Min value must not equal max value.";
 		}
-		if(step <= 0){
+		if (step <= 0) {
 			throw "Step must be greater than 0.";
 		}
 		this.min = min;
@@ -442,23 +436,25 @@ class StepperSaveOption extends Option {
 		alphabetText.isMenuItem = true;
 		add(alphabetText);
 	}
+
 	private var prevValue:Float;
+
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-		if(Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu){
+		if (Std.int(alphabetText.targetY) == 0 && !OptionsMenu.instance.inMenu) {
 			prevValue = currentValue;
-			if(FlxG.keys.anyJustPressed([LEFT, A])){
+			if (FlxG.keys.anyJustPressed([LEFT, A])) {
 				currentValue = Math.max(min, currentValue - step);
 				setData();
-			}
-			else if(FlxG.keys.anyJustPressed([RIGHT, D])){
+			} else if (FlxG.keys.anyJustPressed([RIGHT, D])) {
 				currentValue = Math.min(max, currentValue + step);
 				setData();
 			}
 		}
 	}
-	function setData(){
-		if(prevValue == currentValue){
+
+	function setData() {
+		if (prevValue == currentValue) {
 			return;
 		}
 		Options.setData(currentValue, optionValue);
@@ -493,21 +489,21 @@ class DeveloperOption extends BoolOption {
  */
 class OpenUrlOption extends Option {
 	// OPTIONS //
-	public var Title:String;
-	public var Url:String;
+	public var title:String;
+	public var url:String;
 
-	public function new(_optionName:String = "", Title:String, Url:String) {
-		super(_optionName, null);
+	public function new(optionName:String, title:String, url:String, optionDescription:String = "") {
+		super(optionName, null, optionDescription);
 
 		// SETTING VALUES //
-		this.Url = Url;
-		this.Title = Title;
+		this.url = url;
+		this.title = title;
 	}
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		if (FlxG.keys.justPressed.ENTER && alphabetText.targetY == 0) {
-			FlxG.openURL(Url);
+			FlxG.openURL(url);
 		}
 	}
 }
