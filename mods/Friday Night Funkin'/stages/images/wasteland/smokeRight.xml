@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="smokeRight.png" width="3130" height="2255" spritePadding="1" borderPadding="1">
+	<SubTexture name="SmokeRight 0000" x="1064" y="1" width="524" height="879" frameX="-37" frameY="-48" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0001" x="1" y="884" width="500" height="865" frameX="-40" frameY="-41" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0002" x="1" y="884" width="500" height="865" frameX="-40" frameY="-41" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0003" x="1" y="884" width="500" height="865" frameX="-40" frameY="-41" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0004" x="1538" y="884" width="493" height="865" frameX="-37" frameY="-33" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0005" x="1538" y="884" width="493" height="865" frameX="-37" frameY="-33" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0006" x="1538" y="884" width="493" height="865" frameX="-37" frameY="-33" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0007" x="2114" y="1" width="514" height="869" frameX="-26" frameY="-24" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0008" x="2114" y="1" width="514" height="869" frameX="-26" frameY="-24" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0009" x="2114" y="1" width="514" height="869" frameX="-26" frameY="-24" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0010" x="1589" y="1" width="524" height="874" frameX="-19" frameY="-14" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0011" x="1589" y="1" width="524" height="874" frameX="-19" frameY="-14" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0012" x="1589" y="1" width="524" height="874" frameX="-19" frameY="-14" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0013" x="1" y="1" width="532" height="881" frameX="-4" frameY="-7" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0014" x="1" y="1" width="532" height="881" frameX="-4" frameY="-7" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0015" x="1" y="1" width="532" height="881" frameX="-4" frameY="-7" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0016" x="534" y="1" width="529" height="882" frameX="-3" frameY="-1" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0017" x="534" y="1" width="529" height="882" frameX="-3" frameY="-1" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0018" x="534" y="1" width="529" height="882" frameX="-3" frameY="-1" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0019" x="502" y="884" width="525" height="823" frameX="-3" frameY="-58" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0020" x="502" y="884" width="525" height="823" frameX="-3" frameY="-58" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0021" x="502" y="884" width="525" height="823" frameX="-3" frameY="-58" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0022" x="2032" y="884" width="515" height="826" frameX="-9" frameY="-54" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0023" x="2032" y="884" width="515" height="826" frameX="-9" frameY="-54" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0024" x="2032" y="884" width="515" height="826" frameX="-9" frameY="-54" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0025" x="2548" y="884" width="515" height="808" frameX="-17" frameY="-70" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0026" x="2548" y="884" width="515" height="808" frameX="-17" frameY="-70" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0027" x="2548" y="884" width="515" height="808" frameX="-17" frameY="-70" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0028" x="798" y="1750" width="727" height="504" rotated="true" frameX="-20" frameY="-152" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0029" x="798" y="1750" width="727" height="504" rotated="true" frameX="-20" frameY="-152" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0030" x="798" y="1750" width="727" height="504" rotated="true" frameX="-20" frameY="-152" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0031" x="2276" y="1750" width="670" height="433" rotated="true" frameX="-34" frameY="-197" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0032" x="2276" y="1750" width="670" height="433" rotated="true" frameX="-34" frameY="-197" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0033" x="2276" y="1750" width="670" height="433" rotated="true" frameX="-34" frameY="-197" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0034" x="1526" y="1750" width="749" height="473" rotated="true" frameX="-49" frameY="-150" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0035" x="1526" y="1750" width="749" height="473" rotated="true" frameX="-49" frameY="-150" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0036" x="1526" y="1750" width="749" height="473" rotated="true" frameX="-49" frameY="-150" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0037" x="1" y="1750" width="796" height="498" rotated="true" frameX="-53" frameY="-122" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0038" x="1" y="1750" width="796" height="498" rotated="true" frameX="-53" frameY="-122" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0039" x="1" y="1750" width="796" height="498" rotated="true" frameX="-53" frameY="-122" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0040" x="1028" y="884" width="509" height="845" frameX="-39" frameY="-81" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0041" x="1028" y="884" width="509" height="845" frameX="-39" frameY="-81" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0042" x="1028" y="884" width="509" height="845" frameX="-39" frameY="-81" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0043" x="2629" y="1" width="500" height="872" frameX="-38" frameY="-61" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0044" x="2629" y="1" width="500" height="872" frameX="-38" frameY="-61" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0045" x="2629" y="1" width="500" height="872" frameX="-38" frameY="-61" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0046" x="1064" y="1" width="524" height="879" frameX="-37" frameY="-48" frameWidth="542" frameHeight="889"/>
+	<SubTexture name="SmokeRight 0047" x="1064" y="1" width="524" height="879" frameX="-37" frameY="-48" frameWidth="542" frameHeight="889"/>
+</TextureAtlas>

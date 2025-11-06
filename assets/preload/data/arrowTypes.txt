@@ -1,0 +1,8 @@
+default
+death
+caution
+hurt
+hey
+gf sing
+no animation
+alt animation
