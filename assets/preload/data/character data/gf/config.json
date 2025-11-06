@@ -1,0 +1,15 @@
+{
+    "cameraOffset": [-40, -250],
+    "barColor": [209, 26, 26],
+    "mainCharacterID": 1,
+    "characters": [
+        {
+            "name": "speakers",
+            "positionOffset": [0,0]
+        },
+        {
+            "name": "gf-nospeakers",
+            "positionOffset": [0,-233]
+        }
+    ]
+}
