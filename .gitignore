@@ -1,0 +1,5 @@
+export/
+art/flashFiles/RECOVER_*
+crash/export/
+.*/
+!.github
