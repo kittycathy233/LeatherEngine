@@ -1,0 +1,7 @@
+default
+death
+caution
+hurt
+hey
+no animation
+alt animation
